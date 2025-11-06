@@ -48,10 +48,16 @@ export function transformToWiremdAST(
  * Transform a single MDAST node to wiremd node
  */
 function transformNode(
-  node: MdastContent,
+  node: MdastContent | any,
   options: ParseOptions
 ): WiremdNode | null {
   switch (node.type) {
+    case 'wiremdContainer':
+      return transformContainer(node, options);
+
+    case 'wiremdInlineContainer':
+      return transformInlineContainer(node, options);
+
     case 'heading':
       return transformHeading(node, options);
 
@@ -102,6 +108,92 @@ function transformNode(
       // TODO: Add warnings for unsupported nodes
       return null;
   }
+}
+
+/**
+ * Transform container node (:::)
+ */
+function transformContainer(node: any, options: ParseOptions): WiremdNode {
+  const children: WiremdNode[] = [];
+
+  for (const child of node.children || []) {
+    const transformed = transformNode(child, options);
+    if (transformed) {
+      children.push(transformed);
+    }
+  }
+
+  const props = parseAttributes(node.attributes || '');
+
+  return {
+    type: 'container',
+    containerType: node.containerType as any,
+    props,
+    children,
+  };
+}
+
+/**
+ * Transform inline container node ([[...]])
+ */
+function transformInlineContainer(node: any, options: ParseOptions): WiremdNode {
+  const props = parseAttributes(node.attributes || '');
+  const items = node.items || [];
+  const children: WiremdNode[] = [];
+
+  // Parse each item - could be text, icon, or button
+  for (const item of items) {
+    const trimmed = item.trim();
+
+    // Check if it's a button: [Text]
+    const buttonMatch = trimmed.match(/^\[([^\]]+)\]$/);
+    if (buttonMatch) {
+      children.push({
+        type: 'button',
+        content: buttonMatch[1],
+        props: {},
+      });
+      continue;
+    }
+
+    // Check if it's an icon: :icon:
+    const iconMatch = trimmed.match(/^:([a-z-]+):$/);
+    if (iconMatch) {
+      children.push({
+        type: 'icon',
+        props: { name: iconMatch[1] },
+      });
+      continue;
+    }
+
+    // Check if it starts with icon: :icon: Text
+    const iconTextMatch = trimmed.match(/^:([a-z-]+):\s*(.+)$/);
+    if (iconTextMatch) {
+      // Create a brand node with icon + text
+      children.push({
+        type: 'brand',
+        children: [
+          { type: 'icon', props: { name: iconTextMatch[1] } },
+          { type: 'text', content: iconTextMatch[2] },
+        ],
+        props: {},
+      });
+      continue;
+    }
+
+    // Otherwise, it's a nav item (text)
+    children.push({
+      type: 'nav-item',
+      content: trimmed,
+      props: {},
+    });
+  }
+
+  return {
+    type: 'nav',
+    props,
+    children: children as any,
+  };
 }
 
 /**

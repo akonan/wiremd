@@ -195,4 +195,113 @@ Email
       expect(result.children[5].type).toBe('button');
     });
   });
+
+  describe('Container Syntax', () => {
+    it('should parse a hero container', () => {
+      const input = `
+::: hero
+
+# Welcome to Our Product
+
+[Get Started]*
+
+:::
+      `.trim();
+
+      const result = parse(input);
+      expect(result.children).toHaveLength(1);
+      expect(result.children[0]).toMatchObject({
+        type: 'container',
+        containerType: 'hero',
+      });
+      expect(result.children[0].children).toHaveLength(2);
+      expect(result.children[0].children[0].type).toBe('heading');
+      expect(result.children[0].children[1].type).toBe('button');
+    });
+
+    it('should parse a container with attributes', () => {
+      const input = `
+::: card {.featured}
+
+## Card Title
+
+Content here
+
+:::
+      `.trim();
+
+      const result = parse(input);
+      expect(result.children[0]).toMatchObject({
+        type: 'container',
+        containerType: 'card',
+        props: {
+          classes: ['featured'],
+        },
+      });
+    });
+
+    it('should parse nested containers', () => {
+      const input = `
+::: modal
+
+## Confirm Delete
+
+Are you sure?
+
+[Cancel] [Delete]{.danger}
+
+:::
+      `.trim();
+
+      const result = parse(input);
+      expect(result.children[0].type).toBe('container');
+      expect(result.children[0].children).toHaveLength(3);
+    });
+  });
+
+  describe('Inline Container Syntax (Navigation)', () => {
+    it('should parse a simple navigation bar', () => {
+      const input = `[[ Home | Products | About | Contact ]]`;
+
+      const result = parse(input);
+      expect(result.children).toHaveLength(1);
+      expect(result.children[0]).toMatchObject({
+        type: 'nav',
+      });
+      expect(result.children[0].children).toHaveLength(4);
+      expect(result.children[0].children[0]).toMatchObject({
+        type: 'nav-item',
+        content: 'Home',
+      });
+    });
+
+    it('should parse navigation with brand (icon + text)', () => {
+      const input = `[[ :logo: MyApp | Home | Products ]]`;
+
+      const result = parse(input);
+      expect(result.children[0].type).toBe('nav');
+      expect(result.children[0].children[0]).toMatchObject({
+        type: 'brand',
+      });
+      expect(result.children[0].children[0].children).toHaveLength(2);
+      expect(result.children[0].children[0].children[0].type).toBe('icon');
+      expect(result.children[0].children[0].children[1].type).toBe('text');
+    });
+
+    it('should parse navigation with buttons', () => {
+      const input = `[[ Home | Products | [Sign In] | [Get Started] ]]{.nav}`;
+
+      const result = parse(input);
+      expect(result.children[0].type).toBe('nav');
+      expect(result.children[0].props.classes).toContain('nav');
+
+      // Should have 4 children: 2 nav-items and 2 buttons
+      const children = result.children[0].children;
+      expect(children).toHaveLength(4);
+      expect(children[2].type).toBe('button');
+      expect(children[2].content).toBe('Sign In');
+      expect(children[3].type).toBe('button');
+      expect(children[3].content).toBe('Get Started');
+    });
+  });
 });
