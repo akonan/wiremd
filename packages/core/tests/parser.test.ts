@@ -304,4 +304,115 @@ Are you sure?
       expect(children[3].content).toBe('Get Started');
     });
   });
+
+  describe('Dropdown/Select Syntax', () => {
+    it('should parse a basic dropdown', () => {
+      const input = `[Select option___________v]`;
+
+      const result = parse(input);
+      expect(result.children).toHaveLength(1);
+      expect(result.children[0]).toMatchObject({
+        type: 'select',
+        props: {
+          placeholder: 'Select option',
+        },
+      });
+    });
+
+    it('should parse dropdown with options', () => {
+      const input = `
+[Choose a topic___________v]
+- General inquiry
+- Sales
+- Support
+- Partnership
+      `.trim();
+
+      const result = parse(input);
+      expect(result.children).toHaveLength(1);
+      expect(result.children[0].type).toBe('select');
+      expect(result.children[0].options).toHaveLength(4);
+      expect(result.children[0].options[0]).toMatchObject({
+        type: 'option',
+        value: 'General inquiry',
+        label: 'General inquiry',
+      });
+    });
+
+    it('should parse dropdown with attributes', () => {
+      const input = `[Select___v]{required}`;
+
+      const result = parse(input);
+      expect(result.children[0].props.required).toBe(true);
+    });
+  });
+
+  describe('Grid Layout Detection', () => {
+    it('should parse a 3-column grid', () => {
+      const input = `
+## Features {.grid-3}
+
+### Feature One
+Fast and reliable
+
+### Feature Two
+Secure and safe
+
+### Feature Three
+Powerful tools
+      `.trim();
+
+      const result = parse(input);
+      expect(result.children).toHaveLength(1);
+      expect(result.children[0]).toMatchObject({
+        type: 'grid',
+        columns: 3,
+      });
+      expect(result.children[0].children).toHaveLength(3);
+      expect(result.children[0].children[0].type).toBe('grid-item');
+    });
+
+    it('should parse grid items with icons', () => {
+      const input = `
+## Features {.grid-3}
+
+### :rocket: Fast
+Lightning quick rendering
+
+### :shield: Secure
+Enterprise grade security
+
+### :zap: Powerful
+Advanced features included
+      `.trim();
+
+      const result = parse(input);
+      expect(result.children[0].type).toBe('grid');
+      expect(result.children[0].children).toHaveLength(3);
+
+      // First grid item should have heading and paragraph
+      const firstItem = result.children[0].children[0];
+      expect(firstItem.children).toHaveLength(2);
+      expect(firstItem.children[0].type).toBe('heading');
+      expect(firstItem.children[1].type).toBe('paragraph');
+    });
+
+    it('should parse grid with different column counts', () => {
+      const input = `
+## Layout {.grid-4}
+
+### Col 1
+### Col 2
+### Col 3
+### Col 4
+      `.trim();
+
+      const result = parse(input);
+      expect(result.children[0]).toMatchObject({
+        type: 'grid',
+        columns: 4,
+      });
+      expect(result.children[0].children).toHaveLength(4);
+    });
+  });
 });

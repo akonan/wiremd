@@ -28,12 +28,107 @@ export function transformToWiremdAST(
 
   const children: WiremdNode[] = [];
 
-  // Visit all nodes in the MDAST
-  for (const node of mdast.children) {
-    const transformed = transformNode(node, options);
+  // Visit all nodes in the MDAST with context for dropdown options and grid layouts
+  let i = 0;
+  while (i < mdast.children.length) {
+    const node = mdast.children[i];
+    const nextNode = mdast.children[i + 1];
+
+    // Check if this is a heading with grid class
+    if (node.type === 'heading') {
+      const content = extractTextContent(node);
+      const gridMatch = content.match(/\{[^}]*\.grid-(\d+)[^}]*\}/);
+
+      if (gridMatch) {
+        const columns = parseInt(gridMatch[1], 10);
+        const gridHeadingLevel = node.depth;
+
+        // This is a grid container - collect grid items
+        const gridItems: WiremdNode[] = [];
+        const headingTransformed = transformHeading(node, options);
+
+        i++; // Move to next node
+
+        // Collect child headings as grid items
+        while (i < mdast.children.length) {
+          const childNode = mdast.children[i];
+
+          // Grid items are headings one level deeper
+          if (
+            childNode.type === 'heading' &&
+            childNode.depth === gridHeadingLevel + 1
+          ) {
+            const gridItem: WiremdNode[] = [];
+
+            // Add the heading
+            const childNextNode = mdast.children[i + 1];
+            const headingNode = transformNode(childNode, options, childNextNode);
+            if (headingNode) {
+              gridItem.push(headingNode);
+            }
+
+            i++;
+
+            // Collect content until next heading at same or higher level
+            while (i < mdast.children.length) {
+              const contentNode = mdast.children[i];
+
+              if (
+                contentNode.type === 'heading' &&
+                contentNode.depth <= gridHeadingLevel + 1
+              ) {
+                break; // Stop at next grid item or parent level
+              }
+
+              const contentNextNode = mdast.children[i + 1];
+              const contentTransformed = transformNode(contentNode, options, contentNextNode);
+              if (contentTransformed) {
+                gridItem.push(contentTransformed);
+
+                // Skip consumed nodes
+                if (contentTransformed.type === 'select' && contentNextNode?.type === 'list') {
+                  i++;
+                }
+              }
+
+              i++;
+            }
+
+            // Add as grid item
+            gridItems.push({
+              type: 'grid-item',
+              props: {},
+              children: gridItem,
+            });
+          } else {
+            // Not a grid item heading, stop collecting
+            break;
+          }
+        }
+
+        // Create grid node
+        children.push({
+          type: 'grid',
+          columns,
+          props: headingTransformed.props || {},
+          children: gridItems as any,
+        });
+
+        continue;
+      }
+    }
+
+    const transformed = transformNode(node, options, nextNode);
     if (transformed) {
       children.push(transformed);
+
+      // If this was a select node and we consumed the next list, skip it
+      if (transformed.type === 'select' && nextNode && nextNode.type === 'list') {
+        i++; // Skip the next node (list) as it was consumed
+      }
     }
+
+    i++;
   }
 
   return {
@@ -49,7 +144,8 @@ export function transformToWiremdAST(
  */
 function transformNode(
   node: MdastContent | any,
-  options: ParseOptions
+  options: ParseOptions,
+  nextNode?: any
 ): WiremdNode | null {
   switch (node.type) {
     case 'wiremdContainer':
@@ -62,7 +158,7 @@ function transformNode(
       return transformHeading(node, options);
 
     case 'paragraph':
-      return transformParagraph(node, options);
+      return transformParagraph(node, options, nextNode);
 
     case 'text':
       return {
@@ -115,11 +211,20 @@ function transformNode(
  */
 function transformContainer(node: any, options: ParseOptions): WiremdNode {
   const children: WiremdNode[] = [];
+  const nodeChildren = node.children || [];
 
-  for (const child of node.children || []) {
-    const transformed = transformNode(child, options);
+  for (let i = 0; i < nodeChildren.length; i++) {
+    const child = nodeChildren[i];
+    const nextChild = nodeChildren[i + 1];
+    const transformed = transformNode(child, options, nextChild);
+
     if (transformed) {
       children.push(transformed);
+
+      // Skip next node if it was consumed (dropdown options)
+      if (transformed.type === 'select' && nextChild && nextChild.type === 'list') {
+        i++;
+      }
     }
   }
 
@@ -217,8 +322,38 @@ function transformHeading(node: any, options: ParseOptions): WiremdNode {
  * Transform paragraph node
  * This is where we'll detect buttons, inputs, etc.
  */
-function transformParagraph(node: any, options: ParseOptions): WiremdNode {
+function transformParagraph(node: any, options: ParseOptions, nextNode?: any): WiremdNode {
   const content = extractTextContent(node);
+
+  // Check if this is a dropdown (ends with 'v]'): [Select option___v]
+  const dropdownMatch = content.match(/^\[([^\]]+)v\](\{[^}]+\})?$/);
+  if (dropdownMatch) {
+    const [, text, attrs] = dropdownMatch;
+    const props = parseAttributes(attrs || '');
+    const options: any[] = [];
+
+    // Check if next node is a list - if so, use list items as options
+    if (nextNode && nextNode.type === 'list') {
+      for (const item of nextNode.children || []) {
+        const itemText = extractTextContent(item);
+        options.push({
+          type: 'option',
+          value: itemText,
+          label: itemText,
+          selected: false,
+        });
+      }
+    }
+
+    return {
+      type: 'select',
+      props: {
+        ...props,
+        placeholder: text.replace(/[_\s]+$/, '').trim() || undefined,
+      },
+      options,
+    };
+  }
 
   // Check if this is an input FIRST: [___] or [***] or [Email___]
   // Input must contain at least one underscore or asterisk
