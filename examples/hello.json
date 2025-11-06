@@ -1,0 +1,49 @@
+{
+  "type": "document",
+  "version": "0.1",
+  "meta": {
+    "version": "0.1",
+    "viewport": "desktop",
+    "theme": "sketch"
+  },
+  "children": [
+    {
+      "type": "heading",
+      "level": 2,
+      "content": "Login Form",
+      "props": {
+        "classes": [],
+        "Login": true,
+        "Form": true
+      }
+    },
+    {
+      "type": "paragraph",
+      "content": "Username\n[_____________________________]{required}",
+      "props": {}
+    },
+    {
+      "type": "paragraph",
+      "content": "Password\n[*****************************]{required}",
+      "props": {}
+    },
+    {
+      "type": "list",
+      "ordered": false,
+      "props": {},
+      "children": [
+        {
+          "type": "checkbox",
+          "label": "Remember me",
+          "checked": false,
+          "props": {}
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": "[Sign In]*\n[Forgot Password?]",
+      "props": {}
+    }
+  ]
+}
