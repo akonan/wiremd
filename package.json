@@ -1,0 +1,48 @@
+{
+  "name": "wiremd",
+  "version": "0.1.0",
+  "description": "Text-first UI design tool - Create wireframes and mockups using Markdown syntax",
+  "private": true,
+  "type": "module",
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "npm run dev --workspace=packages/core",
+    "build": "npm run build --workspaces --if-present",
+    "test": "npm run test --workspaces --if-present",
+    "test:watch": "npm run test:watch --workspace=packages/core",
+    "lint": "eslint . --ext .ts,.tsx",
+    "typecheck": "npm run typecheck --workspaces --if-present",
+    "clean": "rm -rf packages/*/dist packages/*/node_modules node_modules",
+    "docs:dev": "vitepress dev docs",
+    "docs:build": "vitepress build docs",
+    "docs:preview": "vitepress preview docs"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.0",
+    "@typescript-eslint/eslint-plugin": "^6.13.0",
+    "@typescript-eslint/parser": "^6.13.0",
+    "eslint": "^8.54.0",
+    "typescript": "^5.3.2",
+    "vitepress": "^1.0.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/akonan/wiremd.git"
+  },
+  "keywords": [
+    "markdown",
+    "wireframe",
+    "mockup",
+    "ui-design",
+    "prototyping",
+    "text-based",
+    "design-tool"
+  ],
+  "author": "akonan",
+  "license": "MIT"
+}

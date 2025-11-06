@@ -1,0 +1,334 @@
+/**
+ * MDAST to wiremd AST Transformer
+ * Converts remark's MDAST into wiremd-specific AST nodes
+ */
+
+import type { Root as MdastRoot, Content as MdastContent } from 'mdast';
+import { visit } from 'unist-util-visit';
+import type {
+  DocumentNode,
+  WiremdNode,
+  ParseOptions,
+  DocumentMeta,
+} from '../types.js';
+import { SYNTAX_VERSION } from '../index.js';
+
+/**
+ * Transform MDAST to wiremd AST
+ */
+export function transformToWiremdAST(
+  mdast: MdastRoot,
+  options: ParseOptions = {}
+): DocumentNode {
+  const meta: DocumentMeta = {
+    version: SYNTAX_VERSION,
+    viewport: 'desktop',
+    theme: 'sketch',
+  };
+
+  const children: WiremdNode[] = [];
+
+  // Visit all nodes in the MDAST
+  for (const node of mdast.children) {
+    const transformed = transformNode(node, options);
+    if (transformed) {
+      children.push(transformed);
+    }
+  }
+
+  return {
+    type: 'document',
+    version: SYNTAX_VERSION,
+    meta,
+    children,
+  };
+}
+
+/**
+ * Transform a single MDAST node to wiremd node
+ */
+function transformNode(
+  node: MdastContent,
+  options: ParseOptions
+): WiremdNode | null {
+  switch (node.type) {
+    case 'heading':
+      return transformHeading(node, options);
+
+    case 'paragraph':
+      return transformParagraph(node, options);
+
+    case 'text':
+      return {
+        type: 'text',
+        content: node.value,
+      };
+
+    case 'list':
+      return transformList(node, options);
+
+    case 'listItem':
+      return transformListItem(node, options);
+
+    case 'table':
+      return transformTable(node, options);
+
+    case 'blockquote':
+      return transformBlockquote(node, options);
+
+    case 'code':
+      return {
+        type: 'code',
+        value: node.value,
+        lang: node.lang || undefined,
+        inline: false,
+      };
+
+    case 'inlineCode':
+      return {
+        type: 'code',
+        value: node.value,
+        inline: true,
+      };
+
+    case 'thematicBreak':
+      return {
+        type: 'separator',
+        props: {},
+      };
+
+    default:
+      // For now, skip unknown nodes
+      // TODO: Add warnings for unsupported nodes
+      return null;
+  }
+}
+
+/**
+ * Transform heading node
+ */
+function transformHeading(node: any, options: ParseOptions): WiremdNode {
+  // Extract attributes from heading text
+  // TODO: Parse {.class} syntax
+  const content = extractTextContent(node);
+  const props = parseAttributes(content);
+
+  return {
+    type: 'heading',
+    level: node.depth as 1 | 2 | 3 | 4 | 5 | 6,
+    content: content.replace(/\{[^}]+\}$/, '').trim(),
+    props,
+  };
+}
+
+/**
+ * Transform paragraph node
+ * This is where we'll detect buttons, inputs, etc.
+ */
+function transformParagraph(node: any, options: ParseOptions): WiremdNode {
+  const content = extractTextContent(node);
+
+  // Check if this is a button: [Text] or [Text]*
+  const buttonMatch = content.match(/^\[([^\]]+)\](\*)?(\{[^}]+\})?$/);
+  if (buttonMatch) {
+    const [, text, isPrimary, attrs] = buttonMatch;
+    const props = parseAttributes(attrs || '');
+
+    if (isPrimary) {
+      props.variant = 'primary';
+    }
+
+    return {
+      type: 'button',
+      content: text,
+      props,
+    };
+  }
+
+  // Check if this is an input: [___] or [***]
+  const inputMatch = content.match(/^\[([_*]+[^\]]*)\](\{[^}]+\})?$/);
+  if (inputMatch) {
+    const [, pattern, attrs] = inputMatch;
+    const props = parseAttributes(attrs || '');
+
+    // Determine input type from pattern
+    if (pattern.startsWith('*')) {
+      props.inputType = 'password';
+    }
+
+    return {
+      type: 'input',
+      props,
+    };
+  }
+
+  // Check for icon syntax: :icon-name:
+  const iconMatch = content.match(/^:([a-z-]+):$/);
+  if (iconMatch) {
+    return {
+      type: 'icon',
+      props: {
+        name: iconMatch[1],
+      },
+    };
+  }
+
+  // Default: return as paragraph
+  return {
+    type: 'paragraph',
+    content,
+    props: {},
+  };
+}
+
+/**
+ * Transform list node
+ */
+function transformList(node: any, options: ParseOptions): WiremdNode {
+  const children: WiremdNode[] = [];
+
+  for (const item of node.children) {
+    const transformed = transformNode(item, options);
+    if (transformed) {
+      children.push(transformed);
+    }
+  }
+
+  return {
+    type: 'list',
+    ordered: node.ordered || false,
+    props: {},
+    children: children as any,
+  };
+}
+
+/**
+ * Transform list item node
+ */
+function transformListItem(node: any, options: ParseOptions): WiremdNode {
+  const content = extractTextContent(node);
+
+  // Check for task list checkbox: - [ ] or - [x]
+  const checkboxMatch = content.match(/^\[([ x])\]\s*(.+)$/);
+  if (checkboxMatch) {
+    return {
+      type: 'checkbox',
+      label: checkboxMatch[2],
+      checked: checkboxMatch[1] === 'x',
+      props: {},
+    };
+  }
+
+  // Check for radio button: ( ) or (•) or (x)
+  const radioMatch = content.match(/^\(([•x ])\)\s*(.+)$/);
+  if (radioMatch) {
+    return {
+      type: 'radio',
+      label: radioMatch[2],
+      selected: radioMatch[1] !== ' ',
+      props: {},
+    };
+  }
+
+  return {
+    type: 'list-item',
+    content,
+    props: {},
+  };
+}
+
+/**
+ * Transform table node
+ */
+function transformTable(node: any, options: ParseOptions): WiremdNode {
+  // TODO: Implement table transformation
+  return {
+    type: 'table',
+    props: {},
+    children: [],
+  };
+}
+
+/**
+ * Transform blockquote node
+ */
+function transformBlockquote(node: any, options: ParseOptions): WiremdNode {
+  const children: WiremdNode[] = [];
+
+  for (const child of node.children) {
+    const transformed = transformNode(child, options);
+    if (transformed) {
+      children.push(transformed);
+    }
+  }
+
+  return {
+    type: 'blockquote',
+    props: {},
+    children,
+  };
+}
+
+/**
+ * Extract text content from a node and its children
+ */
+function extractTextContent(node: any): string {
+  if (typeof node === 'string') {
+    return node;
+  }
+
+  if (node.value) {
+    return node.value;
+  }
+
+  if (node.children && Array.isArray(node.children)) {
+    return node.children.map(extractTextContent).join('');
+  }
+
+  return '';
+}
+
+/**
+ * Parse attributes from string like {.class key:value}
+ */
+function parseAttributes(attrString: string): any {
+  const props: any = {
+    classes: [],
+  };
+
+  if (!attrString) {
+    return props;
+  }
+
+  // Remove outer braces
+  const inner = attrString.replace(/^\{|\}$/g, '').trim();
+
+  if (!inner) {
+    return props;
+  }
+
+  // Split by spaces (simple parser for now)
+  const parts = inner.split(/\s+/);
+
+  for (const part of parts) {
+    // Class: .classname
+    if (part.startsWith('.')) {
+      props.classes.push(part.slice(1));
+    }
+    // State: :state
+    else if (part.startsWith(':')) {
+      props.state = part.slice(1);
+    }
+    // Key-value: key:value
+    else if (part.includes(':')) {
+      const [key, value] = part.split(':', 2);
+      props[key] = value || true;
+    }
+    // Boolean: required, disabled, etc.
+    else {
+      props[part] = true;
+    }
+  }
+
+  return props;
+}
