@@ -4,6 +4,39 @@
 
 A text-first UI design tool that allows developers to create wireframes and mockups using Markdown syntax. The project consists of a core MIT-licensed library and a commercial Obsidian plugin.
 
+## Current Status (Updated: November 6, 2025)
+
+**Phase:** Month 1, Week 3-4 (Core Parser - In Progress)
+**Completion:** ~40% of Phase 1
+
+### ✅ Completed
+- ✅ **Syntax Research** - Comprehensive analysis of 5 existing solutions (markdown-ui, Balsamiq, ASCII, PlantUML Salt, Mermaid)
+- ✅ **Test Corpus** - 3 versions with 20 common UI patterns (hybrid approach selected)
+- ✅ **Syntax Specification v0.1** - Locked and documented (SYNTAX-SPEC-v0.1.md)
+- ✅ **Project Structure** - Monorepo setup with TypeScript, Vite, Vitest
+- ✅ **Type System** - Complete TypeScript definitions for 40+ AST node types
+- ✅ **Basic Parser** - Working implementation with unified/remark
+  - Buttons: `[Text]`, `[Text]*`, `[Text]{.class}`
+  - Inputs: `[___]`, `[***]`, `[Email___]{type:email}`
+  - Checkboxes: `- [ ]`, `- [x]`
+  - Radio buttons: `( )`, `(•)`
+  - Icons: `:icon-name:`
+  - Attributes: `{.class}`, `{key:value}`, `{:state}`
+- ✅ **JSON Renderer** - Basic JSON output implemented
+- ✅ **Test Suite** - 17 tests, all passing
+
+### 🚧 In Progress
+- Parser enhancement (containers, grids, advanced features)
+- Validation layer implementation
+- HTML renderer with CSS framework
+
+### 📋 Next Steps
+1. Implement container syntax (`:::`)
+2. Implement inline containers (`[[...]]`)
+3. Add dropdown options parsing
+4. Build HTML renderer with Balsamiq-style CSS
+5. Expand test coverage to 80%+
+
 ---
 
 ## Core Library (MIT Licensed)
@@ -619,18 +652,23 @@ props:
 
 ### Month 1: Foundation
 **Week 1-2: Syntax & Specification**
-- [ ] Complete syntax research
-- [ ] Build test corpus
+- [x] Complete syntax research (done - syntax-research.md)
+- [x] Build test corpus (done - test-corpus-v1, v2, v3-hybrid)
 - [ ] Get community feedback
-- [ ] Finalize v0.1 syntax spec
-- [ ] Write formal grammar
+- [x] Finalize v0.1 syntax spec (done - SYNTAX-SPEC-v0.1.md)
+- [x] Write formal grammar (done - included in syntax spec)
 
-**Week 3-4: Core Parser**
-- [ ] Implement lexer
-- [ ] Build parser
-- [ ] Create AST transformer
-- [ ] Generate JSON output
-- [ ] Add validation layer
+**Week 3-4: Core Parser** (In Progress)
+- [x] Implement lexer (done - using unified/remark)
+- [x] Build parser (done - basic implementation with 17 passing tests)
+- [x] Create AST transformer (done - transformer.ts with button/input/checkbox/radio/icon support)
+- [x] Generate JSON output (done - renderToJSON implemented)
+- [ ] Add validation layer (skeleton in place, needs implementation)
+- [ ] Complete container syntax parsing (:::)
+- [ ] Complete inline container parsing ([[...]])
+- [ ] Add dropdown options parsing
+- [ ] Add grid layout detection
+- [ ] Expand test coverage to 80%+
 
 ### Month 2: Implementation
 **Week 5-6: HTML Renderer**
