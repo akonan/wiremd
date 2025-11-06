@@ -128,10 +128,42 @@ function transformHeading(node: any, options: ParseOptions): WiremdNode {
 function transformParagraph(node: any, options: ParseOptions): WiremdNode {
   const content = extractTextContent(node);
 
+  // Check if this is an input FIRST: [___] or [***] or [Email___]
+  // Input must contain at least one underscore or asterisk
+  // This matches: [_____], [*****], [Email___], [Name_______], etc.
+  if (/\[[^\]]*[_*][^\]]*\]/.test(content)) {
+    const match = content.match(/^\[([^\]]+)\](\{[^}]+\})?$/);
+    if (match) {
+      const [, pattern, attrs] = match;
+      const props = parseAttributes(attrs || '');
+
+      // Determine input type from pattern
+      if (pattern.includes('*') && pattern.startsWith('*')) {
+        props.inputType = 'password';
+      }
+
+      return {
+        type: 'input',
+        props,
+      };
+    }
+  }
+
   // Check if this is a button: [Text] or [Text]*
+  // Button should NOT be just underscores or asterisks
   const buttonMatch = content.match(/^\[([^\]]+)\](\*)?(\{[^}]+\})?$/);
   if (buttonMatch) {
     const [, text, isPrimary, attrs] = buttonMatch;
+
+    // Skip if text is only underscores or asterisks (should be input)
+    if (/^[_*]+$/.test(text)) {
+      // This should have been caught by input regex, treat as input
+      return {
+        type: 'input',
+        props: parseAttributes(attrs || ''),
+      };
+    }
+
     const props = parseAttributes(attrs || '');
 
     if (isPrimary) {
@@ -141,23 +173,6 @@ function transformParagraph(node: any, options: ParseOptions): WiremdNode {
     return {
       type: 'button',
       content: text,
-      props,
-    };
-  }
-
-  // Check if this is an input: [___] or [***]
-  const inputMatch = content.match(/^\[([_*]+[^\]]*)\](\{[^}]+\})?$/);
-  if (inputMatch) {
-    const [, pattern, attrs] = inputMatch;
-    const props = parseAttributes(attrs || '');
-
-    // Determine input type from pattern
-    if (pattern.startsWith('*')) {
-      props.inputType = 'password';
-    }
-
-    return {
-      type: 'input',
       props,
     };
   }
@@ -208,13 +223,13 @@ function transformList(node: any, options: ParseOptions): WiremdNode {
 function transformListItem(node: any, options: ParseOptions): WiremdNode {
   const content = extractTextContent(node);
 
-  // Check for task list checkbox: - [ ] or - [x]
-  const checkboxMatch = content.match(/^\[([ x])\]\s*(.+)$/);
-  if (checkboxMatch) {
+  // Check for task list checkbox: remark-gfm sets checked property
+  // node.checked will be true, false, or null (for non-task-list items)
+  if (node.checked !== null && node.checked !== undefined) {
     return {
       type: 'checkbox',
-      label: checkboxMatch[2],
-      checked: checkboxMatch[1] === 'x',
+      label: content,
+      checked: node.checked === true,
       props: {},
     };
   }

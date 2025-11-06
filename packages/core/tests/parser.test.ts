@@ -175,9 +175,11 @@ describe('Parser', () => {
 ## Contact Form
 
 Name
+
 [_____________________]{required}
 
 Email
+
 [_____________________]{type:email required}
 
 [Submit]*
