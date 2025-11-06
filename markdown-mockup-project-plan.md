@@ -6,8 +6,8 @@ A text-first UI design tool that allows developers to create wireframes and mock
 
 ## Current Status (Updated: November 6, 2025)
 
-**Phase:** Month 1, Week 3-4 (Core Parser - In Progress)
-**Completion:** ~40% of Phase 1
+**Phase:** Month 2, Week 5-6 (HTML Renderer - In Progress)
+**Completion:** ~75% of Phase 1
 
 ### ✅ Completed
 - ✅ **Syntax Research** - Comprehensive analysis of 5 existing solutions (markdown-ui, Balsamiq, ASCII, PlantUML Salt, Mermaid)
@@ -15,27 +15,32 @@ A text-first UI design tool that allows developers to create wireframes and mock
 - ✅ **Syntax Specification v0.1** - Locked and documented (SYNTAX-SPEC-v0.1.md)
 - ✅ **Project Structure** - Monorepo setup with TypeScript, Vite, Vitest
 - ✅ **Type System** - Complete TypeScript definitions for 40+ AST node types
-- ✅ **Basic Parser** - Working implementation with unified/remark
+- ✅ **Core Parser** - Full implementation with unified/remark + custom plugins
   - Buttons: `[Text]`, `[Text]*`, `[Text]{.class}`
   - Inputs: `[___]`, `[***]`, `[Email___]{type:email}`
   - Checkboxes: `- [ ]`, `- [x]`
   - Radio buttons: `( )`, `(•)`
   - Icons: `:icon-name:`
+  - Containers: `::: type ... :::`
+  - Inline Containers: `[[ ... | ... ]]` for navigation
+  - Dropdowns: `[Select___v]` with list options
+  - Grid Layouts: `## Heading {.grid-3}` with auto item detection
   - Attributes: `{.class}`, `{key:value}`, `{:state}`
-- ✅ **JSON Renderer** - Basic JSON output implemented
-- ✅ **Test Suite** - 17 tests, all passing
+- ✅ **JSON Renderer** - JSON output with pretty/compact modes
+- ✅ **HTML Renderer** - Complete component rendering (30+ types)
+- ✅ **CSS Framework** - 4 visual styles (sketch, clean, wireframe, none)
+- ✅ **Test Suite** - 48 tests, all passing (29 parser + 19 renderer)
 
 ### 🚧 In Progress
-- Parser enhancement (containers, grids, advanced features)
-- Validation layer implementation
-- HTML renderer with CSS framework
+- Demo examples and showcase site
+- CLI tool development
 
 ### 📋 Next Steps
-1. Implement container syntax (`:::`)
-2. Implement inline containers (`[[...]]`)
-3. Add dropdown options parsing
-4. Build HTML renderer with Balsamiq-style CSS
-5. Expand test coverage to 80%+
+1. Add validation layer
+2. Create demo site with examples
+3. Build CLI tool with watch mode
+4. Expand documentation
+5. Prepare for v0.1 release
 
 ---
 
@@ -658,24 +663,26 @@ props:
 - [x] Finalize v0.1 syntax spec (done - SYNTAX-SPEC-v0.1.md)
 - [x] Write formal grammar (done - included in syntax spec)
 
-**Week 3-4: Core Parser** (In Progress)
+**Week 3-4: Core Parser** ✅ Complete
 - [x] Implement lexer (done - using unified/remark)
-- [x] Build parser (done - basic implementation with 17 passing tests)
-- [x] Create AST transformer (done - transformer.ts with button/input/checkbox/radio/icon support)
+- [x] Build parser (done - 29 passing tests)
+- [x] Create AST transformer (done - transformer.ts with full component support)
 - [x] Generate JSON output (done - renderToJSON implemented)
+- [x] Complete container syntax parsing (done - remark-containers.ts)
+- [x] Complete inline container parsing (done - remark-inline-containers.ts)
+- [x] Add dropdown options parsing (done - context-aware list consumption)
+- [x] Add grid layout detection (done - heading-based grid system)
 - [ ] Add validation layer (skeleton in place, needs implementation)
-- [ ] Complete container syntax parsing (:::)
-- [ ] Complete inline container parsing ([[...]])
-- [ ] Add dropdown options parsing
-- [ ] Add grid layout detection
-- [ ] Expand test coverage to 80%+
 
 ### Month 2: Implementation
-**Week 5-6: HTML Renderer**
-- [ ] Create CSS framework
-- [ ] Build HTML generator
-- [ ] Implement sketch style
-- [ ] Add responsive support
+**Week 5-6: HTML Renderer** (In Progress)
+- [x] Create CSS framework (done - styles.ts with 4 visual styles)
+- [x] Build HTML generator (done - html-renderer.ts with 30+ component types)
+- [x] Implement sketch style (done - Balsamiq-inspired hand-drawn look)
+- [x] Implement clean style (done - modern minimal design)
+- [x] Implement wireframe style (done - traditional grayscale)
+- [x] Implement none style (done - minimal semantic HTML)
+- [x] Add responsive support (done - mobile media queries)
 - [ ] Create demo site
 
 **Week 7: CLI Tool**
