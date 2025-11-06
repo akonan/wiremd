@@ -34,7 +34,7 @@ markdown-mockup/
 │   ├── renderer/            # HTML/JSON renderer
 │   │   ├── index.ts         # Main renderer entry
 │   │   ├── html-renderer.ts # Component HTML generation
-│   │   └── styles.ts        # 4 visual styles (sketch, clean, wireframe, none)
+│   │   └── styles.ts        # Visual styles (default: sketch/Balsamiq)
 │   ├── types.ts             # TypeScript types (176 lines, simplified)
 │   └── index.ts             # Library entry point
 ├── tests/                   # Test suite
@@ -75,11 +75,17 @@ Supported UI components will include:
 - Complex: card, modal, table
 
 ### Styling System
-HTML renderer will support multiple visual styles:
-- `sketch` - Balsamiq-inspired hand-drawn look (default)
-- `clean` - Minimal wireframe style
-- `wireframe` - Traditional wireframe appearance
-- `none` - Unstyled semantic HTML
+HTML renderer uses Balsamiq-inspired hand-drawn style by default (`sketch`).
+
+**Default Style:**
+- `sketch` - Balsamiq-inspired hand-drawn look with Comic Sans, rotated elements, and shadows
+
+**Alternative Styles** (examples in `/examples/styles/`):
+- `clean` - Modern minimal design with system fonts
+- `wireframe` - Traditional grayscale with hatching patterns
+- `none` - Unstyled semantic HTML for custom CSS
+
+Users can switch styles via CLI flag: `--style clean`
 
 ## Development Commands
 
@@ -110,9 +116,9 @@ npm run typecheck
 npm run docs:dev
 ```
 
-### CLI Tool Usage (planned)
+### CLI Tool Usage (in development)
 ```bash
-# Parse and render mockup
+# Parse and render mockup (uses Balsamiq-style by default)
 mdmock input.md
 
 # Output to file
@@ -121,11 +127,13 @@ mdmock input.md -o output.html
 # JSON output
 mdmock input.md --format json
 
-# Watch mode with dev server
-mdmock watch input.md --serve 3000
+# Watch mode with dev server and live-reload
+mdmock input.md --watch --serve 3000
 
-# Different visual style
-mdmock input.md --style clean
+# Use alternative visual styles (examples in /examples/styles/)
+mdmock input.md --style clean      # Modern minimal
+mdmock input.md --style wireframe  # Traditional grayscale
+mdmock input.md --style none       # Unstyled semantic HTML
 ```
 
 ## Testing Strategy

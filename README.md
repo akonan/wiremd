@@ -33,9 +33,10 @@ This renders into a styled wireframe with a form, inputs, and buttons.
 - ✅ **Visual syntax** - Looks like what it renders
 - ✅ **Fast to write** - Intuitive shortcuts for common patterns
 - ✅ **Extensible** - Add classes and attributes as needed
+- ✅ **Balsamiq-style rendering** - Hand-drawn aesthetic by default
 - ✅ **Multiple outputs** - HTML, JSON
-- ✅ **Beautiful styles** - Sketch, clean, wireframe, none themes
-- 🚧 **CLI tool** - Generate wireframes from the command line (coming soon)
+- ✅ **Alternative styles** - Clean, wireframe, and minimal themes (examples included)
+- 🚧 **CLI tool** - Generate wireframes with live-reload (in development)
 - 🚧 **Framework renderers** - React, Vue components (coming soon)
 
 ## Project Structure
@@ -70,7 +71,7 @@ This is an open-source MIT-licensed project containing:
 - [x] Complete TypeScript implementation
 - [x] Parser with full syntax support
 - [x] AST transformer with 40+ node types
-- [x] HTML renderer with 4 visual styles
+- [x] HTML renderer (Balsamiq-style default, 3 alternative examples)
 - [x] JSON output
 - [x] 48 passing tests
 
