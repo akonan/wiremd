@@ -1,0 +1,403 @@
+/**
+ * HTML Renderer for wiremd AST nodes
+ * Converts each AST node type to HTML
+ */
+
+import type { WiremdNode } from '../types.js';
+
+export interface RenderContext {
+  style: string;
+  classPrefix: string;
+  inlineStyles: boolean;
+  pretty: boolean;
+}
+
+/**
+ * Render a wiremd AST node to HTML
+ */
+export function renderNode(node: WiremdNode, context: RenderContext): string {
+  const { classPrefix: prefix } = context;
+
+  switch (node.type) {
+    case 'button':
+      return renderButton(node, context);
+
+    case 'input':
+      return renderInput(node, context);
+
+    case 'textarea':
+      return renderTextarea(node, context);
+
+    case 'select':
+      return renderSelect(node, context);
+
+    case 'checkbox':
+      return renderCheckbox(node, context);
+
+    case 'radio':
+      return renderRadio(node, context);
+
+    case 'icon':
+      return renderIcon(node, context);
+
+    case 'container':
+      return renderContainer(node, context);
+
+    case 'nav':
+      return renderNav(node, context);
+
+    case 'nav-item':
+      return renderNavItem(node, context);
+
+    case 'brand':
+      return renderBrand(node, context);
+
+    case 'grid':
+      return renderGrid(node, context);
+
+    case 'grid-item':
+      return renderGridItem(node, context);
+
+    case 'heading':
+      return renderHeading(node, context);
+
+    case 'paragraph':
+      return renderParagraph(node, context);
+
+    case 'text':
+      return renderText(node, context);
+
+    case 'image':
+      return renderImage(node, context);
+
+    case 'link':
+      return renderLink(node, context);
+
+    case 'list':
+      return renderList(node, context);
+
+    case 'list-item':
+      return renderListItem(node, context);
+
+    case 'table':
+      return renderTable(node, context);
+
+    case 'blockquote':
+      return renderBlockquote(node, context);
+
+    case 'code':
+      return renderCode(node, context);
+
+    case 'separator':
+      return renderSeparator(node, context);
+
+    default:
+      return `<!-- Unknown node type: ${(node as any).type} -->`;
+  }
+}
+
+function renderButton(node: any, context: RenderContext): string {
+  const { classPrefix: prefix } = context;
+  const classes = buildClasses(prefix, 'button', node.props);
+  const disabled = node.props.state === 'disabled' ? ' disabled' : '';
+  const loading = node.props.state === 'loading' ? ` ${prefix}loading` : '';
+
+  return `<button class="${classes}${loading}"${disabled}>${escapeHtml(node.content)}</button>`;
+}
+
+function renderInput(node: any, context: RenderContext): string {
+  const { classPrefix: prefix } = context;
+  const classes = buildClasses(prefix, 'input', node.props);
+  const type = node.props.inputType || node.props.type || 'text';
+  const required = node.props.required ? ' required' : '';
+  const disabled = node.props.disabled ? ' disabled' : '';
+  const placeholder = node.props.placeholder ? ` placeholder="${escapeHtml(node.props.placeholder)}"` : '';
+  const value = node.props.value ? ` value="${escapeHtml(node.props.value)}"` : '';
+
+  return `<input type="${type}" class="${classes}"${placeholder}${value}${required}${disabled} />`;
+}
+
+function renderTextarea(node: any, context: RenderContext): string {
+  const { classPrefix: prefix } = context;
+  const classes = buildClasses(prefix, 'textarea', node.props);
+  const rows = node.props.rows || 4;
+  const required = node.props.required ? ' required' : '';
+  const disabled = node.props.disabled ? ' disabled' : '';
+  const placeholder = node.props.placeholder ? ` placeholder="${escapeHtml(node.props.placeholder)}"` : '';
+  const value = node.props.value || '';
+
+  return `<textarea class="${classes}" rows="${rows}"${placeholder}${required}${disabled}>${escapeHtml(value)}</textarea>`;
+}
+
+function renderSelect(node: any, context: RenderContext): string {
+  const { classPrefix: prefix } = context;
+  const classes = buildClasses(prefix, 'select', node.props);
+  const required = node.props.required ? ' required' : '';
+  const disabled = node.props.disabled ? ' disabled' : '';
+  const multiple = node.props.multiple ? ' multiple' : '';
+
+  const optionsHTML = (node.options || []).map((opt: any) => {
+    const selected = opt.selected ? ' selected' : '';
+    return `<option value="${escapeHtml(opt.value)}"${selected}>${escapeHtml(opt.label)}</option>`;
+  }).join('\n    ');
+
+  const placeholder = node.props.placeholder;
+  const placeholderOption = placeholder
+    ? `<option value="" disabled selected>${escapeHtml(placeholder)}</option>\n    `
+    : '';
+
+  return `<select class="${classes}"${required}${disabled}${multiple}>
+    ${placeholderOption}${optionsHTML}
+  </select>`;
+}
+
+function renderCheckbox(node: any, context: RenderContext): string {
+  const { classPrefix: prefix } = context;
+  const classes = buildClasses(prefix, 'checkbox', node.props);
+  const checked = node.checked ? ' checked' : '';
+  const disabled = node.props.disabled ? ' disabled' : '';
+  const value = node.props.value ? ` value="${escapeHtml(node.props.value)}"` : '';
+
+  return `<label class="${classes}">
+    <input type="checkbox"${checked}${disabled}${value} />
+    <span>${escapeHtml(node.label)}</span>
+  </label>`;
+}
+
+function renderRadio(node: any, context: RenderContext): string {
+  const { classPrefix: prefix } = context;
+  const classes = buildClasses(prefix, 'radio', node.props);
+  const checked = node.selected ? ' checked' : '';
+  const disabled = node.props.disabled ? ' disabled' : '';
+  const name = node.props.name ? ` name="${escapeHtml(node.props.name)}"` : '';
+  const value = node.props.value ? ` value="${escapeHtml(node.props.value)}"` : '';
+
+  return `<label class="${classes}">
+    <input type="radio"${checked}${disabled}${name}${value} />
+    <span>${escapeHtml(node.label)}</span>
+  </label>`;
+}
+
+function renderIcon(node: any, context: RenderContext): string {
+  const { classPrefix: prefix } = context;
+  const classes = buildClasses(prefix, 'icon', node.props);
+  const iconName = node.props.name || 'default';
+
+  return `<span class="${classes}" data-icon="${iconName}" aria-hidden="true"></span>`;
+}
+
+function renderContainer(node: any, context: RenderContext): string {
+  const { classPrefix: prefix } = context;
+  const classes = buildClasses(prefix, `container-${node.containerType}`, node.props);
+  const childrenHTML = (node.children || []).map((child: any) => renderNode(child, context)).join('\n  ');
+
+  return `<div class="${classes}">
+  ${childrenHTML}
+</div>`;
+}
+
+function renderNav(node: any, context: RenderContext): string {
+  const { classPrefix: prefix } = context;
+  const classes = buildClasses(prefix, 'nav', node.props);
+  const childrenHTML = (node.children || []).map((child: any) => renderNode(child, context)).join('\n    ');
+
+  return `<nav class="${classes}">
+  <div class="${prefix}nav-content">
+    ${childrenHTML}
+  </div>
+</nav>`;
+}
+
+function renderNavItem(node: any, context: RenderContext): string {
+  const { classPrefix: prefix } = context;
+  const classes = buildClasses(prefix, 'nav-item', node.props);
+  const href = node.href || '#';
+
+  return `<a href="${href}" class="${classes}">${escapeHtml(node.content)}</a>`;
+}
+
+function renderBrand(node: any, context: RenderContext): string {
+  const { classPrefix: prefix } = context;
+  const classes = buildClasses(prefix, 'brand', node.props);
+  const childrenHTML = (node.children || []).map((child: any) => renderNode(child, context)).join('');
+
+  return `<div class="${classes}">${childrenHTML}</div>`;
+}
+
+function renderGrid(node: any, context: RenderContext): string {
+  const { classPrefix: prefix } = context;
+  const classes = buildClasses(prefix, 'grid', node.props);
+  const columns = node.columns || 3;
+  const gridClass = `${classes} ${prefix}grid-${columns}`;
+  const childrenHTML = (node.children || []).map((child: any) => renderNode(child, context)).join('\n  ');
+
+  return `<div class="${gridClass}" style="--grid-columns: ${columns}">
+  ${childrenHTML}
+</div>`;
+}
+
+function renderGridItem(node: any, context: RenderContext): string {
+  const { classPrefix: prefix } = context;
+  const classes = buildClasses(prefix, 'grid-item', node.props);
+  const childrenHTML = (node.children || []).map((child: any) => renderNode(child, context)).join('\n    ');
+
+  return `<div class="${classes}">
+    ${childrenHTML}
+  </div>`;
+}
+
+function renderHeading(node: any, context: RenderContext): string {
+  const { classPrefix: prefix } = context;
+  const level = node.level || 1;
+  const classes = buildClasses(prefix, `h${level}`, node.props);
+  const content = node.content || '';
+
+  // Handle children (like icons in headings)
+  const childrenHTML = node.children
+    ? node.children.map((child: any) => renderNode(child, context)).join('')
+    : escapeHtml(content);
+
+  return `<h${level} class="${classes}">${childrenHTML}</h${level}>`;
+}
+
+function renderParagraph(node: any, context: RenderContext): string {
+  const { classPrefix: prefix } = context;
+  const classes = buildClasses(prefix, 'paragraph', node.props);
+
+  const childrenHTML = node.children
+    ? node.children.map((child: any) => renderNode(child, context)).join('')
+    : escapeHtml(node.content || '');
+
+  return `<p class="${classes}">${childrenHTML}</p>`;
+}
+
+function renderText(node: any, context: RenderContext): string {
+  return escapeHtml(node.content || '');
+}
+
+function renderImage(node: any, context: RenderContext): string {
+  const { classPrefix: prefix } = context;
+  const classes = buildClasses(prefix, 'image', node.props);
+  const src = node.src || '';
+  const alt = node.alt || '';
+  const width = node.props.width ? ` width="${node.props.width}"` : '';
+  const height = node.props.height ? ` height="${node.props.height}"` : '';
+
+  return `<img src="${escapeHtml(src)}" alt="${escapeHtml(alt)}" class="${classes}"${width}${height} />`;
+}
+
+function renderLink(node: any, context: RenderContext): string {
+  const { classPrefix: prefix } = context;
+  const classes = buildClasses(prefix, 'link', node.props);
+  const href = node.href || '#';
+  const title = node.title ? ` title="${escapeHtml(node.title)}"` : '';
+
+  const childrenHTML = node.children
+    ? node.children.map((child: any) => renderNode(child, context)).join('')
+    : escapeHtml(node.content || '');
+
+  return `<a href="${escapeHtml(href)}" class="${classes}"${title}>${childrenHTML}</a>`;
+}
+
+function renderList(node: any, context: RenderContext): string {
+  const { classPrefix: prefix } = context;
+  const classes = buildClasses(prefix, 'list', node.props);
+  const tag = node.ordered ? 'ol' : 'ul';
+  const childrenHTML = (node.children || []).map((child: any) => renderNode(child, context)).join('\n  ');
+
+  return `<${tag} class="${classes}">
+  ${childrenHTML}
+</${tag}>`;
+}
+
+function renderListItem(node: any, context: RenderContext): string {
+  const { classPrefix: prefix } = context;
+  const classes = buildClasses(prefix, 'list-item', node.props);
+
+  const childrenHTML = node.children
+    ? node.children.map((child: any) => renderNode(child, context)).join('')
+    : escapeHtml(node.content || '');
+
+  return `<li class="${classes}">${childrenHTML}</li>`;
+}
+
+function renderTable(node: any, context: RenderContext): string {
+  const { classPrefix: prefix } = context;
+  const classes = buildClasses(prefix, 'table', node.props);
+  const childrenHTML = (node.children || []).map((child: any) => renderNode(child, context)).join('\n  ');
+
+  return `<table class="${classes}">
+  ${childrenHTML}
+</table>`;
+}
+
+function renderBlockquote(node: any, context: RenderContext): string {
+  const { classPrefix: prefix } = context;
+  const classes = buildClasses(prefix, 'blockquote', node.props);
+  const childrenHTML = (node.children || []).map((child: any) => renderNode(child, context)).join('\n  ');
+
+  return `<blockquote class="${classes}">
+  ${childrenHTML}
+</blockquote>`;
+}
+
+function renderCode(node: any, context: RenderContext): string {
+  const { classPrefix: prefix } = context;
+  const inline = node.inline !== false;
+
+  if (inline) {
+    const classes = buildClasses(prefix, 'code-inline', {});
+    return `<code class="${classes}">${escapeHtml(node.value)}</code>`;
+  } else {
+    const classes = buildClasses(prefix, 'code-block', {});
+    const lang = node.lang ? ` data-lang="${escapeHtml(node.lang)}"` : '';
+    return `<pre class="${classes}"><code${lang}>${escapeHtml(node.value)}</code></pre>`;
+  }
+}
+
+function renderSeparator(node: any, context: RenderContext): string {
+  const { classPrefix: prefix } = context;
+  const classes = buildClasses(prefix, 'separator', node.props);
+
+  return `<hr class="${classes}" />`;
+}
+
+/**
+ * Build CSS classes string from prefix, base class, and props
+ */
+function buildClasses(prefix: string, baseClass: string, props: any): string {
+  const classes = [`${prefix}${baseClass}`];
+
+  // Add custom classes
+  if (props.classes && Array.isArray(props.classes)) {
+    props.classes.forEach((cls: string) => {
+      classes.push(`${prefix}${cls}`);
+    });
+  }
+
+  // Add variant class
+  if (props.variant) {
+    classes.push(`${prefix}${baseClass}-${props.variant}`);
+  }
+
+  // Add state class
+  if (props.state) {
+    classes.push(`${prefix}state-${props.state}`);
+  }
+
+  return classes.join(' ');
+}
+
+/**
+ * Escape HTML special characters
+ */
+function escapeHtml(text: string): string {
+  if (!text) return '';
+
+  return text
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+}
