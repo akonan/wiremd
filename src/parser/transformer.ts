@@ -3,8 +3,7 @@
  * Converts remark's MDAST into wiremd-specific AST nodes
  */
 
-import type { Root as MdastRoot, Content as MdastContent } from 'mdast';
-import { visit } from 'unist-util-visit';
+import type { Root as MdastRoot } from 'mdast';
 import type {
   DocumentNode,
   WiremdNode,
@@ -110,8 +109,8 @@ export function transformToWiremdAST(
         children.push({
           type: 'grid',
           columns,
-          props: headingTransformed.props || {},
-          children: gridItems as any,
+          props: (headingTransformed as any).props || {},
+          children: gridItems,
         });
 
         continue;
@@ -143,7 +142,7 @@ export function transformToWiremdAST(
  * Transform a single MDAST node to wiremd node
  */
 function transformNode(
-  node: MdastContent | any,
+  node: any,
   options: ParseOptions,
   nextNode?: any
 ): WiremdNode | null {
@@ -241,7 +240,7 @@ function transformContainer(node: any, options: ParseOptions): WiremdNode {
 /**
  * Transform inline container node ([[...]])
  */
-function transformInlineContainer(node: any, options: ParseOptions): WiremdNode {
+function transformInlineContainer(node: any, _options: ParseOptions): WiremdNode {
   const props = parseAttributes(node.attributes || '');
   const items = node.items || [];
   const children: WiremdNode[] = [];
@@ -304,7 +303,7 @@ function transformInlineContainer(node: any, options: ParseOptions): WiremdNode 
 /**
  * Transform heading node
  */
-function transformHeading(node: any, options: ParseOptions): WiremdNode {
+function transformHeading(node: any, _options: ParseOptions): WiremdNode {
   // Extract attributes from heading text
   // TODO: Parse {.class} syntax
   const content = extractTextContent(node);
@@ -322,7 +321,7 @@ function transformHeading(node: any, options: ParseOptions): WiremdNode {
  * Transform paragraph node
  * This is where we'll detect buttons, inputs, etc.
  */
-function transformParagraph(node: any, options: ParseOptions, nextNode?: any): WiremdNode {
+function transformParagraph(node: any, _options: ParseOptions, nextNode?: any): WiremdNode {
   const content = extractTextContent(node);
 
   // Check if this is a dropdown (ends with 'v]'): [Select option___v]
@@ -447,7 +446,7 @@ function transformList(node: any, options: ParseOptions): WiremdNode {
 /**
  * Transform list item node
  */
-function transformListItem(node: any, options: ParseOptions): WiremdNode {
+function transformListItem(node: any, _options: ParseOptions): WiremdNode {
   const content = extractTextContent(node);
 
   // Check for task list checkbox: remark-gfm sets checked property
@@ -482,7 +481,7 @@ function transformListItem(node: any, options: ParseOptions): WiremdNode {
 /**
  * Transform table node
  */
-function transformTable(node: any, options: ParseOptions): WiremdNode {
+function transformTable(_node: any, _options: ParseOptions): WiremdNode {
   // TODO: Implement table transformation
   return {
     type: 'table',

@@ -30,7 +30,7 @@ export const remarkWiremdInlineContainers: Plugin = () => {
           const attrs = match[2] || '';
 
           // Parse items separated by |
-          const items = content.split('|').map((item) => item.trim());
+          const items = content.split('|').map((item: string) => item.trim());
 
           // Create inline container node (navigation)
           newChildren.push({

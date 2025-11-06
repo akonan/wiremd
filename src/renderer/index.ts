@@ -3,7 +3,7 @@
  * Converts wiremd AST to HTML or JSON
  */
 
-import type { DocumentNode, RenderOptions, WiremdNode } from '../types.js';
+import type { DocumentNode, RenderOptions } from '../types.js';
 import { renderNode } from './html-renderer.js';
 import { getStyleCSS } from './styles.js';
 

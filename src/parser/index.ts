@@ -6,7 +6,7 @@
 import { unified } from 'unified';
 import remarkParse from 'remark-parse';
 import remarkGfm from 'remark-gfm';
-import type { DocumentNode, ParseOptions, WiremdNode } from '../types.js';
+import type { DocumentNode, ParseOptions } from '../types.js';
 import { transformToWiremdAST } from './transformer.js';
 import { remarkWiremdContainers } from './remark-containers.js';
 import { remarkWiremdInlineContainers } from './remark-inline-containers.js';
@@ -42,7 +42,7 @@ export function parse(input: string, options: ParseOptions = {}): DocumentNode {
   const mdast = processor.parse(input);
 
   // Run the processor to apply plugins
-  const processed = processor.runSync(mdast);
+  const processed = processor.runSync(mdast) as any;
 
   // Transform MDAST to wiremd AST
   const wiremdAST = transformToWiremdAST(processed, options);
@@ -56,7 +56,7 @@ export function parse(input: string, options: ParseOptions = {}): DocumentNode {
  * @param ast - wiremd AST to validate
  * @returns Array of validation errors (empty if valid)
  */
-export function validate(ast: DocumentNode): ValidationError[] {
+export function validate(_ast: DocumentNode): ValidationError[] {
   // TODO: Implement validation
   return [];
 }

@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-A text-first UI design tool that allows developers to create wireframes and mockups using Markdown syntax. The project consists of a core MIT-licensed library and a commercial Obsidian plugin.
+A text-first UI design tool that allows developers to create wireframes and mockups using Markdown syntax. The project is an MIT-licensed open-source library.
 
 ## Current Status (Updated: November 6, 2025)
 
@@ -424,235 +424,6 @@ mdmock --config .mdmockrc.json
 }
 ```
 
----
-
-## Obsidian Plugin (Commercial)
-**Name:** "Mockup Designer for Obsidian"  
-**Price:** $10-20 (one-time purchase)  
-**Marketplace:** Obsidian Community Plugins + Gumroad
-
-### Phase 1: Core Features (Week 8-10)
-
-#### 1.1 Live Preview Implementation
-
-```typescript
-interface PluginSettings {
-  renderMode: "split" | "tab" | "inline" | "hover"
-  autoRefresh: boolean
-  refreshDelay: 300 | 500 | 1000
-  defaultStyle: "sketch" | "clean" | "wireframe"
-  theme: "light" | "dark" | "auto"
-  componentLibraryPath: string
-  enableAnnotations: boolean
-  enableStates: boolean
-}
-
-class MockupDesignerPlugin extends Plugin {
-  settings: PluginSettings
-  previewView: MockupPreviewView
-  editorExtension: Extension
-  
-  async onload() {
-    // Register custom view
-    this.registerView(
-      VIEW_TYPE_MOCKUP_PREVIEW,
-      (leaf) => new MockupPreviewView(leaf)
-    )
-    
-    // Register markdown processor
-    this.registerMarkdownPostProcessor(
-      this.processMockupBlocks
-    )
-    
-    // Add commands
-    this.addCommand({
-      id: 'toggle-mockup-preview',
-      name: 'Toggle Mockup Preview',
-      callback: () => this.togglePreview()
-    })
-    
-    // Add syntax highlighting
-    this.registerEditorExtension(
-      mockupSyntaxHighlighting()
-    )
-  }
-}
-```
-
-#### 1.2 Component Library System
-
-**File Structure:**
-```
-vault/
-  .obsidian/
-    plugins/
-      mockup-designer/
-        components/           # Global components
-  mockups/
-    components/              # Project components
-      button.mdmock
-      navbar.mdmock
-      card.mdmock
-    templates/               # Page templates
-      dashboard.mdmock
-      landing.mdmock
-    my-design.md            # Uses {{button}} syntax
-```
-
-**Component Definition:**
-```markdown
----
-name: PrimaryButton
-props:
-  - text: string
-  - size: small | medium | large
-  - icon?: string
----
-
-[{{icon}}{{text}}] {.btn .btn-{{size}}}
-```
-
-### Phase 2: Advanced Features (Week 11-13)
-
-#### 2.1 Responsive Hints
-
-```markdown
-# Responsive Syntax Options
-
-## Option A: Inline modifiers
-[Search...] {mobile:full tablet:half desktop:third}
-
-## Option B: Viewport blocks
-@mobile {
-  [≡] // Hamburger menu
-}
-
-@tablet {
-  [Home | About | [Search...]]
-}
-
-@desktop {
-  [Logo | Home | Products | About | Contact | [Search...] | [Sign In]]
-}
-
-## Option C: Responsive components
-[[responsive
-  mobile: [≡]
-  tablet: [Home | About]
-  desktop: [Full Navigation]
-]]
-```
-
-#### 2.2 State Representations
-
-```markdown
-# State Syntax
-
-## Product List Component
-[Product Grid]
-  :empty = "No products found. [Add Product]"
-  :loading = [spinner] Loading products...
-  :error = [!] Failed to load. [Retry]
-  :success = 
-    - Product A $99
-    - Product B $149
-    - Product C $199
-
-## Interactive States
-[Submit Button]
-  :default = "Submit Form"
-  :hover = "Submit Form" {.elevated}
-  :active = "Submit Form" {.pressed}
-  :disabled = "Submit Form" {.muted}
-  :loading = [spinner] "Submitting..."
-```
-
-#### 2.3 Annotations System
-
-```markdown
-# Annotation Syntax
-
-## Inline Annotations
-[Login Button] ((Needs A/B testing with different colors))
-[User Avatar] ^[Consider lazy loading for performance]
-
-## Block Annotations
-## Dashboard Section
-<!-- @annotation
-- Check with design team about spacing
-- Need to add export functionality
-- Consider mobile layout
--->
-
-## Numbered References
-[Payment Form][1]
-[Shipping Address][2]
-
-[1]: Use Stripe Elements for PCI compliance
-[2]: Add address autocomplete
-```
-
-**Annotation Rendering:**
-- Floating sticky notes in preview
-- Toggle visibility
-- Color coding by type
-- Export to comments in HTML
-
-### Phase 3: Polish & Distribution (Week 14-15)
-
-#### 3.1 Plugin Features
-
-**Settings Interface:**
-- Visual style picker with live preview
-- Component library management
-- Hotkey customization
-- Export presets manager
-- Template gallery browser
-
-**Editor Enhancements:**
-- Auto-completion for components
-- Snippet insertion
-- Quick actions toolbar
-- Drag-and-drop components
-- Format painter tool
-
-**Export Options:**
-- HTML with inline styles
-- HTML with external CSS
-- React components
-- Vue components
-- Figma plugin format (JSON)
-- PDF wireframes
-
-#### 3.2 Monetization Strategy
-
-**Free Tier:**
-- Basic preview functionality
-- HTML export
-- 5 component limit
-- Sketch style only
-- Community support
-
-**Pro Tier ($15 one-time):**
-- Unlimited components
-- All visual styles
-- All export formats
-- Annotations system
-- State representations
-- Responsive preview
-- Priority support
-- Future updates
-
-**Team Tier ($50/year):**
-- Shared component libraries
-- Sync via Git
-- Custom themes editor
-- Bulk export
-- Commercial license
-- Priority feature requests
-
----
-
 ## Development Roadmap
 
 ### Month 1: Foundation
@@ -699,18 +470,18 @@ props:
 - [ ] Contributing guide
 - [ ] Website launch
 
-### Month 3: Obsidian Plugin
-**Week 9-10: Basic Plugin**
-- [ ] Project setup
-- [ ] Live preview
-- [ ] Split view
-- [ ] Basic settings
-- [ ] Submit to community plugins
+### Month 3: Framework Renderers & Extensions
+**Week 9-10: React & Vue Renderers**
+- [ ] React component generator
+- [ ] Vue component generator
+- [ ] Renderer testing framework
+- [ ] Integration examples
 
-**Week 11-12: Advanced Features**
-- [ ] Component library
-- [ ] Responsive preview
-- [ ] States system
+**Week 11-12: VS Code Extension**
+- [ ] Extension project setup
+- [ ] Live preview panel
+- [ ] Syntax highlighting
+- [ ] Publish to marketplace
 - [ ] Annotations
 - [ ] Polish UI
 
@@ -754,33 +525,18 @@ DevDependencies:
   - @types/node
 ```
 
-### Plugin Stack
-```yaml
-Framework: Obsidian API
-UI: Svelte (Obsidian standard)
-Build: esbuild
-Testing: Playwright
-Distribution: GitHub Releases + Gumroad
-
-Dependencies:
-  - obsidian: Plugin API
-  - @codemirror/view: Editor extensions
-  - svelte: UI components
-```
-
 ### Project Structure
 ```
 markdown-mockup/
-├── packages/
-│   ├── core/               # MIT licensed parser
-│   │   ├── src/
-│   │   │   ├── parser/
-│   │   │   ├── renderer/
-│   │   │   └── cli/
-│   │   ├── tests/
-│   │   └── package.json
-│   └── obsidian-plugin/    # Commercial plugin
-│       ├── src/
+├── src/                    # MIT licensed parser & renderer
+│   ├── parser/             # Parser implementation
+│   ├── renderer/           # HTML/JSON renderers
+│   ├── types.ts            # TypeScript types
+│   └── index.ts            # Main entry point
+├── tests/                  # Test suite (48 tests)
+│   ├── parser.test.ts
+│   └── renderer.test.ts
+├── dist/                   # Build output
 │       ├── styles/
 │       └── manifest.json
 ├── docs/                    # Documentation site
@@ -800,12 +556,11 @@ markdown-mockup/
 - 50% test coverage minimum
 - <100ms parse time for typical document
 
-### Obsidian Plugin
-- 50 beta testers sign up
-- 10 paying customers first week
-- 100 paying customers first month
-- 4.5+ star rating
-- <5% refund rate
+### Extensions & Integrations
+- 100 VS Code extension installs first week
+- 1,000 installs first month
+- 4.0+ star rating on marketplace
+- 5+ community-contributed themes
 
 ### Community
 - 5 community-contributed components
@@ -821,11 +576,11 @@ markdown-mockup/
 ### Technical Risks
 - **Syntax too complex:** Start minimal, expand based on feedback
 - **Performance issues:** Profile early, optimize critical paths
-- **Obsidian API changes:** Pin API version, maintain compatibility layer
+- **VS Code API changes:** Pin API version, maintain compatibility layer
 
 ### Market Risks
 - **Low adoption:** Focus on solving real pain points
-- **Competition:** Differentiate with Obsidian integration
+- **Competition:** Differentiate with developer-first approach and multiple integrations
 - **Pricing resistance:** Offer strong free tier
 
 ### Mitigation Strategies
@@ -843,7 +598,7 @@ markdown-mockup/
 - Build in public on Twitter/X
 - Weekly dev logs
 - Syntax RFC on GitHub
-- Engage with Obsidian community
+- Engage with developer communities (VS Code, markdown enthusiasts)
 
 ### Beta Launch (Month 3)
 - Private beta with influencers
@@ -854,9 +609,9 @@ markdown-mockup/
 ### Public Launch (Month 4)
 - Product Hunt launch
 - Hacker News Show HN
-- Reddit (r/ObsidianMD, r/webdev)
+- Reddit (r/webdev, r/javascript, r/opensource)
 - Dev.to article
-- Obsidian Roundup submission
+- CSS-Tricks guest post
 
 ### Post-Launch
 - Case studies from users
@@ -873,7 +628,6 @@ markdown-mockup/
 - Domain name: $15/year
 - Hosting (docs site): $0 (GitHub Pages)
 - Code signing certificate: $0 (GitHub)
-- Obsidian developer license: $0
 
 ### Marketing Costs
 - Logo design: $200
@@ -906,8 +660,8 @@ npm install -g mdmock
 echo "[Hello World]" > hello.md
 mdmock hello.md --serve
 
-# Install Obsidian plugin
-# Available in Community Plugins: "Mockup Designer"
+# Install VS Code extension
+# Available in marketplace: "wiremd"
 ```
 
 ---

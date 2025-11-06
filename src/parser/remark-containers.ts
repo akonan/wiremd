@@ -6,7 +6,6 @@
  * :::
  */
 
-import { visit } from 'unist-util-visit';
 import type { Plugin } from 'unified';
 
 /**

@@ -1,31 +1,66 @@
 {
-  "name": "wiremd",
+  "name": "markdown-mockup",
   "version": "0.1.0",
   "description": "Text-first UI design tool - Create wireframes and mockups using Markdown syntax",
-  "private": true,
   "type": "module",
-  "workspaces": [
-    "packages/*"
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./parser": {
+      "types": "./dist/parser/index.d.ts",
+      "import": "./dist/parser/index.js"
+    },
+    "./renderer": {
+      "types": "./dist/renderer/index.d.ts",
+      "import": "./dist/renderer/index.js"
+    }
+  },
+  "bin": {
+    "mdmock": "./dist/cli/index.js"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
   ],
   "scripts": {
-    "dev": "npm run dev --workspace=packages/core",
-    "build": "npm run build --workspaces --if-present",
-    "test": "npm run test --workspaces --if-present",
-    "test:watch": "npm run test:watch --workspace=packages/core",
-    "lint": "eslint . --ext .ts,.tsx",
-    "typecheck": "npm run typecheck --workspaces --if-present",
-    "clean": "rm -rf packages/*/dist packages/*/node_modules node_modules",
+    "dev": "vite build --watch",
+    "build": "tsc && vite build",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint src --ext .ts",
+    "clean": "rm -rf dist node_modules",
     "docs:dev": "vitepress dev docs",
     "docs:build": "vitepress build docs",
     "docs:preview": "vitepress preview docs"
+  },
+  "dependencies": {
+    "unified": "^11.0.4",
+    "remark": "^15.0.1",
+    "remark-parse": "^11.0.0",
+    "remark-gfm": "^4.0.0",
+    "unist-util-visit": "^5.0.0",
+    "mdast-util-from-markdown": "^2.0.0",
+    "mdast-util-to-markdown": "^2.1.0"
   },
   "devDependencies": {
     "@types/node": "^20.10.0",
     "@typescript-eslint/eslint-plugin": "^6.13.0",
     "@typescript-eslint/parser": "^6.13.0",
+    "@vitest/coverage-v8": "^1.0.0",
     "eslint": "^8.54.0",
     "typescript": "^5.3.2",
-    "vitepress": "^1.0.0"
+    "vite": "^5.0.0",
+    "vite-plugin-dts": "^3.6.4",
+    "vitepress": "^1.0.0",
+    "vitest": "^1.0.0"
   },
   "engines": {
     "node": ">=18.0.0"
@@ -38,11 +73,18 @@
     "markdown",
     "wireframe",
     "mockup",
+    "parser",
     "ui-design",
     "prototyping",
     "text-based",
-    "design-tool"
+    "design-tool",
+    "html",
+    "renderer"
   ],
   "author": "akonan",
-  "license": "MIT"
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/akonan/wiremd/issues"
+  },
+  "homepage": "https://github.com/akonan/wiremd#readme"
 }

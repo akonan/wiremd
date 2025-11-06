@@ -33,19 +33,19 @@ This renders into a styled wireframe with a form, inputs, and buttons.
 - ✅ **Visual syntax** - Looks like what it renders
 - ✅ **Fast to write** - Intuitive shortcuts for common patterns
 - ✅ **Extensible** - Add classes and attributes as needed
-- 🚧 **Multiple outputs** - HTML, JSON, React, Vue (coming soon)
-- 🚧 **Beautiful styles** - Sketch, clean, wireframe themes
-- 🚧 **CLI tool** - Generate wireframes from the command line
-- 🚧 **Obsidian plugin** - Live preview in Obsidian
+- ✅ **Multiple outputs** - HTML, JSON
+- ✅ **Beautiful styles** - Sketch, clean, wireframe, none themes
+- 🚧 **CLI tool** - Generate wireframes from the command line (coming soon)
+- 🚧 **Framework renderers** - React, Vue components (coming soon)
 
 ## Project Structure
 
-This is a monorepo containing:
+This is an open-source MIT-licensed project containing:
 
-- **`packages/core`** - MIT-licensed parser and renderer library
-- **`packages/obsidian-plugin`** - Commercial Obsidian plugin (coming soon)
-- **`docs`** - Documentation site (coming soon)
-- **`examples`** - Example wireframes
+- **`src/`** - Core parser and renderer library
+- **`tests/`** - Comprehensive test suite (48 tests)
+- **`docs/`** - Documentation site (coming soon)
+- **`examples/`** - Example wireframes
 
 ## Installation
 
@@ -63,24 +63,26 @@ This is a monorepo containing:
 
 ## Development Status
 
-### Phase 1: Syntax Definition (Current)
+### ✅ Completed (Phase 1-2)
 - [x] Research existing solutions
 - [x] Create test corpus with 20 UI patterns
 - [x] Lock v0.1 syntax specification
-- [x] Set up monorepo structure
-- [x] Define TypeScript types
-- [ ] Complete parser implementation
+- [x] Complete TypeScript implementation
+- [x] Parser with full syntax support
+- [x] AST transformer with 40+ node types
+- [x] HTML renderer with 4 visual styles
+- [x] JSON output
+- [x] 48 passing tests
 
-### Phase 2: Parser & JSON Output (Next)
-- [ ] Implement lexer
-- [ ] Complete AST transformer
-- [ ] Add validation layer
-- [ ] Comprehensive test coverage
+### 🚧 In Progress
+- CLI tool development
+- Demo site with examples
+- Documentation site
 
-### Phase 3-5: Coming Soon
-- HTML Renderer with Balsamiq-style CSS
-- CLI Tool
-- Obsidian Plugin
+### 📋 Coming Soon
+- Framework-specific renderers (React, Vue, Svelte)
+- VS Code extension
+- Interactive playground
 
 See [Project Plan](./markdown-mockup-project-plan.md) for full roadmap.
 
@@ -90,10 +92,7 @@ This project is in early development. Contributions welcome once Phase 1 is comp
 
 ## License
 
-- **Core library** (`packages/core`): MIT License
-- **Obsidian plugin** (`packages/obsidian-plugin`): Commercial (proprietary)
-
-See individual package LICENSE files for details.
+MIT License - See [LICENSE](./LICENSE) for details.
 
 ## Credits
 

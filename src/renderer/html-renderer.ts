@@ -16,8 +16,6 @@ export interface RenderContext {
  * Render a wiremd AST node to HTML
  */
 export function renderNode(node: WiremdNode, context: RenderContext): string {
-  const { classPrefix: prefix } = context;
-
   switch (node.type) {
     case 'button':
       return renderButton(node, context);
@@ -271,7 +269,7 @@ function renderParagraph(node: any, context: RenderContext): string {
   return `<p class="${classes}">${childrenHTML}</p>`;
 }
 
-function renderText(node: any, context: RenderContext): string {
+function renderText(node: any, _context: RenderContext): string {
   return escapeHtml(node.content || '');
 }
 

@@ -4,47 +4,44 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-**wiremd** is a text-first UI design tool that allows developers to create wireframes and mockups using Markdown syntax. The project consists of:
+**wiremd** is a text-first UI design tool that allows developers to create wireframes and mockups using Markdown syntax.
 
-1. **Core Library** (`markdown-mockup` or `mdmock`) - MIT-licensed parser and renderer
-2. **Obsidian Plugin** ("Mockup Designer for Obsidian") - Commercial plugin
+**Core Library** (`markdown-mockup` or `mdmock`) - MIT-licensed parser and renderer
 
-**Current Status:** Planning phase - no implementation yet. See `markdown-mockup-project-plan.md` for full roadmap.
+**Current Status:** ~75% of Phase 1 complete - Core parser and HTML renderer implemented with 48 passing tests. See `markdown-mockup-project-plan.md` for full roadmap.
 
 ## Project Architecture
 
-### Planned Technology Stack
+### Technology Stack
 
 **Core Library:**
-- TypeScript (strict mode)
-- Build: Vite
-- Parser: Unified/Remark + Custom tokenizer
-- Testing: Vitest
-- Documentation: VitePress
-- CI/CD: GitHub Actions
+- TypeScript (strict mode) - Simplified using discriminated unions
+- Build: Vite + vite-plugin-dts
+- Parser: Unified/Remark + Custom plugins
+- Testing: Vitest (48 tests passing)
+- Documentation: VitePress (planned)
 
-**Obsidian Plugin:**
-- Obsidian API
-- UI: Svelte (Obsidian standard)
-- Build: esbuild
-- Testing: Playwright
-
-### Intended Project Structure
+### Current Project Structure
 
 ```
 markdown-mockup/
-├── packages/
-│   ├── core/               # MIT licensed parser & renderer
-│   │   ├── src/
-│   │   │   ├── parser/     # Markdown + mockup syntax parser
-│   │   │   ├── renderer/   # HTML/JSON renderer
-│   │   │   └── cli/        # CLI tool
-│   │   └── tests/
-│   └── obsidian-plugin/    # Commercial plugin
-│       ├── src/
-│       └── styles/
-├── docs/                   # Documentation site (VitePress)
-└── examples/               # Example mockup files
+├── src/
+│   ├── parser/              # Markdown + mockup syntax parser
+│   │   ├── index.ts         # Main parser entry
+│   │   ├── transformer.ts   # MDAST to wiremd AST
+│   │   ├── remark-containers.ts        # ::: syntax plugin
+│   │   └── remark-inline-containers.ts # [[...]] syntax plugin
+│   ├── renderer/            # HTML/JSON renderer
+│   │   ├── index.ts         # Main renderer entry
+│   │   ├── html-renderer.ts # Component HTML generation
+│   │   └── styles.ts        # 4 visual styles (sketch, clean, wireframe, none)
+│   ├── types.ts             # TypeScript types (176 lines, simplified)
+│   └── index.ts             # Library entry point
+├── tests/                   # Test suite
+│   ├── parser.test.ts       # Parser tests (29 tests)
+│   └── renderer.test.ts     # Renderer tests (19 tests)
+├── docs/                    # Documentation site (coming soon)
+└── examples/                # Example mockup files
 ```
 
 ## Key Design Principles
@@ -149,36 +146,23 @@ mdmock input.md --style clean
 - Error messages must be clear and actionable
 - Performance: <100ms parse time for typical documents
 
-## Obsidian Plugin Specifics
+## Export Formats
 
-### Plugin Architecture
-- Live preview with auto-refresh
-- Split view, tab view, inline, or hover modes
-- Component library system with reusable components
-- Annotation system for design notes
-- State representation (empty, loading, error, etc.)
-- Responsive preview modes
-
-### Component Library
-Components stored in:
-- `.obsidian/plugins/mockup-designer/components/` (global)
-- `mockups/components/` (project-specific)
-
-### Export Formats (planned)
+Currently supported:
 - HTML with inline styles
-- HTML with external CSS
+- JSON (AST output)
+
+Planned:
 - React components
 - Vue components
-- Figma plugin format (JSON)
-- PDF wireframes
+- Svelte components
+- HTML with external CSS
+- PDF wireframes (via headless browser)
 
 ## Important Constraints
 
-### License Split
-- **Core library** (packages/core/): MIT License - fully open source
-- **Obsidian plugin** (packages/obsidian-plugin/): Commercial - proprietary
-
-Keep these strictly separated. Core library must have zero dependencies on plugin code.
+### License
+- **Core library**: MIT License - fully open source
 
 ### Performance Targets
 - Parse time: <100ms for typical document
@@ -188,7 +172,6 @@ Keep these strictly separated. Core library must have zero dependencies on plugi
 ### Browser/Environment Support
 - Node.js: 18+
 - Browsers: Modern evergreen (ES2020+)
-- Obsidian: Latest stable version
 
 ## Example Syntax (Proposed v0.1)
 
@@ -235,10 +218,11 @@ Fast and reliable service.
 - Watch mode and dev server
 - Config file support
 
-### Phase 5: Obsidian Plugin (Weeks 8-13)
-- Core preview functionality
-- Component library system
-- Advanced features (states, annotations, responsive)
+### Phase 5: Framework Renderers & Extensions
+- React component renderer
+- Vue component renderer
+- Svelte component renderer
+- VS Code extension with live preview
 
 ## Decision Points
 
