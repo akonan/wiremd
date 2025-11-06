@@ -3,7 +3,9 @@
  * Converts wiremd AST to HTML or JSON
  */
 
-import type { DocumentNode, RenderOptions } from '../types.js';
+import type { DocumentNode, RenderOptions, WiremdNode } from '../types.js';
+import { renderNode } from './html-renderer.js';
+import { getStyleCSS } from './styles.js';
 
 /**
  * Render wiremd AST to HTML
@@ -32,8 +34,33 @@ export function renderToHTML(
     classPrefix = 'wmd-',
   } = options;
 
-  // TODO: Implement HTML rendering
-  return '<div>TODO: Implement HTML renderer</div>';
+  const context = {
+    style,
+    classPrefix,
+    inlineStyles,
+    pretty,
+  };
+
+  // Render all children
+  const childrenHTML = ast.children.map((child) => renderNode(child, context)).join('\n');
+
+  // Build complete HTML document
+  const css = inlineStyles ? getStyleCSS(style, classPrefix) : '';
+
+  const html = `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>wiremd Mockup</title>
+  ${css ? `<style>\n${css}\n  </style>` : ''}
+</head>
+<body class="${classPrefix}root ${classPrefix}${style}">
+  ${childrenHTML}
+</body>
+</html>`;
+
+  return pretty ? html : html.replace(/\n\s*/g, '');
 }
 
 /**
