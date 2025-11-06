@@ -9,12 +9,17 @@ export default defineConfig({
         index: resolve(__dirname, 'src/index.ts'),
         parser: resolve(__dirname, 'src/parser/index.ts'),
         renderer: resolve(__dirname, 'src/renderer/index.ts'),
+        'cli/index': resolve(__dirname, 'src/cli/index.ts'),
       },
       formats: ['es'],
       fileName: (format, entryName) => `${entryName}.js`,
     },
     rollupOptions: {
       external: [
+        'fs',
+        'path',
+        'http',
+        'crypto',
         'unified',
         'remark',
         'remark-parse',
