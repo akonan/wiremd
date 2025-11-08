@@ -157,34 +157,11 @@ body.${prefix}root {
 /* Icons */
 .${prefix}icon {
   display: inline-block;
-  width: 1.2em;
-  height: 1.2em;
-  margin: 0 4px;
-  vertical-align: middle;
-}
-
-.${prefix}icon::before {
-  content: '◉';
   font-size: 1.2em;
+  line-height: 1;
+  vertical-align: middle;
+  margin: 0 0.2em;
 }
-
-.${prefix}icon[data-icon="house"]::before { content: '🏠'; }
-.${prefix}icon[data-icon="user"]::before { content: '👤'; }
-.${prefix}icon[data-icon="gear"]::before { content: '⚙️'; }
-.${prefix}icon[data-icon="logo"]::before { content: '⭐'; }
-.${prefix}icon[data-icon="rocket"]::before { content: '🚀'; }
-.${prefix}icon[data-icon="shield"]::before { content: '🛡️'; }
-.${prefix}icon[data-icon="zap"]::before { content: '⚡'; }
-.${prefix}icon[data-icon="magnifying-glass"]::before { content: '🔍'; }
-.${prefix}icon[data-icon="bell"]::before { content: '🔔'; }
-.${prefix}icon[data-icon="inbox"]::before { content: '📥'; }
-
-/* Social Media Icons */
-.${prefix}icon[data-icon="twitter"]::before { content: '𝕏'; }
-.${prefix}icon[data-icon="github"]::before { content: '🐙'; }
-.${prefix}icon[data-icon="linkedin"]::before { content: '🔗'; }
-.${prefix}icon[data-icon="facebook"]::before { content: 'f'; font-weight: bold; }
-.${prefix}icon[data-icon="youtube"]::before { content: '▶'; }
 
 /* Containers */
 .${prefix}container-hero, .${prefix}container-card, .${prefix}container-modal {
@@ -212,6 +189,33 @@ body.${prefix}root {
   max-width: 500px;
   margin: 32px auto;
   border-width: 4px;
+}
+
+/* Radio Groups */
+.${prefix}radio-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 8px 0;
+}
+
+.${prefix}radio-group-inline {
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.${prefix}radio-group-inline .${prefix}radio {
+  margin: 0;
+}
+
+/* Icons */
+.${prefix}icon {
+  display: inline-block;
+  font-size: 1.2em;
+  line-height: 1;
+  vertical-align: middle;
+  margin: 0 0.2em;
 }
 
 /* Navigation */
@@ -511,25 +515,6 @@ body.${prefix}root {
   color: #666;
 }
 
-.${prefix}icon::before {
-  content: '●';
-  font-size: 1em;
-}
-
-.${prefix}icon[data-icon="house"]::before { content: '⌂'; }
-.${prefix}icon[data-icon="user"]::before { content: '👤'; }
-.${prefix}icon[data-icon="gear"]::before { content: '⚙'; }
-.${prefix}icon[data-icon="logo"]::before { content: '★'; }
-.${prefix}icon[data-icon="rocket"]::before { content: '↗'; }
-.${prefix}icon[data-icon="shield"]::before { content: '⛨'; }
-.${prefix}icon[data-icon="zap"]::before { content: '⚡'; }
-
-/* Social Media Icons */
-.${prefix}icon[data-icon="twitter"]::before { content: 'X'; }
-.${prefix}icon[data-icon="github"]::before { content: 'GH'; }
-.${prefix}icon[data-icon="linkedin"]::before { content: 'in'; }
-.${prefix}icon[data-icon="facebook"]::before { content: 'f'; }
-.${prefix}icon[data-icon="youtube"]::before { content: '▶'; }
 
 /* Containers */
 .${prefix}container-hero, .${prefix}container-card, .${prefix}container-modal {
@@ -557,6 +542,33 @@ body.${prefix}root {
   margin: 40px auto;
   background: #fff;
   box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+}
+
+/* Radio Groups */
+.${prefix}radio-group {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin: 12px 0;
+}
+
+.${prefix}radio-group-inline {
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.${prefix}radio-group-inline .${prefix}radio {
+  margin: 0;
+}
+
+/* Icons */
+.${prefix}icon {
+  display: inline-block;
+  font-size: 1.1em;
+  line-height: 1;
+  vertical-align: middle;
+  margin: 0 0.25em;
 }
 
 /* Navigation */
@@ -819,18 +831,11 @@ body.${prefix}root {
 /* Icons */
 .${prefix}icon {
   display: inline-block;
-  width: 16px;
-  height: 16px;
+  font-size: 1em;
+  line-height: 1;
   margin: 0 4px;
   vertical-align: middle;
-  background: #666;
-  border: 1px solid #000;
-  border-radius: 0;
 }
-
-.${prefix}icon[data-icon="house"]::before { content: '⌂'; }
-.${prefix}icon[data-icon="user"]::before { content: '●'; }
-.${prefix}icon[data-icon="gear"]::before { content: '⚙'; }
 
 /* Containers */
 .${prefix}container-hero, .${prefix}container-card, .${prefix}container-modal {
@@ -1408,23 +1413,6 @@ body {
   vertical-align: middle;
 }
 
-.${prefix}icon[data-icon="house"]::before { content: '🏠'; }
-.${prefix}icon[data-icon="user"]::before { content: '👤'; }
-.${prefix}icon[data-icon="gear"]::before { content: '⚙️'; }
-.${prefix}icon[data-icon="logo"]::before { content: '✨'; }
-.${prefix}icon[data-icon="rocket"]::before { content: '🚀'; }
-.${prefix}icon[data-icon="shield"]::before { content: '🛡️'; }
-.${prefix}icon[data-icon="zap"]::before { content: '⚡'; }
-.${prefix}icon[data-icon="magnifying-glass"]::before { content: '🔍'; }
-.${prefix}icon[data-icon="bell"]::before { content: '🔔'; }
-.${prefix}icon[data-icon="inbox"]::before { content: '📥'; }
-
-/* Social Media Icons */
-.${prefix}icon[data-icon="twitter"]::before { content: '𝕏'; }
-.${prefix}icon[data-icon="github"]::before { content: '⚈'; font-size: 1.5em; }
-.${prefix}icon[data-icon="linkedin"]::before { content: 'in'; font-weight: bold; font-size: 0.8em; }
-.${prefix}icon[data-icon="facebook"]::before { content: 'f'; font-weight: bold; }
-.${prefix}icon[data-icon="youtube"]::before { content: '▶'; color: #ef4444; }
 
 /* Utility classes */
 .${prefix}separator {
@@ -1941,24 +1929,6 @@ body {
   height: 24px;
   vertical-align: middle;
 }
-
-.${prefix}icon[data-icon="house"]::before { content: '🏠'; }
-.${prefix}icon[data-icon="user"]::before { content: '👤'; }
-.${prefix}icon[data-icon="gear"]::before { content: '⚙️'; }
-.${prefix}icon[data-icon="logo"]::before { content: '💜'; }
-.${prefix}icon[data-icon="rocket"]::before { content: '🚀'; }
-.${prefix}icon[data-icon="shield"]::before { content: '🛡️'; }
-.${prefix}icon[data-icon="zap"]::before { content: '⚡'; }
-.${prefix}icon[data-icon="magnifying-glass"]::before { content: '🔍'; }
-.${prefix}icon[data-icon="bell"]::before { content: '🔔'; }
-.${prefix}icon[data-icon="inbox"]::before { content: '📥'; }
-
-/* Social Media Icons */
-.${prefix}icon[data-icon="twitter"]::before { content: '𝕏'; }
-.${prefix}icon[data-icon="github"]::before { content: 'G'; font-weight: bold; }
-.${prefix}icon[data-icon="linkedin"]::before { content: 'in'; font-weight: bold; }
-.${prefix}icon[data-icon="facebook"]::before { content: 'f'; font-weight: bold; }
-.${prefix}icon[data-icon="youtube"]::before { content: '▶'; }
 
 /* Utility classes */
 .${prefix}separator {
@@ -2490,24 +2460,6 @@ body {
   vertical-align: middle;
   font-weight: 900;
 }
-
-.${prefix}icon[data-icon="house"]::before { content: '⌂'; font-size: 1.5em; }
-.${prefix}icon[data-icon="user"]::before { content: '☺'; font-size: 1.5em; }
-.${prefix}icon[data-icon="gear"]::before { content: '⚙'; font-size: 1.5em; }
-.${prefix}icon[data-icon="logo"]::before { content: '★'; font-size: 1.5em; color: #ffd93d; }
-.${prefix}icon[data-icon="rocket"]::before { content: '↗'; font-size: 1.5em; }
-.${prefix}icon[data-icon="shield"]::before { content: '◈'; font-size: 1.5em; }
-.${prefix}icon[data-icon="zap"]::before { content: '⚡'; font-size: 1.5em; }
-.${prefix}icon[data-icon="magnifying-glass"]::before { content: '◉'; font-size: 1.5em; }
-.${prefix}icon[data-icon="bell"]::before { content: '◔'; font-size: 1.5em; }
-.${prefix}icon[data-icon="inbox"]::before { content: '▤'; font-size: 1.5em; }
-
-/* Social Media Icons */
-.${prefix}icon[data-icon="twitter"]::before { content: 'X'; font-weight: 900; }
-.${prefix}icon[data-icon="github"]::before { content: 'GH'; font-weight: 900; }
-.${prefix}icon[data-icon="linkedin"]::before { content: 'IN'; font-weight: 900; }
-.${prefix}icon[data-icon="facebook"]::before { content: 'FB'; font-weight: 900; }
-.${prefix}icon[data-icon="youtube"]::before { content: 'YT'; font-weight: 900; }
 
 /* Utility classes */
 .${prefix}separator {

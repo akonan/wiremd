@@ -35,6 +35,9 @@ export function renderNode(node: WiremdNode, context: RenderContext): string {
     case 'radio':
       return renderRadio(node, context);
 
+    case 'radio-group':
+      return renderRadioGroup(node, context);
+
     case 'icon':
       return renderIcon(node, context);
 
@@ -80,6 +83,15 @@ export function renderNode(node: WiremdNode, context: RenderContext): string {
     case 'table':
       return renderTable(node, context);
 
+    case 'table-header':
+      return renderTableHeader(node, context);
+
+    case 'table-row':
+      return renderTableRow(node, context);
+
+    case 'table-cell':
+      return renderTableCell(node, context);
+
     case 'blockquote':
       return renderBlockquote(node, context);
 
@@ -100,7 +112,12 @@ function renderButton(node: any, context: RenderContext): string {
   const disabled = node.props.state === 'disabled' ? ' disabled' : '';
   const loading = node.props.state === 'loading' ? ` ${prefix}loading` : '';
 
-  return `<button class="${classes}${loading}"${disabled}>${escapeHtml(node.content)}</button>`;
+  // Handle children (like icons in buttons)
+  const contentHTML = node.children
+    ? node.children.map((child: any) => renderNode(child, context)).join('')
+    : escapeHtml(node.content);
+
+  return `<button class="${classes}${loading}"${disabled}>${contentHTML}</button>`;
 }
 
 function renderInput(node: any, context: RenderContext): string {
@@ -156,9 +173,14 @@ function renderCheckbox(node: any, context: RenderContext): string {
   const disabled = node.props.disabled ? ' disabled' : '';
   const value = node.props.value ? ` value="${escapeHtml(node.props.value)}"` : '';
 
+  // Handle children (like icons in labels)
+  const labelHTML = node.children
+    ? node.children.map((child: any) => renderNode(child, context)).join('')
+    : escapeHtml(node.label);
+
   return `<label class="${classes}">
     <input type="checkbox"${checked}${disabled}${value} />
-    <span>${escapeHtml(node.label)}</span>
+    <span>${labelHTML}</span>
   </label>`;
 }
 
@@ -176,12 +198,135 @@ function renderRadio(node: any, context: RenderContext): string {
   </label>`;
 }
 
+function renderRadioGroup(node: any, context: RenderContext): string {
+  const { classPrefix: prefix } = context;
+  const isInline = node.props?.inline;
+  const classes = buildClasses(prefix, 'radio-group', node.props);
+  const inlineClass = isInline ? ` ${prefix}radio-group-inline` : '';
+
+  // Generate a unique name for this radio group
+  const groupName = `radio-${Math.random().toString(36).substr(2, 9)}`;
+
+  const radios = (node.children || []).map((child: any) => {
+    // Add the group name to each radio button
+    if (child.type === 'radio') {
+      const modifiedChild = { ...child, props: { ...child.props, name: groupName } };
+      return renderNode(modifiedChild, context);
+    }
+    return renderNode(child, context);
+  }).join('\n    ');
+
+  return `<div class="${classes}${inlineClass}">
+    ${radios}
+</div>`;
+}
+
 function renderIcon(node: any, context: RenderContext): string {
   const { classPrefix: prefix } = context;
   const classes = buildClasses(prefix, 'icon', node.props);
   const iconName = node.props.name || 'default';
 
-  return `<span class="${classes}" data-icon="${iconName}" aria-hidden="true"></span>`;
+  // Icon mapping - using Unicode symbols and emoji
+  const iconMap: Record<string, string> = {
+    // Social media
+    'twitter': '𝕏', // Twitter/X logo approximation
+    'github': '⊙', // GitHub-like symbol
+    'linkedin': 'in', // LinkedIn text representation
+    'facebook': 'f',
+    'instagram': '◉',
+    'youtube': '▶',
+
+    // Common UI icons
+    'home': '🏠',
+    'user': '👤',
+    'settings': '⚙️',
+    'search': '🔍',
+    'star': '⭐',
+    'heart': '❤️',
+    'mail': '✉️',
+    'phone': '📞',
+    'calendar': '📅',
+    'clock': '🕐',
+    'location': '📍',
+    'link': '🔗',
+    'download': '⬇️',
+    'upload': '⬆️',
+    'edit': '✏️',
+    'delete': '🗑️',
+    'plus': '➕',
+    'minus': '➖',
+    'check': '✓',
+    'close': '✕',
+    'menu': '☰',
+    'more': '⋯',
+    'info': 'ℹ️',
+    'warning': '⚠️',
+    'error': '❌',
+    'success': '✅',
+
+    // Arrows
+    'arrow-up': '↑',
+    'arrow-down': '↓',
+    'arrow-left': '←',
+    'arrow-right': '→',
+
+    // Business/Finance
+    'chart': '📊',
+    'dollar': '$',
+    'euro': '€',
+    'pound': '£',
+
+    // Tech
+    'code': '</>',
+    'database': '🗄️',
+    'cloud': '☁️',
+    'wifi': '📶',
+
+    // Communication
+    'chat': '💬',
+    'video': '🎥',
+    'microphone': '🎤',
+    'bell': '🔔',
+
+    // Files
+    'file': '📄',
+    'folder': '📁',
+    'image': '🖼️',
+    'document': '📃',
+    'pdf': '📑',
+
+    // Brand placeholders
+    'logo': '◈',
+    'brand': '◆',
+
+    // Activities
+    'rocket': '🚀',
+    'bulb': '💡',
+    'shield': '🛡️',
+    'lock': '🔒',
+    'unlock': '🔓',
+    'key': '🔑',
+    'gift': '🎁',
+    'trophy': '🏆',
+    'flag': '🚩',
+    'bookmark': '🔖',
+    'tag': '🏷️',
+    'cart': '🛒',
+    'credit-card': '💳',
+
+    // Default
+    'default': '●'
+  };
+
+  const iconContent = iconMap[iconName] || iconMap['default'];
+
+  // For social media icons, wrap in a styled span to make them look more icon-like
+  const socialIcons = ['twitter', 'github', 'linkedin', 'facebook', 'instagram', 'youtube'];
+  if (socialIcons.includes(iconName)) {
+    return `<span class="${classes}" data-icon="${iconName}" aria-label="${iconName}" style="font-family: monospace; font-weight: bold; font-style: normal;">${iconContent}</span>`;
+  }
+
+  return `<span class="${classes}" data-icon="${iconName}" aria-label="${iconName}">${iconContent}</span>`;
 }
 
 function renderContainer(node: any, context: RenderContext): string {
@@ -211,7 +356,12 @@ function renderNavItem(node: any, context: RenderContext): string {
   const classes = buildClasses(prefix, 'nav-item', node.props);
   const href = node.href || '#';
 
-  return `<a href="${href}" class="${classes}">${escapeHtml(node.content)}</a>`;
+  // Handle both content (string) and children (array of nodes)
+  const contentHTML = node.children
+    ? node.children.map((child: any) => renderNode(child, context)).join('')
+    : escapeHtml(node.content);
+
+  return `<a href="${href}" class="${classes}">${contentHTML}</a>`;
 }
 
 function renderBrand(node: any, context: RenderContext): string {
@@ -332,11 +482,48 @@ function renderListItem(node: any, context: RenderContext): string {
 function renderTable(node: any, context: RenderContext): string {
   const { classPrefix: prefix } = context;
   const classes = buildClasses(prefix, 'table', node.props);
-  const childrenHTML = (node.children || []).map((child: any) => renderNode(child, context)).join('\n  ');
+
+  // Separate header from rows
+  const headerNode = node.children?.find((child: any) => child.type === 'table-header');
+  const rowNodes = node.children?.filter((child: any) => child.type === 'table-row') || [];
+
+  const headerHTML = headerNode ? renderNode(headerNode, context) : '';
+  const rowsHTML = rowNodes.map((child: any) => renderNode(child, context)).join('\n    ');
+  const bodyHTML = rowsHTML ? `\n  <tbody>\n    ${rowsHTML}\n  </tbody>` : '';
 
   return `<table class="${classes}">
-  ${childrenHTML}
+  ${headerHTML}${bodyHTML}
 </table>`;
+}
+
+function renderTableHeader(node: any, context: RenderContext): string {
+  const cellsHTML = (node.children || []).map((child: any) => renderNode(child, context)).join('\n    ');
+  return `<thead>
+    <tr>
+      ${cellsHTML}
+    </tr>
+  </thead>`;
+}
+
+function renderTableRow(node: any, context: RenderContext): string {
+  const cellsHTML = (node.children || []).map((child: any) => renderNode(child, context)).join('\n    ');
+  return `<tr>
+    ${cellsHTML}
+  </tr>`;
+}
+
+function renderTableCell(node: any, context: RenderContext): string {
+  const { classPrefix: prefix } = context;
+  const tag = node.header ? 'th' : 'td';
+  const align = node.align || 'left';
+  const classes = buildClasses(prefix, `table-cell ${prefix}align-${align}`, {});
+
+  // Use children if available, otherwise use content
+  const contentHTML = node.children && node.children.length > 0
+    ? node.children.map((child: any) => renderNode(child, context)).join('')
+    : escapeHtml(node.content || '');
+
+  return `<${tag} class="${classes}">${contentHTML}</${tag}>`;
 }
 
 function renderBlockquote(node: any, context: RenderContext): string {

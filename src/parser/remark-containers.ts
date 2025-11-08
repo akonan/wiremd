@@ -31,12 +31,12 @@ export const remarkWiremdContainers: Plugin = () => {
         const lines = fullText.split('\n');
         const firstLine = lines[0].trim();
 
-        // Match ::: followed by optional type and optional attributes
-        const match = firstLine.match(/^:::\s*(\S+)?\s*(\{[^}]+\})?$/);
+        // Match ::: followed by optional type (can have spaces) and optional attributes
+        const match = firstLine.match(/^:::\s*([^{]+?)?\s*(\{[^}]+\})?$/);
 
         if (match) {
           // Found container start
-          const containerType = match[1] || 'section';
+          const containerType = (match[1] || 'section').trim();
           const attrs = match[2] ? match[2].trim() : '';
 
           // Check if this is a complete container within a single paragraph

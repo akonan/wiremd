@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>wiremd Mockup</title>
+  <style>
+
+/* Neo-Brutalism Style */
+body {
+  font-family: "Space Grotesk", "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+  background: #fffcf2;
+  color: #000000;
+  line-height: 1.4;
+  margin: 0;
+  padding: 20px;
+}
+
+/* Typography - Bold and Aggressive */
+.wmd-h1 {
+  font-size: 3rem;
+  font-weight: 900;
+  color: #000000;
+  margin: 0 0 1rem 0;
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+  text-shadow: 3px 3px 0 #ffd93d;
+}
+
+.wmd-h2 {
+  font-size: 2.25rem;
+  font-weight: 900;
+  color: #000000;
+  margin: 1.5rem 0 1rem 0;
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+}
+
+.wmd-h3 {
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: #000000;
+  margin: 1.25rem 0 0.75rem 0;
+  text-transform: uppercase;
+}
+
+.wmd-h4 {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: #000000;
+  margin: 1rem 0 0.5rem 0;
+  text-transform: uppercase;
+}
+
+.wmd-paragraph {
+  color: #000000;
+  margin: 0.75rem 0;
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+/* Brutal Buttons */
+.wmd-button {
+  padding: 12px 24px;
+  border: 3px solid #000000;
+  border-radius: 0;
+  font-weight: 900;
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  transition: all 0.1s ease;
+  cursor: pointer;
+  display: inline-block;
+  text-decoration: none;
+  background: #ffffff;
+  color: #000000;
+  box-shadow: 4px 4px 0 #000000;
+  position: relative;
+}
+
+.wmd-button:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0 #000000;
+}
+
+.wmd-button:active {
+  transform: translate(2px, 2px);
+  box-shadow: 2px 2px 0 #000000;
+}
+
+.wmd-button-primary, .wmd-button.wmd-button-primary {
+  background: #ffd93d;
+  color: #000000;
+}
+
+.wmd-button-primary:hover, .wmd-button.wmd-button-primary:hover {
+  background: #ffcc00;
+}
+
+.wmd-button:disabled, .wmd-button[disabled] {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none !important;
+  box-shadow: 4px 4px 0 #000000 !important;
+}
+
+/* Button States */
+.wmd-state-loading {
+  background: #bcf0da !important;
+  color: #000000 !important;
+  animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.02); }
+}
+
+.wmd-state-error {
+  background: #ff6b6b !important;
+  color: #000000 !important;
+}
+
+.wmd-state-success {
+  background: #6bcf7f !important;
+  color: #000000 !important;
+}
+
+/* Brutal Forms */
+.wmd-input, .wmd-textarea, .wmd-select {
+  width: 100%;
+  padding: 12px;
+  border: 3px solid #000000;
+  border-radius: 0;
+  font-size: 1rem;
+  font-weight: 600;
+  background: #ffffff;
+  color: #000000;
+  box-shadow: 4px 4px 0 #000000;
+  transition: all 0.1s ease;
+}
+
+.wmd-input:focus, .wmd-textarea:focus, .wmd-select:focus {
+  outline: none;
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0 #000000;
+  background: #ffd93d;
+}
+
+.wmd-input::placeholder, .wmd-textarea::placeholder {
+  color: #666666;
+  font-weight: 600;
+}
+
+.wmd-textarea {
+  resize: vertical;
+  min-height: 6rem;
+  font-family: inherit;
+}
+
+.wmd-select {
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='3' stroke-linecap='square'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 20px;
+  padding-right: 40px;
+}
+
+/* Brutal Checkboxes and Radios */
+.wmd-checkbox, .wmd-radio {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 8px 0;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.wmd-checkbox input[type="checkbox"],
+.wmd-radio input[type="radio"] {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  border: 3px solid #000000;
+  accent-color: #ffd93d;
+}
+
+/* Brutal Cards and Containers */
+.wmd-container-card {
+  background: #ffffff;
+  border: 3px solid #000000;
+  border-radius: 0;
+  box-shadow: 8px 8px 0 #000000;
+  padding: 24px;
+  margin: 24px 0;
+  transition: all 0.1s ease;
+}
+
+.wmd-container-card:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 10px 10px 0 #000000;
+}
+
+.wmd-container-hero {
+  background: linear-gradient(135deg, #ff6b6b 0%, #ffd93d 100%);
+  color: #000000;
+  border: 3px solid #000000;
+  border-radius: 0;
+  padding: 48px 32px;
+  margin: 32px 0;
+  text-align: center;
+  box-shadow: 12px 12px 0 #000000;
+  position: relative;
+  overflow: hidden;
+}
+
+.wmd-container-hero::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -50%;
+  width: 200%;
+  height: 200%;
+  background: repeating-linear-gradient(
+    45deg,
+    transparent,
+    transparent 10px,
+    rgba(0, 0, 0, 0.05) 10px,
+    rgba(0, 0, 0, 0.05) 20px
+  );
+  pointer-events: none;
+}
+
+.wmd-container-hero .wmd-h1,
+.wmd-container-hero .wmd-h2,
+.wmd-container-hero .wmd-h3,
+.wmd-container-hero .wmd-paragraph {
+  color: #000000;
+  position: relative;
+}
+
+.wmd-container-modal {
+  background: #ffffff;
+  border: 3px solid #000000;
+  border-radius: 0;
+  box-shadow: 12px 12px 0 #000000;
+  padding: 32px;
+  margin: 32px auto;
+  max-width: 600px;
+  position: relative;
+}
+
+.wmd-container-footer {
+  background: #000000;
+  color: #ffffff;
+  padding: 32px;
+  margin-top: 48px;
+  border: 3px solid #000000;
+  box-shadow: 8px 8px 0 #ffd93d;
+}
+
+.wmd-container-footer .wmd-paragraph,
+.wmd-container-footer .wmd-nav-item {
+  color: #ffffff;
+  font-weight: 600;
+}
+
+.wmd-container-section {
+  padding: 24px 0;
+  border-bottom: 3px solid #000000;
+}
+
+.wmd-container-section:last-child {
+  border-bottom: none;
+}
+
+/* Brutal Alerts */
+.wmd-container-alert {
+  padding: 16px 20px;
+  border: 3px solid #000000;
+  border-radius: 0;
+  margin: 20px 0;
+  box-shadow: 6px 6px 0 #000000;
+  font-weight: 600;
+}
+
+.wmd-container-alert.wmd-warning {
+  background: #ffeb3b;
+  color: #000000;
+}
+
+.wmd-container-alert.wmd-state-error {
+  background: #ff6b6b;
+  color: #000000;
+}
+
+.wmd-container-alert.wmd-state-success {
+  background: #6bcf7f;
+  color: #000000;
+}
+
+/* Brutal Navigation */
+.wmd-nav {
+  background: #ffd93d;
+  border: 3px solid #000000;
+  padding: 16px 20px;
+  box-shadow: 6px 6px 0 #000000;
+  margin-bottom: 32px;
+}
+
+.wmd-nav-content {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.wmd-nav-item {
+  color: #000000;
+  text-decoration: none;
+  padding: 8px 16px;
+  border: 2px solid transparent;
+  transition: all 0.1s ease;
+  font-size: 0.875rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.wmd-nav-item:hover {
+  background: #000000;
+  color: #ffd93d;
+  border: 2px solid #000000;
+  transform: translate(-2px, -2px);
+  box-shadow: 2px 2px 0 #000000;
+}
+
+.wmd-brand {
+  font-weight: 900;
+  font-size: 1.5rem;
+  color: #000000;
+  margin-right: auto;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+}
+
+/* Brutal Lists */
+.wmd-list {
+  margin: 20px 0;
+  padding: 0;
+  list-style: none;
+  border: 3px solid #000000;
+  background: #ffffff;
+  box-shadow: 6px 6px 0 #000000;
+}
+
+.wmd-list-item {
+  padding: 16px 20px;
+  border-bottom: 3px solid #000000;
+  color: #000000;
+  font-weight: 600;
+  transition: all 0.1s ease;
+}
+
+.wmd-list-item:hover {
+  background: #ffd93d;
+  padding-left: 28px;
+}
+
+.wmd-list-item:last-child {
+  border-bottom: none;
+}
+
+/* Brutal Grid */
+.wmd-grid {
+  display: grid;
+  gap: 24px;
+  margin: 32px 0;
+}
+
+.wmd-grid-2 {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.wmd-grid-3 {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.wmd-grid-4 {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.wmd-grid > * {
+  border: 3px solid #000000;
+  background: #ffffff;
+  padding: 20px;
+  box-shadow: 6px 6px 0 #000000;
+}
+
+/* Brutal Tables */
+.wmd-table {
+  width: 100%;
+  background: #ffffff;
+  border: 3px solid #000000;
+  border-collapse: separate;
+  border-spacing: 0;
+  box-shadow: 8px 8px 0 #000000;
+  margin: 20px 0;
+}
+
+.wmd-table th {
+  background: #ffd93d;
+  padding: 16px;
+  text-align: left;
+  font-weight: 900;
+  font-size: 0.875rem;
+  color: #000000;
+  border-bottom: 3px solid #000000;
+  border-right: 3px solid #000000;
+  text-transform: uppercase;
+}
+
+.wmd-table th:last-child {
+  border-right: none;
+}
+
+.wmd-table td {
+  padding: 16px;
+  border-bottom: 3px solid #000000;
+  border-right: 3px solid #000000;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #000000;
+}
+
+.wmd-table td:last-child {
+  border-right: none;
+}
+
+.wmd-table tr:last-child td {
+  border-bottom: none;
+}
+
+.wmd-table tr:hover td {
+  background: #bcf0da;
+}
+
+/* Brutal Icons */
+.wmd-icon {
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+  vertical-align: middle;
+  font-weight: 900;
+}
+
+/* Utility classes */
+.wmd-separator {
+  border: none;
+  border-top: 3px solid #000000;
+  margin: 32px 0;
+}
+
+.wmd-image {
+  max-width: 100%;
+  height: auto;
+  border: 3px solid #000000;
+  box-shadow: 6px 6px 0 #000000;
+}
+
+.wmd-code {
+  background: #ffd93d;
+  padding: 4px 8px;
+  border: 2px solid #000000;
+  font-family: "JetBrains Mono", "Courier New", monospace;
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: #000000;
+}
+
+.wmd-blockquote {
+  border-left: 6px solid #000000;
+  padding-left: 20px;
+  margin: 20px 0;
+  color: #000000;
+  font-weight: 600;
+  font-style: normal;
+  background: linear-gradient(to right, rgba(255, 217, 61, 0.2), transparent);
+}
+
+/* Button group */
+.wmd-container-button-group {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin: 20px 0;
+}
+
+/* Form group */
+.wmd-container-form-group {
+  margin: 20px 0;
+}
+
+.wmd-container-form-group .wmd-input:not(:last-child),
+.wmd-container-form-group .wmd-textarea:not(:last-child),
+.wmd-container-form-group .wmd-select:not(:last-child) {
+  margin-bottom: 16px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .wmd-h1 {
+    font-size: 2rem;
+  }
+
+  .wmd-h2 {
+    font-size: 1.75rem;
+  }
+
+  .wmd-grid-2,
+  .wmd-grid-3,
+  .wmd-grid-4 {
+    grid-template-columns: 1fr;
+  }
+
+  .wmd-nav-content {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .wmd-brand {
+    margin-right: 0;
+    margin-bottom: 12px;
+    font-size: 1.25rem;
+  }
+
+  .wmd-container-card,
+  .wmd-container-modal {
+    box-shadow: 6px 6px 0 #000000;
+  }
+}
+
+  </style>
+</head>
+<body class="wmd-root wmd-brutal">
+  <h1 class="wmd-h1">Icon Test Page</h1>
+<h2 class="wmd-h2">Social Media Footer</h2>
+<div class="wmd-container-section">
+  <nav class="wmd-nav">
+  <div class="wmd-nav-content">
+    <a href="#" class="wmd-nav-item">Privacy</a>
+    <a href="#" class="wmd-nav-item">Terms</a>
+    <a href="#" class="wmd-nav-item">Contact</a>
+    <span class="wmd-icon" data-icon="twitter" aria-label="twitter" style="font-family: monospace; font-weight: bold; font-style: normal;">𝕏</span>
+    <span class="wmd-icon" data-icon="github" aria-label="github" style="font-family: monospace; font-weight: bold; font-style: normal;">⊙</span>
+    <span class="wmd-icon" data-icon="linkedin" aria-label="linkedin" style="font-family: monospace; font-weight: bold; font-style: normal;">in</span>
+  </div>
+</nav>
+  <p class="wmd-paragraph">© 2024 Example Corp. All rights reserved.</p>
+</div>
+<h2 class="wmd-h2">Navigation with Icons</h2>
+<nav class="wmd-nav">
+  <div class="wmd-nav-content">
+    <div class="wmd-brand"><span class="wmd-icon" data-icon="home" aria-label="home">🏠</span>Home</div>
+    <div class="wmd-brand"><span class="wmd-icon" data-icon="user" aria-label="user">👤</span>Profile</div>
+    <div class="wmd-brand"><span class="wmd-icon" data-icon="settings" aria-label="settings">⚙️</span>Settings</div>
+    <div class="wmd-brand"><span class="wmd-icon" data-icon="bell" aria-label="bell">🔔</span>Notifications</div>
+  </div>
+</nav>
+<h2 class="wmd-h2">Standalone Icons</h2>
+<div class="wmd-container-section">
+  <p class="wmd-paragraph"><span class="wmd-icon" data-icon="star" aria-label="star">⭐</span> Star Icon</p>
+  <p class="wmd-paragraph"><span class="wmd-icon" data-icon="heart" aria-label="heart">❤️</span> Heart Icon</p>
+  <p class="wmd-paragraph"><span class="wmd-icon" data-icon="rocket" aria-label="rocket">🚀</span> Rocket Icon</p>
+  <p class="wmd-paragraph"><span class="wmd-icon" data-icon="shield" aria-label="shield">🛡️</span> Shield Icon</p>
+</div>
+<h2 class="wmd-h2">Buttons with Icons</h2>
+<div class="wmd-container-button-group">
+  <button class="wmd-button"><span class="wmd-icon" data-icon="download" aria-label="download">⬇️</span> Download</button>
+  <button class="wmd-button"><span class="wmd-icon" data-icon="upload" aria-label="upload">⬆️</span> Upload</button>
+  <button class="wmd-button"><span class="wmd-icon" data-icon="edit" aria-label="edit">✏️</span> Edit</button>
+</div>
+<h2 class="wmd-h2">List with Icons</h2>
+<ul class="wmd-list">
+  <li class="wmd-list-item"><span class="wmd-icon" data-icon="check" aria-label="check">✓</span> Task completed</li>
+  <li class="wmd-list-item"><span class="wmd-icon" data-icon="warning" aria-label="warning">⚠️</span> Needs attention</li>
+  <li class="wmd-list-item"><span class="wmd-icon" data-icon="error" aria-label="error">❌</span> Failed task</li>
+  <li class="wmd-list-item"><span class="wmd-icon" data-icon="info" aria-label="info">ℹ️</span> Information item</li>
+</ul>
+<div class="wmd-grid wmd-grid-4 wmd-grid-4" style="--grid-columns: 4">
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3"><span class="wmd-icon" data-icon="chart" aria-label="chart">📊</span></h3>
+    <p class="wmd-paragraph">Analytics</p>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3"><span class="wmd-icon" data-icon="dollar" aria-label="dollar">$</span></h3>
+    <p class="wmd-paragraph">Finance</p>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3"><span class="wmd-icon" data-icon="calendar" aria-label="calendar">📅</span></h3>
+    <p class="wmd-paragraph">Schedule</p>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3"><span class="wmd-icon" data-icon="mail" aria-label="mail">✉️</span></h3>
+    <p class="wmd-paragraph">Messages</p>
+  </div>
+</div>
+</body>
+</html>

@@ -284,12 +284,17 @@ function transformInlineContainer(node: any, _options: ParseOptions): WiremdNode
     // Check if it starts with icon: :icon: Text
     const iconTextMatch = trimmed.match(/^:([a-z-]+):\s*(.+)$/);
     if (iconTextMatch) {
-      // Create a brand node with icon + text
+      const iconName = iconTextMatch[1];
+      const text = iconTextMatch[2];
+
+      // Create a brand node for :logo:, otherwise nav-item
+      const nodeType = iconName === 'logo' ? 'brand' : 'nav-item';
+
       children.push({
-        type: 'brand',
+        type: nodeType,
         children: [
-          { type: 'icon', props: { name: iconTextMatch[1] } },
-          { type: 'text', content: iconTextMatch[2] },
+          { type: 'icon', props: { name: iconName } },
+          { type: 'text', content: text },
         ],
         props: {},
       });
@@ -328,6 +333,37 @@ function transformHeading(node: any, _options: ParseOptions): WiremdNode {
     props = parseAttributes(attrMatch[2]);
   }
 
+  // Parse icons in heading text
+  if (/:([a-z-]+):/.test(headingText)) {
+    const iconPattern = /:([a-z-]+):/g;
+    const parts = headingText.split(iconPattern);
+    const children: WiremdNode[] = [];
+
+    for (let i = 0; i < parts.length; i++) {
+      if (i % 2 === 0) {
+        if (parts[i].trim()) {
+          children.push({
+            type: 'text',
+            content: parts[i],
+            props: {},
+          });
+        }
+      } else {
+        children.push({
+          type: 'icon',
+          props: { name: parts[i] },
+        });
+      }
+    }
+
+    return {
+      type: 'heading',
+      level: node.depth as 1 | 2 | 3 | 4 | 5 | 6,
+      children: children as any,
+      props,
+    };
+  }
+
   return {
     type: 'heading',
     level: node.depth as 1 | 2 | 3 | 4 | 5 | 6,
@@ -348,10 +384,12 @@ function transformParagraph(node: any, _options: ParseOptions, nextNode?: any): 
 
   // If it has rich content and is not a special pattern, return as a rich text paragraph
   if (hasRichContent) {
-    const content = extractTextContent(node);
+    let content = extractTextContent(node);
+    // Clean up trailing ::: from container closing markers
+    content = content.replace(/\s*:::\s*$/, '').trim();
 
     // Still check for button patterns first
-    const buttonMatch = content.match(/^\[([^\]]+)\](\*)?(\{[^}]*\})?$/);
+    const buttonMatch = content.match(/^\[([^\]]+)\](\*)?(?:\s*(\{[^}]*\}))?$/);
     if (buttonMatch) {
       const attrs = buttonMatch[3] ? parseAttributes(buttonMatch[3]) : {};
       return {
@@ -381,10 +419,12 @@ function transformParagraph(node: any, _options: ParseOptions, nextNode?: any): 
 
     for (const child of node.children) {
       if (child.type === 'text') {
-        // Check for buttons in text
-        const textParts = child.value.split(/(\[[^\]]+\](?:\*)?(?:\{[^}]*\})?)/);
+        // Check for buttons and icons in text
+        // Split on both button patterns and icon patterns
+        const textParts = child.value.split(/(\[[^\]]+\](?:\*)?(?:\s*\{[^}]*\})?|:[a-z-]+:)/);
         for (const part of textParts) {
-          const buttonMatch = part.match(/^\[([^\]]+)\](\*)?(\{[^}]*\})?$/);
+          // Check for button
+          const buttonMatch = part.match(/^\[([^\]]+)\](\*)?(?:\s*(\{[^}]*\}))?$/);
           if (buttonMatch && !/^\[[_*]+\]/.test(part)) {
             // It's a button
             flushText();
@@ -397,6 +437,16 @@ function transformParagraph(node: any, _options: ParseOptions, nextNode?: any): 
                 variant: buttonMatch[2] ? 'primary' : undefined,
               },
             });
+          } else if (part.match(/^:([a-z-]+):$/)) {
+            // It's an icon
+            flushText();
+            const iconMatch = part.match(/^:([a-z-]+):$/);
+            if (iconMatch) {
+              processedChildren.push({
+                type: 'icon',
+                props: { name: iconMatch[1] },
+              });
+            }
           } else if (part) {
             currentText += part;
           }
@@ -433,7 +483,44 @@ function transformParagraph(node: any, _options: ParseOptions, nextNode?: any): 
     };
   }
 
-  const content = extractTextContent(node);
+  let content = extractTextContent(node);
+  // Clean up trailing ::: from container closing markers
+  content = content.replace(/\s*:::\s*$/, '').trim();
+
+  // Check for inline radio buttons: (*) Option1 ( ) Option2 ( ) Option3
+  // Must have at least 2 radio button patterns on the same line
+  const radioPattern = /\(([*•x ])\)\s+([^(]+?)(?=\s*\(|$)/g;
+  const radioMatches = Array.from(content.matchAll(radioPattern));
+
+  if (radioMatches.length >= 2) {
+    const radioButtons: WiremdNode[] = [];
+
+    for (const match of radioMatches) {
+      const selected = match[1] !== ' ';
+      let label = match[2].trim();
+
+      // Remove trailing attributes if present
+      const attrMatch = label.match(/^(.+?)(\{[^}]+\})$/);
+      let props: any = {};
+      if (attrMatch) {
+        label = attrMatch[1].trim();
+        props = parseAttributes(attrMatch[2]);
+      }
+
+      radioButtons.push({
+        type: 'radio',
+        label,
+        selected,
+        props,
+      });
+    }
+
+    return {
+      type: 'radio-group',
+      props: { inline: true },
+      children: radioButtons as any,
+    };
+  }
 
   // Check for inline container syntax [[...]]
   const inlineContainerMatch = content.match(/^\[\[\s*(.+?)\s*\]\](\{[^}]+\})?/);
@@ -479,13 +566,60 @@ function transformParagraph(node: any, _options: ParseOptions, nextNode?: any): 
 
   // If we have multiple lines, check if ALL lines are buttons/form elements
   if (lines.length > 1) {
+    // Check if all lines have icon patterns (e.g., ":star: Star Icon")
+    const allWithIcons = lines.every(line => /:([a-z-]+):/.test(line.trim()));
+
+    if (allWithIcons) {
+      const iconLines: WiremdNode[] = [];
+      for (const line of lines) {
+        const trimmed = line.trim();
+        const iconPattern = /:([a-z-]+):/g;
+        const parts = trimmed.split(iconPattern);
+        const lineChildren: WiremdNode[] = [];
+
+        for (let i = 0; i < parts.length; i++) {
+          if (i % 2 === 0) {
+            if (parts[i].trim()) {
+              lineChildren.push({
+                type: 'text',
+                content: parts[i],
+                props: {},
+              });
+            }
+          } else {
+            lineChildren.push({
+              type: 'icon',
+              props: { name: parts[i] },
+            });
+          }
+        }
+
+        if (lineChildren.length > 0) {
+          iconLines.push({
+            type: 'paragraph',
+            children: lineChildren as any,
+            props: {},
+          });
+        }
+      }
+
+      if (iconLines.length > 0) {
+        return {
+          type: 'container',
+          containerType: 'section',
+          props: {},
+          children: iconLines as any,
+        };
+      }
+    }
+
     // First check if all lines are buttons - if so, parse them all as buttons
-    const allButtons = lines.every(line => /^\[([^\]]+)\](\*)?(\{[^}]*\})?$/.test(line.trim()) && !/^\[[_*]+\]/.test(line.trim()));
+    const allButtons = lines.every(line => /^\[([^\]]+)\](\*)?(?:\s*\{[^}]*\})?$/.test(line.trim()) && !/^\[[_*]+\]/.test(line.trim()));
 
     if (allButtons) {
       const buttons: WiremdNode[] = [];
       for (const line of lines) {
-        const buttonMatch = line.trim().match(/^\[([^\]]+)\](\*)?(\{[^}]*\})?$/);
+        const buttonMatch = line.trim().match(/^\[([^\]]+)\](\*)?(?:\s*(\{[^}]*\}))?$/);
         if (buttonMatch) {
           const [, text, isPrimary, attrs] = buttonMatch;
           const props = parseAttributes(attrs || '');
@@ -517,7 +651,7 @@ function transformParagraph(node: any, _options: ParseOptions, nextNode?: any): 
     const labelLines = lines.slice(0, -1).join('\n');
 
     // Check if last line is a dropdown
-    const dropdownMatch = lastLine.match(/^\[([^\]]+)v\](\{[^}]+\})?$/);
+    const dropdownMatch = lastLine.match(/^\[([^\]]+)v\](?:\s*(\{[^}]+\}))?$/);
     if (dropdownMatch) {
       const [, text, attrs] = dropdownMatch;
       const props = parseAttributes(attrs || '');
@@ -557,7 +691,7 @@ function transformParagraph(node: any, _options: ParseOptions, nextNode?: any): 
 
     // Check if last line is an input
     if (/\[[^\]]*[_*][^\]]*\]/.test(lastLine)) {
-      const match = lastLine.match(/^\[([^\]]+)\](\{[^}]+\})?$/);
+      const match = lastLine.match(/^\[([^\]]+)\](?:\s*(\{[^}]+\}))?$/);
       if (match) {
         const [, pattern, attrs] = match;
         const props = parseAttributes(attrs || '');
@@ -592,7 +726,7 @@ function transformParagraph(node: any, _options: ParseOptions, nextNode?: any): 
     // Check if last line is a textarea (has rows attribute), button, or multiple buttons
     if (/\[([^\]]+)\]/.test(lastLine)) {
       // First check if it's a textarea (contains rows attribute)
-      const textareaMatch = lastLine.match(/^\[([^\]]+)\](\{[^}]*rows:[^}]*\})$/);
+      const textareaMatch = lastLine.match(/^\[([^\]]+)\](?:\s*(\{[^}]*rows:[^}]*\}))$/);
       if (textareaMatch) {
         const [, placeholder, attrs] = textareaMatch;
         const props = parseAttributes(attrs || '');
@@ -616,7 +750,7 @@ function transformParagraph(node: any, _options: ParseOptions, nextNode?: any): 
       }
 
       // Otherwise check for buttons
-      const buttonPattern = /\[([^\]]+)\](\*)?(\{[^}]*\})?/g;
+      const buttonPattern = /\[([^\]]+)\](\*)?(?:\s*(\{[^}]*\}))?/g;
       const buttons: WiremdNode[] = [];
       let match;
 
@@ -675,7 +809,7 @@ function transformParagraph(node: any, _options: ParseOptions, nextNode?: any): 
   // Single line content - check all patterns as before
 
   // Check if this is a dropdown (ends with 'v]'): [Select option___v]
-  const dropdownMatch = content.match(/^\[([^\]]+)v\](\{[^}]+\})?$/);
+  const dropdownMatch = content.match(/^\[([^\]]+)v\](?:\s*(\{[^}]+\}))?$/);
   if (dropdownMatch) {
     const [, text, attrs] = dropdownMatch;
     const props = parseAttributes(attrs || '');
@@ -707,8 +841,8 @@ function transformParagraph(node: any, _options: ParseOptions, nextNode?: any): 
   // Check if this is an input FIRST: [___] or [***] or [Email___]
   // Input must contain at least one underscore or asterisk
   // This matches: [_____], [*****], [Email___], [Name_______], etc.
-  if (/^\[[^\]]*[_*][^\]]*\](\{[^}]+\})?$/.test(content)) {
-    const match = content.match(/^\[([^\]]+)\](\{[^}]+\})?$/);
+  if (/^\[[^\]]*[_*][^\]]*\](?:\s*\{[^}]+\})?$/.test(content)) {
+    const match = content.match(/^\[([^\]]+)\](?:\s*(\{[^}]+\}))?$/);
     if (match) {
       const [, pattern, attrs] = match;
       const props = parseAttributes(attrs || '');
@@ -732,7 +866,7 @@ function transformParagraph(node: any, _options: ParseOptions, nextNode?: any): 
   }
 
   // Check for single textarea (has rows attribute)
-  const singleTextareaMatch = content.match(/^\[([^\]]+)\](\{[^}]*rows:[^}]*\})$/);
+  const singleTextareaMatch = content.match(/^\[([^\]]+)\](?:\s*(\{[^}]*rows:[^}]*\}))$/);
   if (singleTextareaMatch) {
     const [, placeholder, attrs] = singleTextareaMatch;
     const props = parseAttributes(attrs || '');
@@ -746,9 +880,9 @@ function transformParagraph(node: any, _options: ParseOptions, nextNode?: any): 
     };
   }
 
-  // Check for multiple buttons on the same line: [Submit] [Cancel]
+  // Check for multiple buttons on the same line BEFORE icon check: [Submit] [Cancel]
   if (/\[([^\]]+)\]/.test(content)) {
-    const buttonPattern = /\[([^\]]+)\](\*)?(\{[^}]*\})?/g;
+    const buttonPattern = /\[([^\]]+)\](\*)?(?:\s*(\{[^}]*\}))?/g;
     const buttons: WiremdNode[] = [];
     let match;
 
@@ -767,20 +901,52 @@ function transformParagraph(node: any, _options: ParseOptions, nextNode?: any): 
         if (isPrimary) {
           props.variant = 'primary';
         }
-        buttons.push({
-          type: 'button',
-          content: text,
-          props,
-        });
+
+        // Parse icons in button text
+        if (/:([a-z-]+):/.test(text)) {
+          const iconPattern = /:([a-z-]+):/g;
+          const parts = text.split(iconPattern);
+          const children: WiremdNode[] = [];
+
+          for (let i = 0; i < parts.length; i++) {
+            if (i % 2 === 0) {
+              if (parts[i].trim()) {
+                children.push({
+                  type: 'text',
+                  content: parts[i],
+                  props: {},
+                });
+              }
+            } else {
+              children.push({
+                type: 'icon',
+                props: { name: parts[i] },
+              });
+            }
+          }
+
+          buttons.push({
+            type: 'button',
+            content: '',
+            children: children as any,
+            props,
+          });
+        } else {
+          buttons.push({
+            type: 'button',
+            content: text,
+            props,
+          });
+        }
       }
     }
 
-    if (buttons.length === 1 && content.trim() === content.match(/\[([^\]]+)\](\*)?(\{[^}]*\})?/)![0]) {
+    if (buttons.length === 1 && content.trim() === content.match(/\[([^\]]+)\](\*)?(?:\s*\{[^}]*\})?/)![0]) {
       // Single button that is the entire content
       return buttons[0];
     } else if (buttons.length > 0) {
       // Multiple buttons or button with other text
-      const remainingText = content.replace(/\[([^\]]+)\](\*)?(\{[^}]*\})?/g, '').trim();
+      const remainingText = content.replace(/\[([^\]]+)\](\*)?(?:\s*\{[^}]*\})?/g, '').trim();
       if (!remainingText && buttons.length > 1) {
         // Multiple buttons only
         return {
@@ -794,7 +960,71 @@ function transformParagraph(node: any, _options: ParseOptions, nextNode?: any): 
     }
   }
 
-  // Check for icon syntax: :icon-name:
+  // Check for icons in content (after button check to avoid conflicts)
+  if (/:([a-z-]+):/.test(content)) {
+    const iconPattern = /:([a-z-]+):/g;
+    const textParts = content.split(iconPattern);
+    const children: WiremdNode[] = [];
+
+    for (let i = 0; i < textParts.length; i++) {
+      if (i % 2 === 0) {
+        // Text part
+        if (textParts[i].trim()) {
+          children.push({
+            type: 'text',
+            content: textParts[i],
+            props: {},
+          });
+        }
+      } else {
+        // Icon name part
+        children.push({
+          type: 'icon',
+          props: { name: textParts[i] },
+        });
+      }
+    }
+
+    if (children.length > 0) {
+      // If only one child and it's an icon, return as icon
+      if (children.length === 1 && children[0].type === 'icon') {
+        return children[0];
+      }
+
+      // If only one child and it's text, return as paragraph
+      if (children.length === 1 && children[0].type === 'text') {
+        return {
+          type: 'paragraph',
+          content: children[0].content,
+          props: {},
+        };
+      }
+
+      // Mixed content, return as paragraph with children
+      // Clean up trailing ::: from the last text child if present
+      const cleanedChildren = [...children];
+      if (cleanedChildren.length > 0) {
+        const lastChild = cleanedChildren[cleanedChildren.length - 1];
+        if (lastChild.type === 'text' && lastChild.content) {
+          const cleaned = lastChild.content.replace(/\s*:::\s*$/, '').trim();
+          if (cleaned) {
+            cleanedChildren[cleanedChildren.length - 1] = { ...lastChild, content: cleaned };
+          } else {
+            // Remove empty text node
+            cleanedChildren.pop();
+          }
+        }
+      }
+
+      return {
+        type: 'paragraph',
+        children: cleanedChildren as any,
+        props: {},
+      };
+    }
+  }
+
+  // Check for standalone icon syntax: :icon-name:
   const iconMatch = content.match(/^:([a-z-]+):$/);
   if (iconMatch) {
     return {
@@ -806,9 +1036,12 @@ function transformParagraph(node: any, _options: ParseOptions, nextNode?: any): 
   }
 
   // Default: return as paragraph
+  // Remove trailing container closing markers (:::) if present
+  const cleanedContent = content.replace(/\s*:::\s*$/, '').trim();
+
   return {
     type: 'paragraph',
-    content,
+    content: cleanedContent,
     props: {},
   };
 }
@@ -853,6 +1086,38 @@ function transformListItem(node: any, _options: ParseOptions): WiremdNode {
       props = parseAttributes(attrMatch[2]);
     }
 
+    // Parse icons in checkbox label
+    if (/:([a-z-]+):/.test(label)) {
+      const iconPattern = /:([a-z-]+):/g;
+      const parts = label.split(iconPattern);
+      const children: WiremdNode[] = [];
+
+      for (let i = 0; i < parts.length; i++) {
+        if (i % 2 === 0) {
+          if (parts[i].trim()) {
+            children.push({
+              type: 'text',
+              content: parts[i],
+              props: {},
+            });
+          }
+        } else {
+          children.push({
+            type: 'icon',
+            props: { name: parts[i] },
+          });
+        }
+      }
+
+      return {
+        type: 'checkbox',
+        label: '', // Will use children instead
+        checked: node.checked === true,
+        props: { ...props, hasChildren: true },
+        children: children as any,
+      };
+    }
+
     return {
       type: 'checkbox',
       label,
@@ -861,8 +1126,8 @@ function transformListItem(node: any, _options: ParseOptions): WiremdNode {
     };
   }
 
-  // Check for radio button: ( ) or (•) or (x)
-  const radioMatch = content.match(/^\(([•x ])\)\s*(.+)$/);
+  // Check for radio button: ( ) or (•) or (x) or (*)
+  const radioMatch = content.match(/^\(([•x* ])\)\s*(.+)$/);
   if (radioMatch) {
     let label = radioMatch[2];
 
@@ -883,6 +1148,36 @@ function transformListItem(node: any, _options: ParseOptions): WiremdNode {
     };
   }
 
+  // Parse icons in regular list items
+  if (/:([a-z-]+):/.test(content)) {
+    const iconPattern = /:([a-z-]+):/g;
+    const parts = content.split(iconPattern);
+    const children: WiremdNode[] = [];
+
+    for (let i = 0; i < parts.length; i++) {
+      if (i % 2 === 0) {
+        if (parts[i].trim()) {
+          children.push({
+            type: 'text',
+            content: parts[i],
+            props: {},
+          });
+        }
+      } else {
+        children.push({
+          type: 'icon',
+          props: { name: parts[i] },
+        });
+      }
+    }
+
+    return {
+      type: 'list-item',
+      children: children as any,
+      props: {},
+    };
+  }
+
   return {
     type: 'list-item',
     content,
@@ -893,12 +1188,82 @@ function transformListItem(node: any, _options: ParseOptions): WiremdNode {
 /**
  * Transform table node
  */
-function transformTable(_node: any, _options: ParseOptions): WiremdNode {
-  // TODO: Implement table transformation
+function transformTable(node: any, options: ParseOptions): WiremdNode {
+  const children: WiremdNode[] = [];
+  const align = node.align || [];
+
+  // Process each row
+  for (let rowIndex = 0; rowIndex < node.children.length; rowIndex++) {
+    const row = node.children[rowIndex];
+    const isHeader = rowIndex === 0;
+    const cells: WiremdNode[] = [];
+
+    // Process each cell in the row
+    for (let cellIndex = 0; cellIndex < row.children.length; cellIndex++) {
+      const cell = row.children[cellIndex];
+      const cellAlign = align[cellIndex] || 'left';
+      const cellChildren: WiremdNode[] = [];
+
+      // Transform cell content
+      for (const child of cell.children || []) {
+        if (child.type === 'text') {
+          cellChildren.push({
+            type: 'text',
+            content: child.value,
+            props: {},
+          });
+        } else if (child.type === 'strong') {
+          cellChildren.push({
+            type: 'text',
+            content: `<strong>${extractTextContent(child)}</strong>`,
+            props: {},
+          });
+        } else if (child.type === 'emphasis') {
+          cellChildren.push({
+            type: 'text',
+            content: `<em>${extractTextContent(child)}</em>`,
+            props: {},
+          });
+        } else if (child.type === 'code') {
+          cellChildren.push({
+            type: 'text',
+            content: `<code>${extractTextContent(child)}</code>`,
+            props: {},
+          });
+        } else {
+          const transformed = transformNode(child, options);
+          if (transformed) {
+            cellChildren.push(transformed);
+          }
+        }
+      }
+
+      cells.push({
+        type: 'table-cell',
+        content: extractTextContent(cell),
+        children: cellChildren.length > 0 ? cellChildren : undefined,
+        align: cellAlign as 'left' | 'center' | 'right',
+        header: isHeader,
+      });
+    }
+
+    if (isHeader) {
+      children.push({
+        type: 'table-header',
+        children: cells,
+      });
+    } else {
+      children.push({
+        type: 'table-row',
+        children: cells,
+      });
+    }
+  }
+
   return {
     type: 'table',
     props: {},
-    children: [],
+    children,
   };
 }
 

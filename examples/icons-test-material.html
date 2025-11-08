@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>wiremd Mockup</title>
+  <style>
+
+/* Material Design Inspired Style */
+body {
+  font-family: Roboto, -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  background: #fafafa;
+  color: rgba(0, 0, 0, 0.87);
+  line-height: 1.5;
+  margin: 0;
+  padding: 20px;
+}
+
+/* Typography - Material Design Type Scale */
+.wmd-h1 {
+  font-size: 2.125rem;
+  font-weight: 400;
+  color: rgba(0, 0, 0, 0.87);
+  margin: 0 0 1rem 0;
+  letter-spacing: 0;
+}
+
+.wmd-h2 {
+  font-size: 1.5rem;
+  font-weight: 500;
+  color: rgba(0, 0, 0, 0.87);
+  margin: 1.5rem 0 1rem 0;
+  letter-spacing: 0.0075em;
+}
+
+.wmd-h3 {
+  font-size: 1.25rem;
+  font-weight: 500;
+  color: rgba(0, 0, 0, 0.87);
+  margin: 1.25rem 0 0.75rem 0;
+  letter-spacing: 0.0125em;
+}
+
+.wmd-h4 {
+  font-size: 1rem;
+  font-weight: 500;
+  color: rgba(0, 0, 0, 0.87);
+  margin: 1rem 0 0.5rem 0;
+  letter-spacing: 0.015em;
+}
+
+.wmd-paragraph {
+  color: rgba(0, 0, 0, 0.6);
+  margin: 0.75rem 0;
+  font-size: 1rem;
+  letter-spacing: 0.00938em;
+}
+
+/* Material Buttons */
+.wmd-button {
+  padding: 6px 16px;
+  border-radius: 4px;
+  font-weight: 500;
+  font-size: 0.875rem;
+  letter-spacing: 0.02857em;
+  text-transform: uppercase;
+  transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,
+              box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,
+              border-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+  border: none;
+  cursor: pointer;
+  display: inline-block;
+  text-decoration: none;
+  background: transparent;
+  color: #6200ee;
+  position: relative;
+  overflow: hidden;
+}
+
+.wmd-button::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(98, 0, 238, 0.2);
+  transform: translate(-50%, -50%);
+  transition: width 0.6s, height 0.6s;
+}
+
+.wmd-button:hover::before {
+  width: 300px;
+  height: 300px;
+}
+
+.wmd-button:hover {
+  background: rgba(98, 0, 238, 0.04);
+}
+
+.wmd-button-primary, .wmd-button.wmd-button-primary {
+  background: #6200ee;
+  color: white;
+  box-shadow: 0px 3px 1px -2px rgba(0,0,0,0.2),
+              0px 2px 2px 0px rgba(0,0,0,0.14),
+              0px 1px 5px 0px rgba(0,0,0,0.12);
+}
+
+.wmd-button-primary::before {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.wmd-button-primary:hover, .wmd-button.wmd-button-primary:hover {
+  background: #6200ee;
+  box-shadow: 0px 2px 4px -1px rgba(0,0,0,0.2),
+              0px 4px 5px 0px rgba(0,0,0,0.14),
+              0px 1px 10px 0px rgba(0,0,0,0.12);
+}
+
+.wmd-button:disabled, .wmd-button[disabled] {
+  color: rgba(0, 0, 0, 0.26);
+  background: rgba(0, 0, 0, 0.12);
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+/* Button States */
+.wmd-state-loading {
+  background: #e8eaf6 !important;
+  color: #6200ee !important;
+  position: relative;
+  padding-left: 2.5rem;
+}
+
+.wmd-state-loading::after {
+  content: '';
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 1rem;
+  height: 1rem;
+  border: 2px solid #6200ee;
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+.wmd-state-error {
+  background: #b00020 !important;
+  color: white !important;
+}
+
+.wmd-state-success {
+  background: #00c853 !important;
+  color: white !important;
+}
+
+@keyframes spin {
+  to { transform: translateY(-50%) rotate(360deg); }
+}
+
+/* Material Form Inputs */
+.wmd-input, .wmd-textarea, .wmd-select {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.42);
+  font-size: 1rem;
+  background: transparent;
+  transition: border-color 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+  color: rgba(0, 0, 0, 0.87);
+}
+
+.wmd-input:focus, .wmd-textarea:focus, .wmd-select:focus {
+  outline: none;
+  border-bottom: 2px solid #6200ee;
+  margin-bottom: -1px;
+}
+
+.wmd-input::placeholder, .wmd-textarea::placeholder {
+  color: rgba(0, 0, 0, 0.42);
+}
+
+.wmd-textarea {
+  resize: vertical;
+  min-height: 6rem;
+  font-family: inherit;
+  border: 1px solid rgba(0, 0, 0, 0.42);
+  border-radius: 4px;
+  padding: 12px;
+}
+
+.wmd-textarea:focus {
+  border: 2px solid #6200ee;
+  margin: -1px;
+}
+
+.wmd-select {
+  cursor: pointer;
+}
+
+/* Checkboxes and Radios - Material Style */
+.wmd-checkbox, .wmd-radio {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0.5rem 0;
+  cursor: pointer;
+}
+
+.wmd-checkbox input[type="checkbox"],
+.wmd-radio input[type="radio"] {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+  accent-color: #6200ee;
+}
+
+/* Material Cards - Elevation System */
+.wmd-container-card {
+  background: white;
+  border-radius: 4px;
+  box-shadow: 0px 2px 1px -1px rgba(0,0,0,0.2),
+              0px 1px 1px 0px rgba(0,0,0,0.14),
+              0px 1px 3px 0px rgba(0,0,0,0.12);
+  padding: 16px;
+  margin: 16px 0;
+  transition: box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+}
+
+.wmd-container-card:hover {
+  box-shadow: 0px 3px 3px -2px rgba(0,0,0,0.2),
+              0px 3px 4px 0px rgba(0,0,0,0.14),
+              0px 1px 8px 0px rgba(0,0,0,0.12);
+}
+
+.wmd-container-hero {
+  background: linear-gradient(135deg, #6200ee 0%, #3700b3 100%);
+  color: white;
+  border-radius: 4px;
+  padding: 48px 24px;
+  margin: 24px 0;
+  text-align: center;
+  box-shadow: 0px 3px 5px -1px rgba(0,0,0,0.2),
+              0px 6px 10px 0px rgba(0,0,0,0.14),
+              0px 1px 18px 0px rgba(0,0,0,0.12);
+}
+
+.wmd-container-hero .wmd-h1,
+.wmd-container-hero .wmd-h2,
+.wmd-container-hero .wmd-h3,
+.wmd-container-hero .wmd-paragraph {
+  color: white;
+}
+
+.wmd-container-modal {
+  background: white;
+  border-radius: 4px;
+  box-shadow: 0px 11px 15px -7px rgba(0,0,0,0.2),
+              0px 24px 38px 3px rgba(0,0,0,0.14),
+              0px 9px 46px 8px rgba(0,0,0,0.12);
+  padding: 24px;
+  margin: 24px auto;
+  max-width: 600px;
+  position: relative;
+}
+
+.wmd-container-footer {
+  background: #212121;
+  color: rgba(255, 255, 255, 0.87);
+  padding: 24px;
+  margin-top: 48px;
+  border-radius: 4px;
+}
+
+.wmd-container-footer .wmd-paragraph,
+.wmd-container-footer .wmd-nav-item {
+  color: rgba(255, 255, 255, 0.87);
+}
+
+.wmd-container-section {
+  padding: 24px 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+}
+
+.wmd-container-section:last-child {
+  border-bottom: none;
+}
+
+/* Material Alerts */
+.wmd-container-alert {
+  padding: 12px 16px;
+  border-radius: 4px;
+  margin: 16px 0;
+  display: flex;
+  align-items: center;
+}
+
+.wmd-container-alert.wmd-warning {
+  background: #fff3e0;
+  color: #e65100;
+}
+
+.wmd-container-alert.wmd-state-error {
+  background: #ffebee;
+  color: #c62828;
+}
+
+.wmd-container-alert.wmd-state-success {
+  background: #e8f5e9;
+  color: #2e7d32;
+}
+
+/* Material Navigation - App Bar Style */
+.wmd-nav {
+  background: #6200ee;
+  color: white;
+  padding: 0 16px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  box-shadow: 0px 2px 4px -1px rgba(0,0,0,0.2),
+              0px 4px 5px 0px rgba(0,0,0,0.14),
+              0px 1px 10px 0px rgba(0,0,0,0.12);
+  margin-bottom: 24px;
+  border-radius: 4px;
+}
+
+.wmd-nav-content {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.wmd-nav-item {
+  color: rgba(255, 255, 255, 0.87);
+  text-decoration: none;
+  padding: 8px 12px;
+  border-radius: 4px;
+  transition: background-color 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.wmd-nav-item:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.wmd-brand {
+  font-weight: 500;
+  font-size: 1.25rem;
+  color: white;
+  margin-right: auto;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Material Lists */
+.wmd-list {
+  margin: 16px 0;
+  padding: 0;
+  list-style: none;
+  background: white;
+  border-radius: 4px;
+  box-shadow: 0px 1px 3px 0px rgba(0,0,0,0.2),
+              0px 1px 1px 0px rgba(0,0,0,0.14),
+              0px 2px 1px -1px rgba(0,0,0,0.12);
+}
+
+.wmd-list-item {
+  padding: 12px 16px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+  color: rgba(0, 0, 0, 0.87);
+  transition: background-color 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+}
+
+.wmd-list-item:hover {
+  background: rgba(0, 0, 0, 0.04);
+}
+
+.wmd-list-item:last-child {
+  border-bottom: none;
+}
+
+/* Material Grid */
+.wmd-grid {
+  display: grid;
+  gap: 16px;
+  margin: 24px 0;
+}
+
+.wmd-grid-2 {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.wmd-grid-3 {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.wmd-grid-4 {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+/* Material Tables */
+.wmd-table {
+  width: 100%;
+  background: white;
+  border-radius: 4px;
+  overflow: hidden;
+  box-shadow: 0px 1px 3px 0px rgba(0,0,0,0.2),
+              0px 1px 1px 0px rgba(0,0,0,0.14),
+              0px 2px 1px -1px rgba(0,0,0,0.12);
+  margin: 16px 0;
+}
+
+.wmd-table th {
+  background: #fafafa;
+  padding: 16px;
+  text-align: left;
+  font-weight: 500;
+  font-size: 0.875rem;
+  color: rgba(0, 0, 0, 0.87);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+}
+
+.wmd-table td {
+  padding: 16px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+  font-size: 0.875rem;
+  color: rgba(0, 0, 0, 0.87);
+}
+
+.wmd-table tr:last-child td {
+  border-bottom: none;
+}
+
+.wmd-table tr:hover {
+  background: rgba(0, 0, 0, 0.04);
+}
+
+/* Material Icons */
+.wmd-icon {
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+  vertical-align: middle;
+}
+
+/* Utility classes */
+.wmd-separator {
+  border: none;
+  border-top: 1px solid rgba(0, 0, 0, 0.12);
+  margin: 24px 0;
+}
+
+.wmd-image {
+  max-width: 100%;
+  height: auto;
+  border-radius: 4px;
+  box-shadow: 0px 1px 3px 0px rgba(0,0,0,0.2),
+              0px 1px 1px 0px rgba(0,0,0,0.14),
+              0px 2px 1px -1px rgba(0,0,0,0.12);
+}
+
+.wmd-code {
+  background: rgba(98, 0, 238, 0.12);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-family: "Roboto Mono", monospace;
+  font-size: 0.875rem;
+  color: #6200ee;
+}
+
+.wmd-blockquote {
+  border-left: 4px solid #6200ee;
+  padding-left: 16px;
+  margin: 16px 0;
+  color: rgba(0, 0, 0, 0.6);
+  font-style: italic;
+}
+
+/* Button group */
+.wmd-container-button-group {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin: 16px 0;
+}
+
+/* Form group */
+.wmd-container-form-group {
+  margin: 16px 0;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .wmd-grid-2,
+  .wmd-grid-3,
+  .wmd-grid-4 {
+    grid-template-columns: 1fr;
+  }
+
+  .wmd-nav-content {
+    flex-direction: column;
+    align-items: flex-start;
+    height: auto;
+    padding: 12px 0;
+  }
+
+  .wmd-nav {
+    height: auto;
+  }
+
+  .wmd-brand {
+    margin-right: 0;
+    margin-bottom: 8px;
+  }
+}
+
+  </style>
+</head>
+<body class="wmd-root wmd-material">
+  <h1 class="wmd-h1">Icon Test Page</h1>
+<h2 class="wmd-h2">Social Media Footer</h2>
+<div class="wmd-container-section">
+  <nav class="wmd-nav">
+  <div class="wmd-nav-content">
+    <a href="#" class="wmd-nav-item">Privacy</a>
+    <a href="#" class="wmd-nav-item">Terms</a>
+    <a href="#" class="wmd-nav-item">Contact</a>
+    <span class="wmd-icon" data-icon="twitter" aria-label="twitter" style="font-family: monospace; font-weight: bold; font-style: normal;">𝕏</span>
+    <span class="wmd-icon" data-icon="github" aria-label="github" style="font-family: monospace; font-weight: bold; font-style: normal;">⊙</span>
+    <span class="wmd-icon" data-icon="linkedin" aria-label="linkedin" style="font-family: monospace; font-weight: bold; font-style: normal;">in</span>
+  </div>
+</nav>
+  <p class="wmd-paragraph">© 2024 Example Corp. All rights reserved.</p>
+</div>
+<h2 class="wmd-h2">Navigation with Icons</h2>
+<nav class="wmd-nav">
+  <div class="wmd-nav-content">
+    <div class="wmd-brand"><span class="wmd-icon" data-icon="home" aria-label="home">🏠</span>Home</div>
+    <div class="wmd-brand"><span class="wmd-icon" data-icon="user" aria-label="user">👤</span>Profile</div>
+    <div class="wmd-brand"><span class="wmd-icon" data-icon="settings" aria-label="settings">⚙️</span>Settings</div>
+    <div class="wmd-brand"><span class="wmd-icon" data-icon="bell" aria-label="bell">🔔</span>Notifications</div>
+  </div>
+</nav>
+<h2 class="wmd-h2">Standalone Icons</h2>
+<div class="wmd-container-section">
+  <p class="wmd-paragraph"><span class="wmd-icon" data-icon="star" aria-label="star">⭐</span> Star Icon</p>
+  <p class="wmd-paragraph"><span class="wmd-icon" data-icon="heart" aria-label="heart">❤️</span> Heart Icon</p>
+  <p class="wmd-paragraph"><span class="wmd-icon" data-icon="rocket" aria-label="rocket">🚀</span> Rocket Icon</p>
+  <p class="wmd-paragraph"><span class="wmd-icon" data-icon="shield" aria-label="shield">🛡️</span> Shield Icon</p>
+</div>
+<h2 class="wmd-h2">Buttons with Icons</h2>
+<div class="wmd-container-button-group">
+  <button class="wmd-button"><span class="wmd-icon" data-icon="download" aria-label="download">⬇️</span> Download</button>
+  <button class="wmd-button"><span class="wmd-icon" data-icon="upload" aria-label="upload">⬆️</span> Upload</button>
+  <button class="wmd-button"><span class="wmd-icon" data-icon="edit" aria-label="edit">✏️</span> Edit</button>
+</div>
+<h2 class="wmd-h2">List with Icons</h2>
+<ul class="wmd-list">
+  <li class="wmd-list-item"><span class="wmd-icon" data-icon="check" aria-label="check">✓</span> Task completed</li>
+  <li class="wmd-list-item"><span class="wmd-icon" data-icon="warning" aria-label="warning">⚠️</span> Needs attention</li>
+  <li class="wmd-list-item"><span class="wmd-icon" data-icon="error" aria-label="error">❌</span> Failed task</li>
+  <li class="wmd-list-item"><span class="wmd-icon" data-icon="info" aria-label="info">ℹ️</span> Information item</li>
+</ul>
+<div class="wmd-grid wmd-grid-4 wmd-grid-4" style="--grid-columns: 4">
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3"><span class="wmd-icon" data-icon="chart" aria-label="chart">📊</span></h3>
+    <p class="wmd-paragraph">Analytics</p>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3"><span class="wmd-icon" data-icon="dollar" aria-label="dollar">$</span></h3>
+    <p class="wmd-paragraph">Finance</p>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3"><span class="wmd-icon" data-icon="calendar" aria-label="calendar">📅</span></h3>
+    <p class="wmd-paragraph">Schedule</p>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3"><span class="wmd-icon" data-icon="mail" aria-label="mail">✉️</span></h3>
+    <p class="wmd-paragraph">Messages</p>
+  </div>
+</div>
+</body>
+</html>

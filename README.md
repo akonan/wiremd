@@ -2,11 +2,13 @@
 
 > Text-first UI design tool - Create wireframes and mockups using Markdown syntax
 
-**Status:** 🚧 Under Development (Phase 1)
+**Status:** ✅ Core Implementation Complete (Phase 1-2)
 
 wiremd is a markdown-based UI wireframing tool that lets you create wireframes and mockups using familiar markdown syntax with intuitive extensions. Write your UI designs as text, render them as beautiful wireframes.
 
 ## Quick Example
+
+Create a `contact.md` file:
 
 ```markdown
 ## Contact Form
@@ -25,7 +27,13 @@ Message
 [Submit]{.primary} [Cancel]
 ```
 
-This renders into a styled wireframe with a form, inputs, and buttons.
+Generate a wireframe:
+
+```bash
+mdmock contact.md --style sketch
+```
+
+This renders into a styled HTML wireframe with a form, inputs, and buttons.
 
 ## Features
 
@@ -33,11 +41,12 @@ This renders into a styled wireframe with a form, inputs, and buttons.
 - ✅ **Visual syntax** - Looks like what it renders
 - ✅ **Fast to write** - Intuitive shortcuts for common patterns
 - ✅ **Extensible** - Add classes and attributes as needed
-- ✅ **Balsamiq-style rendering** - Hand-drawn aesthetic by default
 - ✅ **Multiple outputs** - HTML, JSON
-- ✅ **Alternative styles** - Clean, wireframe, and minimal themes (examples included)
-- 🚧 **CLI tool** - Generate wireframes with live-reload (in development)
+- ✅ **7 visual styles** - sketch (Balsamiq-inspired), clean, wireframe, tailwind, material, brutal, none
+- ✅ **Full CLI tool** - Watch mode, live-reload dev server, style switching
+- ✅ **Rich examples** - Showcase files demonstrating all styles
 - 🚧 **Framework renderers** - React, Vue components (coming soon)
+- 🚧 **VS Code extension** - Live preview (planned)
 
 ## Project Structure
 
@@ -51,8 +60,41 @@ This is an open-source MIT-licensed project containing:
 ## Installation
 
 ```bash
-# Not yet published to npm
-# Coming soon: npm install markdown-mockup
+# Clone and build locally (not yet published to npm)
+git clone https://github.com/akonan/wiremd.git
+cd wiremd
+npm install
+npm run build
+
+# Use the CLI
+npm link
+mdmock --help
+```
+
+Coming soon: `npm install -g markdown-mockup`
+
+## CLI Usage
+
+```bash
+# Generate HTML with default sketch style
+mdmock wireframe.md
+
+# Output to specific file
+mdmock wireframe.md -o output.html
+
+# Use alternative styles
+mdmock wireframe.md --style clean      # Modern minimal
+mdmock wireframe.md --style wireframe  # Traditional grayscale
+mdmock wireframe.md --style tailwind   # Utility-first with purple accents
+mdmock wireframe.md --style material   # Google Material Design
+mdmock wireframe.md --style brutal     # Neo-brutalism style
+mdmock wireframe.md --style none       # Unstyled semantic HTML
+
+# Watch mode with live-reload dev server
+mdmock wireframe.md --watch --serve 3000
+
+# Generate JSON output
+mdmock wireframe.md --format json
 ```
 
 ## Documentation
@@ -71,25 +113,33 @@ This is an open-source MIT-licensed project containing:
 - [x] Complete TypeScript implementation
 - [x] Parser with full syntax support
 - [x] AST transformer with 40+ node types
-- [x] HTML renderer (Balsamiq-style default, 3 alternative examples)
+- [x] HTML renderer with 7 visual styles
 - [x] JSON output
 - [x] 48 passing tests
+- [x] Full-featured CLI tool with watch mode and live-reload
+- [x] Rich example showcase demonstrating all styles
 
-### 🚧 In Progress
-- CLI tool development
-- Demo site with examples
+### 🚧 In Progress (Phase 3)
 - Documentation site
+- npm package publishing
 
-### 📋 Coming Soon
+### 📋 Coming Soon (Phase 4+)
 - Framework-specific renderers (React, Vue, Svelte)
-- VS Code extension
-- Interactive playground
+- VS Code extension with live preview
+- Interactive web playground
 
 See [Project Plan](./markdown-mockup-project-plan.md) for full roadmap.
 
 ## Contributing
 
-This project is in early development. Contributions welcome once Phase 1 is complete.
+Contributions are welcome! Phase 1-2 are complete with a working parser, renderer, and CLI. Feel free to:
+
+- Report bugs or request features via [GitHub Issues](https://github.com/akonan/wiremd/issues)
+- Submit pull requests for improvements
+- Add new visual styles or examples
+- Improve documentation
+
+Please check the [Project Plan](./markdown-mockup-project-plan.md) for upcoming features.
 
 ## License
 
@@ -107,4 +157,4 @@ Inspired by:
 
 ---
 
-**Status:** Under active development | **Version:** 0.1.0-alpha | **Node:** ≥18.0.0
+**Status:** Phase 1-2 Complete (Core + CLI) | **Version:** 0.1.0 | **Node:** ≥18.0.0

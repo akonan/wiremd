@@ -4,6 +4,7 @@
 
 import { createServer, IncomingMessage, ServerResponse } from 'http';
 import { readFileSync } from 'fs';
+import { createHash } from 'crypto';
 
 interface ServerOptions {
   port: number;
@@ -88,8 +89,7 @@ export function startServer(options: ServerOptions): void {
     if (req.url === '/__ws') {
       // Simple WebSocket handshake
       const key = req.headers['sec-websocket-key'];
-      const hash = require('crypto')
-        .createHash('sha1')
+      const hash = createHash('sha1')
         .update(key + '258EAFA5-E914-47DA-95CA-C5AB0DC85B11')
         .digest('base64');
 

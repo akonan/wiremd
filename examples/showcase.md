@@ -1,467 +1,1010 @@
-# Wiremd Element Showcase
-<!-- This file demonstrates all supported elements in the wiremd/markdown-mockup tool -->
+# wiremd Syntax Guide & Component Showcase
+
+Welcome to the comprehensive wiremd syntax guide! This document serves as both a reference and tutorial for all supported components and patterns.
+
+> 💡 **Tip:** Use this document as a reference when creating your wireframes. Each section includes syntax examples and best practices.
+
+> 🎨 **Visual Styles:** This showcase is available in 7 different styles:
+> - `sketch` - Balsamiq-inspired hand-drawn look (default)
+> - `clean` - Modern minimal design with system fonts
+> - `wireframe` - Traditional grayscale with hatching patterns
+> - `tailwind` - Utility-first design with purple accents
+> - `material` - Google Material Design with elevation
+> - `brutal` - Neo-brutalism with bold colors and thick borders
+> - `none` - Unstyled semantic HTML for custom CSS
 
 ---
 
-## Navigation Components
-<!-- Navigation bars using [[...]] syntax -->
+## 📝 Text & Typography
 
-### Basic Navigation
-[[ Home | Products | About | Contact ]]
+### Headings
 
-### Navigation with Brand Icon
-[[ :logo: MyApp | Home | Features | Pricing | Docs ]]
+```markdown
+# Heading 1 - Page Title
+## Heading 2 - Section
+### Heading 3 - Subsection
+#### Heading 4 - Detail
+##### Heading 5 - Minor Heading
+###### Heading 6 - Smallest Heading
+```
 
-### Navigation with Buttons
-[[ :rocket: StartupApp | Home | About | [Sign In] | [Get Started]* ]]
+**Rendered:**
 
-### Navigation with Classes
-[[ Home | Products | Services | Contact ]]{.navbar .sticky}
+# Heading 1 - Page Title
+## Heading 2 - Section Header
+### Heading 3 - Subsection
+#### Heading 4 - Sub-subsection
+##### Heading 5 - Minor Heading
+###### Heading 6 - Smallest Heading
+
+### Text Formatting
+
+```markdown
+This is regular text with **bold text**, *italic text*, and `inline code`.
+You can combine ***bold and italic*** or use ~~strikethrough~~ text.
+```
+
+**Rendered:**
+
+This is regular text with **bold text**, *italic text*, and `inline code`.
+You can combine ***bold and italic*** or use ~~strikethrough~~ text.
+
+### Links
+
+```markdown
+[Basic link](https://example.com)
+[Link with title](https://example.com "Hover for tooltip")
+```
+
+**Rendered:**
+
+[Basic link](https://example.com)
+[Link with title](https://example.com "Hover for tooltip")
+
+### Lists
+
+#### Unordered Lists
+
+```markdown
+- First item
+- Second item
+  - Nested item 2.1
+  - Nested item 2.2
+- Third item
+```
+
+**Rendered:**
+
+- First item
+- Second item
+  - Nested item 2.1
+  - Nested item 2.2
+- Third item
+
+#### Ordered Lists
+
+```markdown
+1. Step one
+2. Step two
+   1. Sub-step 2.1
+   2. Sub-step 2.2
+3. Step three
+```
+
+**Rendered:**
+
+1. Step one
+2. Step two
+   1. Sub-step 2.1
+   2. Sub-step 2.2
+3. Step three
+
+### Blockquotes
+
+```markdown
+> This is a blockquote. Great for callouts.
+>
+> Can have multiple paragraphs.
+```
+
+**Rendered:**
+
+> This is a blockquote. Great for callouts.
+>
+> Can have multiple paragraphs.
+
+### Code Blocks
+```javascript
+function example() {
+  return "Hello World!";
+}
+```
+
+### Horizontal Rules
+
+```markdown
+---
+***
+___
+```
+
+**Rendered:**
 
 ---
 
-## Form Elements
-<!-- All form input types and controls -->
+***
 
-### Text Inputs
+___
 
-#### Basic Text Input
+---
+
+## 🔘 Buttons
+
+### Button Syntax
+```markdown
+[Button Text]           # Default button
+[Button Text]*          # Primary button (with asterisk)
+[Button Text]{.class}   # Button with class
+```
+
+### Basic Buttons
+
+```markdown
+[Default Button]
+[Primary Button]*
+[Secondary Button]{.outline}
+```
+
+**Rendered:**
+
+[Default Button]
+[Primary Button]*
+[Secondary Button]{.outline}
+
+### Button States
+
+```markdown
+[Normal]
+[Disabled]{state:disabled}
+[Loading...]{state:loading}
+[Active]{state:active}
+[Success]{state:success}
+```
+
+**Rendered:**
+
+[Normal]
+[Disabled]{state:disabled}
+[Loading...]{state:loading}
+[Active]{state:active}
+[Success]{state:success}
+
+### Button Groups (Same Line)
+
+```markdown
+[Save] [Cancel] [Reset]
+```
+
+**Rendered:**
+
+[Save] [Cancel] [Reset]
+
+### Button Variants
+
+```markdown
+[Primary Action]{variant:primary}
+[Danger Action]{variant:danger}
+[Secondary Action]{variant:secondary}
+```
+
+**Rendered:**
+
+[Primary Action]{variant:primary}
+[Danger Action]{variant:danger}
+[Secondary Action]{variant:secondary}
+
+---
+
+## 📋 Forms & Inputs
+
+### Text Input Syntax
+> ⚠️ **Important Rule:** Label must be DIRECTLY above input (no blank line between them)
+
+```markdown
+# ✅ Correct - Label touches input
 Username
 [_____________________________]
 
-#### Password Input
+# ❌ Wrong - Blank line breaks association
+Username
+
+[_____________________________]
+```
+
+### Text Inputs with Labels
+
+```markdown
+Username
+[_____________________________]
+
+Email Address
+[_____________________________] {type:email}
+```
+
+**Rendered:**
+
+Username
+[_____________________________]
+
+Email Address
+[_____________________________] {type:email}
+
 Password
-[*****************************]
+[********] {type:password}
 
-#### Input with Placeholder
-[Enter your name_______________]
+Phone Number
+[_____________________________] {type:tel}
 
-#### Required Email Input
-Email
-[email@example.com_____________]{type:email required}
+### Input Width Control
 
-#### Various Input Types
-Phone
-[+1 (555) 000-0000_____________]{type:tel}
+```markdown
+Age
+[___]
 
-Website
-[https://example.com___________]{type:url}
+Zip Code
+[_____]
+
+Full Name
+[_____________________________]
+```
+
+**Rendered:**
 
 Age
-[25____________________________]{type:number min:0 max:120}
+[___]
 
-Birthday
-[_____________________________]{type:date}
+Zip Code
+[_____]
 
-Appointment Time
-[_____________________________]{type:time}
+Full Name
+[_____________________________]
 
-Search
-[Search...____________________]{type:search}
+### Input with Placeholder Text
 
-### Buttons
+> ⚠️ **Note:** Placeholder syntax is currently parsed as buttons. This is a known limitation that will be fixed in a future version.
 
-#### Basic Buttons
-[Submit] [Cancel] [Reset]
+```markdown
+[Enter your username___________]
+[Search products...___________] {type:search}
+[your.email@example.com_______] {type:email}
+```
 
-#### Primary Button (with asterisk)
-[Save Changes]* [Discard]
+### Input Types & Attributes
 
-#### Buttons with Classes
-[Confirm]{.success} [Delete]{.danger} [Info]{.info}
+```markdown
+Date of Birth
+[_____________________________] {type:date}
 
-#### Button States
-[Loading...]{state:loading}
-[Disabled Button]{disabled}
-[Active Button]{state:active}
+Quantity
+[1___] {type:number min:1 max:100}
+
+Website
+[https://___________] {type:url}
+
+Time
+[_____________________________] {type:time}
+```
+
+**Rendered:**
+
+Date of Birth
+[_____________________________] {type:date}
+
+Quantity
+[1___] {type:number min:1 max:100}
+
+Website
+[https://___________] {type:url}
+
+Time
+[_____________________________] {type:time}
+
+### Input States
+
+```markdown
+Normal Field
+[_____________________________]
+
+Disabled Field
+[Cannot edit___________] {state:disabled}
+
+Required Field
+[_____________________________] {required:true}
+
+Error State
+[Invalid input_________] {state:error}
+```
+
+**Rendered:**
+
+Normal Field
+[_____________________________]
+
+Disabled Field
+[Cannot edit___________] {state:disabled}
+
+Required Field
+[_____________________________] {required:true}
+
+Error State
+[Invalid input_________] {state:error}
+
+### Textarea (Multi-line)
+
+```markdown
+Comments
+[Share your thoughts...] {rows:4}
+
+Description
+[Describe your project in detail...] {rows:6 cols:60}
+```
+
+**Rendered:**
+
+Comments
+[Share your thoughts...] {rows:4}
+
+Description
+[Describe your project in detail...] {rows:6 cols:60}
 
 ### Checkboxes
-<!-- Task list syntax for checkboxes -->
 
-Select your preferences:
-- [ ] Receive newsletter
-- [x] Accept terms and conditions
-- [x] Enable notifications{required}
-- [ ] Share usage data
+```markdown
+Select options:
+- [x] Option 1 (selected)
+- [ ] Option 2
+- [ ] Option 3
+- [x] Option 4 (selected)
+```
+
+**Rendered:**
+
+- [x] Option 1 (selected)
+- [ ] Option 2
+- [ ] Option 3
+- [x] Option 4 (selected)
 
 ### Radio Buttons
-<!-- Radio button syntax with parentheses -->
 
-Choose your plan:
-- ( ) Free Plan
-- (•) Pro Plan ($9/month)
+```markdown
+- (*) Free Plan
+- ( ) Pro Plan ($9/mo)
+- ( ) Enterprise (Contact us)
+```
+
+**Rendered:**
+
+- (*) Free Plan
+- ( ) Pro Plan ($9/mo)
 - ( ) Enterprise (Contact us)
 
-Payment method:
-- (x) Credit Card{name:payment value:card}
-- ( ) PayPal{name:payment value:paypal}
-- ( ) Bank Transfer{name:payment value:bank}
-
 ### Dropdown/Select
-<!-- Select boxes with v] ending -->
 
+```markdown
 Country
-[Select your country__________v]
+[Select your country...v]
 - United States
 - Canada
 - United Kingdom
 - Australia
 - Other
+```
 
-Topic
-[Choose a topic______________v]{required}
-- General Inquiry
-- Technical Support
-- Billing
-- Feature Request
-- Bug Report
+**Rendered:**
 
-### Multi-line Text (Textarea)
-Message
-[Tell us more about your project...]{rows:5}
-
-Feedback
-[Your feedback helps us improve...]{rows:8 required}
+Country
+[Select your country...v]
 
 ---
 
-## Layout Containers
-<!-- Container blocks using ::: syntax -->
+## 🗂️ Navigation
+
+> ⚠️ **Note:** The `[[ ... ]]` navigation syntax is currently parsed as inline content/buttons. Full navigation bar rendering is planned for a future version.
+
+### Navigation Bar Syntax
+```markdown
+[[ Item1 | Item2 | Item3 ]]         # Basic nav
+[[ Logo | Item1 | Item2 | [Button] ]] # With button
+[[ :icon: Brand | Item1 | *Active* ]] # With icon & active
+```
+
+### Examples
+
+```markdown
+[[ Home | Products | Services | About | Contact ]]
+
+[[ :logo: MyApp | Home | Features | Pricing | [Sign In] | [Get Started]* ]]
+
+[[ Logo | Home | *Products* | About | Contact ]]
+```
+
+**Rendered:**
+
+[[ Home | Products | Services | About | Contact ]]
+
+[[ :logo: MyApp | Home | Features | Pricing | [Sign In] | [Get Started]* ]]
+
+[[ Logo | Home | *Products* | About | Contact ]]
+
+### Breadcrumbs
+
+```markdown
+[[ Home > Products > Electronics > Laptops ]]
+```
+
+**Rendered:**
+
+[[ Home > Products > Electronics > Laptops ]]
+
+---
+
+## 📦 Containers
+
+### Container Syntax
+```markdown
+::: container-type
+Content goes here
+:::
+```
+
+### Card Container
+
+```markdown
+::: card
+### Card Title
+Card content with any components.
+
+[Card Action]
+:::
+```
+
+**Rendered:**
+
+::: card
+### Card Title
+Card content with any components.
+
+[Card Action]
+:::
+
+### Hero Section
+
+```markdown
+::: hero
+# Welcome Hero Title
+Compelling hero description text.
+
+[Primary CTA]* [Secondary CTA]
+:::
+```
+
+**Rendered:**
 
 ::: hero
-# Welcome to Our Platform
-Build amazing products with our powerful tools
+# Welcome Hero Title
+Compelling hero description text.
 
-[Get Started]* [Watch Demo]
+[Primary CTA]* [Secondary CTA]
 :::
 
-::: card {.featured}
-## Premium Feature
-This is a featured card with special styling.
-Enhanced capabilities for power users.
+### Alert Types
 
-[Upgrade Now]*
+```markdown
+::: alert success
+✅ **Success!** Operation completed successfully.
 :::
+
+::: alert info
+ℹ️ **Info:** Here's some useful information.
+:::
+
+::: alert warning
+⚠️ **Warning:** Please review before proceeding.
+:::
+
+::: alert error
+❌ **Error:** Something went wrong. Please try again.
+:::
+```
+
+**Rendered:**
+
+::: alert success
+✅ **Success!** Operation completed successfully.
+:::
+
+::: alert info
+ℹ️ **Info:** Here's some useful information.
+:::
+
+::: alert warning
+⚠️ **Warning:** Please review before proceeding.
+:::
+
+::: alert error
+❌ **Error:** Something went wrong. Please try again.
+:::
+
+### Modal Dialog
+
+```markdown
+::: modal
+### Confirm Delete
+Are you sure you want to delete this item?
+
+[Delete]* [Cancel]
+:::
+```
+
+**Rendered:**
 
 ::: modal
-### Confirm Action
-Are you sure you want to proceed with this action?
+### Confirm Delete
+Are you sure you want to delete this item?
 
-[Confirm]* [Cancel]
+[Delete]* [Cancel]
 :::
+
+### Sidebar
+
+```markdown
+::: sidebar
+#### Navigation
+- Dashboard
+- Profile
+- Settings
+- Logout
+:::
+```
+
+**Rendered:**
 
 ::: sidebar
-#### Quick Links
+#### Navigation
 - Dashboard
-- Settings
 - Profile
-- Help
-
-#### Recent Activity
-- User logged in
-- File uploaded
-- Settings updated
+- Settings
+- Logout
 :::
 
-::: alert {.warning}
-**Warning!** Your session will expire in 5 minutes.
-[Extend Session]
-:::
+### Footer
 
-::: section
-### About Us
-We are dedicated to creating innovative solutions that help businesses thrive in the digital age.
+```markdown
+::: footer
+[[ Privacy | Terms | Contact ]]
+© 2025 Company. All rights reserved.
 :::
+```
+
+**Rendered:**
 
 ::: footer
-[[ Privacy | Terms | Contact | :twitter: | :github: | :linkedin: ]]
-© 2024 Example Corp. All rights reserved.
+[[ Privacy | Terms | Contact ]]
+© 2025 Company. All rights reserved.
 :::
 
 ---
 
-## Grid Layouts
-<!-- Grid layouts using heading classes -->
+## 🏗️ Grid Layouts
 
-### Three Column Grid
-## Features {.grid-3}
+### Grid Syntax
+```markdown
+## Title {.grid-N}  # Where N is number of columns
+### Column 1 content
+### Column 2 content
+```
 
-### :rocket: Fast Performance
-Lightning-fast load times and smooth interactions
+### 2-Column Grid
 
-### :shield: Secure by Default
-Enterprise-grade security built into every layer
-
-### :gear: Fully Customizable
-Adapt every aspect to match your needs
-
-### Two Column Grid
-## Comparison {.grid-2}
+```markdown
+## Pricing {.grid-2}
 
 ### Free Plan
-- 5 Projects
+- 10 GB Storage
 - Basic Support
-- Community Access
+- 5 Users
 
 [Choose Free]
 
 ### Pro Plan
-- Unlimited Projects
+- Unlimited Storage
 - Priority Support
-- Advanced Features
-- API Access
+- Unlimited Users
 
 [Choose Pro]*
-
-### Four Column Grid
-## Our Services {.grid-4}
-
-### Design
-Creative solutions
-
-### Development
-Custom applications
-
-### Consulting
-Expert guidance
-
-### Support
-24/7 assistance
-
----
-
-## Content Elements
-<!-- Standard markdown content with enhancements -->
-
-### Headings with Icons
-# :star: Main Title
-## :book: Section Header
-### :bulb: Subsection
-#### :info: Detail Level
-
-### Text Content
-This is a regular paragraph with **bold text** and *italic text*. You can also include `inline code` and combine various formatting options.
-
-### Lists
-
-#### Unordered List
-- First item
-- Second item
-  - Nested item
-  - Another nested item
-- Third item
-
-#### Ordered List
-1. Step one
-2. Step two
-3. Step three
-
-#### Mixed List with Checkboxes
-1. Complete setup
-   - [x] Install dependencies
-   - [x] Configure environment
-   - [ ] Run tests
-2. Deploy application
-3. Monitor performance
-
-### Blockquotes
-> "The best way to predict the future is to invent it."
->
-> — Alan Kay
-
-### Code Blocks
-```javascript
-function greet(name) {
-  return `Hello, ${name}!`;
-}
 ```
 
-```python
-def calculate_sum(a, b):
-    return a + b
+**Rendered:**
+
+## Pricing {.grid-2}
+
+### Free Plan
+- 10 GB Storage
+- Basic Support
+- 5 Users
+[Choose Free]
+
+### Pro Plan
+- Unlimited Storage
+- Priority Support
+- Unlimited Users
+[Choose Pro]*
+
+### 3-Column Grid
+
+```markdown
+## Features {.grid-3}
+
+### :rocket: Fast
+Lightning quick performance
+
+### :shield: Secure
+Bank-level security
+
+### :gear: Flexible
+Fully customizable
 ```
 
-### Horizontal Rules
-Above the line
+**Rendered:**
+
+## Features {.grid-3}
+
+### :rocket: Fast
+Lightning quick performance
+
+### :shield: Secure
+Bank-level security
+
+### :gear: Flexible
+Fully customizable
+
+### 4-Column Grid
+
+```markdown
+## Stats {.grid-4}
+
+### Users
+10,000+
+
+### Projects
+500+
+
+### Countries
+50+
+
+### Uptime
+99.9%
+```
+
+**Rendered:**
+
+## Stats {.grid-4}
+
+### Users
+10,000+
+
+### Projects
+500+
+
+### Countries
+50+
+
+### Uptime
+99.9%
 
 ---
 
-Below the line
+## 📊 Tables
 
-***
+### Basic Table
 
-Another separator
+```markdown
+| Column 1 | Column 2 | Column 3 |
+|----------|----------|----------|
+| Cell 1-1 | Cell 1-2 | Cell 1-3 |
+| Cell 2-1 | Cell 2-2 | Cell 2-3 |
+| Cell 3-1 | Cell 3-2 | Cell 3-3 |
+```
 
-___
+**Rendered:**
 
-### Tables (when implemented)
-| Feature | Free | Pro | Enterprise |
-|---------|------|-----|------------|
-| Users | 5 | 50 | Unlimited |
-| Storage | 10GB | 100GB | Custom |
-| Support | Email | Priority | Dedicated |
+| Column 1 | Column 2 | Column 3 |
+|----------|----------|----------|
+| Cell 1-1 | Cell 1-2 | Cell 1-3 |
+| Cell 2-1 | Cell 2-2 | Cell 2-3 |
+| Cell 3-1 | Cell 3-2 | Cell 3-3 |
+
+### With Alignment
+
+```markdown
+| Left | Center | Right |
+|:-----|:------:|------:|
+| Left | Center | Right |
+| Text | Text   | Text  |
+```
+
+**Rendered:**
+
+| Left | Center | Right |
+|:-----|:------:|------:|
+| Left | Center | Right |
+| Text | Text   | Text  |
 
 ---
 
-## States & Modifiers
-<!-- Demonstrating various states and attribute combinations -->
+## 🎨 Icons
 
-### Component States
+### Icon Syntax
+```markdown
+:icon-name:       # In text
+:icon{name}       # With attributes
+```
 
-#### Loading States
-[Processing...]{state:loading}
+### Common Icons
 
-::: card {state:loading}
-### Loading Content
-Please wait while we fetch your data...
+```markdown
+:home: Home
+:user: User
+:settings: Settings
+:star: Star
+:heart: Heart
+:search: Search
+```
+
+**Rendered:**
+
+:home: Home
+:user: User
+:settings: Settings
+:star: Star
+:heart: Heart
+:search: Search
+
+### Icons in Headings
+
+```markdown
+### :rocket: Launch Features
+#### :bulb: Bright Ideas
+```
+
+**Rendered:**
+
+### :rocket: Launch Features
+#### :bulb: Bright Ideas
+
+---
+
+## 🎯 Component States
+
+### Loading State
+
+```markdown
+::: loading-state
+Loading your content...
+:::
+```
+
+**Rendered:**
+
+::: loading-state
+Loading your content...
 :::
 
-#### Error States
-[Error: Invalid Input]{state:error}
+### Empty State
+
+```markdown
+::: empty-state
+No items found
+[Add First Item]
+:::
+```
+
+**Rendered:**
+
+::: empty-state
+No items found
+[Add First Item]
+:::
+
+### Error State
+
+```markdown
+::: error-state
+Unable to load data
+[Retry]
+:::
+```
+
+**Rendered:**
+
+::: error-state
+Unable to load data
+[Retry]
+:::
+
+---
+
+## 🎛️ Interactive Components
+
+### Tabs (Syntax Example - Not Yet Implemented)
+
+```markdown
+::: tabs
+::: tab "Overview" active
+Overview content here
+:::
+::: tab "Details"
+Details content here
+:::
+::: tab "Settings"
+Settings content here
+:::
+:::
+```
+
+### Accordion (Syntax Example - Not Yet Implemented)
+
+```markdown
+::: accordion
+::: accordion-item "Section 1" expanded
+First section content
+:::
+::: accordion-item "Section 2"
+Second section content
+:::
+:::
+```
+
+---
+
+## ✅ Common Patterns & Best Practices
+
+### Complete Form Example
+::: card
+### User Registration
+
+First Name
+[_____________________________] {required:true}
+
+Last Name
+[_____________________________] {required:true}
 
 Email
-[invalid@email]{state:error type:email}
-
-::: alert {state:error}
-**Error!** Unable to save changes. Please try again.
-:::
-
-#### Success States
-[Success!]{state:success}
-
-::: alert {state:success}
-**Success!** Your changes have been saved.
-:::
-
-#### Disabled States
-[Disabled Button]{disabled}
-
-Name
-[Cannot edit this field_______]{disabled}
-
-- [ ] Disabled option{disabled}
-
-### Combined Attributes
-<!-- Multiple attributes on single elements -->
-
-[Submit Form]{.primary .large required type:submit}
-
-[user@example.com_____________]{type:email required .form-input placeholder:"Enter email"}
-
-[Choose File__________________v]{required multiple .custom-select}
-- Option A
-- Option B
-- Option C
-
----
-
-## Complete Form Example
-<!-- Putting it all together -->
-
-::: card
-### Create Account
-
-Full Name
-[John Doe_____________________]{required}
-
-Email Address
-[john@example.com_____________]{type:email required}
+[_____________________________] {type:email required:true}
 
 Password
-[*****************************]{required}
-
-Confirm Password
-[*****************************]{required}
+[********] {type:password required:true}
 
 Country
-[United States_______________v]{required}
-- United States
-- Canada
-- United Kingdom
-- Australia
-- Germany
-- France
-- Japan
-- Other
+[Select country...v]
 
 Account Type
-- (•) Personal
+- (*) Personal
 - ( ) Business
-- ( ) Enterprise
 
-Agreements
-- [x] I accept the terms of service{required}
-- [ ] Send me promotional emails
-- [x] Enable two-factor authentication
+Terms
+- [x] I accept the terms of service
+- [ ] Send me newsletters
 
 [Create Account]* [Cancel]
 :::
 
+### Dashboard Layout
+## Analytics Dashboard {.hero}
+
+[[ :logo: Dashboard | Overview | *Analytics* | Reports | Settings | :user: User ]]
+
+## Quick Stats {.grid-4}
+
+### Revenue
+$45,231
+
+### Orders
+1,234
+
+### Customers
+892
+
+### Growth
++12.5%
+
+## Recent Activity
+
+| Time | User | Action | Status |
+|------|------|--------|--------|
+| 2m ago | John | Purchase | Success |
+| 5m ago | Jane | Login | Success |
+| 10m ago | Bob | Update | Pending |
+
 ---
 
-## Complex Layout Example
-<!-- Demonstrating nested components and layouts -->
+## 🚀 Complete Page Example
 
-## Dashboard {.grid-3}
+# Project Management Dashboard
 
-::: card
-### :chart: Analytics
-**Total Users:** 1,234
-**Active Today:** 567
-**Growth:** +12.3%
+[[ :logo: TaskFlow | Dashboard | *Projects* | Team | Reports | :user: Jane Doe | [Logout] ]]
 
-[View Details]
-:::
+[[ Dashboard > Projects > Active ]]
 
-::: card
+## Active Projects {.hero}
+> Manage your team's projects efficiently
+> Track progress, assign tasks, collaborate
+>
+> [New Project]* [Import] [Export]
+
+## Project Stats {.grid-4}
+### Total
+42
+
+### Active
+28
+
+### Completed
+12
+
+### On Hold
+2
+
+## Current Sprint {.card}
+
+Sprint 23 Progress
+[##########________] 60% Complete
+
+### This Week's Tasks
+
+| Task | Assignee | Status | Priority |
+|------|----------|--------|----------|
+| Design mockups | Alice | In Progress | High |
+| API integration | Bob | Complete | Medium |
+| Testing | Charlie | Pending | High |
+| Documentation | Dana | In Progress | Low |
+
+[View All Tasks]
+
+## Quick Actions {.grid-3}
+
+### :plus: Create
+New Task
+[_____________________________]
+
+Assign to
+[Select team member...v]
+
+[Create Task]*
+
+### :search: Find
+Search tasks
+[Search...___________] {type:search}
+
+Filter by
+- [x] My tasks
+- [ ] Unassigned
+- [ ] Overdue
+
 ### :bell: Notifications
-- New user registered
-- Payment received
-- Report generated
-- System update available
+- Task #234 completed
+- New comment on #198
+- Sprint planning tomorrow
 
-[Mark All Read]
-:::
+[Mark all read]
 
-::: card {.featured}
-### :star: Premium Features
-Unlock advanced capabilities:
-- Custom branding
-- API access
-- Priority support
+## Page Footer
 
-[Upgrade Now]*
+::: footer
+[[ Help | API Docs | Privacy | Terms ]]
+© 2025 TaskFlow Inc.
 :::
 
 ---
 
-## Footer Section
-::: footer
-### Company
-- About Us
-- Careers
-- Press
-- Blog
-
-### Product
-- Features
-- Pricing
-- Security
-- Roadmap
-
-### Support
-- Help Center
-- Documentation
-- Contact Us
-- Status
-
-### Legal
-- Privacy Policy
-- Terms of Service
-- Cookie Policy
-- GDPR
-
-[[ :facebook: | :twitter: | :linkedin: | :github: | :youtube: ]]
-
-© 2024 Example Company. All rights reserved.
-:::
+*This showcase serves as a complete syntax reference for wiremd. Copy and modify these examples to create your own wireframes quickly!*

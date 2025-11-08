@@ -62,6 +62,9 @@ STYLES:
   clean      - Modern minimal design
   wireframe  - Traditional grayscale with hatching
   none       - Unstyled semantic HTML
+  tailwind   - Modern utility-first design with purple accents
+  material   - Google Material Design with elevation system
+  brutal     - Neo-brutalism with bold colors and thick borders
 
 For more information: https://github.com/akonan/wiremd
 `);

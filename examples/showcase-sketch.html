@@ -6,451 +6,352 @@
   <title>wiremd Mockup</title>
   <style>
 
-/* Tailwind-Inspired Style */
-body {
-  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  background: #f9fafb;
-  color: #111827;
-  line-height: 1.5;
-  margin: 0;
+/* wiremd Sketch Style - Balsamiq-inspired hand-drawn mockups */
+* {
+  box-sizing: border-box;
+}
+
+body.wmd-root {
+  font-family: 'Comic Sans MS', 'Marker Felt', 'Chalkboard', cursive, sans-serif;
+  background: #f5f5dc;
+  color: #333;
   padding: 20px;
+  margin: 0;
+  line-height: 1.6;
 }
 
-/* Typography */
-.wmd-h1 {
-  font-size: 2.25rem;
-  font-weight: 800;
-  color: #111827;
-  margin: 0 0 1rem 0;
-  letter-spacing: -0.025em;
+/* Headings */
+.wmd-h1, .wmd-h2, .wmd-h3, .wmd-h4, .wmd-h5, .wmd-h6 {
+  font-weight: bold;
+  margin: 1em 0 0.5em;
+  line-height: 1.3;
 }
 
-.wmd-h2 {
-  font-size: 1.875rem;
-  font-weight: 700;
-  color: #1f2937;
-  margin: 1.5rem 0 1rem 0;
-  letter-spacing: -0.025em;
-}
+.wmd-h1 { font-size: 2em; text-decoration: underline; }
+.wmd-h2 { font-size: 1.75em; }
+.wmd-h3 { font-size: 1.5em; }
+.wmd-h4 { font-size: 1.25em; }
+.wmd-h5 { font-size: 1.1em; }
+.wmd-h6 { font-size: 1em; }
 
-.wmd-h3 {
-  font-size: 1.5rem;
-  font-weight: 600;
-  color: #374151;
-  margin: 1.25rem 0 0.75rem 0;
-}
-
-.wmd-h4 {
-  font-size: 1.25rem;
-  font-weight: 600;
-  color: #4b5563;
-  margin: 1rem 0 0.5rem 0;
-}
-
+/* Paragraph */
 .wmd-paragraph {
-  color: #6b7280;
-  margin: 0.75rem 0;
-  font-size: 1rem;
+  margin: 0.5em 0;
 }
 
 /* Buttons */
 .wmd-button {
-  padding: 0.5rem 1rem;
-  border-radius: 0.5rem;
-  font-weight: 500;
-  font-size: 0.875rem;
-  transition: all 0.15s ease;
-  border: none;
-  cursor: pointer;
   display: inline-block;
-  text-decoration: none;
-  background: #e5e7eb;
-  color: #374151;
-  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  padding: 8px 16px;
+  margin: 4px;
+  background: #fff;
+  border: 2px solid #000;
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 2px 2px 0 rgba(0,0,0,0.2);
+  transform: rotate(-0.5deg);
+  transition: all 0.1s;
 }
 
 .wmd-button:hover {
-  background: #d1d5db;
-  transform: translateY(-1px);
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  transform: rotate(-0.5deg) translateY(-2px);
+  box-shadow: 3px 3px 0 rgba(0,0,0,0.2);
 }
 
-.wmd-button-primary, .wmd-button.wmd-button-primary {
-  background: #6366f1;
-  color: white;
+.wmd-button-primary, .wmd-button.wmd-primary {
+  background: #87CEEB;
+  border-color: #4682B4;
 }
 
-.wmd-button-primary:hover, .wmd-button.wmd-button-primary:hover {
-  background: #4f46e5;
+.wmd-button-secondary, .wmd-button.wmd-secondary {
+  background: #DDD;
+  border-color: #999;
 }
 
-.wmd-button:disabled, .wmd-button[disabled] {
+.wmd-button-danger, .wmd-button.wmd-danger {
+  background: #FFB6C1;
+  border-color: #DC143C;
+}
+
+.wmd-button[disabled], .wmd-button.wmd-state-disabled {
   opacity: 0.5;
   cursor: not-allowed;
-  transform: none;
 }
 
-/* Button States */
-.wmd-state-loading {
-  background: #e0e7ff !important;
-  color: #6366f1 !important;
-  position: relative;
-  padding-left: 2.5rem;
+.wmd-button.wmd-loading::after {
+  content: '...';
+  animation: loading 1s infinite;
 }
 
-.wmd-state-loading::before {
-  content: '';
-  position: absolute;
-  left: 1rem;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 1rem;
-  height: 1rem;
-  border: 2px solid #6366f1;
-  border-top-color: transparent;
-  border-radius: 50%;
-  animation: spin 0.6s linear infinite;
-}
-
-.wmd-state-error {
-  background: #fef2f2 !important;
-  color: #ef4444 !important;
-  border: 1px solid #fca5a5;
-}
-
-.wmd-state-success {
-  background: #f0fdf4 !important;
-  color: #22c55e !important;
-  border: 1px solid #86efac;
-}
-
-@keyframes spin {
-  to { transform: translateY(-50%) rotate(360deg); }
-}
-
-/* Forms */
+/* Inputs */
 .wmd-input, .wmd-textarea, .wmd-select {
+  display: block;
   width: 100%;
-  padding: 0.5rem 0.75rem;
-  border: 1px solid #e5e7eb;
-  border-radius: 0.5rem;
-  font-size: 0.875rem;
-  background: white;
-  transition: all 0.15s ease;
-  color: #111827;
+  max-width: 400px;
+  padding: 8px 12px;
+  margin: 4px 0;
+  font-family: inherit;
+  font-size: 14px;
+  background: #fff;
+  border: 2px solid #666;
+  border-radius: 4px;
+  transform: rotate(0.3deg);
 }
 
 .wmd-input:focus, .wmd-textarea:focus, .wmd-select:focus {
-  outline: none;
-  border-color: #6366f1;
-  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
-}
-
-.wmd-input::placeholder, .wmd-textarea::placeholder {
-  color: #9ca3af;
+  outline: 2px solid #4682B4;
+  outline-offset: 2px;
 }
 
 .wmd-textarea {
   resize: vertical;
-  min-height: 6rem;
-  font-family: inherit;
-}
-
-.wmd-select {
-  cursor: pointer;
-  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
-  background-repeat: no-repeat;
-  background-position: right 0.5rem center;
-  background-size: 1.5rem;
-  padding-right: 2.5rem;
+  min-height: 80px;
 }
 
 /* Checkboxes and Radios */
 .wmd-checkbox, .wmd-radio {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  margin: 0.5rem 0;
+  gap: 8px;
+  margin: 6px 0;
   cursor: pointer;
+  user-select: none;
 }
 
 .wmd-checkbox input[type="checkbox"],
 .wmd-radio input[type="radio"] {
-  width: 1rem;
-  height: 1rem;
+  width: 20px;
+  height: 20px;
   cursor: pointer;
-  accent-color: #6366f1;
-}
-
-/* Cards and Containers */
-.wmd-container-card {
-  background: white;
-  border-radius: 0.75rem;
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
-  padding: 1.5rem;
-  margin: 1rem 0;
-}
-
-.wmd-container-hero {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
-  border-radius: 1rem;
-  padding: 3rem 2rem;
-  margin: 2rem 0;
-  text-align: center;
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-}
-
-.wmd-container-hero .wmd-h1,
-.wmd-container-hero .wmd-h2,
-.wmd-container-hero .wmd-h3,
-.wmd-container-hero .wmd-paragraph {
-  color: white;
-}
-
-.wmd-container-modal {
-  background: white;
-  border-radius: 1rem;
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-  padding: 2rem;
-  margin: 2rem auto;
-  max-width: 600px;
-  position: relative;
-}
-
-.wmd-container-footer {
-  background: #1f2937;
-  color: #e5e7eb;
-  padding: 2rem;
-  margin-top: 3rem;
-  border-radius: 0.75rem;
-}
-
-.wmd-container-footer .wmd-paragraph,
-.wmd-container-footer .wmd-nav-item {
-  color: #e5e7eb;
-}
-
-.wmd-container-section {
-  padding: 1.5rem 0;
-  border-bottom: 1px solid #e5e7eb;
-}
-
-.wmd-container-section:last-child {
-  border-bottom: none;
-}
-
-/* Alerts */
-.wmd-container-alert {
-  padding: 1rem 1.25rem;
-  border-radius: 0.5rem;
-  margin: 1rem 0;
-  border-left: 4px solid;
-}
-
-.wmd-container-alert.wmd-warning {
-  background: #fef3c7;
-  border-left-color: #f59e0b;
-  color: #92400e;
-}
-
-.wmd-container-alert.wmd-state-error {
-  background: #fee2e2;
-  border-left-color: #ef4444;
-  color: #991b1b;
-}
-
-.wmd-container-alert.wmd-state-success {
-  background: #d1fae5;
-  border-left-color: #10b981;
-  color: #065f46;
-}
-
-/* Navigation */
-.wmd-nav {
-  background: white;
-  padding: 1rem 1.5rem;
-  border-radius: 0.5rem;
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
-  margin-bottom: 2rem;
-}
-
-.wmd-nav-content {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  flex-wrap: wrap;
-}
-
-.wmd-nav-item {
-  color: #4b5563;
-  text-decoration: none;
-  padding: 0.5rem 0.75rem;
-  border-radius: 0.375rem;
-  transition: all 0.15s ease;
-  font-size: 0.875rem;
-  font-weight: 500;
-}
-
-.wmd-nav-item:hover {
-  background: #f3f4f6;
-  color: #111827;
-}
-
-.wmd-brand {
-  font-weight: 700;
-  font-size: 1.125rem;
-  color: #111827;
-  margin-right: auto;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-/* Lists */
-.wmd-list {
-  margin: 1rem 0;
-  padding: 0;
-  list-style: none;
-}
-
-.wmd-list-item {
-  padding: 0.75rem 0;
-  border-bottom: 1px solid #f3f4f6;
-  color: #4b5563;
-}
-
-.wmd-list-item:last-child {
-  border-bottom: none;
-}
-
-/* Grid */
-.wmd-grid {
-  display: grid;
-  gap: 1rem;
-  margin: 1.5rem 0;
-}
-
-.wmd-grid-2 {
-  grid-template-columns: repeat(2, 1fr);
-}
-
-.wmd-grid-3 {
-  grid-template-columns: repeat(3, 1fr);
-}
-
-.wmd-grid-4 {
-  grid-template-columns: repeat(4, 1fr);
-}
-
-/* Tables */
-.wmd-table {
-  width: 100%;
-  background: white;
-  border-radius: 0.5rem;
-  overflow: hidden;
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
-  margin: 1rem 0;
-  border-collapse: separate;
-  border-spacing: 0;
-}
-
-.wmd-table th {
-  background: #f9fafb;
-  padding: 0.75rem 1rem;
-  text-align: left;
-  font-weight: 600;
-  font-size: 0.875rem;
-  color: #111827;
-  border-bottom: 1px solid #e5e7eb;
-}
-
-.wmd-table td {
-  padding: 0.75rem 1rem;
-  border-bottom: 1px solid #f3f4f6;
-  font-size: 0.875rem;
-  color: #4b5563;
-}
-
-.wmd-table tr:last-child td {
-  border-bottom: none;
 }
 
 /* Icons */
 .wmd-icon {
   display: inline-block;
-  width: 1.25rem;
-  height: 1.25rem;
+  font-size: 1.2em;
+  line-height: 1;
   vertical-align: middle;
+  margin: 0 0.2em;
 }
 
+/* Containers */
+.wmd-container-hero, .wmd-container-card, .wmd-container-modal {
+  background: #fff;
+  border: 3px solid #000;
+  border-radius: 12px;
+  padding: 24px;
+  margin: 16px 0;
+  box-shadow: 4px 4px 0 rgba(0,0,0,0.15);
+  transform: rotate(-0.3deg);
+}
 
-/* Utility classes */
+.wmd-container-hero {
+  background: linear-gradient(135deg, #FFF9E6 0%, #FFE6CC 100%);
+  text-align: center;
+  padding: 48px 24px;
+}
+
+.wmd-container-card {
+  max-width: 400px;
+}
+
+.wmd-container-modal {
+  position: relative;
+  max-width: 500px;
+  margin: 32px auto;
+  border-width: 4px;
+}
+
+/* Radio Groups */
+.wmd-radio-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 8px 0;
+}
+
+.wmd-radio-group-inline {
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.wmd-radio-group-inline .wmd-radio {
+  margin: 0;
+}
+
+/* Icons */
+.wmd-icon {
+  display: inline-block;
+  font-size: 1.2em;
+  line-height: 1;
+  vertical-align: middle;
+  margin: 0 0.2em;
+}
+
+/* Navigation */
+.wmd-nav {
+  background: #87CEEB;
+  border: 3px solid #4682B4;
+  border-radius: 8px;
+  padding: 12px 16px;
+  margin: 16px 0;
+  box-shadow: 3px 3px 0 rgba(0,0,0,0.15);
+}
+
+.wmd-nav-content {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.wmd-brand {
+  font-weight: bold;
+  font-size: 1.2em;
+  margin-right: auto;
+}
+
+.wmd-nav-item {
+  color: #000;
+  text-decoration: none;
+  font-weight: bold;
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+
+.wmd-nav-item:hover {
+  background: rgba(255,255,255,0.3);
+}
+
+.wmd-nav .wmd-button {
+  margin: 0;
+}
+
+/* Grid */
+.wmd-grid {
+  display: grid;
+  grid-template-columns: repeat(var(--grid-columns, 3), 1fr);
+  gap: 24px;
+  margin: 24px 0;
+}
+
+.wmd-grid-2 { grid-template-columns: repeat(2, 1fr); }
+.wmd-grid-3 { grid-template-columns: repeat(3, 1fr); }
+.wmd-grid-4 { grid-template-columns: repeat(4, 1fr); }
+
+.wmd-grid-item {
+  background: #fff;
+  border: 2px solid #666;
+  border-radius: 8px;
+  padding: 16px;
+  box-shadow: 2px 2px 0 rgba(0,0,0,0.1);
+  transform: rotate(0.5deg);
+}
+
+.wmd-grid-item:nth-child(even) {
+  transform: rotate(-0.5deg);
+}
+
+/* Lists */
+.wmd-list {
+  margin: 12px 0;
+  padding-left: 24px;
+}
+
+.wmd-list-item {
+  margin: 4px 0;
+}
+
+/* Blockquote */
+.wmd-blockquote {
+  border-left: 4px solid #666;
+  padding-left: 16px;
+  margin: 16px 0;
+  font-style: italic;
+  color: #555;
+}
+
+/* Code */
+.wmd-code-inline {
+  background: #FFF3CD;
+  border: 1px solid #FFC107;
+  border-radius: 3px;
+  padding: 2px 6px;
+  font-family: 'Courier New', monospace;
+  font-size: 0.9em;
+}
+
+.wmd-code-block {
+  background: #FFF3CD;
+  border: 2px solid #FFC107;
+  border-radius: 6px;
+  padding: 12px;
+  margin: 12px 0;
+  overflow-x: auto;
+}
+
+.wmd-code-block code {
+  font-family: 'Courier New', monospace;
+  font-size: 0.9em;
+}
+
+/* Separator */
 .wmd-separator {
   border: none;
-  border-top: 1px solid #e5e7eb;
-  margin: 2rem 0;
+  border-top: 3px dashed #666;
+  margin: 24px 0;
 }
 
-.wmd-image {
-  max-width: 100%;
-  height: auto;
-  border-radius: 0.5rem;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+/* Table */
+.wmd-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  border: 3px solid #000;
+  border-radius: 8px;
+  margin: 16px 0;
+  overflow: hidden;
 }
 
-.wmd-code {
-  background: #f3f4f6;
-  padding: 0.125rem 0.375rem;
-  border-radius: 0.25rem;
-  font-family: ui-monospace, SFMono-Regular, "SF Mono", Consolas, monospace;
-  font-size: 0.875rem;
-  color: #6366f1;
+.wmd-table th, .wmd-table td {
+  border: 2px solid #666;
+  padding: 8px 12px;
+  text-align: left;
 }
 
-.wmd-blockquote {
-  border-left: 4px solid #6366f1;
-  padding-left: 1rem;
-  margin: 1.5rem 0;
-  color: #4b5563;
-  font-style: italic;
-}
-
-/* Button group */
-.wmd-container-button-group {
-  display: flex;
-  gap: 0.75rem;
-  flex-wrap: wrap;
-  margin: 1rem 0;
-}
-
-/* Form group */
-.wmd-container-form-group {
-  margin: 1rem 0;
+.wmd-table th {
+  background: #DDD;
+  font-weight: bold;
 }
 
 /* Responsive */
 @media (max-width: 768px) {
-  .wmd-grid-2,
-  .wmd-grid-3,
-  .wmd-grid-4 {
-    grid-template-columns: 1fr;
+  .wmd-grid {
+    grid-template-columns: 1fr !important;
   }
 
   .wmd-nav-content {
     flex-direction: column;
-    align-items: flex-start;
+    align-items: stretch;
   }
 
   .wmd-brand {
     margin-right: 0;
-    margin-bottom: 0.5rem;
   }
+}
+
+@keyframes loading {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
 }
 
   </style>
 </head>
-<body class="wmd-root wmd-tailwind">
+<body class="wmd-root wmd-sketch">
   <h1 class="wmd-h1">wiremd Syntax Guide &amp; Component Showcase</h1>
 <p class="wmd-paragraph">Welcome to the comprehensive wiremd syntax guide! This document serves as both a reference and tutorial for all supported components and patterns.</p>
 <blockquote class="wmd-blockquote">
