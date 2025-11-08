@@ -921,7 +921,6 @@ function transformTable(node: any, options: ParseOptions): WiremdNode {
 
               cells.push({
                 type: 'table-cell',
-                props: {},
                 children: cellContent,
               });
             }
@@ -930,7 +929,6 @@ function transformTable(node: any, options: ParseOptions): WiremdNode {
 
         children.push({
           type: 'table-row',
-          props: {},
           children: cells,
         });
       }
