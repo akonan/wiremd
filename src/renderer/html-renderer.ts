@@ -262,15 +262,25 @@ function renderParagraph(node: any, context: RenderContext): string {
   const { classPrefix: prefix } = context;
   const classes = buildClasses(prefix, 'paragraph', node.props);
 
-  const childrenHTML = node.children
-    ? node.children.map((child: any) => renderNode(child, context)).join('')
-    : escapeHtml(node.content || '');
+  let childrenHTML: string;
+  if (node.children) {
+    childrenHTML = node.children.map((child: any) => renderNode(child, context)).join('');
+  } else if (node.content) {
+    // Check if content contains HTML tags (rich content)
+    const hasHtmlTags = /<[^>]+>/.test(node.content);
+    childrenHTML = hasHtmlTags ? node.content : escapeHtml(node.content);
+  } else {
+    childrenHTML = '';
+  }
 
   return `<p class="${classes}">${childrenHTML}</p>`;
 }
 
 function renderText(node: any, _context: RenderContext): string {
-  return escapeHtml(node.content || '');
+  const content = node.content || '';
+  // Check if content contains HTML tags (rich content)
+  const hasHtmlTags = /<[^>]+>/.test(content);
+  return hasHtmlTags ? content : escapeHtml(content);
 }
 
 function renderImage(node: any, context: RenderContext): string {

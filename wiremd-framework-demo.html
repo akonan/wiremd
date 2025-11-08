@@ -1,0 +1,957 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WireMD - Framework Styles Demo</title>
+    
+    <!-- Framework CDNs -->
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Material Design Lite (simpler than full Material Components) -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-pink.min.css">
+    
+    <!-- Inter Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #0a0a0a;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+
+        /* Container */
+        .demo-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        /* Header */
+        .demo-header {
+            text-align: center;
+            margin-bottom: 60px;
+            padding-top: 40px;
+        }
+
+        .demo-title {
+            font-size: 48px;
+            font-weight: 800;
+            margin-bottom: 16px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .demo-subtitle {
+            font-size: 20px;
+            color: #a8a8a8;
+            margin-bottom: 40px;
+        }
+
+        /* Source Code Display */
+        .source-code {
+            background: #0d1117;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 60px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .source-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .source-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #a8a8a8;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .source-badge {
+            background: rgba(124, 58, 237, 0.2);
+            color: #a78bfa;
+            padding: 4px 12px;
+            border-radius: 100px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        pre {
+            font-family: 'JetBrains Mono', 'Courier New', monospace;
+            font-size: 14px;
+            line-height: 1.6;
+            color: #e6edf3;
+            overflow-x: auto;
+        }
+
+        .markdown-syntax {
+            color: #7ee83f;
+        }
+
+        .markdown-component {
+            color: #b392f0;
+        }
+
+        .markdown-text {
+            color: #9ecbff;
+        }
+
+        /* Framework Tabs */
+        .framework-tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 32px;
+            background: #111111;
+            padding: 4px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .framework-tab {
+            flex: 1;
+            padding: 12px 24px;
+            background: transparent;
+            border: none;
+            color: #a8a8a8;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: all 0.2s;
+            position: relative;
+        }
+
+        .framework-tab:hover {
+            color: #ffffff;
+        }
+
+        .framework-tab.active {
+            background: rgba(124, 58, 237, 0.2);
+            color: #a78bfa;
+        }
+
+        .framework-tab.active::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            border-radius: 2px;
+        }
+
+        /* Framework Previews */
+        .framework-preview {
+            background: #ffffff;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            margin-bottom: 32px;
+            display: none;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .framework-preview.active {
+            display: block;
+            animation: slideIn 0.3s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .preview-header {
+            background: #1a1a1a;
+            padding: 12px 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .preview-title {
+            color: #a8a8a8;
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        .preview-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .preview-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #ef4444;
+        }
+
+        .preview-dot:nth-child(2) {
+            background: #f59e0b;
+        }
+
+        .preview-dot:nth-child(3) {
+            background: #10b981;
+        }
+
+        .preview-content {
+            padding: 0;
+            background: white;
+            min-height: 500px;
+            color: #000;
+        }
+
+        /* Framework-specific containers */
+        .tailwind-container {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        }
+
+        .bootstrap-container {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        }
+
+        .material-container {
+            font-family: 'Roboto', sans-serif;
+        }
+
+        /* Comparison Grid */
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
+            margin-top: 60px;
+        }
+
+        @media (max-width: 968px) {
+            .comparison-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .comparison-card {
+            background: #111111;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            padding: 24px;
+        }
+
+        .comparison-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            color: #ffffff;
+        }
+
+        .comparison-list {
+            list-style: none;
+        }
+
+        .comparison-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 8px 0;
+            color: #a8a8a8;
+            font-size: 14px;
+        }
+
+        .comparison-icon {
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: rgba(16, 185, 129, 0.2);
+            color: #10b981;
+            font-size: 12px;
+        }
+
+        /* Custom Ant Design Styles (simplified) */
+        .ant-style {
+            padding: 24px;
+        }
+
+        .ant-navbar {
+            background: #001529;
+            padding: 0 24px;
+            display: flex;
+            align-items: center;
+            height: 64px;
+            color: white;
+        }
+
+        .ant-card {
+            background: white;
+            border: 1px solid #f0f0f0;
+            border-radius: 8px;
+            padding: 24px;
+            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.03);
+        }
+
+        .ant-btn {
+            padding: 6px 15px;
+            border-radius: 6px;
+            border: 1px solid #d9d9d9;
+            background: white;
+            color: rgba(0, 0, 0, 0.88);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .ant-btn-primary {
+            background: #1677ff;
+            border-color: #1677ff;
+            color: white;
+        }
+
+        .ant-btn:hover {
+            border-color: #1677ff;
+            color: #1677ff;
+        }
+
+        .ant-btn-primary:hover {
+            background: #4096ff;
+        }
+
+        /* Copy button */
+        .copy-btn {
+            position: absolute;
+            top: 24px;
+            right: 24px;
+            padding: 8px 16px;
+            background: rgba(124, 58, 237, 0.2);
+            border: 1px solid rgba(124, 58, 237, 0.3);
+            border-radius: 6px;
+            color: #a78bfa;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .copy-btn:hover {
+            background: rgba(124, 58, 237, 0.3);
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+    <div class="demo-container">
+        <!-- Header -->
+        <div class="demo-header">
+            <h1 class="demo-title">WireMD Framework Styles</h1>
+            <p class="demo-subtitle">Same markdown, different frameworks. Production-ready mockups.</p>
+        </div>
+
+        <!-- Source Code -->
+        <div class="source-code">
+            <div class="source-header">
+                <div class="source-title">
+                    <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
+                    </svg>
+                    Source WireMD
+                </div>
+                <span class="source-badge">dashboard.wiremd</span>
+            </div>
+            <button class="copy-btn" onclick="copySource()">Copy</button>
+            <pre id="source-markdown"><span class="markdown-syntax"># Task Dashboard</span>
+
+<span class="markdown-component">[[</span> <span class="markdown-text">📊 TaskFlow | Home | Projects | Team | [+ New Task]</span> <span class="markdown-component">]]</span>
+
+<span class="markdown-syntax">## Today's Overview</span>
+<span class="markdown-text">Welcome back! You have 5 tasks due today.</span>
+
+<span class="markdown-component">[stats-row]</span>
+  <span class="markdown-text">📝 **12** Active Tasks</span>
+  <span class="markdown-text">✅ **8** Completed Today</span>
+  <span class="markdown-text">📈 **67%** Progress</span>
+  <span class="markdown-text">⏰ **3** Due Soon</span>
+<span class="markdown-component">[/stats-row]</span>
+
+<span class="markdown-syntax">### Your Tasks</span>
+<span class="markdown-component">[task-list]</span>
+  <span class="markdown-text">☐ Review design mockups for landing page</span>
+  <span class="markdown-text">☐ Update API documentation</span>
+  <span class="markdown-text">☑ Deploy to staging environment</span>
+  <span class="markdown-text">☐ Team standup meeting at 10 AM</span>
+<span class="markdown-component">[/task-list]</span>
+
+<span class="markdown-component">[Create Task]</span> <span class="markdown-component">[View All Tasks]</span></pre>
+        </div>
+
+        <!-- Framework Tabs -->
+        <div class="framework-tabs">
+            <button class="framework-tab active" onclick="switchFramework('tailwind')">
+                <span>Tailwind CSS</span>
+            </button>
+            <button class="framework-tab" onclick="switchFramework('bootstrap')">
+                <span>Bootstrap 5</span>
+            </button>
+            <button class="framework-tab" onclick="switchFramework('material')">
+                <span>Material Design</span>
+            </button>
+            <button class="framework-tab" onclick="switchFramework('antd')">
+                <span>Ant Design</span>
+            </button>
+        </div>
+
+        <!-- Tailwind Preview -->
+        <div class="framework-preview active" id="tailwind-preview">
+            <div class="preview-header">
+                <div class="preview-title">Rendered with Tailwind CSS</div>
+                <div class="preview-actions">
+                    <div class="preview-dot"></div>
+                    <div class="preview-dot"></div>
+                    <div class="preview-dot"></div>
+                </div>
+            </div>
+            <div class="preview-content tailwind-container">
+                <!-- Tailwind Version -->
+                <nav class="bg-white shadow-sm border-b border-gray-200">
+                    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                        <div class="flex justify-between h-16">
+                            <div class="flex items-center">
+                                <span class="text-xl font-bold text-gray-900">📊 TaskFlow</span>
+                            </div>
+                            <div class="hidden md:flex items-center space-x-8">
+                                <a href="#" class="text-gray-700 hover:text-gray-900 px-3 py-2">Home</a>
+                                <a href="#" class="text-gray-700 hover:text-gray-900 px-3 py-2">Projects</a>
+                                <a href="#" class="text-gray-700 hover:text-gray-900 px-3 py-2">Team</a>
+                                <button class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition-colors">
+                                    + New Task
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </nav>
+
+                <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+                    <div class="mb-8">
+                        <h1 class="text-3xl font-bold text-gray-900">Task Dashboard</h1>
+                        <h2 class="text-xl font-semibold text-gray-800 mt-6 mb-2">Today's Overview</h2>
+                        <p class="text-gray-600 mb-6">Welcome back! You have 5 tasks due today.</p>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+                        <div class="bg-white rounded-lg border border-gray-200 p-6 shadow-sm">
+                            <div class="text-3xl mb-2">📝</div>
+                            <div class="text-2xl font-bold text-gray-900">12</div>
+                            <div class="text-sm text-gray-600">Active Tasks</div>
+                        </div>
+                        <div class="bg-white rounded-lg border border-gray-200 p-6 shadow-sm">
+                            <div class="text-3xl mb-2">✅</div>
+                            <div class="text-2xl font-bold text-gray-900">8</div>
+                            <div class="text-sm text-gray-600">Completed Today</div>
+                        </div>
+                        <div class="bg-white rounded-lg border border-gray-200 p-6 shadow-sm">
+                            <div class="text-3xl mb-2">📈</div>
+                            <div class="text-2xl font-bold text-gray-900">67%</div>
+                            <div class="text-sm text-gray-600">Progress</div>
+                        </div>
+                        <div class="bg-white rounded-lg border border-gray-200 p-6 shadow-sm">
+                            <div class="text-3xl mb-2">⏰</div>
+                            <div class="text-2xl font-bold text-gray-900">3</div>
+                            <div class="text-sm text-gray-600">Due Soon</div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-lg border border-gray-200 shadow-sm">
+                        <div class="p-6">
+                            <h3 class="text-lg font-semibold text-gray-900 mb-4">Your Tasks</h3>
+                            <div class="space-y-3">
+                                <div class="flex items-center p-3 hover:bg-gray-50 rounded">
+                                    <input type="checkbox" class="h-5 w-5 text-indigo-600 rounded border-gray-300">
+                                    <label class="ml-3 text-gray-700">Review design mockups for landing page</label>
+                                </div>
+                                <div class="flex items-center p-3 hover:bg-gray-50 rounded">
+                                    <input type="checkbox" class="h-5 w-5 text-indigo-600 rounded border-gray-300">
+                                    <label class="ml-3 text-gray-700">Update API documentation</label>
+                                </div>
+                                <div class="flex items-center p-3 hover:bg-gray-50 rounded">
+                                    <input type="checkbox" checked class="h-5 w-5 text-indigo-600 rounded border-gray-300">
+                                    <label class="ml-3 text-gray-700 line-through">Deploy to staging environment</label>
+                                </div>
+                                <div class="flex items-center p-3 hover:bg-gray-50 rounded">
+                                    <input type="checkbox" class="h-5 w-5 text-indigo-600 rounded border-gray-300">
+                                    <label class="ml-3 text-gray-700">Team standup meeting at 10 AM</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex gap-4 mt-6">
+                        <button class="bg-indigo-600 text-white px-6 py-2 rounded-lg hover:bg-indigo-700 transition-colors">
+                            Create Task
+                        </button>
+                        <button class="bg-white text-gray-700 px-6 py-2 rounded-lg border border-gray-300 hover:bg-gray-50 transition-colors">
+                            View All Tasks
+                        </button>
+                    </div>
+                </main>
+            </div>
+        </div>
+
+        <!-- Bootstrap Preview -->
+        <div class="framework-preview" id="bootstrap-preview">
+            <div class="preview-header">
+                <div class="preview-title">Rendered with Bootstrap 5</div>
+                <div class="preview-actions">
+                    <div class="preview-dot"></div>
+                    <div class="preview-dot"></div>
+                    <div class="preview-dot"></div>
+                </div>
+            </div>
+            <div class="preview-content bootstrap-container">
+                <!-- Bootstrap Version -->
+                <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
+                    <div class="container-fluid">
+                        <a class="navbar-brand fw-bold" href="#">📊 TaskFlow</a>
+                        <div class="navbar-nav ms-auto">
+                            <a class="nav-link" href="#">Home</a>
+                            <a class="nav-link" href="#">Projects</a>
+                            <a class="nav-link" href="#">Team</a>
+                            <button class="btn btn-primary ms-3">+ New Task</button>
+                        </div>
+                    </div>
+                </nav>
+
+                <div class="container-fluid p-4">
+                    <h1 class="h2 mb-4">Task Dashboard</h1>
+                    <h2 class="h4 mb-2">Today's Overview</h2>
+                    <p class="text-muted mb-4">Welcome back! You have 5 tasks due today.</p>
+
+                    <div class="row g-3 mb-4">
+                        <div class="col-md-6 col-lg-3">
+                            <div class="card">
+                                <div class="card-body text-center">
+                                    <div class="fs-1 mb-2">📝</div>
+                                    <h3 class="h4 mb-1">12</h3>
+                                    <p class="text-muted small mb-0">Active Tasks</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-lg-3">
+                            <div class="card">
+                                <div class="card-body text-center">
+                                    <div class="fs-1 mb-2">✅</div>
+                                    <h3 class="h4 mb-1">8</h3>
+                                    <p class="text-muted small mb-0">Completed Today</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-lg-3">
+                            <div class="card">
+                                <div class="card-body text-center">
+                                    <div class="fs-1 mb-2">📈</div>
+                                    <h3 class="h4 mb-1">67%</h3>
+                                    <p class="text-muted small mb-0">Progress</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-lg-3">
+                            <div class="card">
+                                <div class="card-body text-center">
+                                    <div class="fs-1 mb-2">⏰</div>
+                                    <h3 class="h4 mb-1">3</h3>
+                                    <p class="text-muted small mb-0">Due Soon</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-body">
+                            <h3 class="h5 mb-3">Your Tasks</h3>
+                            <div class="list-group list-group-flush">
+                                <div class="list-group-item">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="task1">
+                                        <label class="form-check-label" for="task1">
+                                            Review design mockups for landing page
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="list-group-item">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="task2">
+                                        <label class="form-check-label" for="task2">
+                                            Update API documentation
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="list-group-item">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" checked id="task3">
+                                        <label class="form-check-label text-decoration-line-through" for="task3">
+                                            Deploy to staging environment
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="list-group-item">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="task4">
+                                        <label class="form-check-label" for="task4">
+                                            Team standup meeting at 10 AM
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-4">
+                        <button class="btn btn-primary me-2">Create Task</button>
+                        <button class="btn btn-outline-secondary">View All Tasks</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Material Design Preview -->
+        <div class="framework-preview" id="material-preview">
+            <div class="preview-header">
+                <div class="preview-title">Rendered with Material Design</div>
+                <div class="preview-actions">
+                    <div class="preview-dot"></div>
+                    <div class="preview-dot"></div>
+                    <div class="preview-dot"></div>
+                </div>
+            </div>
+            <div class="preview-content material-container">
+                <!-- Material Version -->
+                <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+                    <header class="mdl-layout__header">
+                        <div class="mdl-layout__header-row">
+                            <span class="mdl-layout-title">📊 TaskFlow</span>
+                            <div class="mdl-layout-spacer"></div>
+                            <nav class="mdl-navigation">
+                                <a class="mdl-navigation__link" href="#">Home</a>
+                                <a class="mdl-navigation__link" href="#">Projects</a>
+                                <a class="mdl-navigation__link" href="#">Team</a>
+                                <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
+                                    + New Task
+                                </button>
+                            </nav>
+                        </div>
+                    </header>
+                    <main class="mdl-layout__content">
+                        <div class="page-content" style="padding: 24px;">
+                            <h1 class="mdl-typography--display-1">Task Dashboard</h1>
+                            <h2 class="mdl-typography--headline">Today's Overview</h2>
+                            <p class="mdl-typography--body-1">Welcome back! You have 5 tasks due today.</p>
+
+                            <div class="mdl-grid">
+                                <div class="mdl-cell mdl-cell--3-col">
+                                    <div class="mdl-card mdl-shadow--2dp" style="width: 100%; min-height: auto;">
+                                        <div class="mdl-card__supporting-text" style="text-align: center; width: 100%;">
+                                            <div style="font-size: 2em;">📝</div>
+                                            <div class="mdl-typography--display-1">12</div>
+                                            <div class="mdl-typography--caption">Active Tasks</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mdl-cell mdl-cell--3-col">
+                                    <div class="mdl-card mdl-shadow--2dp" style="width: 100%; min-height: auto;">
+                                        <div class="mdl-card__supporting-text" style="text-align: center; width: 100%;">
+                                            <div style="font-size: 2em;">✅</div>
+                                            <div class="mdl-typography--display-1">8</div>
+                                            <div class="mdl-typography--caption">Completed Today</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mdl-cell mdl-cell--3-col">
+                                    <div class="mdl-card mdl-shadow--2dp" style="width: 100%; min-height: auto;">
+                                        <div class="mdl-card__supporting-text" style="text-align: center; width: 100%;">
+                                            <div style="font-size: 2em;">📈</div>
+                                            <div class="mdl-typography--display-1">67%</div>
+                                            <div class="mdl-typography--caption">Progress</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mdl-cell mdl-cell--3-col">
+                                    <div class="mdl-card mdl-shadow--2dp" style="width: 100%; min-height: auto;">
+                                        <div class="mdl-card__supporting-text" style="text-align: center; width: 100%;">
+                                            <div style="font-size: 2em;">⏰</div>
+                                            <div class="mdl-typography--display-1">3</div>
+                                            <div class="mdl-typography--caption">Due Soon</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mdl-card mdl-shadow--2dp" style="width: 100%; margin-top: 24px;">
+                                <div class="mdl-card__title">
+                                    <h2 class="mdl-card__title-text">Your Tasks</h2>
+                                </div>
+                                <div class="mdl-card__supporting-text" style="width: 100%;">
+                                    <ul class="mdl-list">
+                                        <li class="mdl-list__item">
+                                            <span class="mdl-list__item-primary-content">
+                                                <label class="mdl-checkbox mdl-js-checkbox" for="m-task1">
+                                                    <input type="checkbox" id="m-task1" class="mdl-checkbox__input">
+                                                    <span class="mdl-checkbox__label">Review design mockups for landing page</span>
+                                                </label>
+                                            </span>
+                                        </li>
+                                        <li class="mdl-list__item">
+                                            <span class="mdl-list__item-primary-content">
+                                                <label class="mdl-checkbox mdl-js-checkbox" for="m-task2">
+                                                    <input type="checkbox" id="m-task2" class="mdl-checkbox__input">
+                                                    <span class="mdl-checkbox__label">Update API documentation</span>
+                                                </label>
+                                            </span>
+                                        </li>
+                                        <li class="mdl-list__item">
+                                            <span class="mdl-list__item-primary-content">
+                                                <label class="mdl-checkbox mdl-js-checkbox" for="m-task3">
+                                                    <input type="checkbox" id="m-task3" class="mdl-checkbox__input" checked>
+                                                    <span class="mdl-checkbox__label" style="text-decoration: line-through;">Deploy to staging environment</span>
+                                                </label>
+                                            </span>
+                                        </li>
+                                        <li class="mdl-list__item">
+                                            <span class="mdl-list__item-primary-content">
+                                                <label class="mdl-checkbox mdl-js-checkbox" for="m-task4">
+                                                    <input type="checkbox" id="m-task4" class="mdl-checkbox__input">
+                                                    <span class="mdl-checkbox__label">Team standup meeting at 10 AM</span>
+                                                </label>
+                                            </span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <div style="margin-top: 24px;">
+                                <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
+                                    Create Task
+                                </button>
+                                <button class="mdl-button mdl-js-button mdl-button--raised">
+                                    View All Tasks
+                                </button>
+                            </div>
+                        </div>
+                    </main>
+                </div>
+            </div>
+        </div>
+
+        <!-- Ant Design Preview (Simplified) -->
+        <div class="framework-preview" id="antd-preview">
+            <div class="preview-header">
+                <div class="preview-title">Rendered with Ant Design</div>
+                <div class="preview-actions">
+                    <div class="preview-dot"></div>
+                    <div class="preview-dot"></div>
+                    <div class="preview-dot"></div>
+                </div>
+            </div>
+            <div class="preview-content ant-style">
+                <!-- Ant Design Style Version -->
+                <div class="ant-navbar">
+                    <div style="display: flex; align-items: center; width: 100%;">
+                        <div style="font-size: 20px; font-weight: 600;">📊 TaskFlow</div>
+                        <div style="margin-left: auto; display: flex; gap: 24px; align-items: center;">
+                            <a href="#" style="color: rgba(255, 255, 255, 0.65); text-decoration: none;">Home</a>
+                            <a href="#" style="color: rgba(255, 255, 255, 0.65); text-decoration: none;">Projects</a>
+                            <a href="#" style="color: rgba(255, 255, 255, 0.65); text-decoration: none;">Team</a>
+                            <button class="ant-btn ant-btn-primary">+ New Task</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="padding: 24px; background: #f5f5f5; min-height: 400px;">
+                    <h1 style="font-size: 30px; font-weight: 500; margin-bottom: 16px; color: rgba(0, 0, 0, 0.88);">Task Dashboard</h1>
+                    <h2 style="font-size: 20px; font-weight: 500; margin-bottom: 8px; color: rgba(0, 0, 0, 0.88);">Today's Overview</h2>
+                    <p style="color: rgba(0, 0, 0, 0.45); margin-bottom: 24px;">Welcome back! You have 5 tasks due today.</p>
+
+                    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px;">
+                        <div class="ant-card">
+                            <div style="text-align: center;">
+                                <div style="font-size: 32px; margin-bottom: 8px;">📝</div>
+                                <div style="font-size: 30px; font-weight: 500; color: rgba(0, 0, 0, 0.88);">12</div>
+                                <div style="color: rgba(0, 0, 0, 0.45); font-size: 14px;">Active Tasks</div>
+                            </div>
+                        </div>
+                        <div class="ant-card">
+                            <div style="text-align: center;">
+                                <div style="font-size: 32px; margin-bottom: 8px;">✅</div>
+                                <div style="font-size: 30px; font-weight: 500; color: rgba(0, 0, 0, 0.88);">8</div>
+                                <div style="color: rgba(0, 0, 0, 0.45); font-size: 14px;">Completed Today</div>
+                            </div>
+                        </div>
+                        <div class="ant-card">
+                            <div style="text-align: center;">
+                                <div style="font-size: 32px; margin-bottom: 8px;">📈</div>
+                                <div style="font-size: 30px; font-weight: 500; color: rgba(0, 0, 0, 0.88);">67%</div>
+                                <div style="color: rgba(0, 0, 0, 0.45); font-size: 14px;">Progress</div>
+                            </div>
+                        </div>
+                        <div class="ant-card">
+                            <div style="text-align: center;">
+                                <div style="font-size: 32px; margin-bottom: 8px;">⏰</div>
+                                <div style="font-size: 30px; font-weight: 500; color: rgba(0, 0, 0, 0.88);">3</div>
+                                <div style="color: rgba(0, 0, 0, 0.45); font-size: 14px;">Due Soon</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="ant-card">
+                        <h3 style="font-size: 16px; font-weight: 500; margin-bottom: 16px; color: rgba(0, 0, 0, 0.88);">Your Tasks</h3>
+                        <div style="display: flex; flex-direction: column; gap: 12px;">
+                            <div style="padding: 12px; background: #fafafa; border-radius: 4px; display: flex; align-items: center; gap: 12px;">
+                                <input type="checkbox" style="width: 16px; height: 16px;">
+                                <span style="color: rgba(0, 0, 0, 0.88);">Review design mockups for landing page</span>
+                            </div>
+                            <div style="padding: 12px; background: #fafafa; border-radius: 4px; display: flex; align-items: center; gap: 12px;">
+                                <input type="checkbox" style="width: 16px; height: 16px;">
+                                <span style="color: rgba(0, 0, 0, 0.88);">Update API documentation</span>
+                            </div>
+                            <div style="padding: 12px; background: #fafafa; border-radius: 4px; display: flex; align-items: center; gap: 12px;">
+                                <input type="checkbox" checked style="width: 16px; height: 16px;">
+                                <span style="text-decoration: line-through; color: rgba(0, 0, 0, 0.45);">Deploy to staging environment</span>
+                            </div>
+                            <div style="padding: 12px; background: #fafafa; border-radius: 4px; display: flex; align-items: center; gap: 12px;">
+                                <input type="checkbox" style="width: 16px; height: 16px;">
+                                <span style="color: rgba(0, 0, 0, 0.88);">Team standup meeting at 10 AM</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 24px; display: flex; gap: 12px;">
+                        <button class="ant-btn ant-btn-primary">Create Task</button>
+                        <button class="ant-btn">View All Tasks</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Comparison Grid -->
+        <div class="comparison-grid">
+            <div class="comparison-card">
+                <h3 class="comparison-title">Benefits of Framework Styles</h3>
+                <ul class="comparison-list">
+                    <li class="comparison-item">
+                        <span class="comparison-icon">✓</span>
+                        <span>Production-ready HTML output</span>
+                    </li>
+                    <li class="comparison-item">
+                        <span class="comparison-icon">✓</span>
+                        <span>Matches your existing tech stack</span>
+                    </li>
+                    <li class="comparison-item">
+                        <span class="comparison-icon">✓</span>
+                        <span>No translation from mockup to code</span>
+                    </li>
+                    <li class="comparison-item">
+                        <span class="comparison-icon">✓</span>
+                        <span>Consistent with your design system</span>
+                    </li>
+                    <li class="comparison-item">
+                        <span class="comparison-icon">✓</span>
+                        <span>Responsive by default</span>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="comparison-card">
+                <h3 class="comparison-title">Available Frameworks</h3>
+                <ul class="comparison-list">
+                    <li class="comparison-item">
+                        <span class="comparison-icon">→</span>
+                        <span>Tailwind CSS, Material UI, Ant Design</span>
+                    </li>
+                    <li class="comparison-item">
+                        <span class="comparison-icon">→</span>
+                        <span>Bootstrap 5, Chakra UI, Bulma</span>
+                    </li>
+                    <li class="comparison-item">
+                        <span class="comparison-icon">→</span>
+                        <span>shadcn/ui, Semantic UI, Foundation</span>
+                    </li>
+                    <li class="comparison-item">
+                        <span class="comparison-icon">→</span>
+                        <span>Custom design systems via config</span>
+                    </li>
+                    <li class="comparison-item">
+                        <span class="comparison-icon">→</span>
+                        <span>Export to React/Vue components</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Material Design Lite JS -->
+    <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+
+    <script>
+        function switchFramework(framework) {
+            // Update tabs
+            document.querySelectorAll('.framework-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            event.target.closest('.framework-tab').classList.add('active');
+
+            // Update previews
+            document.querySelectorAll('.framework-preview').forEach(preview => {
+                preview.classList.remove('active');
+            });
+            document.getElementById(`${framework}-preview`).classList.add('active');
+        }
+
+        function copySource() {
+            const source = document.getElementById('source-markdown').innerText;
+            navigator.clipboard.writeText(source);
+            
+            const btn = document.querySelector('.copy-btn');
+            const originalText = btn.innerText;
+            btn.innerText = 'Copied!';
+            btn.style.background = 'rgba(16, 185, 129, 0.2)';
+            btn.style.borderColor = 'rgba(16, 185, 129, 0.3)';
+            btn.style.color = '#10b981';
+            
+            setTimeout(() => {
+                btn.innerText = originalText;
+                btn.style.background = '';
+                btn.style.borderColor = '';
+                btn.style.color = '';
+            }, 2000);
+        }
+    </script>
+</body>
+</html>

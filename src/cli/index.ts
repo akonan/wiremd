@@ -34,7 +34,7 @@ USAGE:
 OPTIONS:
   -o, --output <file>      Output file path (default: <input>.html)
   -f, --format <format>    Output format: html, json (default: html)
-  -s, --style <style>      Visual style: sketch, clean, wireframe, none (default: sketch)
+  -s, --style <style>      Visual style: sketch, clean, wireframe, none, tailwind, material, brutal (default: sketch)
   -w, --watch              Watch for changes and regenerate
   --serve <port>           Start dev server with live-reload (default: 3000)
   -p, --pretty             Pretty print output (default: true)
@@ -118,8 +118,8 @@ function parseArgs(args: string[]): CLIOptions | null {
       case '-s':
       case '--style':
         const style = args[++i];
-        if (!['sketch', 'clean', 'wireframe', 'none'].includes(style)) {
-          console.error(`Error: Invalid style "${style}". Must be sketch, clean, wireframe, or none.`);
+        if (!['sketch', 'clean', 'wireframe', 'none', 'tailwind', 'material', 'brutal'].includes(style)) {
+          console.error(`Error: Invalid style "${style}". Must be sketch, clean, wireframe, none, tailwind, material, or brutal.`);
           process.exit(1);
         }
         options.style = style as any;

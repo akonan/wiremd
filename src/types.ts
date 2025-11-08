@@ -50,7 +50,7 @@ export interface DocumentNode {
 
 export type WiremdNode =
   // Layout
-  | { type: 'container'; containerType: 'hero' | 'card' | 'modal' | 'sidebar' | 'footer' | 'alert' | 'grid' | 'layout' | 'section'; props: ComponentProps; children: WiremdNode[]; position?: Location }
+  | { type: 'container'; containerType: 'hero' | 'card' | 'modal' | 'sidebar' | 'footer' | 'alert' | 'grid' | 'layout' | 'section' | 'form-group' | 'button-group'; props: ComponentProps; children: WiremdNode[]; position?: Location }
   | { type: 'nav'; props: ComponentProps; children: WiremdNode[]; position?: Location }
   | { type: 'nav-item'; content: string; href?: string; props: ComponentProps; position?: Location }
   | { type: 'brand'; children: WiremdNode[]; props: ComponentProps; position?: Location }
@@ -153,7 +153,7 @@ export interface ParseOptions {
 
 export interface RenderOptions {
   format?: 'html' | 'json';
-  style?: 'sketch' | 'clean' | 'wireframe' | 'none';
+  style?: 'sketch' | 'clean' | 'wireframe' | 'none' | 'tailwind' | 'material' | 'brutal';
   inlineStyles?: boolean;
   pretty?: boolean;
   classPrefix?: string;
