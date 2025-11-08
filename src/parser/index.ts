@@ -92,15 +92,6 @@ export function validate(ast: DocumentNode): ValidationError[] {
       return;
     }
 
-    // Validate props exist
-    if (node.props === undefined) {
-      errors.push({
-        message: `Node of type "${node.type}" must have props`,
-        path: [...path, node.type],
-        code: 'MISSING_PROPS',
-      });
-    }
-
     // Recursively validate children
     if (node.children && Array.isArray(node.children)) {
       node.children.forEach((child: any, index: number) => {
