@@ -56,9 +56,57 @@ export function parse(input: string, options: ParseOptions = {}): DocumentNode {
  * @param ast - wiremd AST to validate
  * @returns Array of validation errors (empty if valid)
  */
-export function validate(_ast: DocumentNode): ValidationError[] {
-  // TODO: Implement validation
-  return [];
+export function validate(ast: DocumentNode): ValidationError[] {
+  const errors: ValidationError[] = [];
+
+  // Validate document structure
+  if (!ast.type || ast.type !== 'document') {
+    errors.push({
+      message: 'Root node must be of type "document"',
+      code: 'INVALID_ROOT_TYPE',
+    });
+  }
+
+  if (!ast.meta) {
+    errors.push({
+      message: 'Document must have metadata',
+      code: 'MISSING_META',
+    });
+  }
+
+  if (!Array.isArray(ast.children)) {
+    errors.push({
+      message: 'Document children must be an array',
+      code: 'INVALID_CHILDREN',
+    });
+  }
+
+  // Validate children recursively
+  function validateNode(node: any, path: string[] = []): void {
+    if (!node.type) {
+      errors.push({
+        message: 'Node must have a type',
+        path,
+        code: 'MISSING_NODE_TYPE',
+      });
+      return;
+    }
+
+    // Recursively validate children
+    if (node.children && Array.isArray(node.children)) {
+      node.children.forEach((child: any, index: number) => {
+        validateNode(child, [...path, node.type, `child[${index}]`]);
+      });
+    }
+  }
+
+  if (ast.children) {
+    ast.children.forEach((child, index) => {
+      validateNode(child, [`root.children[${index}]`]);
+    });
+  }
+
+  return errors;
 }
 
 interface ValidationError {

@@ -109,7 +109,7 @@ function parseArgs(args: string[]): CLIOptions | null {
         break;
 
       case '-f':
-      case '--format':
+      case '--format': {
         const format = args[++i];
         if (format !== 'html' && format !== 'json') {
           console.error(`Error: Invalid format "${format}". Must be html or json.`);
@@ -117,9 +117,10 @@ function parseArgs(args: string[]): CLIOptions | null {
         }
         options.format = format;
         break;
+      }
 
       case '-s':
-      case '--style':
+      case '--style': {
         const style = args[++i];
         if (!['sketch', 'clean', 'wireframe', 'none', 'tailwind', 'material', 'brutal'].includes(style)) {
           console.error(`Error: Invalid style "${style}". Must be sketch, clean, wireframe, none, tailwind, material, or brutal.`);
@@ -127,6 +128,7 @@ function parseArgs(args: string[]): CLIOptions | null {
         }
         options.style = style as any;
         break;
+      }
 
       case '-w':
       case '--watch':

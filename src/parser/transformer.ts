@@ -208,8 +208,10 @@ function transformNode(
       };
 
     default:
-      // For now, skip unknown nodes
-      // TODO: Add warnings for unsupported nodes
+      // Warn about unsupported nodes in development
+      if (process.env.NODE_ENV !== 'production') {
+        console.warn(`[wiremd] Unsupported node type: ${node.type}`);
+      }
       return null;
   }
 }
