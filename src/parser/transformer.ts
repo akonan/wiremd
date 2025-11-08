@@ -208,8 +208,10 @@ function transformNode(
       };
 
     default:
-      // For now, skip unknown nodes
-      // TODO: Add warnings for unsupported nodes
+      // Warn about unsupported nodes in development
+      if (process.env.NODE_ENV !== 'production') {
+        console.warn(`[wiremd] Unsupported node type: ${node.type}`);
+      }
       return null;
   }
 }
@@ -893,12 +895,50 @@ function transformListItem(node: any, _options: ParseOptions): WiremdNode {
 /**
  * Transform table node
  */
-function transformTable(_node: any, _options: ParseOptions): WiremdNode {
-  // TODO: Implement table transformation
+function transformTable(node: any, options: ParseOptions): WiremdNode {
+  const children: WiremdNode[] = [];
+
+  // Process table rows
+  if (node.children && Array.isArray(node.children)) {
+    for (const row of node.children) {
+      if (row.type === 'tableRow') {
+        const cells: WiremdNode[] = [];
+
+        if (row.children && Array.isArray(row.children)) {
+          for (const cell of row.children) {
+            if (cell.type === 'tableCell') {
+              const cellContent: WiremdNode[] = [];
+
+              // Transform cell content
+              if (cell.children && Array.isArray(cell.children)) {
+                for (const cellChild of cell.children) {
+                  const transformed = transformNode(cellChild, options);
+                  if (transformed) {
+                    cellContent.push(transformed);
+                  }
+                }
+              }
+
+              cells.push({
+                type: 'table-cell',
+                children: cellContent,
+              });
+            }
+          }
+        }
+
+        children.push({
+          type: 'table-row',
+          children: cells,
+        });
+      }
+    }
+  }
+
   return {
     type: 'table',
     props: {},
-    children: [],
+    children,
   };
 }
 

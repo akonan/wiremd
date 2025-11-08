@@ -8,11 +8,11 @@
 // Export types
 export * from './types.js';
 
-// Export parser (to be implemented)
-// export * from './parser/index.js';
+// Export parser
+export * from './parser/index.js';
 
-// Export renderer (to be implemented)
-// export * from './renderer/index.js';
+// Export renderer
+export * from './renderer/index.js';
 
 /**
  * Package version

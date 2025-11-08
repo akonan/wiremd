@@ -2,9 +2,24 @@
 
 > Text-first UI design tool - Create wireframes and mockups using Markdown syntax
 
-**Status:** 🚧 Under Development (Phase 1)
+[![CI](https://github.com/akonan/wiremd/workflows/CI/badge.svg)](https://github.com/akonan/wiremd/actions)
+[![npm version](https://img.shields.io/npm/v/wiremd.svg)](https://www.npmjs.com/package/wiremd)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.3-blue)](https://www.typescriptlang.org/)
+[![Node](https://img.shields.io/badge/Node-%3E%3D18.0.0-green)](https://nodejs.org/)
+
+**Status:** 🚧 Under Development (Phase 1) | **Version:** 0.1.0-alpha
 
 wiremd is a markdown-based UI wireframing tool that lets you create wireframes and mockups using familiar markdown syntax with intuitive extensions. Write your UI designs as text, render them as beautiful wireframes.
+
+## Why wiremd?
+
+- **Designer-friendly syntax** - No complex DSL to learn, just extended Markdown
+- **Version control ready** - Store your wireframes as plain text in Git
+- **Fast iteration** - Update designs as quickly as you can type
+- **Collaboration** - Review wireframe changes in pull requests
+- **Developer handoff** - Export to HTML or framework components
+- **No vendor lock-in** - Open source MIT license, runs anywhere
 
 ## Quick Example
 
@@ -51,8 +66,60 @@ This is an open-source MIT-licensed project containing:
 ## Installation
 
 ```bash
-# Not yet published to npm
-# Coming soon: npm install markdown-mockup
+# npm
+npm install wiremd
+
+# yarn
+yarn add wiremd
+
+# pnpm
+pnpm add wiremd
+```
+
+### CLI Usage
+
+```bash
+# Install globally
+npm install -g wiremd
+
+# Parse and render mockup (uses Balsamiq-style by default)
+mdmock input.md
+
+# Output to file
+mdmock input.md -o output.html
+
+# JSON output
+mdmock input.md --format json
+
+# Watch mode with dev server and live-reload
+mdmock input.md --watch --serve 3000
+
+# Use alternative visual styles
+mdmock input.md --style clean      # Modern minimal
+mdmock input.md --style wireframe  # Traditional grayscale
+mdmock input.md --style material   # Material Design
+mdmock input.md --style tailwind   # Tailwind-inspired
+mdmock input.md --style brutal     # Brutalist
+```
+
+### Programmatic API
+
+```typescript
+import { parse, renderToHTML, renderToJSON } from 'wiremd';
+
+// Parse markdown to AST
+const ast = parse(`
+  ## Contact Form
+  Name
+  [_____________________________]
+  [Submit]{.primary}
+`);
+
+// Render to HTML
+const html = renderToHTML(ast, { style: 'sketch' });
+
+// Render to JSON
+const json = renderToJSON(ast, { pretty: true });
 ```
 
 ## Documentation
@@ -89,11 +156,40 @@ See [Project Plan](./markdown-mockup-project-plan.md) for full roadmap.
 
 ## Contributing
 
-This project is in early development. Contributions welcome once Phase 1 is complete.
+Contributions are welcome! Please read our [Contributing Guide](./CONTRIBUTING.md) to get started.
+
+### Quick Start for Contributors
+
+```bash
+# Clone the repository
+git clone https://github.com/akonan/wiremd.git
+cd wiremd
+
+# Install dependencies
+npm install
+
+# Run tests
+npm test
+
+# Build
+npm run build
+
+# Run type check
+npm run typecheck
+```
+
+Please read our [Code of Conduct](./CODE_OF_CONDUCT.md) and [Security Policy](./SECURITY.md) before contributing.
 
 ## License
 
 MIT License - See [LICENSE](./LICENSE) for details.
+
+## Community & Support
+
+- **Issues & Bugs** - [GitHub Issues](https://github.com/akonan/wiremd/issues)
+- **Discussions** - [GitHub Discussions](https://github.com/akonan/wiremd/discussions)
+- **Security** - See [SECURITY.md](./SECURITY.md)
+- **Changelog** - [CHANGELOG.md](./CHANGELOG.md)
 
 ## Credits
 
@@ -107,4 +203,4 @@ Inspired by:
 
 ---
 
-**Status:** Under active development | **Version:** 0.1.0-alpha | **Node:** ≥18.0.0
+Made with ❤️ for designers and developers who love plain text
