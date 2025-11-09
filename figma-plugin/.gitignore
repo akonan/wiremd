@@ -8,6 +8,10 @@ dist/
 # TypeScript
 *.tsbuildinfo
 
+# Tests
+coverage/
+.vitest/
+
 # Logs
 logs
 *.log

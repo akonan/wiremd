@@ -8,7 +8,11 @@
     "build:ui": "cp src/ui.html dist/ui.html",
     "watch": "tsc --watch",
     "dev": "concurrently \"npm run watch\" \"npm run build:ui\"",
-    "clean": "rm -rf dist"
+    "clean": "rm -rf dist",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "typecheck": "tsc --noEmit"
   },
   "keywords": [
     "figma",
@@ -24,8 +28,10 @@
   "devDependencies": {
     "@figma/plugin-typings": "^1.98.0",
     "@types/node": "^20.10.0",
+    "@vitest/coverage-v8": "^1.0.4",
     "typescript": "^5.3.3",
-    "concurrently": "^8.2.2"
+    "concurrently": "^8.2.2",
+    "vitest": "^1.0.4"
   },
   "dependencies": {}
 }
