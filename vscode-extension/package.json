@@ -132,6 +132,9 @@
     "package": "vsce package",
     "lint": "eslint src --ext ts"
   },
+  "dependencies": {
+    "wiremd": "file:.."
+  },
   "devDependencies": {
     "@types/node": "^18.0.0",
     "@types/vscode": "^1.75.0",

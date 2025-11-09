@@ -4,8 +4,7 @@
  */
 
 import * as vscode from 'vscode';
-import * as path from 'path';
-import { readFileSync } from 'fs';
+import { parse, renderToHTML } from 'wiremd';
 
 export class WiremdPreviewProvider implements vscode.WebviewPanelSerializer {
   public static readonly viewType = 'wiremd.preview';
@@ -253,83 +252,18 @@ export class WiremdPreviewProvider implements vscode.WebviewPanelSerializer {
     const markdown = document.getText();
 
     try {
-      // Try to use wiremd from workspace node_modules or globally
-      const wiremdPath = await this.findWiremdPath();
-      const html = await this.renderWiremd(markdown, wiremdPath);
-      return this.wrapHTML(html);
-    } catch (error: any) {
-      return this.getErrorHTML(error.message);
-    }
-  }
-
-  /**
-   * Find wiremd installation path
-   */
-  private async findWiremdPath(): Promise<string | null> {
-    const workspaceFolders = vscode.workspace.workspaceFolders;
-    if (workspaceFolders && workspaceFolders.length > 0) {
-      const workspaceRoot = workspaceFolders[0].uri.fsPath;
-      const localPath = path.join(workspaceRoot, 'node_modules', 'wiremd');
-
-      try {
-        // Check if wiremd exists in workspace
-        readFileSync(path.join(localPath, 'package.json'));
-        return localPath;
-      } catch {
-        // Not found in workspace
-      }
-    }
-
-    // Try global installation
-    return null;
-  }
-
-  /**
-   * Render markdown using wiremd
-   */
-  private async renderWiremd(
-    markdown: string,
-    wiremdPath: string | null
-  ): Promise<string> {
-    if (!wiremdPath) {
-      // Fallback: use basic markdown rendering
-      return this.renderBasicMarkdown(markdown);
-    }
-
-    try {
-      // Dynamically import wiremd
-      const wiremd = require(wiremdPath);
-      const ast = wiremd.parse(markdown);
-      const html = wiremd.renderToHTML(ast, {
-        style: this.currentStyle,
+      // Render using wiremd
+      const ast = parse(markdown);
+      const html = renderToHTML(ast, {
+        style: this.currentStyle as any,
         pretty: true,
         inlineStyles: true
       });
 
-      return html;
+      return this.wrapHTML(html);
     } catch (error: any) {
-      throw new Error(`Failed to render: ${error.message}`);
+      return this.getErrorHTML(error.message);
     }
-  }
-
-  /**
-   * Basic markdown rendering fallback
-   */
-  private renderBasicMarkdown(markdown: string): string {
-    return `
-      <div style="padding: 20px; max-width: 800px; margin: 0 auto;">
-        <div style="background: #fff3cd; border: 1px solid #ffc107; padding: 15px; border-radius: 4px; margin-bottom: 20px;">
-          <strong>⚠️ Wiremd not installed</strong>
-          <p>Install wiremd to see live previews:</p>
-          <code style="background: #f5f5f5; padding: 5px 10px; border-radius: 3px; display: block; margin-top: 10px;">
-            npm install wiremd
-          </code>
-        </div>
-        <div style="border: 1px solid #ddd; padding: 20px; border-radius: 4px; background: #f9f9f9;">
-          <pre style="white-space: pre-wrap; font-family: monospace; margin: 0;">${this.escapeHtml(markdown)}</pre>
-        </div>
-      </div>
-    `;
   }
 
   /**
