@@ -1,0 +1,31 @@
+{
+  "name": "wiremd-figma-plugin",
+  "version": "0.1.0",
+  "description": "Import wiremd markdown mockups into Figma as editable designs",
+  "main": "dist/code.js",
+  "scripts": {
+    "build": "tsc && npm run build:ui",
+    "build:ui": "cp src/ui.html dist/ui.html",
+    "watch": "tsc --watch",
+    "dev": "concurrently \"npm run watch\" \"npm run build:ui\"",
+    "clean": "rm -rf dist"
+  },
+  "keywords": [
+    "figma",
+    "plugin",
+    "wiremd",
+    "wireframe",
+    "mockup",
+    "markdown",
+    "design"
+  ],
+  "author": "wiremd",
+  "license": "MIT",
+  "devDependencies": {
+    "@figma/plugin-typings": "^1.98.0",
+    "@types/node": "^20.10.0",
+    "typescript": "^5.3.3",
+    "concurrently": "^8.2.2"
+  },
+  "dependencies": {}
+}

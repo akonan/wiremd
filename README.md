@@ -54,7 +54,7 @@ This renders into a styled HTML wireframe with a form, inputs, and buttons.
 - ✅ **Visual syntax** - Looks like what it renders
 - ✅ **Fast to write** - Intuitive shortcuts for common patterns
 - ✅ **Extensible** - Add classes and attributes as needed
-- ✅ **Multiple outputs** - HTML, JSON
+- ✅ **Multiple outputs** - HTML, JSON, Figma (via plugin)
 - ✅ **7 visual styles** - sketch (Balsamiq-inspired), clean, wireframe, tailwind, material, brutal, none
 - ✅ **Full CLI tool** - Watch mode, live-reload dev server, style switching
 - ✅ **Rich examples** - Showcase files demonstrating all styles
@@ -69,6 +69,7 @@ This is an open-source MIT-licensed project containing:
 - **`tests/`** - Comprehensive test suite (48 tests)
 - **`docs/`** - Documentation site (coming soon)
 - **`examples/`** - Example wireframes
+- **`figma-plugin/`** - Figma plugin for importing wiremd designs
 
 ## Installation
 
@@ -109,6 +110,51 @@ mdmock wireframe.md --watch --serve 3000
 # Generate JSON output
 mdmock wireframe.md --format json
 ```
+
+## Exporting to Figma
+
+wiremd designs can be imported into Figma as fully editable, native Figma designs using the **wiremd Figma Plugin**.
+
+### Quick Start
+
+1. **Generate JSON from your wiremd file:**
+   ```bash
+   mdmock your-mockup.md --format json -o mockup.json
+   ```
+
+2. **Install the Figma Plugin:**
+   - Open Figma → Plugins → Browse plugins
+   - Search for "wiremd Importer"
+   - Click Install
+
+3. **Import to Figma:**
+   - Open the wiremd Importer plugin
+   - Paste your JSON
+   - Choose a visual theme (Sketch, Clean, Wireframe, or Minimal)
+   - Click "Import to Figma"
+
+Your wiremd design will appear as a new Figma page with:
+- Native Figma frames and text nodes
+- Auto-layout for responsive designs
+- Fully editable components
+- Professional styling based on your chosen theme
+
+### Visual Themes
+
+- **Sketch** - Balsamiq-style hand-drawn look (perfect for brainstorming)
+- **Clean** - Modern, polished design (great for presentations)
+- **Wireframe** - Traditional grayscale (ideal for specifications)
+- **Minimal** - Bare-bones styling (customize yourself)
+
+### What Gets Imported
+
+✅ All layout components (containers, grids, navigation)
+✅ Form elements (buttons, inputs, selects, checkboxes, radios)
+✅ Content (headings, paragraphs, lists, tables, code blocks)
+✅ Proper spacing, padding, and auto-layout constraints
+✅ Theme-specific styling (colors, fonts, shadows)
+
+See [figma-plugin/README.md](./figma-plugin/README.md) for complete documentation.
 
 ## Programmatic API
 
