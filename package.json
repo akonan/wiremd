@@ -10,15 +10,18 @@
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "import": "./dist/index.js"
+      "import": "./dist/index.js",
+      "require": "./dist/index.js"
     },
     "./parser": {
       "types": "./dist/parser/index.d.ts",
-      "import": "./dist/parser/index.js"
+      "import": "./dist/parser/index.js",
+      "require": "./dist/parser/index.js"
     },
     "./renderer": {
       "types": "./dist/renderer/index.d.ts",
-      "import": "./dist/renderer/index.js"
+      "import": "./dist/renderer/index.js",
+      "require": "./dist/renderer/index.js"
     }
   },
   "bin": {
