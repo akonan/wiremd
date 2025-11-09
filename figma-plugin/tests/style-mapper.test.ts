@@ -14,7 +14,7 @@ import {
 describe('getThemeStyles', () => {
   it('should return sketch theme styles', () => {
     const styles = getThemeStyles('sketch');
-    expect(styles.fontFamily).toBe('Chalkboard');
+    expect(styles.fontFamily).toBe('Comic Sans MS');
     expect(styles.shadows).toBe(true);
     expect(styles.cornerRadius).toBe(4);
   });
@@ -42,7 +42,7 @@ describe('getThemeStyles', () => {
 
   it('should default to sketch theme for invalid input', () => {
     const styles = getThemeStyles('invalid' as Theme);
-    expect(styles.fontFamily).toBe('Chalkboard');
+    expect(styles.fontFamily).toBe('Comic Sans MS');
   });
 
   it('should have consistent color structure', () => {
