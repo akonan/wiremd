@@ -14,11 +14,23 @@ if [ ! -f "package.json" ]; then
     exit 1
 fi
 
+# Build parent wiremd package first
+echo "📦 Building wiremd package..."
+cd ..
+if [ ! -d "dist" ] || [ ! -f "dist/index.js" ]; then
+    npm run build
+    echo "✅ Wiremd built"
+else
+    echo "✅ Wiremd already built"
+fi
+cd vscode-extension
+echo ""
+
 # Install dependencies if needed
-if [ ! -d "node_modules" ]; then
+if [ ! -d "node_modules" ] || [ ! -L "node_modules/wiremd" ]; then
     echo "📦 Installing dependencies..."
     npm install
-    echo "✅ Dependencies installed"
+    echo "✅ Dependencies installed (wiremd linked)"
     echo ""
 fi
 

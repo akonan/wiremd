@@ -2,12 +2,25 @@
 
 ## Quick Test Setup
 
+### Prerequisites
+
+The extension uses wiremd from the parent directory, so **you must build wiremd first**:
+
+```bash
+# From the root wiremd directory
+cd /home/user/wiremd
+npm install
+npm run build  # This creates dist/ files
+```
+
 ### 1. Install Extension Dependencies
 
 ```bash
 cd vscode-extension
-npm install
+npm install  # This links wiremd from parent directory
 ```
+
+This creates a symlink: `node_modules/wiremd -> ../..`
 
 ### 2. Compile the Extension
 
