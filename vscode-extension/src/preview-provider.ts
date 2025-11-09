@@ -152,6 +152,20 @@ export class WiremdPreviewProvider implements vscode.WebviewPanelSerializer {
   }
 
   /**
+   * Get viewport label for display
+   */
+  private getViewportLabel(viewport: string): string {
+    const labels: Record<string, string> = {
+      full: 'Full Width',
+      desktop: '💻 Desktop',
+      laptop: '💻 Laptop',
+      tablet: '📱 Tablet',
+      mobile: '📱 Mobile'
+    };
+    return labels[viewport] || 'Full Width';
+  }
+
+  /**
    * Show error in preview
    */
   private showError(message: string): void {
@@ -228,6 +242,16 @@ export class WiremdPreviewProvider implements vscode.WebviewPanelSerializer {
 
       case 'changeViewport':
         this.changeViewport(message.viewport);
+        break;
+
+      case 'requestStyleChange':
+        // Trigger the VS Code command to show style picker
+        vscode.commands.executeCommand('wiremd.changeStyle');
+        break;
+
+      case 'requestViewportChange':
+        // Trigger the VS Code command to show viewport picker
+        vscode.commands.executeCommand('wiremd.changeViewport');
         break;
 
       case 'error':
@@ -312,7 +336,6 @@ export class WiremdPreviewProvider implements vscode.WebviewPanelSerializer {
       box-shadow: 0 2px 4px rgba(0,0,0,0.05);
     }
 
-    #toolbar select,
     #toolbar button {
       padding: 6px 12px;
       border: 1px solid #d0d0d0;
@@ -321,6 +344,7 @@ export class WiremdPreviewProvider implements vscode.WebviewPanelSerializer {
       font-size: 13px;
       cursor: pointer;
       transition: all 0.2s;
+      font-family: inherit;
     }
 
     #toolbar button:hover {
@@ -328,10 +352,28 @@ export class WiremdPreviewProvider implements vscode.WebviewPanelSerializer {
       border-color: #999;
     }
 
-    #toolbar select:focus,
     #toolbar button:focus {
       outline: 2px solid #007acc;
       outline-offset: 2px;
+    }
+
+    #toolbar .dropdown-btn {
+      min-width: 120px;
+      text-align: left;
+      display: inline-flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-right: 8px;
+    }
+
+    #toolbar .dropdown-btn:hover {
+      background: #e8e8e8;
+      border-color: #007acc;
+    }
+
+    #toolbar span {
+      font-size: 13px;
+      color: #333;
     }
 
     .toolbar-separator {
@@ -418,27 +460,17 @@ export class WiremdPreviewProvider implements vscode.WebviewPanelSerializer {
     <button id="refresh-btn" title="Refresh Preview">🔄 Refresh</button>
     <div class="toolbar-separator"></div>
 
-    <label for="style-select">Style:</label>
-    <select id="style-select">
-      <option value="sketch" ${this.currentStyle === 'sketch' ? 'selected' : ''}>Sketch</option>
-      <option value="clean" ${this.currentStyle === 'clean' ? 'selected' : ''}>Clean</option>
-      <option value="wireframe" ${this.currentStyle === 'wireframe' ? 'selected' : ''}>Wireframe</option>
-      <option value="none" ${this.currentStyle === 'none' ? 'selected' : ''}>None</option>
-      <option value="tailwind" ${this.currentStyle === 'tailwind' ? 'selected' : ''}>Tailwind</option>
-      <option value="material" ${this.currentStyle === 'material' ? 'selected' : ''}>Material</option>
-      <option value="brutal" ${this.currentStyle === 'brutal' ? 'selected' : ''}>Brutal</option>
-    </select>
+    <span>Style:</span>
+    <button id="style-btn" class="dropdown-btn" title="Change Style">
+      ${this.currentStyle.charAt(0).toUpperCase() + this.currentStyle.slice(1)} ▾
+    </button>
 
     <div class="toolbar-separator"></div>
 
-    <label for="viewport-select">Viewport:</label>
-    <select id="viewport-select">
-      <option value="full" ${this.currentViewport === 'full' ? 'selected' : ''}>Full Width</option>
-      <option value="desktop" ${this.currentViewport === 'desktop' ? 'selected' : ''}>Desktop (1440px)</option>
-      <option value="laptop" ${this.currentViewport === 'laptop' ? 'selected' : ''}>Laptop (1024px)</option>
-      <option value="tablet" ${this.currentViewport === 'tablet' ? 'selected' : ''}>Tablet (768px)</option>
-      <option value="mobile" ${this.currentViewport === 'mobile' ? 'selected' : ''}>Mobile (375px)</option>
-    </select>
+    <span>Viewport:</span>
+    <button id="viewport-btn" class="dropdown-btn" title="Change Viewport">
+      ${this.getViewportLabel(this.currentViewport)} ▾
+    </button>
 
     <span id="viewport-indicator">${viewportWidth}</span>
   </div>
@@ -462,18 +494,14 @@ export class WiremdPreviewProvider implements vscode.WebviewPanelSerializer {
       vscode.postMessage({ type: 'ready' });
     });
 
-    // Handle style changes
-    document.getElementById('style-select').addEventListener('change', (e) => {
-      const style = e.target.value;
-      vscode.postMessage({ type: 'changeStyle', style });
-      vscode.setState({ ...state, style });
+    // Handle style button - trigger VS Code command
+    document.getElementById('style-btn').addEventListener('click', () => {
+      vscode.postMessage({ type: 'requestStyleChange' });
     });
 
-    // Handle viewport changes
-    document.getElementById('viewport-select').addEventListener('change', (e) => {
-      const viewport = e.target.value;
-      vscode.postMessage({ type: 'changeViewport', viewport });
-      vscode.setState({ ...state, viewport });
+    // Handle viewport button - trigger VS Code command
+    document.getElementById('viewport-btn').addEventListener('click', () => {
+      vscode.postMessage({ type: 'requestViewportChange' });
     });
 
     // Handle messages from extension
