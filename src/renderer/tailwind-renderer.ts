@@ -93,10 +93,10 @@ export function renderNode(node: WiremdNode, context: TailwindRenderContext): st
       return renderBlockquote(node, context);
 
     case 'code':
-      return renderCode(node, context);
+      return renderCode(node);
 
     case 'separator':
-      return renderSeparator(node, context);
+      return renderSeparator();
 
     default:
       return `<!-- Unknown node type: ${(node as any).type} -->`;
@@ -106,12 +106,19 @@ export function renderNode(node: WiremdNode, context: TailwindRenderContext): st
 function renderButton(node: any, context: TailwindRenderContext): string {
   let classes = 'px-4 py-2 rounded-md font-medium transition-colors';
 
+  // Check both variant property and classes array for button type
+  const variant = node.props.variant;
+  const nodeClasses = node.props.classes || [];
+  const isPrimary = variant === 'primary' || nodeClasses.includes('primary');
+  const isSecondary = variant === 'secondary' || nodeClasses.includes('secondary');
+  const isDanger = variant === 'danger' || nodeClasses.includes('danger');
+
   // Variant-specific styles
-  if (node.props.variant === 'primary') {
+  if (isPrimary) {
     classes += ' bg-indigo-600 text-white hover:bg-indigo-700';
-  } else if (node.props.variant === 'secondary') {
+  } else if (isSecondary) {
     classes += ' bg-gray-200 text-gray-900 hover:bg-gray-300';
-  } else if (node.props.variant === 'danger') {
+  } else if (isDanger) {
     classes += ' bg-red-600 text-white hover:bg-red-700';
   } else {
     classes += ' bg-gray-100 text-gray-900 hover:bg-gray-200 border border-gray-300';
@@ -499,7 +506,7 @@ function renderBlockquote(node: any, context: TailwindRenderContext): string {
 </blockquote>`;
 }
 
-function renderCode(node: any, context: TailwindRenderContext): string {
+function renderCode(node: any): string {
   const inline = node.inline !== false;
 
   if (inline) {
@@ -512,7 +519,7 @@ function renderCode(node: any, context: TailwindRenderContext): string {
   }
 }
 
-function renderSeparator(node: any, context: TailwindRenderContext): string {
+function renderSeparator(): string {
   const classes = 'border-t border-gray-300 my-8';
 
   return `<hr class="${classes}" />`;

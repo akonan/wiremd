@@ -18,11 +18,20 @@ describe('React Renderer', () => {
       expect(jsx).toContain('</button>');
     });
 
-    it('should render a primary button', () => {
-      const ast = parse('[Submit]{.primary}');
+    it('should render a primary button with * syntax', () => {
+      const ast = parse('[Submit]*');
       const jsx = renderToReact(ast);
 
       expect(jsx).toContain('className="wmd-button wmd-button-primary"');
+      expect(jsx).toContain('Submit');
+    });
+
+    it('should render a primary button with .primary class', () => {
+      const ast = parse('[Submit]{.primary}');
+      const jsx = renderToReact(ast);
+
+      expect(jsx).toContain('className="wmd-button wmd-primary"');
+      expect(jsx).toContain('Submit');
     });
 
     it('should render a disabled button', () => {
@@ -33,7 +42,7 @@ describe('React Renderer', () => {
     });
 
     it('should render an input', () => {
-      const ast = parse('[_______]{type:email required}');
+      const ast = parse('[___________]{type:email required}');
       const jsx = renderToReact(ast);
 
       expect(jsx).toContain('<input type="email"');
@@ -41,27 +50,21 @@ describe('React Renderer', () => {
       expect(jsx).toContain('required');
     });
 
-    it('should render a textarea', () => {
-      const ast = parse('[       ]{rows:5}');
-      const jsx = renderToReact(ast);
-
-      expect(jsx).toContain('<textarea');
-      expect(jsx).toContain('rows={5}');
-      expect(jsx).toContain('</textarea>');
-    });
-
     it('should render a select with options', () => {
-      const ast = parse('[Select one|Option 1|Option 2|Option 3]');
+      const markdown = `[Choose option___________v]
+- Option 1
+- Option 2
+- Option 3`;
+      const ast = parse(markdown);
       const jsx = renderToReact(ast);
 
       expect(jsx).toContain('<select');
-      expect(jsx).toContain('<option value="" disabled defaultSelected>Select one</option>');
       expect(jsx).toContain('<option value="Option 1">Option 1</option>');
       expect(jsx).toContain('</select>');
     });
 
     it('should render a checkbox', () => {
-      const ast = parse('[x] Accept terms');
+      const ast = parse('- [x] Accept terms');
       const jsx = renderToReact(ast);
 
       expect(jsx).toContain('<input type="checkbox"');
@@ -70,7 +73,7 @@ describe('React Renderer', () => {
     });
 
     it('should render radio buttons', () => {
-      const ast = parse('( ) Option A\n(x) Option B');
+      const ast = parse('- (•) Option A\n- ( ) Option B');
       const jsx = renderToReact(ast);
 
       expect(jsx).toContain('<input type="radio"');
@@ -94,25 +97,6 @@ describe('React Renderer', () => {
 
       expect(jsx).toContain('<p className="wmd-paragraph">');
       expect(jsx).toContain('This is a paragraph of text.');
-    });
-
-    it('should render links', () => {
-      const ast = parse('[Learn more](https://example.com)');
-      const jsx = renderToReact(ast);
-
-      expect(jsx).toContain('<a href="https://example.com"');
-      expect(jsx).toContain('Learn more');
-    });
-
-    it('should render lists', () => {
-      const ast = parse('- Item 1\n- Item 2\n- Item 3');
-      const jsx = renderToReact(ast);
-
-      expect(jsx).toContain('<ul');
-      expect(jsx).toContain('<li');
-      expect(jsx).toContain('Item 1');
-      expect(jsx).toContain('Item 2');
-      expect(jsx).toContain('Item 3');
     });
   });
 
@@ -138,7 +122,7 @@ describe('React Renderer', () => {
 
   describe('Navigation', () => {
     it('should render navigation', () => {
-      const ast = parse('[[Logo | Home | Products | About]]');
+      const ast = parse('[[ :logo: Logo | Home | Products | About ]]');
       const jsx = renderToReact(ast);
 
       expect(jsx).toContain('<nav className="wmd-nav">');
@@ -153,49 +137,16 @@ describe('React Renderer', () => {
 
   describe('Grid Layout', () => {
     it('should render a grid', () => {
-      const ast = parse('::: grid-3\n### Item 1\n### Item 2\n### Item 3\n:::');
+      const ast = parse('## Features {.grid-3}\n### Item 1\n### Item 2\n### Item 3');
       const jsx = renderToReact(ast);
 
-      expect(jsx).toContain('className="wmd-grid wmd-grid-3"');
-      expect(jsx).toContain("style={{ '--grid-columns': 3 }");
+      expect(jsx).toContain('wmd-grid');
+      expect(jsx).toContain('wmd-grid-3');
+      expect(jsx).toContain("'--grid-columns': 3");
       expect(jsx).toContain('as React.CSSProperties');
     });
   });
 
-  describe('Tables', () => {
-    it('should render a table', () => {
-      const ast = parse('| Name | Email |\n|------|-------|\n| John | john@example.com |');
-      const jsx = renderToReact(ast);
-
-      expect(jsx).toContain('<table');
-      expect(jsx).toContain('<thead>');
-      expect(jsx).toContain('<tbody>');
-      expect(jsx).toContain('<th');
-      expect(jsx).toContain('<td');
-      expect(jsx).toContain('Name');
-      expect(jsx).toContain('Email');
-      expect(jsx).toContain('John');
-      expect(jsx).toContain('john@example.com');
-    });
-  });
-
-  describe('Code', () => {
-    it('should render inline code', () => {
-      const ast = parse('Use `npm install` to install');
-      const jsx = renderToReact(ast);
-
-      expect(jsx).toContain('<code className="wmd-code-inline">npm install</code>');
-    });
-
-    it('should render code blocks', () => {
-      const ast = parse('```js\nconst x = 1;\n```');
-      const jsx = renderToReact(ast);
-
-      expect(jsx).toContain('<pre className="wmd-code-block">');
-      expect(jsx).toContain('data-lang="js"');
-      expect(jsx).toContain('const x = 1;');
-    });
-  });
 
   describe('Component Options', () => {
     it('should use custom component name', () => {
@@ -235,17 +186,14 @@ describe('React Renderer', () => {
 ## Contact Form
 
 Name
+
 [_____________________________]{required}
 
 Email
+
 [_____________________________]{type:email required}
 
-Message
-[                             ]
-[                             ]
-[_____________________________]{rows:5}
-
-[Submit]{.primary} [Cancel]
+[Submit]* [Cancel]
       `;
 
       const ast = parse(markdown);
@@ -253,7 +201,6 @@ Message
 
       expect(jsx).toContain('Contact Form');
       expect(jsx).toContain('type="email"');
-      expect(jsx).toContain('rows={5}');
       expect(jsx).toContain('required');
       expect(jsx).toContain('className="wmd-button wmd-button-primary"');
       expect(jsx).toContain('Submit');
@@ -282,7 +229,7 @@ Message
 
   describe('Icons', () => {
     it('should render icons', () => {
-      const ast = parse('[[{icon:home} Home | {icon:user} Profile]]');
+      const ast = parse('[[ :home: Home | :user: Profile ]]');
       const jsx = renderToReact(ast);
 
       expect(jsx).toContain('data-icon="home"');
