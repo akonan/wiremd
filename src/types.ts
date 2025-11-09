@@ -152,11 +152,13 @@ export interface ParseOptions {
 }
 
 export interface RenderOptions {
-  format?: 'html' | 'json';
+  format?: 'html' | 'json' | 'react' | 'tailwind';
   style?: 'sketch' | 'clean' | 'wireframe' | 'none' | 'tailwind' | 'material' | 'brutal';
   inlineStyles?: boolean;
   pretty?: boolean;
   classPrefix?: string;
+  typescript?: boolean; // For React renderer
+  componentName?: string; // For React renderer
 }
 
 // ============================================================================
