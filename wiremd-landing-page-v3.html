@@ -340,11 +340,11 @@
 
         /* Hero Section */
         .hero {
-            min-height: 100vh;
+            min-height: 90vh;
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 140px 0 100px;
+            padding: 140px 0 60px;
             position: relative;
             overflow: hidden;
         }
@@ -527,7 +527,7 @@
 
         /* Code Demo Section */
         .code-demo {
-            padding: 120px 0;
+            padding: 80px 0 120px;
             position: relative;
         }
 
@@ -634,130 +634,21 @@
             gap: 16px;
         }
 
-        /* Live Playground */
-        .playground {
-            padding: 120px 0;
-            background: var(--bg-secondary);
-        }
-
-        .playground-container {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 24px;
-            margin-top: 48px;
-        }
-
-        .editor-pane {
-            background: var(--bg-code);
-            border: 1px solid var(--border-color);
-            border-radius: 16px;
-            overflow: hidden;
-            box-shadow: var(--shadow-lg);
-        }
-
-        .editor-header {
-            background: var(--bg-tertiary);
-            padding: 14px 20px;
-            border-bottom: 1px solid var(--border-color);
-            font-family: var(--font-mono);
-            font-size: 13px;
-            color: var(--text-secondary);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .live-indicator {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            color: var(--success);
-            font-size: 12px;
-        }
-
-        .live-indicator::before {
-            content: '';
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: var(--success);
-            animation: pulse-dot 2s ease-in-out infinite;
-        }
-
-        @keyframes pulse-dot {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
-        }
-
-        .editor-textarea {
-            width: 100%;
-            min-height: 500px;
-            padding: 20px;
-            background: transparent;
-            border: none;
-            color: var(--text-primary);
-            font-family: var(--font-mono);
-            font-size: 14px;
-            line-height: 1.8;
-            resize: none;
-            outline: none;
-            tab-size: 2;
-        }
-
-        .editor-textarea:focus {
-            background: rgba(37, 99, 235, 0.02);
-        }
-
-        .editor-textarea::selection {
-            background: rgba(37, 99, 235, 0.3);
-        }
-
-        .preview-pane {
-            background: var(--bg-code);
-            border: 1px solid var(--border-color);
-            border-radius: 16px;
-            overflow: hidden;
-            box-shadow: var(--shadow-lg);
-        }
-
-        .preview-content {
-            padding: 24px;
-            min-height: 500px;
-            background: white;
-            border-radius: 12px;
-            margin: 20px;
-            color: #1a1a1a;
-            font-family: var(--font-sans);
-            overflow-y: auto;
-        }
-
-        .preview-content::-webkit-scrollbar {
-            width: 8px;
-        }
-
-        .preview-content::-webkit-scrollbar-track {
-            background: #f5f5f5;
-            border-radius: 4px;
-        }
-
-        .preview-content::-webkit-scrollbar-thumb {
-            background: #ccc;
-            border-radius: 4px;
-        }
-
-        .preview-content::-webkit-scrollbar-thumb:hover {
-            background: #999;
+        /* Style Selector */
+        #style-selector {
+            transition: var(--transition);
         }
 
         #style-selector:hover {
             border-color: var(--accent-primary);
             color: var(--text-primary);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
         }
 
         #style-selector:focus {
             outline: none;
             border-color: var(--accent-primary);
-            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
         }
 
         /* Features Section */
@@ -1231,8 +1122,7 @@
 
         /* Responsive */
         @media (max-width: 1024px) {
-            .code-demo-container,
-            .playground-container {
+            .code-demo-container {
                 grid-template-columns: 1fr;
             }
 
@@ -1329,15 +1219,13 @@
             <ul class="nav-links">
                 <li><a href="#features">Features</a></li>
                 <li><a href="#demo">Demo</a></li>
-                <li><a href="#playground">Playground</a></li>
                 <li><a href="#installation">Install</a></li>
                 <li>
                     <a href="https://github.com/akonan/wiremd" class="github-button" target="_blank" rel="noopener noreferrer">
                         <svg fill="currentColor" viewBox="0 0 24 24">
                             <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
                         </svg>
-                        <span>Star on GitHub</span>
-                        <span class="github-stars">2.3k</span>
+                        <span>GitHub</span>
                     </a>
                 </li>
             </ul>
@@ -1357,24 +1245,23 @@
                     <span class="gradient-text">with Markdown</span>
                 </h1>
                 <p class="hero-description">
-                    Stop dragging rectangles. Start typing interfaces.<br>
-                    WireMD transforms markdown into beautiful wireframes instantly.
+                    The text-first UI design tool for developers who think in code. Create wireframes and mockups as fast as you can type—no clicking, no dragging, just pure markdown magic.
                 </p>
                 <div class="hero-buttons">
-                    <a href="#playground" class="btn btn-primary">
-                        Try Live Demo
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <line x1="5" y1="12" x2="19" y2="12"></line>
-                            <polyline points="12 5 19 12 12 19"></polyline>
-                        </svg>
-                    </a>
-                    <a href="#installation" class="btn btn-secondary">
+                    <a href="#installation" class="btn btn-primary">
+                        Get Started
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
                             <polyline points="7 10 12 15 17 10"></polyline>
                             <line x1="12" y1="15" x2="12" y2="3"></line>
                         </svg>
-                        Install CLI
+                    </a>
+                    <a href="#demo" class="btn btn-secondary">
+                        See Demo
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                            <polyline points="12 5 19 12 12 19"></polyline>
+                        </svg>
                     </a>
                     <a href="https://github.com/akonan/wiremd" class="btn btn-ghost" target="_blank" rel="noopener noreferrer">
                         <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
@@ -1385,16 +1272,16 @@
                 </div>
                 <div class="stats-bar">
                     <div class="stat-item">
-                        <span class="stat-value">48+</span>
-                        <span class="stat-label">Tests</span>
+                        <span class="stat-value">MIT</span>
+                        <span class="stat-label">License</span>
                     </div>
                     <div class="stat-item">
-                        <span class="stat-value">7</span>
+                        <span class="stat-value">4</span>
                         <span class="stat-label">Visual Styles</span>
                     </div>
                     <div class="stat-item">
-                        <span class="stat-value">100%</span>
-                        <span class="stat-label">Open Source</span>
+                        <span class="stat-value">48+</span>
+                        <span class="stat-label">Passing Tests</span>
                     </div>
                     <div class="stat-item">
                         <span class="stat-value">&lt;100ms</span>
@@ -1411,7 +1298,15 @@
             <div class="section-header">
                 <div class="section-badge">Demo</div>
                 <h2 class="section-title">From Markdown to Mockup</h2>
-                <p class="section-description">See how simple it is to create beautiful wireframes with just markdown syntax</p>
+                <p class="section-description">Write markdown on the left, see beautiful wireframes on the right—instantly</p>
+            </div>
+
+            <div style="display: flex; justify-content: flex-end; margin-bottom: 16px;">
+                <select id="style-selector" style="background: var(--bg-tertiary); border: 1px solid var(--border-color); color: var(--text-secondary); padding: 8px 16px; padding-right: 36px; border-radius: 8px; font-size: 14px; cursor: pointer; transition: var(--transition); appearance: none; background-image: url(&quot;data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L6 6L11 1' stroke='%23a8a8a8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E&quot;); background-repeat: no-repeat; background-position: right 12px center; font-family: var(--font-sans); font-weight: 500;">
+                    <option value="sketch">Sketch Style</option>
+                    <option value="clean">Clean Style</option>
+                    <option value="wireframe">Wireframe Style</option>
+                </select>
             </div>
 
             <div class="code-demo-container">
@@ -1420,19 +1315,23 @@
                         <div class="code-title">input.wiremd</div>
                     </div>
                     <div class="code-body">
-                        <div class="code-line"><span class="code-comment"># Dashboard Layout</span></div>
+                        <div class="code-line"><span class="code-comment"># Login Page</span></div>
                         <div class="code-line"></div>
-                        <div class="code-line"><span class="code-tag">[[ Logo | Dashboard | Profile ]]</span></div>
+                        <div class="code-line"><span class="code-tag">[[ Logo | Sign In | Help ]]</span></div>
                         <div class="code-line"></div>
-                        <div class="code-line"><span class="code-keyword">## Welcome back, Sarah!</span></div>
+                        <div class="code-line"><span class="code-keyword">## Welcome Back</span></div>
+                        <div class="code-line"><span class="code-string">Sign in to your account</span></div>
                         <div class="code-line"></div>
-                        <div class="code-line"><span class="code-tag">[stats-grid]</span></div>
-                        <div class="code-line">&nbsp;&nbsp;<span class="code-string">- Revenue: $12,345</span></div>
-                        <div class="code-line">&nbsp;&nbsp;<span class="code-string">- Users: 1,234</span></div>
-                        <div class="code-line">&nbsp;&nbsp;<span class="code-string">- Growth: +23%</span></div>
-                        <div class="code-line"><span class="code-tag">[/stats-grid]</span></div>
+                        <div class="code-line"><span class="code-tag">[Email address___________]</span></div>
+                        <div class="code-line"><span class="code-tag">[Password_______________]</span></div>
                         <div class="code-line"></div>
-                        <div class="code-line"><span class="code-tag">[View Details]</span> <span class="code-tag">[Export Report]</span></div>
+                        <div class="code-line"><span class="code-string">[ ] Remember me</span></div>
+                        <div class="code-line"></div>
+                        <div class="code-line"><span class="code-tag">[Sign In]</span> <span class="code-string">Forgot password?</span></div>
+                        <div class="code-line"></div>
+                        <div class="code-line"><span class="code-comment">---</span></div>
+                        <div class="code-line"></div>
+                        <div class="code-line"><span class="code-string">Don't have an account? [Sign Up]</span></div>
                     </div>
                 </div>
 
@@ -1441,94 +1340,7 @@
                         <div class="code-title">Preview</div>
                     </div>
                     <div class="code-body">
-                        <div class="preview-block">
-                            <div style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 16px; border-bottom: 2px solid #e5e5e5; margin-bottom: 24px;">
-                                <div style="font-weight: 700; font-size: 18px;">Logo</div>
-                                <div style="font-weight: 600;">Dashboard</div>
-                                <div style="font-weight: 600;">Profile</div>
-                            </div>
-                            <h2 style="font-size: 28px; font-weight: 700; margin-bottom: 24px;">Welcome back, Sarah!</h2>
-                            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 24px;">
-                                <div style="padding: 20px; background: #f5f5f5; border-radius: 8px;">
-                                    <div style="font-size: 12px; color: #666; margin-bottom: 8px;">Revenue</div>
-                                    <div style="font-size: 24px; font-weight: 700;">$12,345</div>
-                                </div>
-                                <div style="padding: 20px; background: #f5f5f5; border-radius: 8px;">
-                                    <div style="font-size: 12px; color: #666; margin-bottom: 8px;">Users</div>
-                                    <div style="font-size: 24px; font-weight: 700;">1,234</div>
-                                </div>
-                                <div style="padding: 20px; background: #f5f5f5; border-radius: 8px;">
-                                    <div style="font-size: 12px; color: #666; margin-bottom: 8px;">Growth</div>
-                                    <div style="font-size: 24px; font-weight: 700; color: #10b981;">+23%</div>
-                                </div>
-                            </div>
-                            <div style="display: flex; gap: 12px;">
-                                <button style="padding: 10px 20px; background: #2563eb; color: white; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; transition: all 0.2s ease;">View Details</button>
-                                <button style="padding: 10px 20px; background: #f5f5f5; color: #333; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; transition: all 0.2s ease;">Export Report</button>
-                            </div>
-                            <style>
-                                .preview-block button:hover {
-                                    transform: translateY(-1px);
-                                    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-                                }
-                                .preview-block button:first-child:hover {
-                                    background: #1d4ed8 !important;
-                                }
-                                .preview-block button:last-child:hover {
-                                    background: #e5e5e5 !important;
-                                }
-                            </style>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Live Playground -->
-    <section class="playground" id="playground">
-        <div class="container container-wide">
-            <div class="section-header">
-                <div class="section-badge">Playground</div>
-                <h2 class="section-title">Try it Yourself</h2>
-                <p class="section-description">Edit the markdown and watch your mockup update in real-time</p>
-            </div>
-
-            <div class="playground-container">
-                <div class="editor-pane">
-                    <div class="editor-header">
-                        <div class="code-title">input.wiremd</div>
-                        <div class="live-indicator">Live</div>
-                    </div>
-                    <textarea class="editor-textarea" id="markdown-input" spellcheck="false"># Login Page
-
-[[ Logo | Company Name ]]
-
-## Welcome Back
-Please sign in to continue
-
-[Email___________]
-[Password________] {type:password}
-
-[x] Remember me
-
-[Sign In] [Forgot Password?]
-
----
-Don't have an account? [Sign Up]</textarea>
-                </div>
-
-                <div class="preview-pane">
-                    <div class="editor-header">
-                        <div class="code-title">Preview</div>
-                        <select id="style-selector" style="background: var(--bg-tertiary); border: 1px solid var(--border-color); color: var(--text-secondary); padding: 6px 12px; padding-right: 28px; border-radius: 6px; font-size: 12px; cursor: pointer; transition: var(--transition); appearance: none; background-image: url(\"data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L6 6L11 1' stroke='%23a8a8a8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E\"); background-repeat: no-repeat; background-position: right 8px center;">
-                            <option>Sketch Style</option>
-                            <option>Clean Style</option>
-                            <option>Wireframe Style</option>
-                        </select>
-                    </div>
-                    <div class="preview-content" id="preview-output">
-                        <p style="color: #999; text-align: center; padding: 40px;">Start typing markdown to see the preview...</p>
+                        <div id="preview-block" class="preview-block"></div>
                     </div>
                 </div>
             </div>
@@ -1556,47 +1368,47 @@ Don't have an account? [Sign Up]</textarea>
 
                 <div class="feature-card">
                     <div class="feature-icon">🎨</div>
-                    <h3 class="feature-title">7 Visual Styles</h3>
+                    <h3 class="feature-title">Multiple Visual Styles</h3>
                     <p class="feature-description">
-                        From hand-drawn sketches to polished interfaces. Switch between sketch, clean, wireframe, tailwind, material, brutal, or none.
+                        From hand-drawn sketches to clean minimalism. Built-in styles include sketch (Balsamiq-inspired), clean, wireframe, and none for custom styling.
                     </p>
                     <div class="feature-code">--style sketch | clean | wireframe</div>
                 </div>
 
                 <div class="feature-card">
                     <div class="feature-icon">🔧</div>
-                    <h3 class="feature-title">Framework Export</h3>
+                    <h3 class="feature-title">HTML & JSON Export</h3>
                     <p class="feature-description">
-                        Export to React, Vue, or vanilla HTML. Your mockups become real components. (Coming soon)
+                        Export to standalone HTML with inline styles or JSON AST for custom processing. Framework renderers (React, Vue) coming in Phase 5.
                     </p>
-                    <div class="feature-code">--export react | vue | html</div>
+                    <div class="feature-code">--format html | json</div>
                 </div>
 
                 <div class="feature-card">
                     <div class="feature-icon">📦</div>
-                    <h3 class="feature-title">Component Library</h3>
+                    <h3 class="feature-title">TypeScript Core</h3>
                     <p class="feature-description">
-                        Create reusable components. Build your design system in markdown. Share and version control your components.
+                        Built with TypeScript in strict mode. Unified/Remark-based parser with custom plugins for container syntax and inline components.
                     </p>
-                    <div class="feature-code">{{button}} {{navbar}} {{card}}</div>
+                    <div class="feature-code">npm install wiremd</div>
                 </div>
 
                 <div class="feature-card">
                     <div class="feature-icon">🔌</div>
-                    <h3 class="feature-title">Obsidian Plugin</h3>
+                    <h3 class="feature-title">CLI Tool</h3>
                     <p class="feature-description">
-                        Design directly in your notes. Live preview, components, and annotations. Perfect for knowledge workers.
+                        Parse and render mockups from the command line. Watch mode with dev server and live reload. Perfect for rapid prototyping.
                     </p>
-                    <div class="feature-code">Available in Community Plugins</div>
+                    <div class="feature-code">wiremd input.md --watch --serve</div>
                 </div>
 
                 <div class="feature-card">
                     <div class="feature-icon">🚀</div>
-                    <h3 class="feature-title">CI/CD Ready</h3>
+                    <h3 class="feature-title">Performance First</h3>
                     <p class="feature-description">
-                        Generate mockups in your build pipeline. Version control your designs. Review changes in pull requests.
+                        Optimized for speed with target parse times under 100ms. Efficient AST transformation and rendering pipeline.
                     </p>
-                    <div class="feature-code">npm run build:mockups</div>
+                    <div class="feature-code">&lt;100ms parse • &lt;200ms render</div>
                 </div>
 
                 <div class="feature-card">
@@ -1633,31 +1445,31 @@ Don't have an account? [Sign Up]</textarea>
     <section class="social-proof">
         <div class="container">
             <div class="section-header">
-                <div class="section-badge">Community</div>
-                <h2 class="section-title">Trusted by Developers</h2>
-                <p class="section-description">Join thousands of developers creating better designs faster</p>
+                <div class="section-badge">Project Stats</div>
+                <h2 class="section-title">Built for Speed & Quality</h2>
+                <p class="section-description">Core library metrics and performance targets</p>
             </div>
 
             <div class="proof-grid">
                 <div class="proof-card">
-                    <div class="proof-icon">⭐</div>
-                    <div class="proof-value">2.3k</div>
-                    <div class="proof-label">GitHub Stars</div>
+                    <div class="proof-icon">📦</div>
+                    <div class="proof-value">MIT</div>
+                    <div class="proof-label">Open Source License</div>
                 </div>
                 <div class="proof-card">
-                    <div class="proof-icon">📦</div>
+                    <div class="proof-icon">✓</div>
                     <div class="proof-value">48+</div>
                     <div class="proof-label">Passing Tests</div>
                 </div>
                 <div class="proof-card">
                     <div class="proof-icon">🎨</div>
-                    <div class="proof-value">7</div>
+                    <div class="proof-value">4</div>
                     <div class="proof-label">Visual Styles</div>
                 </div>
                 <div class="proof-card">
                     <div class="proof-icon">⚡</div>
                     <div class="proof-value">&lt;100ms</div>
-                    <div class="proof-label">Parse Time</div>
+                    <div class="proof-label">Parse Time Target</div>
                 </div>
             </div>
         </div>
@@ -1766,10 +1578,10 @@ Don't have an account? [Sign Up]</textarea>
     <section class="cta">
         <div class="container">
             <div class="cta-content">
-                <h2>Ready to Design Faster?</h2>
+                <h2>Ready to Design at the Speed of Thought?</h2>
                 <p class="cta-description">
-                    Join thousands of developers who've ditched the drag-and-drop.<br>
-                    Start creating beautiful wireframes with markdown today.
+                    Stop wrestling with design tools. Start prototyping in plain text.<br>
+                    WireMD is free, open source, and ready to transform your workflow.
                 </p>
                 <div class="cta-buttons">
                     <a href="#installation" class="btn btn-primary">
@@ -1800,7 +1612,7 @@ Don't have an account? [Sign Up]</textarea>
                         WireMD
                     </div>
                     <p class="footer-description">
-                        Text-first UI design tool for developers and designers. Create wireframes and mockups using Markdown syntax.
+                        Text-first UI design tool that transforms markdown into beautiful wireframes. Built with TypeScript, tested with Vitest, and open sourced under MIT.
                     </p>
                 </div>
                 <div class="footer-section">
@@ -1808,7 +1620,6 @@ Don't have an account? [Sign Up]</textarea>
                     <ul class="footer-links">
                         <li><a href="#features">Features</a></li>
                         <li><a href="#demo">Demo</a></li>
-                        <li><a href="#playground">Playground</a></li>
                         <li><a href="#installation">Installation</a></li>
                     </ul>
                 </div>
@@ -1832,7 +1643,7 @@ Don't have an account? [Sign Up]</textarea>
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>&copy; 2024 WireMD. MIT License. Made with ❤️ for developers.</p>
+                <p>&copy; 2025 WireMD. MIT Licensed. Built for developers who think in markdown.</p>
                 <div class="social-links">
                     <a href="https://github.com/akonan/wiremd" aria-label="GitHub" target="_blank" rel="noopener noreferrer">
                         <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
@@ -1859,47 +1670,6 @@ Don't have an account? [Sign Up]</textarea>
                 navbar.classList.remove('scrolled');
             }
         });
-
-        // Live editor preview
-        const input = document.getElementById('markdown-input');
-        const preview = document.getElementById('preview-output');
-
-        function updatePreview() {
-            const markdown = input.value;
-            if (!markdown.trim()) {
-                preview.innerHTML = '<p style="color: #999; text-align: center; padding: 40px;">Start typing markdown to see the preview...</p>';
-                return;
-            }
-            
-            // Enhanced markdown to HTML conversion - order matters!
-            let html = markdown
-                // Headings
-                .replace(/^# (.+)$/gm, '<h1 style="font-size: 32px; font-weight: 700; margin-bottom: 24px;">$1</h1>')
-                .replace(/^## (.+)$/gm, '<h2 style="font-size: 24px; font-weight: 700; margin: 24px 0 16px;">$1</h2>')
-                .replace(/^### (.+)$/gm, '<h3 style="font-size: 20px; font-weight: 600; margin: 20px 0 12px;">$1</h3>')
-                // Inline containers
-                .replace(/\[\[(.+?)\]\]/g, '<div style="display: flex; justify-content: space-between; align-items: center; padding: 16px; background: #f5f5f5; border-radius: 8px; margin-bottom: 24px; font-weight: 600;">$1</div>')
-                // Checkboxes
-                .replace(/\[x\] (.+)/g, '<label style="display: flex; align-items: center; margin: 12px 0; cursor: pointer;"><input type="checkbox" checked style="margin-right: 8px; width: 18px; height: 18px; cursor: pointer;"> <span>$1</span></label>')
-                // Password inputs (must come before regular inputs)
-                .replace(/\[([^\]]+?)\] \{type:password\}/g, '<input type="password" placeholder="$1" style="width: 100%; padding: 12px; margin: 8px 0; border: 2px solid #e5e5e5; border-radius: 6px; font-size: 14px; font-family: inherit; box-sizing: border-box;">')
-                // Text inputs with underscores
-                .replace(/\[([^\]]+?)___+\]/g, '<input type="text" placeholder="$1" style="width: 100%; padding: 12px; margin: 8px 0; border: 2px solid #e5e5e5; border-radius: 6px; font-size: 14px; font-family: inherit; box-sizing: border-box;">')
-                // Horizontal rule
-                .replace(/---/g, '<hr style="margin: 32px 0; border: none; border-top: 2px solid #e5e5e5;">')
-                // Buttons (must come last, after all inputs are processed)
-                .replace(/\[([^\]]+?)\]/g, '<button style="padding: 10px 20px; margin: 4px; background: #2563eb; color: white; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; font-size: 14px; font-family: inherit; transition: all 0.2s ease;">$1</button>')
-                // Line breaks
-                .replace(/\n\n/g, '<br><br>');
-            
-            // Add hover effects to buttons via CSS
-            html = '<style>#preview-output button:hover { background: #1d4ed8 !important; transform: translateY(-1px); box-shadow: 0 4px 8px rgba(37, 99, 235, 0.3); }</style>' + html;
-            
-            preview.innerHTML = html;
-        }
-
-        input.addEventListener('input', updatePreview);
-        updatePreview();
 
         // Install tabs
         document.querySelectorAll('.install-tab').forEach(tab => {
@@ -1971,6 +1741,88 @@ Don't have an account? [Sign Up]</textarea>
             card.style.transform = 'translateY(20px)';
             card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
             observer.observe(card);
+        });
+
+        // Demo preview with style switching
+        const styleSelector = document.getElementById('style-selector');
+        const previewBlock = document.getElementById('preview-block');
+
+        const styles = {
+            sketch: {
+                container: 'background: #fff; padding: 32px; border-radius: 8px; font-family: "Comic Sans MS", cursive; transform: rotate(-0.5deg);',
+                nav: 'display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 3px solid #333; margin-bottom: 24px; transform: rotate(0.3deg);',
+                navItem: 'font-weight: 700; font-size: 16px; color: #333;',
+                heading: 'font-size: 32px; font-weight: 700; margin: 24px 0 8px; transform: rotate(-0.2deg);',
+                text: 'font-size: 15px; color: #666; margin-bottom: 20px;',
+                input: 'width: 100%; padding: 12px; margin: 10px 0; border: 2px solid #333; border-radius: 6px; background: #fafafa; font-family: inherit; box-sizing: border-box; transform: rotate(0.2deg);',
+                checkbox: 'margin: 16px 0; font-size: 15px;',
+                button: 'padding: 12px 28px; background: #333; color: white; border: 3px solid #333; border-radius: 8px; font-weight: 700; cursor: pointer; font-family: inherit; transform: rotate(-0.3deg); box-shadow: 3px 3px 0 rgba(0,0,0,0.2);',
+                link: 'color: #2563eb; text-decoration: underline; cursor: pointer; font-size: 15px;',
+                hr: 'margin: 24px 0; border: none; border-top: 2px solid #ccc;',
+                footer: 'margin-top: 20px; text-align: center; font-size: 14px; color: #666;'
+            },
+            clean: {
+                container: 'background: #fff; padding: 40px; border-radius: 12px; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;',
+                nav: 'display: flex; justify-content: space-between; padding: 16px 0; border-bottom: 1px solid #e5e5e5; margin-bottom: 32px;',
+                navItem: 'font-weight: 600; font-size: 15px; color: #111;',
+                heading: 'font-size: 32px; font-weight: 700; margin: 24px 0 8px; color: #111;',
+                text: 'font-size: 15px; color: #666; margin-bottom: 24px; line-height: 1.5;',
+                input: 'width: 100%; padding: 12px 16px; margin: 8px 0; border: 1px solid #d1d5db; border-radius: 8px; background: white; font-size: 15px; transition: all 0.2s; box-sizing: border-box;',
+                checkbox: 'margin: 16px 0; font-size: 15px; color: #374151;',
+                button: 'padding: 12px 24px; background: #2563eb; color: white; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; font-size: 15px; transition: all 0.2s;',
+                link: 'color: #2563eb; text-decoration: none; cursor: pointer; font-size: 15px; font-weight: 500;',
+                hr: 'margin: 32px 0; border: none; border-top: 1px solid #e5e5e5;',
+                footer: 'margin-top: 24px; text-align: center; font-size: 14px; color: #6b7280;'
+            },
+            wireframe: {
+                container: 'background: #fff; padding: 32px; border: 2px solid #333; border-radius: 4px; font-family: "Courier New", monospace;',
+                nav: 'display: flex; justify-content: space-between; padding: 12px; border: 2px solid #333; margin-bottom: 24px; background: repeating-linear-gradient(45deg, #f9f9f9, #f9f9f9 10px, white 10px, white 20px);',
+                navItem: 'font-weight: 700; font-size: 14px; color: #333; text-transform: uppercase;',
+                heading: 'font-size: 28px; font-weight: 700; margin: 24px 0 8px; border-bottom: 3px solid #333; padding-bottom: 8px; text-transform: uppercase;',
+                text: 'font-size: 14px; color: #666; margin-bottom: 20px;',
+                input: 'width: 100%; padding: 10px; margin: 10px 0; border: 2px solid #333; border-radius: 0; background: repeating-linear-gradient(90deg, #f9f9f9, #f9f9f9 10px, white 10px, white 20px); font-family: inherit; box-sizing: border-box;',
+                checkbox: 'margin: 16px 0; font-size: 14px;',
+                button: 'padding: 12px 24px; background: repeating-linear-gradient(45deg, #333, #333 10px, #555 10px, #555 20px); color: white; border: 2px solid #333; border-radius: 0; font-weight: 700; cursor: pointer; font-family: inherit; text-transform: uppercase;',
+                link: 'color: #333; text-decoration: underline; cursor: pointer; font-size: 14px; text-transform: uppercase;',
+                hr: 'margin: 24px 0; border: none; border-top: 3px double #333;',
+                footer: 'margin-top: 20px; text-align: center; font-size: 13px; color: #666; border-top: 2px solid #333; padding-top: 16px;'
+            }
+        };
+
+        function renderPreview(styleName) {
+            const style = styles[styleName];
+            previewBlock.innerHTML = `
+                <div style="${style.container}">
+                    <div style="${style.nav}">
+                        <div style="${style.navItem}">Logo</div>
+                        <div style="${style.navItem}">Sign In</div>
+                        <div style="${style.navItem}">Help</div>
+                    </div>
+                    <h2 style="${style.heading}">Welcome Back</h2>
+                    <p style="${style.text}">Sign in to your account</p>
+                    <input type="text" placeholder="Email address" style="${style.input}">
+                    <input type="password" placeholder="Password" style="${style.input}">
+                    <div style="${style.checkbox}">
+                        <label><input type="checkbox"> Remember me</label>
+                    </div>
+                    <div style="margin: 24px 0;">
+                        <button style="${style.button}">Sign In</button>
+                        <span style="margin-left: 16px; ${style.link}">Forgot password?</span>
+                    </div>
+                    <hr style="${style.hr}">
+                    <div style="${style.footer}">
+                        Don't have an account? <span style="${style.link}">Sign Up</span>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Initialize with sketch style
+        renderPreview('sketch');
+
+        // Handle style changes
+        styleSelector.addEventListener('change', (e) => {
+            renderPreview(e.target.value);
         });
     </script>
 </body>
