@@ -51,6 +51,7 @@ This renders into a styled HTML wireframe with a form, inputs, and buttons.
 ## Features
 
 - ✅ **Markdown-first** - Valid markdown that degrades gracefully
+- ✅ **Full markdown support** - Headings, text formatting, lists, links, images, blockquotes, code blocks, tables
 - ✅ **Visual syntax** - Looks like what it renders
 - ✅ **Fast to write** - Intuitive shortcuts for common patterns
 - ✅ **Extensible** - Add classes and attributes as needed
@@ -118,6 +119,9 @@ import { parse, renderToHTML, renderToJSON } from 'wiremd';
 // Parse markdown to AST
 const ast = parse(`
   ## Contact Form
+
+  ![Logo](logo.png)
+
   Name
   [_____________________________]
   [Submit]{.primary}
@@ -133,6 +137,7 @@ const json = renderToJSON(ast, { pretty: true });
 ## Documentation
 
 - [Syntax Specification v0.1](./SYNTAX-SPEC-v0.1.md) - Complete syntax reference
+- [Component Showcase](./examples/showcase.md) - Interactive examples of all components and styles
 - [Test Corpus v3 (Hybrid)](./test-corpus-v3-hybrid.md) - Examples of 20 common UI patterns
 - [Project Plan](./markdown-mockup-project-plan.md) - Full development roadmap
 - [Syntax Research](./syntax-research.md) - Research and design decisions

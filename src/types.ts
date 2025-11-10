@@ -59,12 +59,12 @@ export type WiremdNode =
 
   // Forms
   | { type: 'button'; content?: string; children?: WiremdNode[]; props: ComponentProps & { variant?: 'primary' | 'secondary' | 'danger'; type?: 'button' | 'submit' | 'reset' }; position?: Location }
-  | { type: 'input'; props: ComponentProps & { inputType?: 'text' | 'email' | 'password' | 'tel' | 'url' | 'number' | 'date' | 'time' | 'datetime-local' | 'search'; placeholder?: string; value?: string; required?: boolean; disabled?: boolean; pattern?: string; min?: number | string; max?: number | string; step?: number | string }; position?: Location }
+  | { type: 'input'; props: ComponentProps & { inputType?: 'text' | 'email' | 'password' | 'tel' | 'url' | 'number' | 'date' | 'time' | 'datetime-local' | 'search'; placeholder?: string; value?: string; required?: boolean; disabled?: boolean; pattern?: string; min?: number | string; max?: number | string; step?: number | string; width?: number }; position?: Location }
   | { type: 'textarea'; props: ComponentProps & { placeholder?: string; rows?: number; cols?: number; required?: boolean; disabled?: boolean; value?: string }; position?: Location }
   | { type: 'select'; props: ComponentProps & { placeholder?: string; required?: boolean; disabled?: boolean; multiple?: boolean; value?: string }; options: Array<{ type: 'option'; value: string; label: string; selected?: boolean; position?: Location }>; position?: Location }
   | { type: 'option'; value: string; label: string; selected?: boolean; position?: Location }
   | { type: 'checkbox'; label?: string; children?: WiremdNode[]; checked: boolean; props: ComponentProps & { required?: boolean; disabled?: boolean; value?: string }; position?: Location }
-  | { type: 'radio'; label: string; selected: boolean; props: ComponentProps & { name?: string; value?: string; required?: boolean; disabled?: boolean }; position?: Location }
+  | { type: 'radio'; label: string; selected: boolean; props: ComponentProps & { name?: string; value?: string; required?: boolean; disabled?: boolean }; children?: WiremdNode[]; position?: Location }
   | { type: 'radio-group'; name?: string; props: ComponentProps; children: WiremdNode[]; position?: Location }
   | { type: 'form'; props: ComponentProps & { action?: string; method?: 'get' | 'post' }; children: WiremdNode[]; position?: Location }
 

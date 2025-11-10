@@ -132,6 +132,14 @@ body.${prefix}root {
   outline-offset: 2px;
 }
 
+.${prefix}input[disabled], .${prefix}input.${prefix}state-disabled,
+.${prefix}textarea[disabled], .${prefix}textarea.${prefix}state-disabled,
+.${prefix}select[disabled], .${prefix}select.${prefix}state-disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background: #f5f5f5;
+}
+
 .${prefix}textarea {
   resize: vertical;
   min-height: 80px;
@@ -354,6 +362,19 @@ body.${prefix}root {
   font-weight: bold;
 }
 
+/* Table cell alignment - more specific to override th/td defaults */
+.${prefix}table .${prefix}align-left {
+  text-align: left !important;
+}
+
+.${prefix}table .${prefix}align-center {
+  text-align: center !important;
+}
+
+.${prefix}table .${prefix}align-right {
+  text-align: right !important;
+}
+
 /* Responsive */
 @media (max-width: 768px) {
   .${prefix}grid {
@@ -482,6 +503,15 @@ body.${prefix}root {
   outline: none;
   border-color: #0066cc;
   box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.1);
+}
+
+.${prefix}input[disabled], .${prefix}input.${prefix}state-disabled,
+.${prefix}textarea[disabled], .${prefix}textarea.${prefix}state-disabled,
+.${prefix}select[disabled], .${prefix}select.${prefix}state-disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  background: #f5f5f5;
+  border-color: #e0e0e0;
 }
 
 .${prefix}textarea {
@@ -804,6 +834,14 @@ body.${prefix}root {
 .${prefix}input::placeholder, .${prefix}textarea::placeholder {
   color: #999;
   font-style: italic;
+}
+
+.${prefix}input[disabled], .${prefix}input.${prefix}state-disabled,
+.${prefix}textarea[disabled], .${prefix}textarea.${prefix}state-disabled,
+.${prefix}select[disabled], .${prefix}select.${prefix}state-disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background: #f0f0f0;
 }
 
 .${prefix}textarea {
@@ -1179,6 +1217,15 @@ body {
   color: #9ca3af;
 }
 
+.${prefix}input[disabled], .${prefix}input.${prefix}state-disabled,
+.${prefix}textarea[disabled], .${prefix}textarea.${prefix}state-disabled,
+.${prefix}select[disabled], .${prefix}select.${prefix}state-disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  background: #f9fafb;
+  border-color: #e5e7eb;
+}
+
 .${prefix}textarea {
   resize: vertical;
   min-height: 6rem;
@@ -1403,6 +1450,19 @@ body {
 
 .${prefix}table tr:last-child td {
   border-bottom: none;
+}
+
+/* Table cell alignment - more specific to override th/td defaults */
+.${prefix}table .${prefix}align-left {
+  text-align: left !important;
+}
+
+.${prefix}table .${prefix}align-center {
+  text-align: center !important;
+}
+
+.${prefix}table .${prefix}align-right {
+  text-align: right !important;
 }
 
 /* Icons */
@@ -1660,6 +1720,15 @@ body {
 
 .${prefix}input::placeholder, .${prefix}textarea::placeholder {
   color: rgba(0, 0, 0, 0.42);
+}
+
+.${prefix}input[disabled], .${prefix}input.${prefix}state-disabled,
+.${prefix}textarea[disabled], .${prefix}textarea.${prefix}state-disabled,
+.${prefix}select[disabled], .${prefix}select.${prefix}state-disabled {
+  color: rgba(0, 0, 0, 0.38);
+  cursor: not-allowed;
+  background: rgba(0, 0, 0, 0.02);
+  border-bottom-color: rgba(0, 0, 0, 0.26);
 }
 
 .${prefix}textarea {
@@ -1922,6 +1991,19 @@ body {
   background: rgba(0, 0, 0, 0.04);
 }
 
+/* Table cell alignment - more specific to override th/td defaults */
+.${prefix}table .${prefix}align-left {
+  text-align: left !important;
+}
+
+.${prefix}table .${prefix}align-center {
+  text-align: center !important;
+}
+
+.${prefix}table .${prefix}align-right {
+  text-align: right !important;
+}
+
 /* Material Icons */
 .${prefix}icon {
   display: inline-block;
@@ -2153,6 +2235,16 @@ body {
 .${prefix}input::placeholder, .${prefix}textarea::placeholder {
   color: #666666;
   font-weight: 600;
+}
+
+.${prefix}input[disabled], .${prefix}input.${prefix}state-disabled,
+.${prefix}textarea[disabled], .${prefix}textarea.${prefix}state-disabled,
+.${prefix}select[disabled], .${prefix}select.${prefix}state-disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background: #e0e0e0;
+  box-shadow: none;
+  transform: none !important;
 }
 
 .${prefix}textarea {
@@ -2450,6 +2542,19 @@ body {
 
 .${prefix}table tr:hover td {
   background: #bcf0da;
+}
+
+/* Table cell alignment - more specific to override th/td defaults */
+.${prefix}table .${prefix}align-left {
+  text-align: left !important;
+}
+
+.${prefix}table .${prefix}align-center {
+  text-align: center !important;
+}
+
+.${prefix}table .${prefix}align-right {
+  text-align: right !important;
 }
 
 /* Brutal Icons */

@@ -201,6 +201,23 @@ function transformNode(
         inline: true,
       };
 
+    case 'image':
+      return {
+        type: 'image',
+        src: node.url || '',
+        alt: node.alt || '',
+        props: {},
+      };
+
+    case 'link':
+      return {
+        type: 'link',
+        href: node.url || '#',
+        title: node.title,
+        children: node.children?.map((child: any) => transformNode(child, options)).filter(Boolean) || [],
+        props: {},
+      };
+
     case 'thematicBreak':
       return {
         type: 'separator',
@@ -379,9 +396,9 @@ function transformHeading(node: any, _options: ParseOptions): WiremdNode {
  * This is where we'll detect buttons, inputs, etc.
  */
 function transformParagraph(node: any, _options: ParseOptions, nextNode?: any): WiremdNode {
-  // Check if this paragraph has rich content (strong, emphasis, links, etc.)
+  // Check if this paragraph has rich content (strong, emphasis, links, images, etc.)
   const hasRichContent = node.children && node.children.some((child: any) =>
-    child.type === 'strong' || child.type === 'emphasis' || child.type === 'link' || child.type === 'code'
+    child.type === 'strong' || child.type === 'emphasis' || child.type === 'link' || child.type === 'code' || child.type === 'image'
   );
 
   // If it has rich content and is not a special pattern, return as a rich text paragraph
@@ -453,6 +470,15 @@ function transformParagraph(node: any, _options: ParseOptions, nextNode?: any): 
             currentText += part;
           }
         }
+      } else if (child.type === 'image') {
+        // Flush text before image and add image as separate child
+        flushText();
+        processedChildren.push({
+          type: 'image',
+          src: child.url || '',
+          alt: child.alt || '',
+          props: {},
+        });
       } else if (child.type === 'strong') {
         currentText += `<strong>${extractTextContent(child)}</strong>`;
       } else if (child.type === 'emphasis') {
@@ -699,13 +725,31 @@ function transformParagraph(node: any, _options: ParseOptions, nextNode?: any): 
         const props = parseAttributes(attrs || '');
 
         // Determine input type and placeholder from pattern
+        let placeholderText = '';
         if (pattern.includes('*') && pattern.replace(/[^*]/g, '').length > 3) {
           props.inputType = 'password';
         } else {
           // Extract placeholder text before underscores
           const placeholderMatch = pattern.match(/^([^_*]+)[_*]/);
           if (placeholderMatch) {
-            props.placeholder = placeholderMatch[1].trim();
+            placeholderText = placeholderMatch[1].trim();
+            props.placeholder = placeholderText;
+          }
+        }
+
+        // Count underscores or asterisks to determine width (each char = ~1 character width)
+        const underscoreCount = pattern.replace(/[^_]/g, '').length;
+        const asteriskCount = pattern.replace(/[^*]/g, '').length;
+        const widthChars = underscoreCount > 0 ? underscoreCount : asteriskCount;
+
+        if (widthChars > 0) {
+          // If there's placeholder text, width should be at least as long as placeholder + extra padding
+          // Add 6 chars padding to account for Comic Sans variable width and browser padding
+          // Otherwise use the underscore/asterisk count
+          if (placeholderText) {
+            props.width = Math.max(placeholderText.length + 6, widthChars);
+          } else {
+            props.width = widthChars;
           }
         }
 
@@ -1072,8 +1116,28 @@ function transformList(node: any, options: ParseOptions): WiremdNode {
 /**
  * Transform list item node
  */
-function transformListItem(node: any, _options: ParseOptions): WiremdNode {
-  const content = extractTextContent(node);
+function transformListItem(node: any, options: ParseOptions): WiremdNode {
+  // Extract immediate text content (from paragraph) and nested children
+  let immediateContent = '';
+  const nestedChildren: WiremdNode[] = [];
+
+  if (node.children && Array.isArray(node.children)) {
+    for (const child of node.children) {
+      // First paragraph contains the immediate list item text
+      if (child.type === 'paragraph' && !immediateContent) {
+        immediateContent = extractTextContent(child);
+      }
+      // Nested lists should be transformed and added as children
+      else if (child.type === 'list') {
+        const transformed = transformList(child, options);
+        if (transformed) {
+          nestedChildren.push(transformed);
+        }
+      }
+    }
+  }
+
+  const content = immediateContent || extractTextContent(node);
 
   // Check for task list checkbox: remark-gfm sets checked property
   // node.checked will be true, false, or null (for non-task-list items)
@@ -1111,6 +1175,11 @@ function transformListItem(node: any, _options: ParseOptions): WiremdNode {
         }
       }
 
+      // Add nested children if any
+      if (nestedChildren.length > 0) {
+        children.push(...nestedChildren);
+      }
+
       return {
         type: 'checkbox',
         label: '', // Will use children instead
@@ -1125,6 +1194,7 @@ function transformListItem(node: any, _options: ParseOptions): WiremdNode {
       label,
       checked: node.checked === true,
       props,
+      children: nestedChildren.length > 0 ? (nestedChildren as any) : undefined,
     };
   }
 
@@ -1147,6 +1217,7 @@ function transformListItem(node: any, _options: ParseOptions): WiremdNode {
       label,
       selected: radioMatch[1] !== ' ',
       props,
+      children: nestedChildren.length > 0 ? (nestedChildren as any) : undefined,
     };
   }
 
@@ -1173,6 +1244,11 @@ function transformListItem(node: any, _options: ParseOptions): WiremdNode {
       }
     }
 
+    // Add nested children if any
+    if (nestedChildren.length > 0) {
+      children.push(...nestedChildren);
+    }
+
     return {
       type: 'list-item',
       children: children as any,
@@ -1184,6 +1260,7 @@ function transformListItem(node: any, _options: ParseOptions): WiremdNode {
     type: 'list-item',
     content,
     props: {},
+    children: nestedChildren.length > 0 ? (nestedChildren as any) : undefined,
   };
 }
 
