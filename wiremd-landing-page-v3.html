@@ -1,0 +1,1977 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WireMD - Design UI Mockups with Markdown</title>
+    <meta name="description" content="Create wireframes and mockups using Markdown syntax. Text-first UI design tool for developers and designers. Open source, MIT licensed.">
+    <meta name="keywords" content="wireframe, mockup, markdown, UI design, prototyping, developer tools">
+    <meta name="theme-color" content="#2563eb">
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="WireMD - Design UI Mockups with Markdown">
+    <meta property="og:description" content="Create wireframes and mockups using Markdown syntax. Text-first UI design tool.">
+    <meta property="og:type" content="website">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <style>
+        /* CSS Variables - Blue/Cyan Theme */
+        :root {
+            --bg-primary: #0a0a0a;
+            --bg-secondary: #111111;
+            --bg-tertiary: #1a1a1a;
+            --bg-code: #0d1117;
+            --bg-card: #161b22;
+            
+            --text-primary: #ffffff;
+            --text-secondary: #a8a8a8;
+            --text-tertiary: #666666;
+            --text-muted: #484848;
+            
+            --accent-primary: #2563eb;
+            --accent-secondary: #06b6d4;
+            --accent-tertiary: #22d3ee;
+            --accent-gradient: linear-gradient(135deg, #3b82f6 0%, #06b6d4 100%);
+            --accent-gradient-hover: linear-gradient(135deg, #60a5fa 0%, #22d3ee 100%);
+            
+            --border-color: rgba(255, 255, 255, 0.08);
+            --border-hover: rgba(255, 255, 255, 0.16);
+            --border-active: rgba(37, 99, 235, 0.4);
+            
+            --success: #10b981;
+            --warning: #f59e0b;
+            --error: #ef4444;
+            --info: #3b82f6;
+            
+            --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            --font-mono: 'JetBrains Mono', 'SF Mono', 'Monaco', 'Cascadia Code', Consolas, monospace;
+            
+            --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-slow: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-fast: all 0.1s ease-out;
+            
+            --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+            --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.4);
+            --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.5);
+            --shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.6);
+            --shadow-glow: 0 0 30px rgba(37, 99, 235, 0.3);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 12px;
+            height: 12px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-secondary);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--accent-primary);
+            border-radius: 6px;
+            border: 2px solid var(--bg-secondary);
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--accent-secondary);
+        }
+
+        /* Animated Grid Background */
+        .grid-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            opacity: 0.04;
+            background-image: 
+                linear-gradient(rgba(37, 99, 235, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(37, 99, 235, 0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+            z-index: 1;
+            animation: gridMove 20s linear infinite;
+        }
+
+        @keyframes gridMove {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+
+        /* Gradient Orbs */
+        .gradient-orb {
+            position: fixed;
+            width: 800px;
+            height: 800px;
+            border-radius: 50%;
+            filter: blur(120px);
+            opacity: 0.15;
+            pointer-events: none;
+            z-index: 0;
+            animation: float 25s ease-in-out infinite;
+        }
+
+        .gradient-orb:nth-child(1) {
+            top: 10%;
+            left: 10%;
+            background: radial-gradient(circle, var(--accent-primary) 0%, transparent 70%);
+        }
+
+        .gradient-orb:nth-child(2) {
+            top: 60%;
+            left: 70%;
+            background: radial-gradient(circle, var(--accent-secondary) 0%, transparent 70%);
+            animation-delay: -12s;
+        }
+
+        .gradient-orb:nth-child(3) {
+            top: 30%;
+            left: 50%;
+            background: radial-gradient(circle, #3b82f6 0%, transparent 70%);
+            animation-delay: -6s;
+            width: 600px;
+            height: 600px;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translate(0, 0) scale(1);
+            }
+            33% {
+                transform: translate(30px, -30px) scale(1.1);
+            }
+            66% {
+                transform: translate(-20px, 20px) scale(0.9);
+            }
+        }
+
+        /* Container */
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 24px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .container-wide {
+            max-width: 1400px;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(10, 10, 10, 0.7);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            border-bottom: 1px solid var(--border-color);
+            z-index: 1000;
+            transition: var(--transition);
+        }
+
+        nav.scrolled {
+            background: rgba(10, 10, 10, 0.95);
+            box-shadow: var(--shadow-md);
+        }
+
+        .nav-container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 16px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 22px;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: var(--text-primary);
+            transition: var(--transition);
+        }
+
+        .logo:hover {
+            transform: scale(1.05);
+        }
+
+        .logo-icon {
+            width: 36px;
+            height: 36px;
+            background: var(--accent-gradient);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 900;
+            font-size: 20px;
+            box-shadow: var(--shadow-glow);
+            animation: pulse 3s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { 
+                transform: scale(1);
+                box-shadow: 0 0 20px rgba(37, 99, 235, 0.3);
+            }
+            50% { 
+                transform: scale(1.05);
+                box-shadow: 0 0 30px rgba(37, 99, 235, 0.5);
+            }
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 32px;
+            list-style: none;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 15px;
+            font-weight: 500;
+            transition: var(--transition);
+            position: relative;
+            padding: 8px 0;
+        }
+
+        .nav-links a:hover {
+            color: var(--text-primary);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--accent-gradient);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .github-button {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 18px;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .github-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transition: left 0.5s;
+        }
+
+        .github-button:hover::before {
+            left: 100%;
+        }
+
+        .github-button:hover {
+            border-color: var(--accent-primary);
+            color: var(--text-primary);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-glow);
+        }
+
+        .github-button svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        .github-stars {
+            padding-left: 12px;
+            margin-left: 12px;
+            border-left: 1px solid var(--border-color);
+            color: var(--accent-secondary);
+            font-weight: 700;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 140px 0 100px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-content {
+            text-align: center;
+            max-width: 1000px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 10;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 20px;
+            background: rgba(37, 99, 235, 0.15);
+            border: 1px solid rgba(37, 99, 235, 0.3);
+            border-radius: 100px;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--accent-secondary);
+            margin-bottom: 32px;
+            animation: slideDown 0.8s ease-out;
+            backdrop-filter: blur(10px);
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero h1 {
+            font-size: clamp(52px, 9vw, 96px);
+            font-weight: 900;
+            line-height: 1.1;
+            margin-bottom: 32px;
+            animation: slideUp 0.8s ease-out 0.2s both;
+            letter-spacing: -0.02em;
+        }
+
+        .hero h1 .gradient-text {
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            display: inline-block;
+            position: relative;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero-description {
+            font-size: clamp(18px, 2.5vw, 24px);
+            color: var(--text-secondary);
+            margin-bottom: 48px;
+            line-height: 1.7;
+            animation: slideUp 0.8s ease-out 0.4s both;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            flex-wrap: wrap;
+            animation: slideUp 0.8s ease-out 0.6s both;
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 16px 32px;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: var(--transition);
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            border: none;
+            position: relative;
+            overflow: hidden;
+            font-family: var(--font-sans);
+        }
+
+        .btn-primary {
+            background: var(--accent-gradient);
+            color: white;
+            box-shadow: 0 4px 15px rgba(37, 99, 235, 0.4);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(37, 99, 235, 0.5);
+        }
+
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+
+        .btn-secondary {
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--accent-primary);
+            background: var(--bg-card);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-glow);
+        }
+
+        .btn-ghost {
+            background: transparent;
+            color: var(--text-secondary);
+            border: 1px solid transparent;
+        }
+
+        .btn-ghost:hover {
+            color: var(--text-primary);
+            border-color: var(--border-color);
+        }
+
+        /* Stats Bar */
+        .stats-bar {
+            display: flex;
+            justify-content: center;
+            gap: 48px;
+            margin-top: 64px;
+            padding: 32px;
+            background: rgba(22, 27, 34, 0.6);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            backdrop-filter: blur(10px);
+            animation: slideUp 0.8s ease-out 0.8s both;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 32px;
+            font-weight: 800;
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .stat-label {
+            font-size: 14px;
+            color: var(--text-tertiary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Code Demo Section */
+        .code-demo {
+            padding: 120px 0;
+            position: relative;
+        }
+
+        .code-demo-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 32px;
+            margin-top: 48px;
+        }
+
+        .code-block {
+            background: var(--bg-code);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: var(--shadow-xl);
+            transition: var(--transition);
+        }
+
+        .code-block:hover {
+            border-color: var(--border-hover);
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-xl), var(--shadow-glow);
+        }
+
+        .code-header {
+            background: var(--bg-tertiary);
+            padding: 16px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .code-title {
+            font-family: var(--font-mono);
+            font-size: 13px;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .code-title::before {
+            content: '';
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--error);
+            display: inline-block;
+        }
+
+        .code-title:nth-child(1)::before {
+            background: var(--error);
+        }
+
+        .code-body {
+            padding: 24px;
+            font-family: var(--font-mono);
+            font-size: 14px;
+            line-height: 1.8;
+            overflow-x: auto;
+            color: var(--text-primary);
+        }
+
+        .code-line {
+            margin: 4px 0;
+            padding: 2px 0;
+        }
+
+        .code-comment {
+            color: #6a737d;
+        }
+
+        .code-keyword {
+            color: #f97583;
+        }
+
+        .code-string {
+            color: #9ecbff;
+        }
+
+        .code-function {
+            color: #79b8ff;
+        }
+
+        .code-tag {
+            color: #7ee83f;
+        }
+
+        .code-property {
+            color: #79b8ff;
+        }
+
+        .preview-block {
+            background: white;
+            border-radius: 12px;
+            padding: 32px;
+            color: #1a1a1a;
+            font-family: var(--font-sans);
+            min-height: 400px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        /* Live Playground */
+        .playground {
+            padding: 120px 0;
+            background: var(--bg-secondary);
+        }
+
+        .playground-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            margin-top: 48px;
+        }
+
+        .editor-pane {
+            background: var(--bg-code);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .editor-header {
+            background: var(--bg-tertiary);
+            padding: 14px 20px;
+            border-bottom: 1px solid var(--border-color);
+            font-family: var(--font-mono);
+            font-size: 13px;
+            color: var(--text-secondary);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .live-indicator {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--success);
+            font-size: 12px;
+        }
+
+        .live-indicator::before {
+            content: '';
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--success);
+            animation: pulse-dot 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse-dot {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .editor-textarea {
+            width: 100%;
+            min-height: 500px;
+            padding: 20px;
+            background: transparent;
+            border: none;
+            color: var(--text-primary);
+            font-family: var(--font-mono);
+            font-size: 14px;
+            line-height: 1.8;
+            resize: none;
+            outline: none;
+            tab-size: 2;
+        }
+
+        .editor-textarea:focus {
+            background: rgba(37, 99, 235, 0.02);
+        }
+
+        .editor-textarea::selection {
+            background: rgba(37, 99, 235, 0.3);
+        }
+
+        .preview-pane {
+            background: var(--bg-code);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .preview-content {
+            padding: 24px;
+            min-height: 500px;
+            background: white;
+            border-radius: 12px;
+            margin: 20px;
+            color: #1a1a1a;
+            font-family: var(--font-sans);
+            overflow-y: auto;
+        }
+
+        .preview-content::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .preview-content::-webkit-scrollbar-track {
+            background: #f5f5f5;
+            border-radius: 4px;
+        }
+
+        .preview-content::-webkit-scrollbar-thumb {
+            background: #ccc;
+            border-radius: 4px;
+        }
+
+        .preview-content::-webkit-scrollbar-thumb:hover {
+            background: #999;
+        }
+
+        #style-selector:hover {
+            border-color: var(--accent-primary);
+            color: var(--text-primary);
+        }
+
+        #style-selector:focus {
+            outline: none;
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        /* Features Section */
+        .features {
+            padding: 120px 0;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+            gap: 32px;
+            margin-top: 64px;
+        }
+
+        .feature-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 40px;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: var(--accent-gradient);
+            transform: translateX(-100%);
+            transition: transform 0.4s ease;
+        }
+
+        .feature-card:hover::before {
+            transform: translateX(0);
+        }
+
+        .feature-card:hover {
+            border-color: var(--border-hover);
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-xl);
+        }
+
+        .feature-icon {
+            width: 56px;
+            height: 56px;
+            background: rgba(37, 99, 235, 0.15);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            margin-bottom: 24px;
+            border: 1px solid rgba(37, 99, 235, 0.2);
+        }
+
+        .feature-title {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .feature-description {
+            color: var(--text-secondary);
+            line-height: 1.7;
+            margin-bottom: 20px;
+        }
+
+        .feature-code {
+            margin-top: 20px;
+            padding: 14px;
+            background: var(--bg-primary);
+            border-radius: 8px;
+            font-family: var(--font-mono);
+            font-size: 13px;
+            color: var(--accent-secondary);
+            overflow-x: auto;
+            border: 1px solid var(--border-color);
+        }
+
+        /* Installation Section */
+        .installation {
+            padding: 120px 0;
+            background: var(--bg-secondary);
+        }
+
+        .install-tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 24px;
+            border-bottom: 1px solid var(--border-color);
+            overflow-x: auto;
+        }
+
+        .install-tab {
+            padding: 14px 28px;
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            position: relative;
+            white-space: nowrap;
+            font-family: var(--font-sans);
+        }
+
+        .install-tab:hover {
+            color: var(--text-primary);
+        }
+
+        .install-tab.active {
+            color: var(--text-primary);
+        }
+
+        .install-tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--accent-gradient);
+            border-radius: 3px 3px 0 0;
+        }
+
+        .install-content {
+            background: var(--bg-code);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 28px;
+            position: relative;
+            box-shadow: var(--shadow-md);
+        }
+
+        .install-command {
+            font-family: var(--font-mono);
+            font-size: 17px;
+            color: var(--text-primary);
+            display: block;
+            padding-right: 100px;
+        }
+
+        .copy-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            padding: 10px 16px;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-secondary);
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            font-family: var(--font-sans);
+        }
+
+        .copy-btn:hover {
+            background: var(--accent-primary);
+            color: white;
+            border-color: var(--accent-primary);
+        }
+
+        .copy-btn.copied {
+            background: var(--success);
+            border-color: var(--success);
+            color: white;
+        }
+
+        /* Social Proof */
+        .social-proof {
+            padding: 120px 0;
+        }
+
+        .proof-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+            margin-top: 48px;
+        }
+
+        .proof-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 32px;
+            text-align: center;
+            transition: var(--transition);
+        }
+
+        .proof-card:hover {
+            border-color: var(--border-hover);
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .proof-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+        }
+
+        .proof-value {
+            font-size: 36px;
+            font-weight: 800;
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .proof-label {
+            color: var(--text-secondary);
+            font-size: 15px;
+        }
+
+        /* Comparison Table */
+        .comparison {
+            padding: 120px 0;
+            background: var(--bg-secondary);
+        }
+
+        .comparison-table {
+            margin-top: 48px;
+            overflow-x: auto;
+            border-radius: 16px;
+            border: 1px solid var(--border-color);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: var(--bg-card);
+        }
+
+        th, td {
+            padding: 20px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        th {
+            background: var(--bg-tertiary);
+            font-weight: 700;
+            color: var(--text-primary);
+            font-size: 15px;
+            position: sticky;
+            top: 0;
+            z-index: 1;
+        }
+
+        th:first-child {
+            border-radius: 16px 0 0 0;
+        }
+
+        th:last-child {
+            border-radius: 0 16px 0 0;
+        }
+
+        td {
+            color: var(--text-secondary);
+        }
+
+        tr:hover {
+            background: rgba(37, 99, 235, 0.05);
+        }
+
+        .check {
+            color: var(--success);
+            font-weight: 700;
+            font-size: 20px;
+        }
+
+        .cross {
+            color: var(--error);
+            font-weight: 700;
+            font-size: 20px;
+        }
+
+        /* CTA Section */
+        .cta {
+            padding: 140px 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(37, 99, 235, 0.15) 0%, transparent 70%);
+            animation: rotate 30s linear infinite;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .cta-content {
+            position: relative;
+            z-index: 1;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .cta h2 {
+            font-size: clamp(36px, 5vw, 56px);
+            font-weight: 800;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+
+        .cta-description {
+            font-size: 20px;
+            color: var(--text-secondary);
+            margin-bottom: 40px;
+            line-height: 1.6;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        /* Footer */
+        footer {
+            padding: 60px 0 40px;
+            border-top: 1px solid var(--border-color);
+            background: var(--bg-secondary);
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 48px;
+            margin-bottom: 40px;
+        }
+
+        .footer-brand {
+            max-width: 300px;
+        }
+
+        .footer-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+            font-size: 20px;
+            font-weight: 800;
+        }
+
+        .footer-description {
+            color: var(--text-secondary);
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .footer-section h4 {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+
+        .footer-links {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .footer-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 14px;
+            transition: var(--transition);
+        }
+
+        .footer-links a:hover {
+            color: var(--text-primary);
+            transform: translateX(4px);
+        }
+
+        .footer-bottom {
+            padding-top: 32px;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .footer-bottom p {
+            color: var(--text-tertiary);
+            font-size: 14px;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 16px;
+        }
+
+        .social-links a {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .social-links a:hover {
+            background: var(--accent-primary);
+            border-color: var(--accent-primary);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        /* Section Headers */
+        .section-header {
+            text-align: center;
+            margin-bottom: 64px;
+        }
+
+        .section-badge {
+            display: inline-block;
+            padding: 6px 16px;
+            background: rgba(37, 99, 235, 0.15);
+            border-radius: 100px;
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--accent-secondary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(37, 99, 235, 0.2);
+        }
+
+        .section-title {
+            font-size: clamp(36px, 5vw, 56px);
+            font-weight: 800;
+            margin-bottom: 20px;
+            line-height: 1.2;
+            letter-spacing: -0.02em;
+        }
+
+        .section-description {
+            font-size: 20px;
+            color: var(--text-secondary);
+            max-width: 700px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .code-demo-container,
+            .playground-container {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .hero {
+                padding: 120px 0 80px;
+            }
+
+            .hero-buttons {
+                flex-direction: column;
+                width: 100%;
+                max-width: 100%;
+            }
+
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .stats-bar {
+                flex-direction: column;
+                gap: 24px;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .proof-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-bottom {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .comparison-table {
+                font-size: 14px;
+            }
+
+            th, td {
+                padding: 12px;
+            }
+        }
+
+        /* Accessibility */
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+
+        /* Focus styles */
+        a:focus-visible,
+        button:focus-visible {
+            outline: 2px solid var(--accent-primary);
+            outline-offset: 4px;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Background Elements -->
+    <div class="grid-bg"></div>
+    <div class="gradient-orb"></div>
+    <div class="gradient-orb"></div>
+    <div class="gradient-orb"></div>
+
+    <!-- Navigation -->
+    <nav id="navbar">
+        <div class="nav-container">
+            <a href="#" class="logo" aria-label="WireMD Home">
+                <div class="logo-icon">W</div>
+                WireMD
+            </a>
+            <ul class="nav-links">
+                <li><a href="#features">Features</a></li>
+                <li><a href="#demo">Demo</a></li>
+                <li><a href="#playground">Playground</a></li>
+                <li><a href="#installation">Install</a></li>
+                <li>
+                    <a href="https://github.com/akonan/wiremd" class="github-button" target="_blank" rel="noopener noreferrer">
+                        <svg fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                        </svg>
+                        <span>Star on GitHub</span>
+                        <span class="github-stars">2.3k</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-badge">
+                    <span>✨</span>
+                    <span>Open Source • MIT Licensed</span>
+                </div>
+                <h1>
+                    Design UI Mockups<br>
+                    <span class="gradient-text">with Markdown</span>
+                </h1>
+                <p class="hero-description">
+                    Stop dragging rectangles. Start typing interfaces.<br>
+                    WireMD transforms markdown into beautiful wireframes instantly.
+                </p>
+                <div class="hero-buttons">
+                    <a href="#playground" class="btn btn-primary">
+                        Try Live Demo
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                            <polyline points="12 5 19 12 12 19"></polyline>
+                        </svg>
+                    </a>
+                    <a href="#installation" class="btn btn-secondary">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                            <polyline points="7 10 12 15 17 10"></polyline>
+                            <line x1="12" y1="15" x2="12" y2="3"></line>
+                        </svg>
+                        Install CLI
+                    </a>
+                    <a href="https://github.com/akonan/wiremd" class="btn btn-ghost" target="_blank" rel="noopener noreferrer">
+                        <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                        </svg>
+                        View on GitHub
+                    </a>
+                </div>
+                <div class="stats-bar">
+                    <div class="stat-item">
+                        <span class="stat-value">48+</span>
+                        <span class="stat-label">Tests</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-value">7</span>
+                        <span class="stat-label">Visual Styles</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-value">100%</span>
+                        <span class="stat-label">Open Source</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-value">&lt;100ms</span>
+                        <span class="stat-label">Parse Time</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Code Demo Section -->
+    <section class="code-demo" id="demo">
+        <div class="container container-wide">
+            <div class="section-header">
+                <div class="section-badge">Demo</div>
+                <h2 class="section-title">From Markdown to Mockup</h2>
+                <p class="section-description">See how simple it is to create beautiful wireframes with just markdown syntax</p>
+            </div>
+
+            <div class="code-demo-container">
+                <div class="code-block">
+                    <div class="code-header">
+                        <div class="code-title">input.wiremd</div>
+                    </div>
+                    <div class="code-body">
+                        <div class="code-line"><span class="code-comment"># Dashboard Layout</span></div>
+                        <div class="code-line"></div>
+                        <div class="code-line"><span class="code-tag">[[ Logo | Dashboard | Profile ]]</span></div>
+                        <div class="code-line"></div>
+                        <div class="code-line"><span class="code-keyword">## Welcome back, Sarah!</span></div>
+                        <div class="code-line"></div>
+                        <div class="code-line"><span class="code-tag">[stats-grid]</span></div>
+                        <div class="code-line">&nbsp;&nbsp;<span class="code-string">- Revenue: $12,345</span></div>
+                        <div class="code-line">&nbsp;&nbsp;<span class="code-string">- Users: 1,234</span></div>
+                        <div class="code-line">&nbsp;&nbsp;<span class="code-string">- Growth: +23%</span></div>
+                        <div class="code-line"><span class="code-tag">[/stats-grid]</span></div>
+                        <div class="code-line"></div>
+                        <div class="code-line"><span class="code-tag">[View Details]</span> <span class="code-tag">[Export Report]</span></div>
+                    </div>
+                </div>
+
+                <div class="code-block">
+                    <div class="code-header">
+                        <div class="code-title">Preview</div>
+                    </div>
+                    <div class="code-body">
+                        <div class="preview-block">
+                            <div style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 16px; border-bottom: 2px solid #e5e5e5; margin-bottom: 24px;">
+                                <div style="font-weight: 700; font-size: 18px;">Logo</div>
+                                <div style="font-weight: 600;">Dashboard</div>
+                                <div style="font-weight: 600;">Profile</div>
+                            </div>
+                            <h2 style="font-size: 28px; font-weight: 700; margin-bottom: 24px;">Welcome back, Sarah!</h2>
+                            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 24px;">
+                                <div style="padding: 20px; background: #f5f5f5; border-radius: 8px;">
+                                    <div style="font-size: 12px; color: #666; margin-bottom: 8px;">Revenue</div>
+                                    <div style="font-size: 24px; font-weight: 700;">$12,345</div>
+                                </div>
+                                <div style="padding: 20px; background: #f5f5f5; border-radius: 8px;">
+                                    <div style="font-size: 12px; color: #666; margin-bottom: 8px;">Users</div>
+                                    <div style="font-size: 24px; font-weight: 700;">1,234</div>
+                                </div>
+                                <div style="padding: 20px; background: #f5f5f5; border-radius: 8px;">
+                                    <div style="font-size: 12px; color: #666; margin-bottom: 8px;">Growth</div>
+                                    <div style="font-size: 24px; font-weight: 700; color: #10b981;">+23%</div>
+                                </div>
+                            </div>
+                            <div style="display: flex; gap: 12px;">
+                                <button style="padding: 10px 20px; background: #2563eb; color: white; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; transition: all 0.2s ease;">View Details</button>
+                                <button style="padding: 10px 20px; background: #f5f5f5; color: #333; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; transition: all 0.2s ease;">Export Report</button>
+                            </div>
+                            <style>
+                                .preview-block button:hover {
+                                    transform: translateY(-1px);
+                                    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+                                }
+                                .preview-block button:first-child:hover {
+                                    background: #1d4ed8 !important;
+                                }
+                                .preview-block button:last-child:hover {
+                                    background: #e5e5e5 !important;
+                                }
+                            </style>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Live Playground -->
+    <section class="playground" id="playground">
+        <div class="container container-wide">
+            <div class="section-header">
+                <div class="section-badge">Playground</div>
+                <h2 class="section-title">Try it Yourself</h2>
+                <p class="section-description">Edit the markdown and watch your mockup update in real-time</p>
+            </div>
+
+            <div class="playground-container">
+                <div class="editor-pane">
+                    <div class="editor-header">
+                        <div class="code-title">input.wiremd</div>
+                        <div class="live-indicator">Live</div>
+                    </div>
+                    <textarea class="editor-textarea" id="markdown-input" spellcheck="false"># Login Page
+
+[[ Logo | Company Name ]]
+
+## Welcome Back
+Please sign in to continue
+
+[Email___________]
+[Password________] {type:password}
+
+[x] Remember me
+
+[Sign In] [Forgot Password?]
+
+---
+Don't have an account? [Sign Up]</textarea>
+                </div>
+
+                <div class="preview-pane">
+                    <div class="editor-header">
+                        <div class="code-title">Preview</div>
+                        <select id="style-selector" style="background: var(--bg-tertiary); border: 1px solid var(--border-color); color: var(--text-secondary); padding: 6px 12px; padding-right: 28px; border-radius: 6px; font-size: 12px; cursor: pointer; transition: var(--transition); appearance: none; background-image: url(\"data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L6 6L11 1' stroke='%23a8a8a8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E\"); background-repeat: no-repeat; background-position: right 8px center;">
+                            <option>Sketch Style</option>
+                            <option>Clean Style</option>
+                            <option>Wireframe Style</option>
+                        </select>
+                    </div>
+                    <div class="preview-content" id="preview-output">
+                        <p style="color: #999; text-align: center; padding: 40px;">Start typing markdown to see the preview...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features" id="features">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-badge">Features</div>
+                <h2 class="section-title">Built for Developers & Designers</h2>
+                <p class="section-description">Everything you need to prototype faster and collaborate better</p>
+            </div>
+
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">⚡</div>
+                    <h3 class="feature-title">Lightning Fast</h3>
+                    <p class="feature-description">
+                        No more clicking through UI tools. Type your mockup as fast as you can think. Parse time under 100ms for typical documents.
+                    </p>
+                    <div class="feature-code">wiremd sketch.md --watch</div>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">🎨</div>
+                    <h3 class="feature-title">7 Visual Styles</h3>
+                    <p class="feature-description">
+                        From hand-drawn sketches to polished interfaces. Switch between sketch, clean, wireframe, tailwind, material, brutal, or none.
+                    </p>
+                    <div class="feature-code">--style sketch | clean | wireframe</div>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">🔧</div>
+                    <h3 class="feature-title">Framework Export</h3>
+                    <p class="feature-description">
+                        Export to React, Vue, or vanilla HTML. Your mockups become real components. (Coming soon)
+                    </p>
+                    <div class="feature-code">--export react | vue | html</div>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">📦</div>
+                    <h3 class="feature-title">Component Library</h3>
+                    <p class="feature-description">
+                        Create reusable components. Build your design system in markdown. Share and version control your components.
+                    </p>
+                    <div class="feature-code">{{button}} {{navbar}} {{card}}</div>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">🔌</div>
+                    <h3 class="feature-title">Obsidian Plugin</h3>
+                    <p class="feature-description">
+                        Design directly in your notes. Live preview, components, and annotations. Perfect for knowledge workers.
+                    </p>
+                    <div class="feature-code">Available in Community Plugins</div>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">🚀</div>
+                    <h3 class="feature-title">CI/CD Ready</h3>
+                    <p class="feature-description">
+                        Generate mockups in your build pipeline. Version control your designs. Review changes in pull requests.
+                    </p>
+                    <div class="feature-code">npm run build:mockups</div>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">📝</div>
+                    <h3 class="feature-title">Markdown First</h3>
+                    <p class="feature-description">
+                        Valid markdown that degrades gracefully. Works with any markdown parser. No vendor lock-in.
+                    </p>
+                    <div class="feature-code">100% compatible with CommonMark</div>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">🔒</div>
+                    <h3 class="feature-title">Version Control</h3>
+                    <p class="feature-description">
+                        Store wireframes as plain text in Git. Review design changes in pull requests. Track history with git diff.
+                    </p>
+                    <div class="feature-code">git diff design.wiremd</div>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">🌐</div>
+                    <h3 class="feature-title">Open Source</h3>
+                    <p class="feature-description">
+                        MIT licensed. Free forever. Contribute, fork, and customize. Built by developers, for developers.
+                    </p>
+                    <div class="feature-code">npm install wiremd</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Social Proof -->
+    <section class="social-proof">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-badge">Community</div>
+                <h2 class="section-title">Trusted by Developers</h2>
+                <p class="section-description">Join thousands of developers creating better designs faster</p>
+            </div>
+
+            <div class="proof-grid">
+                <div class="proof-card">
+                    <div class="proof-icon">⭐</div>
+                    <div class="proof-value">2.3k</div>
+                    <div class="proof-label">GitHub Stars</div>
+                </div>
+                <div class="proof-card">
+                    <div class="proof-icon">📦</div>
+                    <div class="proof-value">48+</div>
+                    <div class="proof-label">Passing Tests</div>
+                </div>
+                <div class="proof-card">
+                    <div class="proof-icon">🎨</div>
+                    <div class="proof-value">7</div>
+                    <div class="proof-label">Visual Styles</div>
+                </div>
+                <div class="proof-card">
+                    <div class="proof-icon">⚡</div>
+                    <div class="proof-value">&lt;100ms</div>
+                    <div class="proof-label">Parse Time</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Installation -->
+    <section class="installation" id="installation">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-badge">Get Started</div>
+                <h2 class="section-title">Installation</h2>
+                <p class="section-description">Up and running in seconds</p>
+            </div>
+
+            <div class="install-tabs">
+                <button class="install-tab active" data-tab="npm">npm</button>
+                <button class="install-tab" data-tab="yarn">yarn</button>
+                <button class="install-tab" data-tab="pnpm">pnpm</button>
+                <button class="install-tab" data-tab="brew">brew</button>
+            </div>
+
+            <div class="install-content">
+                <code class="install-command" id="install-command">npm install -g wiremd</code>
+                <button class="copy-btn" onclick="copyCommand()" aria-label="Copy installation command">Copy</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Comparison -->
+    <section class="comparison">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-badge">Comparison</div>
+                <h2 class="section-title">Why WireMD?</h2>
+                <p class="section-description">See how we compare to traditional design tools</p>
+            </div>
+
+            <div class="comparison-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Feature</th>
+                            <th>WireMD</th>
+                            <th>Figma</th>
+                            <th>Balsamiq</th>
+                            <th>Draw.io</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Text-based input</strong></td>
+                            <td><span class="check">✓</span></td>
+                            <td><span class="cross">✗</span></td>
+                            <td><span class="cross">✗</span></td>
+                            <td><span class="cross">✗</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Version control friendly</strong></td>
+                            <td><span class="check">✓</span></td>
+                            <td><span class="cross">✗</span></td>
+                            <td><span class="cross">✗</span></td>
+                            <td><span class="cross">✗</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>CLI tool</strong></td>
+                            <td><span class="check">✓</span></td>
+                            <td><span class="cross">✗</span></td>
+                            <td><span class="cross">✗</span></td>
+                            <td><span class="cross">✗</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Free & open source</strong></td>
+                            <td><span class="check">✓</span></td>
+                            <td><span class="cross">✗</span></td>
+                            <td><span class="cross">✗</span></td>
+                            <td><span class="check">✓</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Export to code</strong></td>
+                            <td><span class="check">✓</span></td>
+                            <td>Limited</td>
+                            <td><span class="cross">✗</span></td>
+                            <td><span class="cross">✗</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Learning curve</strong></td>
+                            <td>5 minutes</td>
+                            <td>Days</td>
+                            <td>Hours</td>
+                            <td>Hours</td>
+                        </tr>
+                        <tr>
+                            <td><strong>CI/CD integration</strong></td>
+                            <td><span class="check">✓</span></td>
+                            <td><span class="cross">✗</span></td>
+                            <td><span class="cross">✗</span></td>
+                            <td><span class="cross">✗</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta">
+        <div class="container">
+            <div class="cta-content">
+                <h2>Ready to Design Faster?</h2>
+                <p class="cta-description">
+                    Join thousands of developers who've ditched the drag-and-drop.<br>
+                    Start creating beautiful wireframes with markdown today.
+                </p>
+                <div class="cta-buttons">
+                    <a href="#installation" class="btn btn-primary">
+                        Get Started
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                            <polyline points="12 5 19 12 12 19"></polyline>
+                        </svg>
+                    </a>
+                    <a href="https://github.com/akonan/wiremd" class="btn btn-secondary" target="_blank" rel="noopener noreferrer">
+                        <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                        </svg>
+                        Star on GitHub
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <div class="footer-logo">
+                        <div class="logo-icon" style="width: 32px; height: 32px; font-size: 18px;">W</div>
+                        WireMD
+                    </div>
+                    <p class="footer-description">
+                        Text-first UI design tool for developers and designers. Create wireframes and mockups using Markdown syntax.
+                    </p>
+                </div>
+                <div class="footer-section">
+                    <h4>Product</h4>
+                    <ul class="footer-links">
+                        <li><a href="#features">Features</a></li>
+                        <li><a href="#demo">Demo</a></li>
+                        <li><a href="#playground">Playground</a></li>
+                        <li><a href="#installation">Installation</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Resources</h4>
+                    <ul class="footer-links">
+                        <li><a href="/docs">Documentation</a></li>
+                        <li><a href="/examples">Examples</a></li>
+                        <li><a href="/syntax">Syntax Guide</a></li>
+                        <li><a href="/changelog">Changelog</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Community</h4>
+                    <ul class="footer-links">
+                        <li><a href="https://github.com/akonan/wiremd">GitHub</a></li>
+                        <li><a href="/discussions">Discussions</a></li>
+                        <li><a href="/contributing">Contributing</a></li>
+                        <li><a href="/security">Security</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 WireMD. MIT License. Made with ❤️ for developers.</p>
+                <div class="social-links">
+                    <a href="https://github.com/akonan/wiremd" aria-label="GitHub" target="_blank" rel="noopener noreferrer">
+                        <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                        </svg>
+                    </a>
+                    <a href="https://twitter.com/wiremd" aria-label="Twitter" target="_blank" rel="noopener noreferrer">
+                        <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2c9 5 20 0 20-11.5a4.5 4.5 0 00-.08-.83A7.72 7.72 0 0023 3z"/>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Navbar scroll effect
+        window.addEventListener('scroll', () => {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // Live editor preview
+        const input = document.getElementById('markdown-input');
+        const preview = document.getElementById('preview-output');
+
+        function updatePreview() {
+            const markdown = input.value;
+            if (!markdown.trim()) {
+                preview.innerHTML = '<p style="color: #999; text-align: center; padding: 40px;">Start typing markdown to see the preview...</p>';
+                return;
+            }
+            
+            // Enhanced markdown to HTML conversion - order matters!
+            let html = markdown
+                // Headings
+                .replace(/^# (.+)$/gm, '<h1 style="font-size: 32px; font-weight: 700; margin-bottom: 24px;">$1</h1>')
+                .replace(/^## (.+)$/gm, '<h2 style="font-size: 24px; font-weight: 700; margin: 24px 0 16px;">$1</h2>')
+                .replace(/^### (.+)$/gm, '<h3 style="font-size: 20px; font-weight: 600; margin: 20px 0 12px;">$1</h3>')
+                // Inline containers
+                .replace(/\[\[(.+?)\]\]/g, '<div style="display: flex; justify-content: space-between; align-items: center; padding: 16px; background: #f5f5f5; border-radius: 8px; margin-bottom: 24px; font-weight: 600;">$1</div>')
+                // Checkboxes
+                .replace(/\[x\] (.+)/g, '<label style="display: flex; align-items: center; margin: 12px 0; cursor: pointer;"><input type="checkbox" checked style="margin-right: 8px; width: 18px; height: 18px; cursor: pointer;"> <span>$1</span></label>')
+                // Password inputs (must come before regular inputs)
+                .replace(/\[([^\]]+?)\] \{type:password\}/g, '<input type="password" placeholder="$1" style="width: 100%; padding: 12px; margin: 8px 0; border: 2px solid #e5e5e5; border-radius: 6px; font-size: 14px; font-family: inherit; box-sizing: border-box;">')
+                // Text inputs with underscores
+                .replace(/\[([^\]]+?)___+\]/g, '<input type="text" placeholder="$1" style="width: 100%; padding: 12px; margin: 8px 0; border: 2px solid #e5e5e5; border-radius: 6px; font-size: 14px; font-family: inherit; box-sizing: border-box;">')
+                // Horizontal rule
+                .replace(/---/g, '<hr style="margin: 32px 0; border: none; border-top: 2px solid #e5e5e5;">')
+                // Buttons (must come last, after all inputs are processed)
+                .replace(/\[([^\]]+?)\]/g, '<button style="padding: 10px 20px; margin: 4px; background: #2563eb; color: white; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; font-size: 14px; font-family: inherit; transition: all 0.2s ease;">$1</button>')
+                // Line breaks
+                .replace(/\n\n/g, '<br><br>');
+            
+            // Add hover effects to buttons via CSS
+            html = '<style>#preview-output button:hover { background: #1d4ed8 !important; transform: translateY(-1px); box-shadow: 0 4px 8px rgba(37, 99, 235, 0.3); }</style>' + html;
+            
+            preview.innerHTML = html;
+        }
+
+        input.addEventListener('input', updatePreview);
+        updatePreview();
+
+        // Install tabs
+        document.querySelectorAll('.install-tab').forEach(tab => {
+            tab.addEventListener('click', (e) => {
+                document.querySelectorAll('.install-tab').forEach(t => t.classList.remove('active'));
+                e.target.classList.add('active');
+                
+                const commands = {
+                    npm: 'npm install -g wiremd',
+                    yarn: 'yarn global add wiremd',
+                    pnpm: 'pnpm add -g wiremd',
+                    brew: 'brew install wiremd'
+                };
+                
+                document.getElementById('install-command').textContent = commands[e.target.dataset.tab];
+            });
+        });
+
+        // Copy command
+        function copyCommand() {
+            const command = document.getElementById('install-command').textContent;
+            navigator.clipboard.writeText(command).then(() => {
+                const btn = document.querySelector('.copy-btn');
+                const originalText = btn.textContent;
+                btn.textContent = 'Copied!';
+                btn.classList.add('copied');
+                setTimeout(() => {
+                    btn.textContent = originalText;
+                    btn.classList.remove('copied');
+                }, 2000);
+            });
+        }
+
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    const offset = 80;
+                    const elementPosition = target.getBoundingClientRect().top;
+                    const offsetPosition = elementPosition + window.pageYOffset - offset;
+                    window.scrollTo({
+                        top: offsetPosition,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // Intersection Observer for animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Observe feature cards
+        document.querySelectorAll('.feature-card').forEach(card => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(20px)';
+            card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(card);
+        });
+    </script>
+</body>
+</html>
