@@ -340,11 +340,11 @@
 
         /* Hero Section */
         .hero {
-            min-height: 100vh;
+            min-height: 90vh;
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 140px 0 100px;
+            padding: 140px 0 60px;
             position: relative;
             overflow: hidden;
         }
@@ -527,7 +527,7 @@
 
         /* Code Demo Section */
         .code-demo {
-            padding: 120px 0;
+            padding: 80px 0 120px;
             position: relative;
         }
 
@@ -632,6 +632,23 @@
             display: flex;
             flex-direction: column;
             gap: 16px;
+        }
+
+        /* Style Selector */
+        #style-selector {
+            transition: var(--transition);
+        }
+
+        #style-selector:hover {
+            border-color: var(--accent-primary);
+            color: var(--text-primary);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        #style-selector:focus {
+            outline: none;
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
         }
 
         /* Features Section */
@@ -1281,7 +1298,15 @@
             <div class="section-header">
                 <div class="section-badge">Demo</div>
                 <h2 class="section-title">From Markdown to Mockup</h2>
-                <p class="section-description">See how simple it is to create beautiful wireframes with just markdown syntax</p>
+                <p class="section-description">Write markdown on the left, see beautiful wireframes on the right—instantly</p>
+            </div>
+
+            <div style="display: flex; justify-content: flex-end; margin-bottom: 16px;">
+                <select id="style-selector" style="background: var(--bg-tertiary); border: 1px solid var(--border-color); color: var(--text-secondary); padding: 8px 16px; padding-right: 36px; border-radius: 8px; font-size: 14px; cursor: pointer; transition: var(--transition); appearance: none; background-image: url(&quot;data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L6 6L11 1' stroke='%23a8a8a8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E&quot;); background-repeat: no-repeat; background-position: right 12px center; font-family: var(--font-sans); font-weight: 500;">
+                    <option value="sketch">Sketch Style</option>
+                    <option value="clean">Clean Style</option>
+                    <option value="wireframe">Wireframe Style</option>
+                </select>
             </div>
 
             <div class="code-demo-container">
@@ -1290,19 +1315,23 @@
                         <div class="code-title">input.wiremd</div>
                     </div>
                     <div class="code-body">
-                        <div class="code-line"><span class="code-comment"># Dashboard Layout</span></div>
+                        <div class="code-line"><span class="code-comment"># Login Page</span></div>
                         <div class="code-line"></div>
-                        <div class="code-line"><span class="code-tag">[[ Logo | Dashboard | Profile ]]</span></div>
+                        <div class="code-line"><span class="code-tag">[[ Logo | Sign In | Help ]]</span></div>
                         <div class="code-line"></div>
-                        <div class="code-line"><span class="code-keyword">## Welcome back, Sarah!</span></div>
+                        <div class="code-line"><span class="code-keyword">## Welcome Back</span></div>
+                        <div class="code-line"><span class="code-string">Sign in to your account</span></div>
                         <div class="code-line"></div>
-                        <div class="code-line"><span class="code-tag">[stats-grid]</span></div>
-                        <div class="code-line">&nbsp;&nbsp;<span class="code-string">- Revenue: $12,345</span></div>
-                        <div class="code-line">&nbsp;&nbsp;<span class="code-string">- Users: 1,234</span></div>
-                        <div class="code-line">&nbsp;&nbsp;<span class="code-string">- Growth: +23%</span></div>
-                        <div class="code-line"><span class="code-tag">[/stats-grid]</span></div>
+                        <div class="code-line"><span class="code-tag">[Email address___________]</span></div>
+                        <div class="code-line"><span class="code-tag">[Password_______________]</span></div>
                         <div class="code-line"></div>
-                        <div class="code-line"><span class="code-tag">[View Details]</span> <span class="code-tag">[Export Report]</span></div>
+                        <div class="code-line"><span class="code-string">[ ] Remember me</span></div>
+                        <div class="code-line"></div>
+                        <div class="code-line"><span class="code-tag">[Sign In]</span> <span class="code-string">Forgot password?</span></div>
+                        <div class="code-line"></div>
+                        <div class="code-line"><span class="code-comment">---</span></div>
+                        <div class="code-line"></div>
+                        <div class="code-line"><span class="code-string">Don't have an account? [Sign Up]</span></div>
                     </div>
                 </div>
 
@@ -1311,44 +1340,7 @@
                         <div class="code-title">Preview</div>
                     </div>
                     <div class="code-body">
-                        <div class="preview-block">
-                            <div style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 16px; border-bottom: 2px solid #e5e5e5; margin-bottom: 24px;">
-                                <div style="font-weight: 700; font-size: 18px;">Logo</div>
-                                <div style="font-weight: 600;">Dashboard</div>
-                                <div style="font-weight: 600;">Profile</div>
-                            </div>
-                            <h2 style="font-size: 28px; font-weight: 700; margin-bottom: 24px;">Welcome back, Sarah!</h2>
-                            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 24px;">
-                                <div style="padding: 20px; background: #f5f5f5; border-radius: 8px;">
-                                    <div style="font-size: 12px; color: #666; margin-bottom: 8px;">Revenue</div>
-                                    <div style="font-size: 24px; font-weight: 700;">$12,345</div>
-                                </div>
-                                <div style="padding: 20px; background: #f5f5f5; border-radius: 8px;">
-                                    <div style="font-size: 12px; color: #666; margin-bottom: 8px;">Users</div>
-                                    <div style="font-size: 24px; font-weight: 700;">1,234</div>
-                                </div>
-                                <div style="padding: 20px; background: #f5f5f5; border-radius: 8px;">
-                                    <div style="font-size: 12px; color: #666; margin-bottom: 8px;">Growth</div>
-                                    <div style="font-size: 24px; font-weight: 700; color: #10b981;">+23%</div>
-                                </div>
-                            </div>
-                            <div style="display: flex; gap: 12px;">
-                                <button style="padding: 10px 20px; background: #2563eb; color: white; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; transition: all 0.2s ease;">View Details</button>
-                                <button style="padding: 10px 20px; background: #f5f5f5; color: #333; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; transition: all 0.2s ease;">Export Report</button>
-                            </div>
-                            <style>
-                                .preview-block button:hover {
-                                    transform: translateY(-1px);
-                                    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-                                }
-                                .preview-block button:first-child:hover {
-                                    background: #1d4ed8 !important;
-                                }
-                                .preview-block button:last-child:hover {
-                                    background: #e5e5e5 !important;
-                                }
-                            </style>
-                        </div>
+                        <div id="preview-block" class="preview-block"></div>
                     </div>
                 </div>
             </div>
@@ -1749,6 +1741,88 @@
             card.style.transform = 'translateY(20px)';
             card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
             observer.observe(card);
+        });
+
+        // Demo preview with style switching
+        const styleSelector = document.getElementById('style-selector');
+        const previewBlock = document.getElementById('preview-block');
+
+        const styles = {
+            sketch: {
+                container: 'background: #fff; padding: 32px; border-radius: 8px; font-family: "Comic Sans MS", cursive; transform: rotate(-0.5deg);',
+                nav: 'display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 3px solid #333; margin-bottom: 24px; transform: rotate(0.3deg);',
+                navItem: 'font-weight: 700; font-size: 16px; color: #333;',
+                heading: 'font-size: 32px; font-weight: 700; margin: 24px 0 8px; transform: rotate(-0.2deg);',
+                text: 'font-size: 15px; color: #666; margin-bottom: 20px;',
+                input: 'width: 100%; padding: 12px; margin: 10px 0; border: 2px solid #333; border-radius: 6px; background: #fafafa; font-family: inherit; box-sizing: border-box; transform: rotate(0.2deg);',
+                checkbox: 'margin: 16px 0; font-size: 15px;',
+                button: 'padding: 12px 28px; background: #333; color: white; border: 3px solid #333; border-radius: 8px; font-weight: 700; cursor: pointer; font-family: inherit; transform: rotate(-0.3deg); box-shadow: 3px 3px 0 rgba(0,0,0,0.2);',
+                link: 'color: #2563eb; text-decoration: underline; cursor: pointer; font-size: 15px;',
+                hr: 'margin: 24px 0; border: none; border-top: 2px solid #ccc;',
+                footer: 'margin-top: 20px; text-align: center; font-size: 14px; color: #666;'
+            },
+            clean: {
+                container: 'background: #fff; padding: 40px; border-radius: 12px; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;',
+                nav: 'display: flex; justify-content: space-between; padding: 16px 0; border-bottom: 1px solid #e5e5e5; margin-bottom: 32px;',
+                navItem: 'font-weight: 600; font-size: 15px; color: #111;',
+                heading: 'font-size: 32px; font-weight: 700; margin: 24px 0 8px; color: #111;',
+                text: 'font-size: 15px; color: #666; margin-bottom: 24px; line-height: 1.5;',
+                input: 'width: 100%; padding: 12px 16px; margin: 8px 0; border: 1px solid #d1d5db; border-radius: 8px; background: white; font-size: 15px; transition: all 0.2s; box-sizing: border-box;',
+                checkbox: 'margin: 16px 0; font-size: 15px; color: #374151;',
+                button: 'padding: 12px 24px; background: #2563eb; color: white; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; font-size: 15px; transition: all 0.2s;',
+                link: 'color: #2563eb; text-decoration: none; cursor: pointer; font-size: 15px; font-weight: 500;',
+                hr: 'margin: 32px 0; border: none; border-top: 1px solid #e5e5e5;',
+                footer: 'margin-top: 24px; text-align: center; font-size: 14px; color: #6b7280;'
+            },
+            wireframe: {
+                container: 'background: #fff; padding: 32px; border: 2px solid #333; border-radius: 4px; font-family: "Courier New", monospace;',
+                nav: 'display: flex; justify-content: space-between; padding: 12px; border: 2px solid #333; margin-bottom: 24px; background: repeating-linear-gradient(45deg, #f9f9f9, #f9f9f9 10px, white 10px, white 20px);',
+                navItem: 'font-weight: 700; font-size: 14px; color: #333; text-transform: uppercase;',
+                heading: 'font-size: 28px; font-weight: 700; margin: 24px 0 8px; border-bottom: 3px solid #333; padding-bottom: 8px; text-transform: uppercase;',
+                text: 'font-size: 14px; color: #666; margin-bottom: 20px;',
+                input: 'width: 100%; padding: 10px; margin: 10px 0; border: 2px solid #333; border-radius: 0; background: repeating-linear-gradient(90deg, #f9f9f9, #f9f9f9 10px, white 10px, white 20px); font-family: inherit; box-sizing: border-box;',
+                checkbox: 'margin: 16px 0; font-size: 14px;',
+                button: 'padding: 12px 24px; background: repeating-linear-gradient(45deg, #333, #333 10px, #555 10px, #555 20px); color: white; border: 2px solid #333; border-radius: 0; font-weight: 700; cursor: pointer; font-family: inherit; text-transform: uppercase;',
+                link: 'color: #333; text-decoration: underline; cursor: pointer; font-size: 14px; text-transform: uppercase;',
+                hr: 'margin: 24px 0; border: none; border-top: 3px double #333;',
+                footer: 'margin-top: 20px; text-align: center; font-size: 13px; color: #666; border-top: 2px solid #333; padding-top: 16px;'
+            }
+        };
+
+        function renderPreview(styleName) {
+            const style = styles[styleName];
+            previewBlock.innerHTML = `
+                <div style="${style.container}">
+                    <div style="${style.nav}">
+                        <div style="${style.navItem}">Logo</div>
+                        <div style="${style.navItem}">Sign In</div>
+                        <div style="${style.navItem}">Help</div>
+                    </div>
+                    <h2 style="${style.heading}">Welcome Back</h2>
+                    <p style="${style.text}">Sign in to your account</p>
+                    <input type="text" placeholder="Email address" style="${style.input}">
+                    <input type="password" placeholder="Password" style="${style.input}">
+                    <div style="${style.checkbox}">
+                        <label><input type="checkbox"> Remember me</label>
+                    </div>
+                    <div style="margin: 24px 0;">
+                        <button style="${style.button}">Sign In</button>
+                        <span style="margin-left: 16px; ${style.link}">Forgot password?</span>
+                    </div>
+                    <hr style="${style.hr}">
+                    <div style="${style.footer}">
+                        Don't have an account? <span style="${style.link}">Sign Up</span>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Initialize with sketch style
+        renderPreview('sketch');
+
+        // Handle style changes
+        styleSelector.addEventListener('change', (e) => {
+            renderPreview(e.target.value);
         });
     </script>
 </body>
