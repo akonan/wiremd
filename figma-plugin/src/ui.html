@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>wiremd Importer</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      font-size: 14px;
+      padding: 16px;
+      background: var(--figma-color-bg);
+      color: var(--figma-color-text);
+    }
+
+    h1 {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: var(--figma-color-text);
+    }
+
+    p {
+      font-size: 12px;
+      color: var(--figma-color-text-secondary);
+      margin-bottom: 16px;
+      line-height: 1.5;
+    }
+
+    .section {
+      margin-bottom: 20px;
+    }
+
+    .section-title {
+      font-size: 12px;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: var(--figma-color-text);
+    }
+
+    textarea {
+      width: 100%;
+      height: 350px;
+      padding: 12px;
+      font-family: 'Monaco', 'Menlo', 'Courier New', monospace;
+      font-size: 12px;
+      border: 1px solid var(--figma-color-border);
+      border-radius: 4px;
+      background: var(--figma-color-bg-secondary);
+      color: var(--figma-color-text);
+      resize: vertical;
+    }
+
+    textarea:focus {
+      outline: 2px solid var(--figma-color-border-selected);
+      outline-offset: -1px;
+    }
+
+    textarea::placeholder {
+      color: var(--figma-color-text-tertiary);
+    }
+
+    .theme-selector {
+      margin-bottom: 16px;
+    }
+
+    .theme-selector label {
+      display: block;
+      font-size: 12px;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: var(--figma-color-text);
+    }
+
+    .theme-options {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+    }
+
+    .theme-option {
+      position: relative;
+    }
+
+    .theme-option input[type="radio"] {
+      position: absolute;
+      opacity: 0;
+    }
+
+    .theme-option label {
+      display: block;
+      padding: 8px 12px;
+      border: 1px solid var(--figma-color-border);
+      border-radius: 4px;
+      background: var(--figma-color-bg-secondary);
+      cursor: pointer;
+      text-align: center;
+      font-size: 12px;
+      font-weight: 500;
+      transition: all 0.2s;
+    }
+
+    .theme-option input[type="radio"]:checked + label {
+      background: var(--figma-color-bg-brand);
+      border-color: var(--figma-color-border-brand);
+      color: white;
+    }
+
+    .theme-option label:hover {
+      background: var(--figma-color-bg-hover);
+    }
+
+    .theme-option input[type="radio"]:checked + label:hover {
+      background: var(--figma-color-bg-brand-hover);
+    }
+
+    .buttons {
+      display: flex;
+      gap: 8px;
+      margin-top: 16px;
+    }
+
+    button {
+      flex: 1;
+      padding: 10px 16px;
+      font-size: 12px;
+      font-weight: 600;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .primary-button {
+      background: var(--figma-color-bg-brand);
+      color: white;
+    }
+
+    .primary-button:hover {
+      background: var(--figma-color-bg-brand-hover);
+    }
+
+    .primary-button:active {
+      background: var(--figma-color-bg-brand-pressed);
+    }
+
+    .primary-button:disabled {
+      background: var(--figma-color-bg-disabled);
+      color: var(--figma-color-text-disabled);
+      cursor: not-allowed;
+    }
+
+    .secondary-button {
+      background: var(--figma-color-bg-secondary);
+      color: var(--figma-color-text);
+      border: 1px solid var(--figma-color-border);
+    }
+
+    .secondary-button:hover {
+      background: var(--figma-color-bg-hover);
+    }
+
+    .status {
+      margin-top: 16px;
+      padding: 12px;
+      border-radius: 4px;
+      font-size: 12px;
+      display: none;
+    }
+
+    .status.error {
+      background: #fee;
+      color: #c00;
+      border: 1px solid #fcc;
+      display: block;
+    }
+
+    .status.success {
+      background: #efe;
+      color: #060;
+      border: 1px solid #cfc;
+      display: block;
+    }
+
+    .status.info {
+      background: #eef;
+      color: #006;
+      border: 1px solid #ccf;
+      display: block;
+    }
+
+    .loading {
+      display: none;
+      text-align: center;
+      padding: 20px;
+    }
+
+    .loading.active {
+      display: block;
+    }
+
+    .spinner {
+      border: 3px solid var(--figma-color-border);
+      border-top: 3px solid var(--figma-color-bg-brand);
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 12px;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .example-link {
+      font-size: 11px;
+      color: var(--figma-color-text-secondary);
+      margin-top: 8px;
+    }
+
+    .example-link a {
+      color: var(--figma-color-text-brand);
+      text-decoration: none;
+    }
+
+    .example-link a:hover {
+      text-decoration: underline;
+    }
+
+    .help-text {
+      font-size: 11px;
+      color: var(--figma-color-text-tertiary);
+      margin-top: 4px;
+    }
+  </style>
+</head>
+<body>
+  <h1>🎨 wiremd Importer</h1>
+  <p>Import wiremd markdown mockups as editable Figma designs</p>
+
+  <div class="theme-selector">
+    <label>Visual Theme</label>
+    <div class="theme-options">
+      <div class="theme-option">
+        <input type="radio" id="theme-sketch" name="theme" value="sketch" checked>
+        <label for="theme-sketch">Sketch</label>
+      </div>
+      <div class="theme-option">
+        <input type="radio" id="theme-clean" name="theme" value="clean">
+        <label for="theme-clean">Clean</label>
+      </div>
+      <div class="theme-option">
+        <input type="radio" id="theme-wireframe" name="theme" value="wireframe">
+        <label for="theme-wireframe">Wireframe</label>
+      </div>
+      <div class="theme-option">
+        <input type="radio" id="theme-none" name="theme" value="none">
+        <label for="theme-none">Minimal</label>
+      </div>
+    </div>
+    <p class="help-text">Choose the visual style for your imported design</p>
+  </div>
+
+  <div class="section">
+    <div class="section-title">wiremd JSON</div>
+    <textarea id="json-input" placeholder='Paste wiremd JSON here:
+
+{
+  "type": "document",
+  "version": "0.1.0",
+  "meta": {
+    "title": "My Mockup"
+  },
+  "children": [
+    {
+      "type": "heading",
+      "level": 1,
+      "content": "Hello World",
+      "props": {}
+    }
+  ]
+}'></textarea>
+    <p class="example-link">
+      Generate JSON: <code>mdmock your-file.md --format json</code>
+    </p>
+  </div>
+
+  <div class="buttons">
+    <button id="import-btn" class="primary-button">Import to Figma</button>
+    <button id="cancel-btn" class="secondary-button">Cancel</button>
+  </div>
+
+  <div id="status" class="status"></div>
+
+  <div id="loading" class="loading">
+    <div class="spinner"></div>
+    <div>Importing wiremd design...</div>
+  </div>
+
+  <script>
+    const jsonInput = document.getElementById('json-input');
+    const importBtn = document.getElementById('import-btn');
+    const cancelBtn = document.getElementById('cancel-btn');
+    const status = document.getElementById('status');
+    const loading = document.getElementById('loading');
+
+    // Get selected theme
+    function getSelectedTheme() {
+      const selected = document.querySelector('input[name="theme"]:checked');
+      return selected ? selected.value : 'sketch';
+    }
+
+    // Show status message
+    function showStatus(message, type = 'info') {
+      status.textContent = message;
+      status.className = 'status ' + type;
+    }
+
+    // Hide status
+    function hideStatus() {
+      status.className = 'status';
+    }
+
+    // Import button handler
+    importBtn.onclick = () => {
+      const json = jsonInput.value.trim();
+
+      if (!json) {
+        showStatus('Please paste wiremd JSON first', 'error');
+        return;
+      }
+
+      // Basic JSON validation
+      try {
+        JSON.parse(json);
+      } catch (e) {
+        showStatus('Invalid JSON: ' + e.message, 'error');
+        return;
+      }
+
+      hideStatus();
+      loading.classList.add('active');
+      importBtn.disabled = true;
+
+      parent.postMessage({
+        pluginMessage: {
+          type: 'import-wiremd',
+          json: json,
+          theme: getSelectedTheme()
+        }
+      }, '*');
+    };
+
+    // Cancel button handler
+    cancelBtn.onclick = () => {
+      parent.postMessage({ pluginMessage: { type: 'cancel' } }, '*');
+    };
+
+    // Listen for messages from plugin
+    window.onmessage = (event) => {
+      const msg = event.data.pluginMessage;
+
+      if (msg.type === 'import-started') {
+        loading.classList.add('active');
+        importBtn.disabled = true;
+      }
+      else if (msg.type === 'import-success') {
+        loading.classList.remove('active');
+        showStatus('✅ Import successful!', 'success');
+        // Plugin will auto-close
+      }
+      else if (msg.type === 'error') {
+        loading.classList.remove('active');
+        importBtn.disabled = false;
+        showStatus('❌ ' + msg.message, 'error');
+      }
+    };
+
+    // Enable import on Enter (Cmd/Ctrl+Enter)
+    jsonInput.addEventListener('keydown', (e) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') {
+        importBtn.click();
+      }
+    });
+
+    // Auto-resize textarea based on content
+    jsonInput.addEventListener('input', () => {
+      if (jsonInput.value) {
+        hideStatus();
+      }
+    });
+  </script>
+</body>
+</html>
