@@ -1,0 +1,152 @@
+{
+  "name": "wiremd-preview",
+  "displayName": "Wiremd Live Preview",
+  "description": "Live preview for Wiremd markdown mockups",
+  "version": "0.1.0",
+  "publisher": "wiremd",
+  "icon": "icon.png",
+  "engines": {
+    "vscode": "^1.75.0"
+  },
+  "categories": [
+    "Visualization",
+    "Other"
+  ],
+  "keywords": [
+    "markdown",
+    "wireframe",
+    "mockup",
+    "preview",
+    "design"
+  ],
+  "activationEvents": [
+    "onLanguage:markdown"
+  ],
+  "main": "./dist/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "wiremd.openPreview",
+        "title": "Open Wiremd Preview",
+        "category": "Wiremd",
+        "icon": "$(open-preview)"
+      },
+      {
+        "command": "wiremd.openPreviewToSide",
+        "title": "Open Wiremd Preview to the Side",
+        "category": "Wiremd",
+        "icon": "$(open-preview)"
+      },
+      {
+        "command": "wiremd.refreshPreview",
+        "title": "Refresh Wiremd Preview",
+        "category": "Wiremd",
+        "icon": "$(refresh)"
+      },
+      {
+        "command": "wiremd.changeStyle",
+        "title": "Change Preview Style",
+        "category": "Wiremd",
+        "icon": "$(symbol-color)"
+      },
+      {
+        "command": "wiremd.changeViewport",
+        "title": "Change Preview Viewport",
+        "category": "Wiremd",
+        "icon": "$(device-mobile)"
+      }
+    ],
+    "menus": {
+      "editor/title": [
+        {
+          "command": "wiremd.openPreviewToSide",
+          "when": "editorLangId == markdown",
+          "group": "navigation"
+        }
+      ],
+      "editor/title/context": [
+        {
+          "command": "wiremd.openPreview",
+          "when": "editorLangId == markdown"
+        }
+      ],
+      "commandPalette": [
+        {
+          "command": "wiremd.openPreview",
+          "when": "editorLangId == markdown"
+        },
+        {
+          "command": "wiremd.openPreviewToSide",
+          "when": "editorLangId == markdown"
+        }
+      ]
+    },
+    "keybindings": [
+      {
+        "command": "wiremd.openPreviewToSide",
+        "key": "ctrl+k v",
+        "mac": "cmd+k v",
+        "when": "editorLangId == markdown"
+      }
+    ],
+    "configuration": {
+      "title": "Wiremd",
+      "properties": {
+        "wiremd.defaultStyle": {
+          "type": "string",
+          "default": "sketch",
+          "enum": [
+            "sketch",
+            "clean",
+            "wireframe",
+            "none",
+            "tailwind",
+            "material",
+            "brutal"
+          ],
+          "description": "Default visual style for wireframes"
+        },
+        "wiremd.autoRefresh": {
+          "type": "boolean",
+          "default": true,
+          "description": "Automatically refresh preview on file changes"
+        },
+        "wiremd.refreshDelay": {
+          "type": "number",
+          "default": 300,
+          "description": "Delay in milliseconds before refreshing preview"
+        },
+        "wiremd.showErrorOverlay": {
+          "type": "boolean",
+          "default": true,
+          "description": "Show error overlay in preview"
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "package": "vsce package",
+    "lint": "eslint src --ext ts"
+  },
+  "dependencies": {
+    "wiremd": "file:.."
+  },
+  "devDependencies": {
+    "@types/node": "^18.0.0",
+    "@types/vscode": "^1.75.0",
+    "@typescript-eslint/eslint-plugin": "^6.0.0",
+    "@typescript-eslint/parser": "^6.0.0",
+    "eslint": "^8.0.0",
+    "typescript": "^5.0.0",
+    "@vscode/vsce": "^2.22.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/akonan/wiremd.git",
+    "directory": "vscode-extension"
+  },
+  "license": "MIT"
+}

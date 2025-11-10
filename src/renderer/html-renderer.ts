@@ -129,7 +129,10 @@ function renderInput(node: any, context: RenderContext): string {
   const placeholder = node.props.placeholder ? ` placeholder="${escapeHtml(node.props.placeholder)}"` : '';
   const value = node.props.value ? ` value="${escapeHtml(node.props.value)}"` : '';
 
-  return `<input type="${type}" class="${classes}"${placeholder}${value}${required}${disabled} />`;
+  // Apply width based on underscore count (each underscore ~= 1ch width)
+  const style = node.props.width ? ` style="width: ${node.props.width}ch; max-width: ${node.props.width}ch;"` : '';
+
+  return `<input type="${type}" class="${classes}"${placeholder}${value}${required}${disabled}${style} />`;
 }
 
 function renderTextarea(node: any, context: RenderContext): string {
@@ -173,15 +176,35 @@ function renderCheckbox(node: any, context: RenderContext): string {
   const disabled = node.props.disabled ? ' disabled' : '';
   const value = node.props.value ? ` value="${escapeHtml(node.props.value)}"` : '';
 
-  // Handle children (like icons in labels)
-  const labelHTML = node.children
-    ? node.children.map((child: any) => renderNode(child, context)).join('')
-    : escapeHtml(node.label);
+  // Separate inline children (icons/text) from nested children (lists)
+  let labelHTML = escapeHtml(node.label || '');
+  let nestedHTML = '';
+
+  if (node.children) {
+    const inlineChildren: any[] = [];
+    const nestedChildren: any[] = [];
+
+    for (const child of node.children) {
+      if (child.type === 'list') {
+        nestedChildren.push(child);
+      } else {
+        inlineChildren.push(child);
+      }
+    }
+
+    if (inlineChildren.length > 0) {
+      labelHTML = inlineChildren.map((child: any) => renderNode(child, context)).join('');
+    }
+
+    if (nestedChildren.length > 0) {
+      nestedHTML = nestedChildren.map((child: any) => renderNode(child, context)).join('');
+    }
+  }
 
   return `<label class="${classes}">
     <input type="checkbox"${checked}${disabled}${value} />
     <span>${labelHTML}</span>
-  </label>`;
+  </label>${nestedHTML}`;
 }
 
 function renderRadio(node: any, context: RenderContext): string {
@@ -192,10 +215,16 @@ function renderRadio(node: any, context: RenderContext): string {
   const name = node.props.name ? ` name="${escapeHtml(node.props.name)}"` : '';
   const value = node.props.value ? ` value="${escapeHtml(node.props.value)}"` : '';
 
+  // Handle children (nested lists or other content)
+  const labelHTML = escapeHtml(node.label);
+  const childrenHTML = node.children
+    ? node.children.map((child: any) => renderNode(child, context)).join('')
+    : '';
+
   return `<label class="${classes}">
     <input type="radio"${checked}${disabled}${name}${value} />
-    <span>${escapeHtml(node.label)}</span>
-  </label>`;
+    <span>${labelHTML}</span>
+  </label>${childrenHTML}`;
 }
 
 function renderRadioGroup(node: any, context: RenderContext): string {
@@ -472,11 +501,21 @@ function renderListItem(node: any, context: RenderContext): string {
   const { classPrefix: prefix } = context;
   const classes = buildClasses(prefix, 'list-item', node.props);
 
-  const childrenHTML = node.children
-    ? node.children.map((child: any) => renderNode(child, context)).join('')
-    : escapeHtml(node.content || '');
+  // Handle both content and children (for nested lists)
+  let html = '';
 
-  return `<li class="${classes}">${childrenHTML}</li>`;
+  // Add the immediate text content if present
+  if (node.content) {
+    html = escapeHtml(node.content);
+  }
+
+  // Add children (like nested lists or icons)
+  if (node.children) {
+    const childrenHTML = node.children.map((child: any) => renderNode(child, context)).join('');
+    html += childrenHTML;
+  }
+
+  return `<li class="${classes}">${html}</li>`;
 }
 
 function renderTable(node: any, context: RenderContext): string {

@@ -15,126 +15,21 @@ Welcome to the comprehensive wiremd syntax guide! This document serves as both a
 
 ---
 
-## 📝 Text & Typography
+## 📝 Standard Markdown Support
 
-### Headings
+wiremd supports all standard [Markdown syntax](https://www.markdownguide.org/basic-syntax/) including:
 
-```markdown
-# Heading 1 - Page Title
-## Heading 2 - Section
-### Heading 3 - Subsection
-#### Heading 4 - Detail
-##### Heading 5 - Minor Heading
-###### Heading 6 - Smallest Heading
-```
+- **Headings** (H1-H6) using `#` syntax
+- **Text formatting** - bold (`**bold**`), italic (`*italic*`), code (`` `code` ``)
+- **Lists** - ordered, unordered, and nested lists
+- **Links** - `[text](url)` and `[text](url "title")`
+- **Images** - `![alt](image.jpg)` with optional width/height
+- **Blockquotes** - using `>` prefix
+- **Code blocks** - fenced with ` ``` ` and optional language
+- **Tables** - using standard markdown table syntax
+- **Horizontal rules** - using `---`, `***`, or `___`
 
-**Rendered:**
-
-# Heading 1 - Page Title
-## Heading 2 - Section Header
-### Heading 3 - Subsection
-#### Heading 4 - Sub-subsection
-##### Heading 5 - Minor Heading
-###### Heading 6 - Smallest Heading
-
-### Text Formatting
-
-```markdown
-This is regular text with **bold text**, *italic text*, and `inline code`.
-You can combine ***bold and italic*** or use ~~strikethrough~~ text.
-```
-
-**Rendered:**
-
-This is regular text with **bold text**, *italic text*, and `inline code`.
-You can combine ***bold and italic*** or use ~~strikethrough~~ text.
-
-### Links
-
-```markdown
-[Basic link](https://example.com)
-[Link with title](https://example.com "Hover for tooltip")
-```
-
-**Rendered:**
-
-[Basic link](https://example.com)
-[Link with title](https://example.com "Hover for tooltip")
-
-### Lists
-
-#### Unordered Lists
-
-```markdown
-- First item
-- Second item
-  - Nested item 2.1
-  - Nested item 2.2
-- Third item
-```
-
-**Rendered:**
-
-- First item
-- Second item
-  - Nested item 2.1
-  - Nested item 2.2
-- Third item
-
-#### Ordered Lists
-
-```markdown
-1. Step one
-2. Step two
-   1. Sub-step 2.1
-   2. Sub-step 2.2
-3. Step three
-```
-
-**Rendered:**
-
-1. Step one
-2. Step two
-   1. Sub-step 2.1
-   2. Sub-step 2.2
-3. Step three
-
-### Blockquotes
-
-```markdown
-> This is a blockquote. Great for callouts.
->
-> Can have multiple paragraphs.
-```
-
-**Rendered:**
-
-> This is a blockquote. Great for callouts.
->
-> Can have multiple paragraphs.
-
-### Code Blocks
-```javascript
-function example() {
-  return "Hello World!";
-}
-```
-
-### Horizontal Rules
-
-```markdown
----
-***
-___
-```
-
-**Rendered:**
-
----
-
-***
-
-___
+The sections below focus on **wiremd's unique UI component syntax** for designing wireframes.
 
 ---
 
@@ -229,6 +124,12 @@ Username
 
 Email Address
 [_____________________________] {type:email}
+
+Password
+[********] {type:password}
+
+Phone Number
+[_____________________________] {type:tel}
 ```
 
 **Rendered:**
@@ -408,8 +309,6 @@ Country
 ---
 
 ## 🗂️ Navigation
-
-> ⚠️ **Note:** The `[[ ... ]]` navigation syntax is currently parsed as inline content/buttons. Full navigation bar rendering is planned for a future version.
 
 ### Navigation Bar Syntax
 ```markdown
@@ -640,6 +539,8 @@ Are you sure you want to delete this item?
 - Unlimited Users
 [Choose Pro]*
 
+##
+
 ### 3-Column Grid
 
 ```markdown
@@ -667,6 +568,8 @@ Bank-level security
 
 ### :gear: Flexible
 Fully customizable
+
+##
 
 ### 4-Column Grid
 

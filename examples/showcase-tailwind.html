@@ -150,6 +150,15 @@ body {
   color: #9ca3af;
 }
 
+.wmd-input[disabled], .wmd-input.wmd-state-disabled,
+.wmd-textarea[disabled], .wmd-textarea.wmd-state-disabled,
+.wmd-select[disabled], .wmd-select.wmd-state-disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  background: #f9fafb;
+  border-color: #e5e7eb;
+}
+
 .wmd-textarea {
   resize: vertical;
   min-height: 6rem;
@@ -376,6 +385,19 @@ body {
   border-bottom: none;
 }
 
+/* Table cell alignment - more specific to override th/td defaults */
+.wmd-table .wmd-align-left {
+  text-align: left !important;
+}
+
+.wmd-table .wmd-align-center {
+  text-align: center !important;
+}
+
+.wmd-table .wmd-align-right {
+  text-align: right !important;
+}
+
 /* Icons */
 .wmd-icon {
   display: inline-block;
@@ -469,79 +491,20 @@ body {
 </ul>
 </blockquote>
 <hr class="wmd-separator" />
-<h2 class="wmd-h2">📝 Text &amp; Typography</h2>
-<h3 class="wmd-h3">Headings</h3>
-<pre class="wmd-code-block"><code data-lang="markdown"># Heading 1 - Page Title
-## Heading 2 - Section
-### Heading 3 - Subsection
-#### Heading 4 - Detail
-##### Heading 5 - Minor Heading
-###### Heading 6 - Smallest Heading</code></pre>
-<p class="wmd-paragraph"><strong>Rendered:</strong></p>
-<h1 class="wmd-h1">Heading 1 - Page Title</h1>
-<h2 class="wmd-h2">Heading 2 - Section Header</h2>
-<h3 class="wmd-h3">Heading 3 - Subsection</h3>
-<h4 class="wmd-h4">Heading 4 - Sub-subsection</h4>
-<h5 class="wmd-h5">Heading 5 - Minor Heading</h5>
-<h6 class="wmd-h6">Heading 6 - Smallest Heading</h6>
-<h3 class="wmd-h3">Text Formatting</h3>
-<pre class="wmd-code-block"><code data-lang="markdown">This is regular text with **bold text**, *italic text*, and `inline code`.
-You can combine ***bold and italic*** or use ~~strikethrough~~ text.</code></pre>
-<p class="wmd-paragraph"><strong>Rendered:</strong></p>
-<p class="wmd-paragraph">This is regular text with <strong>bold text</strong>, <em>italic text</em>, and inline code.
-You can combine <em>bold and italic</em> or use strikethrough text.</p>
-<h3 class="wmd-h3">Links</h3>
-<pre class="wmd-code-block"><code data-lang="markdown">[Basic link](https://example.com)
-[Link with title](https://example.com &quot;Hover for tooltip&quot;)</code></pre>
-<p class="wmd-paragraph"><strong>Rendered:</strong></p>
-<p class="wmd-paragraph"><a href="https://example.com">Basic link</a>
-<a href="https://example.com">Link with title</a></p>
-<h3 class="wmd-h3">Lists</h3>
-<h4 class="wmd-h4">Unordered Lists</h4>
-<pre class="wmd-code-block"><code data-lang="markdown">- First item
-- Second item
-  - Nested item 2.1
-  - Nested item 2.2
-- Third item</code></pre>
-<p class="wmd-paragraph"><strong>Rendered:</strong></p>
+<h2 class="wmd-h2">📝 Standard Markdown Support</h2>
+<p class="wmd-paragraph">wiremd supports all standard <a href="https://www.markdownguide.org/basic-syntax/">Markdown syntax</a> including:</p>
 <ul class="wmd-list">
-  <li class="wmd-list-item">First item</li>
-  <li class="wmd-list-item">Second itemNested item 2.1Nested item 2.2</li>
-  <li class="wmd-list-item">Third item</li>
+  <li class="wmd-list-item">Headings (H1-H6) using # syntax</li>
+  <li class="wmd-list-item">Text formatting - bold (**bold**), italic (*italic*), code (`code`)</li>
+  <li class="wmd-list-item">Lists - ordered, unordered, and nested lists</li>
+  <li class="wmd-list-item">Links - [text](url) and [text](url &quot;title&quot;)</li>
+  <li class="wmd-list-item">Images - ![alt](image.jpg) with optional width/height</li>
+  <li class="wmd-list-item">Blockquotes - using &gt; prefix</li>
+  <li class="wmd-list-item">Code blocks - fenced with ``` and optional language</li>
+  <li class="wmd-list-item">Tables - using standard markdown table syntax</li>
+  <li class="wmd-list-item">Horizontal rules - using ---, ***, or ___</li>
 </ul>
-<h4 class="wmd-h4">Ordered Lists</h4>
-<pre class="wmd-code-block"><code data-lang="markdown">1. Step one
-2. Step two
-   1. Sub-step 2.1
-   2. Sub-step 2.2
-3. Step three</code></pre>
-<p class="wmd-paragraph"><strong>Rendered:</strong></p>
-<ol class="wmd-list">
-  <li class="wmd-list-item">Step one</li>
-  <li class="wmd-list-item">Step twoSub-step 2.1Sub-step 2.2</li>
-  <li class="wmd-list-item">Step three</li>
-</ol>
-<h3 class="wmd-h3">Blockquotes</h3>
-<pre class="wmd-code-block"><code data-lang="markdown">&gt; This is a blockquote. Great for callouts.
-&gt;
-&gt; Can have multiple paragraphs.</code></pre>
-<p class="wmd-paragraph"><strong>Rendered:</strong></p>
-<blockquote class="wmd-blockquote">
-  <p class="wmd-paragraph">This is a blockquote. Great for callouts.</p>
-  <p class="wmd-paragraph">Can have multiple paragraphs.</p>
-</blockquote>
-<h3 class="wmd-h3">Code Blocks</h3>
-<pre class="wmd-code-block"><code data-lang="javascript">function example() {
-  return &quot;Hello World!&quot;;
-}</code></pre>
-<h3 class="wmd-h3">Horizontal Rules</h3>
-<pre class="wmd-code-block"><code data-lang="markdown">---
-***
-___</code></pre>
-<p class="wmd-paragraph"><strong>Rendered:</strong></p>
-<hr class="wmd-separator" />
-<hr class="wmd-separator" />
-<hr class="wmd-separator" />
+<p class="wmd-paragraph">The sections below focus on <strong>wiremd's unique UI component syntax</strong> for designing wireframes.</p>
 <hr class="wmd-separator" />
 <h2 class="wmd-h2">🔘 Buttons</h2>
 <h3 class="wmd-h3">Button Syntax</h3>
@@ -609,23 +572,29 @@ Username
 [_____________________________]
 
 Email Address
-[_____________________________] {type:email}</code></pre>
+[_____________________________] {type:email}
+
+Password
+[********] {type:password}
+
+Phone Number
+[_____________________________] {type:tel}</code></pre>
 <p class="wmd-paragraph"><strong>Rendered:</strong></p>
 <div class="wmd-container-form-group">
   Username
-  <input type="text" class="wmd-input" />
+  <input type="text" class="wmd-input" style="width: 29ch; max-width: 29ch;" />
 </div>
 <div class="wmd-container-form-group">
   Email Address
-  <input type="email" class="wmd-input" />
+  <input type="email" class="wmd-input" style="width: 29ch; max-width: 29ch;" />
 </div>
 <div class="wmd-container-form-group">
   Password
-  <input type="password" class="wmd-input" />
+  <input type="password" class="wmd-input" style="width: 8ch; max-width: 8ch;" />
 </div>
 <div class="wmd-container-form-group">
   Phone Number
-  <input type="tel" class="wmd-input" />
+  <input type="tel" class="wmd-input" style="width: 29ch; max-width: 29ch;" />
 </div>
 <h3 class="wmd-h3">Input Width Control</h3>
 <pre class="wmd-code-block"><code data-lang="markdown">Age
@@ -639,15 +608,15 @@ Full Name
 <p class="wmd-paragraph"><strong>Rendered:</strong></p>
 <div class="wmd-container-form-group">
   Age
-  <input type="text" class="wmd-input" />
+  <input type="text" class="wmd-input" style="width: 3ch; max-width: 3ch;" />
 </div>
 <div class="wmd-container-form-group">
   Zip Code
-  <input type="text" class="wmd-input" />
+  <input type="text" class="wmd-input" style="width: 5ch; max-width: 5ch;" />
 </div>
 <div class="wmd-container-form-group">
   Full Name
-  <input type="text" class="wmd-input" />
+  <input type="text" class="wmd-input" style="width: 29ch; max-width: 29ch;" />
 </div>
 <h3 class="wmd-h3">Input with Placeholder Text</h3>
 <blockquote class="wmd-blockquote">
@@ -671,19 +640,19 @@ Time
 <p class="wmd-paragraph"><strong>Rendered:</strong></p>
 <div class="wmd-container-form-group">
   Date of Birth
-  <input type="date" class="wmd-input" />
+  <input type="date" class="wmd-input" style="width: 29ch; max-width: 29ch;" />
 </div>
 <div class="wmd-container-form-group">
   Quantity
-  <input type="number" class="wmd-input" placeholder="1" />
+  <input type="number" class="wmd-input" placeholder="1" style="width: 7ch; max-width: 7ch;" />
 </div>
 <div class="wmd-container-form-group">
   Website
-  <input type="url" class="wmd-input" placeholder="https://" />
+  <input type="url" class="wmd-input" placeholder="https://" style="width: 14ch; max-width: 14ch;" />
 </div>
 <div class="wmd-container-form-group">
   Time
-  <input type="time" class="wmd-input" />
+  <input type="time" class="wmd-input" style="width: 29ch; max-width: 29ch;" />
 </div>
 <h3 class="wmd-h3">Input States</h3>
 <pre class="wmd-code-block"><code data-lang="markdown">Normal Field
@@ -700,19 +669,19 @@ Error State
 <p class="wmd-paragraph"><strong>Rendered:</strong></p>
 <div class="wmd-container-form-group">
   Normal Field
-  <input type="text" class="wmd-input" />
+  <input type="text" class="wmd-input" style="width: 29ch; max-width: 29ch;" />
 </div>
 <div class="wmd-container-form-group">
   Disabled Field
-  <input type="text" class="wmd-input wmd-state-disabled" placeholder="Cannot edit" />
+  <input type="text" class="wmd-input wmd-state-disabled" placeholder="Cannot edit" style="width: 17ch; max-width: 17ch;" />
 </div>
 <div class="wmd-container-form-group">
   Required Field
-  <input type="text" class="wmd-input" required />
+  <input type="text" class="wmd-input" required style="width: 29ch; max-width: 29ch;" />
 </div>
 <div class="wmd-container-form-group">
   Error State
-  <input type="text" class="wmd-input wmd-state-error" placeholder="Invalid input" />
+  <input type="text" class="wmd-input wmd-state-error" placeholder="Invalid input" style="width: 19ch; max-width: 19ch;" />
 </div>
 <h3 class="wmd-h3">Textarea (Multi-line)</h3>
 <pre class="wmd-code-block"><code data-lang="markdown">Comments
@@ -791,9 +760,6 @@ Description
 </div>
 <hr class="wmd-separator" />
 <h2 class="wmd-h2">🗂️ Navigation</h2>
-<blockquote class="wmd-blockquote">
-  <p class="wmd-paragraph">⚠️ <strong>Note:</strong> The [[ ... ]] navigation syntax is currently parsed as inline content/buttons. Full navigation bar rendering is planned for a future version.</p>
-</blockquote>
 <h3 class="wmd-h3">Navigation Bar Syntax</h3>
 <pre class="wmd-code-block"><code data-lang="markdown">[[ Item1 | Item2 | Item3 ]]         # Basic nav
 [[ Logo | Item1 | Item2 | [Button] ]] # With button
@@ -998,6 +964,7 @@ Are you sure you want to delete this item?
   <li class="wmd-list-item">Unlimited Users
 [Choose Pro]*</li>
 </ul>
+    <hr class="wmd-separator" />
   </div>
   <div class="wmd-grid-item">
     <h3 class="wmd-h3">3-Column Grid</h3>
@@ -1026,6 +993,7 @@ Fully customizable</code></pre>
   <div class="wmd-grid-item">
     <h3 class="wmd-h3"><span class="wmd-icon" data-icon="gear" aria-label="gear">●</span> Flexible</h3>
     <p class="wmd-paragraph">Fully customizable</p>
+    <hr class="wmd-separator" />
   </div>
   <div class="wmd-grid-item">
     <h3 class="wmd-h3">4-Column Grid</h3>
@@ -1216,19 +1184,19 @@ Second section content
   <h3 class="wmd-h3">User Registration</h3>
   <div class="wmd-container-form-group">
   First Name
-  <input type="text" class="wmd-input" required />
+  <input type="text" class="wmd-input" required style="width: 29ch; max-width: 29ch;" />
 </div>
   <div class="wmd-container-form-group">
   Last Name
-  <input type="text" class="wmd-input" required />
+  <input type="text" class="wmd-input" required style="width: 29ch; max-width: 29ch;" />
 </div>
   <div class="wmd-container-form-group">
   Email
-  <input type="email" class="wmd-input" required />
+  <input type="email" class="wmd-input" required style="width: 29ch; max-width: 29ch;" />
 </div>
   <div class="wmd-container-form-group">
   Password
-  <input type="password" class="wmd-input" required />
+  <input type="password" class="wmd-input" required style="width: 8ch; max-width: 8ch;" />
 </div>
   <div class="wmd-container-form-group">
   Country
@@ -1420,7 +1388,7 @@ Track progress, assign tasks, collaborate</p>
     <h3 class="wmd-h3"><span class="wmd-icon" data-icon="plus" aria-label="plus">➕</span> Create</h3>
     <div class="wmd-container-form-group">
   New Task
-  <input type="text" class="wmd-input" />
+  <input type="text" class="wmd-input" style="width: 29ch; max-width: 29ch;" />
 </div>
     <div class="wmd-container-form-group">
   Assign to
@@ -1435,7 +1403,7 @@ Track progress, assign tasks, collaborate</p>
     <h3 class="wmd-h3"><span class="wmd-icon" data-icon="search" aria-label="search">🔍</span> Find</h3>
     <div class="wmd-container-form-group">
   Search tasks
-  <input type="search" class="wmd-input" placeholder="Search..." />
+  <input type="search" class="wmd-input" placeholder="Search..." style="width: 15ch; max-width: 15ch;" />
 </div>
     <p class="wmd-paragraph">Filter by</p>
     <ul class="wmd-list">

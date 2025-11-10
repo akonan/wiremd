@@ -51,10 +51,11 @@ This renders into a styled HTML wireframe with a form, inputs, and buttons.
 ## Features
 
 - ✅ **Markdown-first** - Valid markdown that degrades gracefully
+- ✅ **Full markdown support** - Headings, text formatting, lists, links, images, blockquotes, code blocks, tables
 - ✅ **Visual syntax** - Looks like what it renders
 - ✅ **Fast to write** - Intuitive shortcuts for common patterns
 - ✅ **Extensible** - Add classes and attributes as needed
-- ✅ **Multiple outputs** - HTML, JSON, React (JSX/TSX), Tailwind CSS
+- ✅ **Multiple outputs** - HTML, JSON, React (JSX/TSX), Tailwind CSS, Figma (via plugin)
 - ✅ **7 visual styles** - sketch (Balsamiq-inspired), clean, wireframe, tailwind, material, brutal, none
 - ✅ **Full CLI tool** - Watch mode, live-reload dev server, style switching
 - ✅ **Rich examples** - Showcase files demonstrating all styles
@@ -69,6 +70,7 @@ This is an open-source MIT-licensed project containing:
 - **`tests/`** - Comprehensive test suite (48 tests)
 - **`docs/`** - Documentation site (coming soon)
 - **`examples/`** - Example wireframes
+- **`figma-plugin/`** - Figma plugin for importing wiremd designs
 
 ## Installation
 
@@ -112,6 +114,51 @@ mdmock wireframe.md --format react     # React/JSX component
 mdmock wireframe.md --format tailwind  # HTML with Tailwind CSS classes
 ```
 
+## Exporting to Figma
+
+wiremd designs can be imported into Figma as fully editable, native Figma designs using the **wiremd Figma Plugin**.
+
+### Quick Start
+
+1. **Generate JSON from your wiremd file:**
+   ```bash
+   mdmock your-mockup.md --format json -o mockup.json
+   ```
+
+2. **Install the Figma Plugin:**
+   - Open Figma → Plugins → Browse plugins
+   - Search for "wiremd Importer"
+   - Click Install
+
+3. **Import to Figma:**
+   - Open the wiremd Importer plugin
+   - Paste your JSON
+   - Choose a visual theme (Sketch, Clean, Wireframe, or Minimal)
+   - Click "Import to Figma"
+
+Your wiremd design will appear as a new Figma page with:
+- Native Figma frames and text nodes
+- Auto-layout for responsive designs
+- Fully editable components
+- Professional styling based on your chosen theme
+
+### Visual Themes
+
+- **Sketch** - Balsamiq-style hand-drawn look (perfect for brainstorming)
+- **Clean** - Modern, polished design (great for presentations)
+- **Wireframe** - Traditional grayscale (ideal for specifications)
+- **Minimal** - Bare-bones styling (customize yourself)
+
+### What Gets Imported
+
+✅ All layout components (containers, grids, navigation)
+✅ Form elements (buttons, inputs, selects, checkboxes, radios)
+✅ Content (headings, paragraphs, lists, tables, code blocks)
+✅ Proper spacing, padding, and auto-layout constraints
+✅ Theme-specific styling (colors, fonts, shadows)
+
+See [figma-plugin/README.md](./figma-plugin/README.md) for complete documentation.
+
 ## Programmatic API
 
 ```typescript
@@ -120,6 +167,9 @@ import { parse, renderToHTML, renderToJSON, renderToReact, renderToTailwind } fr
 // Parse markdown to AST
 const ast = parse(`
   ## Contact Form
+
+  ![Logo](logo.png)
+
   Name
   [_____________________________]
   [Submit]{.primary}
@@ -144,6 +194,7 @@ const tailwindHTML = renderToTailwind(ast, { pretty: true });
 ## Documentation
 
 - [Syntax Specification v0.1](./SYNTAX-SPEC-v0.1.md) - Complete syntax reference
+- [Component Showcase](./examples/showcase.md) - Interactive examples of all components and styles
 - [Test Corpus v3 (Hybrid)](./test-corpus-v3-hybrid.md) - Examples of 20 common UI patterns
 - [Project Plan](./markdown-mockup-project-plan.md) - Full development roadmap
 - [Syntax Research](./syntax-research.md) - Research and design decisions

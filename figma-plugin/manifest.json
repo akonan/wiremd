@@ -1,0 +1,21 @@
+{
+  "name": "wiremd Importer",
+  "id": "wiremd-figma-importer",
+  "api": "1.0.0",
+  "main": "dist/code.js",
+  "ui": "dist/ui.html",
+  "capabilities": [],
+  "enableProposedApi": false,
+  "editorType": ["figma"],
+  "documentAccess": "dynamic-page",
+  "networkAccess": {
+    "allowedDomains": ["none"]
+  },
+  "permissions": [],
+  "menu": [
+    {
+      "name": "Import wiremd JSON",
+      "command": "import"
+    }
+  ]
+}

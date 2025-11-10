@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>wiremd Mockup</title>
+  <style>
+
+/* wiremd Sketch Style - Balsamiq-inspired hand-drawn mockups */
+* {
+  box-sizing: border-box;
+}
+
+body.wmd-root {
+  font-family: 'Comic Sans MS', 'Marker Felt', 'Chalkboard', cursive, sans-serif;
+  background: #f5f5dc;
+  color: #333;
+  padding: 20px;
+  margin: 0;
+  line-height: 1.6;
+}
+
+/* Headings */
+.wmd-h1, .wmd-h2, .wmd-h3, .wmd-h4, .wmd-h5, .wmd-h6 {
+  font-weight: bold;
+  margin: 1em 0 0.5em;
+  line-height: 1.3;
+}
+
+.wmd-h1 { font-size: 2em; text-decoration: underline; }
+.wmd-h2 { font-size: 1.75em; }
+.wmd-h3 { font-size: 1.5em; }
+.wmd-h4 { font-size: 1.25em; }
+.wmd-h5 { font-size: 1.1em; }
+.wmd-h6 { font-size: 1em; }
+
+/* Paragraph */
+.wmd-paragraph {
+  margin: 0.5em 0;
+}
+
+/* Buttons */
+.wmd-button {
+  display: inline-block;
+  padding: 8px 16px;
+  margin: 4px;
+  background: #fff;
+  border: 2px solid #000;
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 2px 2px 0 rgba(0,0,0,0.2);
+  transform: rotate(-0.5deg);
+  transition: all 0.1s;
+}
+
+.wmd-button:hover {
+  transform: rotate(-0.5deg) translateY(-2px);
+  box-shadow: 3px 3px 0 rgba(0,0,0,0.2);
+}
+
+.wmd-button-primary, .wmd-button.wmd-primary {
+  background: #87CEEB;
+  border-color: #4682B4;
+}
+
+.wmd-button-secondary, .wmd-button.wmd-secondary {
+  background: #DDD;
+  border-color: #999;
+}
+
+.wmd-button-danger, .wmd-button.wmd-danger {
+  background: #FFB6C1;
+  border-color: #DC143C;
+}
+
+.wmd-button[disabled], .wmd-button.wmd-state-disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.wmd-button.wmd-loading::after {
+  content: '...';
+  animation: loading 1s infinite;
+}
+
+/* Inputs */
+.wmd-input, .wmd-textarea, .wmd-select {
+  display: block;
+  width: 100%;
+  max-width: 400px;
+  padding: 8px 12px;
+  margin: 4px 0;
+  font-family: inherit;
+  font-size: 14px;
+  background: #fff;
+  border: 2px solid #666;
+  border-radius: 4px;
+  transform: rotate(0.3deg);
+}
+
+.wmd-input:focus, .wmd-textarea:focus, .wmd-select:focus {
+  outline: 2px solid #4682B4;
+  outline-offset: 2px;
+}
+
+.wmd-input[disabled], .wmd-input.wmd-state-disabled,
+.wmd-textarea[disabled], .wmd-textarea.wmd-state-disabled,
+.wmd-select[disabled], .wmd-select.wmd-state-disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background: #f5f5f5;
+}
+
+.wmd-textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+/* Checkboxes and Radios */
+.wmd-checkbox, .wmd-radio {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 6px 0;
+  cursor: pointer;
+  user-select: none;
+}
+
+.wmd-checkbox input[type="checkbox"],
+.wmd-radio input[type="radio"] {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+}
+
+/* Icons */
+.wmd-icon {
+  display: inline-block;
+  font-size: 1.2em;
+  line-height: 1;
+  vertical-align: middle;
+  margin: 0 0.2em;
+}
+
+/* Containers */
+.wmd-container-hero, .wmd-container-card, .wmd-container-modal {
+  background: #fff;
+  border: 3px solid #000;
+  border-radius: 12px;
+  padding: 24px;
+  margin: 16px 0;
+  box-shadow: 4px 4px 0 rgba(0,0,0,0.15);
+  transform: rotate(-0.3deg);
+}
+
+.wmd-container-hero {
+  background: linear-gradient(135deg, #FFF9E6 0%, #FFE6CC 100%);
+  text-align: center;
+  padding: 48px 24px;
+}
+
+.wmd-container-card {
+  max-width: 400px;
+}
+
+.wmd-container-modal {
+  position: relative;
+  max-width: 500px;
+  margin: 32px auto;
+  border-width: 4px;
+}
+
+/* Radio Groups */
+.wmd-radio-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 8px 0;
+}
+
+.wmd-radio-group-inline {
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.wmd-radio-group-inline .wmd-radio {
+  margin: 0;
+}
+
+/* Icons */
+.wmd-icon {
+  display: inline-block;
+  font-size: 1.2em;
+  line-height: 1;
+  vertical-align: middle;
+  margin: 0 0.2em;
+}
+
+/* Navigation */
+.wmd-nav {
+  background: #87CEEB;
+  border: 3px solid #4682B4;
+  border-radius: 8px;
+  padding: 12px 16px;
+  margin: 16px 0;
+  box-shadow: 3px 3px 0 rgba(0,0,0,0.15);
+}
+
+.wmd-nav-content {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.wmd-brand {
+  font-weight: bold;
+  font-size: 1.2em;
+  margin-right: auto;
+}
+
+.wmd-nav-item {
+  color: #000;
+  text-decoration: none;
+  font-weight: bold;
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+
+.wmd-nav-item:hover {
+  background: rgba(255,255,255,0.3);
+}
+
+.wmd-nav .wmd-button {
+  margin: 0;
+}
+
+/* Grid */
+.wmd-grid {
+  display: grid;
+  grid-template-columns: repeat(var(--grid-columns, 3), 1fr);
+  gap: 24px;
+  margin: 24px 0;
+}
+
+.wmd-grid-2 { grid-template-columns: repeat(2, 1fr); }
+.wmd-grid-3 { grid-template-columns: repeat(3, 1fr); }
+.wmd-grid-4 { grid-template-columns: repeat(4, 1fr); }
+
+.wmd-grid-item {
+  background: #fff;
+  border: 2px solid #666;
+  border-radius: 8px;
+  padding: 16px;
+  box-shadow: 2px 2px 0 rgba(0,0,0,0.1);
+  transform: rotate(0.5deg);
+}
+
+.wmd-grid-item:nth-child(even) {
+  transform: rotate(-0.5deg);
+}
+
+/* Lists */
+.wmd-list {
+  margin: 12px 0;
+  padding-left: 24px;
+}
+
+.wmd-list-item {
+  margin: 4px 0;
+}
+
+/* Blockquote */
+.wmd-blockquote {
+  border-left: 4px solid #666;
+  padding-left: 16px;
+  margin: 16px 0;
+  font-style: italic;
+  color: #555;
+}
+
+/* Code */
+.wmd-code-inline {
+  background: #FFF3CD;
+  border: 1px solid #FFC107;
+  border-radius: 3px;
+  padding: 2px 6px;
+  font-family: 'Courier New', monospace;
+  font-size: 0.9em;
+}
+
+.wmd-code-block {
+  background: #FFF3CD;
+  border: 2px solid #FFC107;
+  border-radius: 6px;
+  padding: 12px;
+  margin: 12px 0;
+  overflow-x: auto;
+}
+
+.wmd-code-block code {
+  font-family: 'Courier New', monospace;
+  font-size: 0.9em;
+}
+
+/* Separator */
+.wmd-separator {
+  border: none;
+  border-top: 3px dashed #666;
+  margin: 24px 0;
+}
+
+/* Table */
+.wmd-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  border: 3px solid #000;
+  border-radius: 8px;
+  margin: 16px 0;
+  overflow: hidden;
+}
+
+.wmd-table th, .wmd-table td {
+  border: 2px solid #666;
+  padding: 8px 12px;
+  text-align: left;
+}
+
+.wmd-table th {
+  background: #DDD;
+  font-weight: bold;
+}
+
+/* Table cell alignment - more specific to override th/td defaults */
+.wmd-table .wmd-align-left {
+  text-align: left !important;
+}
+
+.wmd-table .wmd-align-center {
+  text-align: center !important;
+}
+
+.wmd-table .wmd-align-right {
+  text-align: right !important;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .wmd-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .wmd-nav-content {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .wmd-brand {
+    margin-right: 0;
+  }
+}
+
+@keyframes loading {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+  </style>
+</head>
+<body class="wmd-root wmd-sketch">
+  <h1 class="wmd-h1">Image Support Test</h1>
+<h2 class="wmd-h2">Basic Image</h2>
+<div class="wmd-container-form-group">
+  <img src="https://via.placeholder.com/300x200" alt="Placeholder Image" class="wmd-image" />
+</div>
+<h2 class="wmd-h2">Image with Description</h2>
+<p class="wmd-paragraph">Here&#039;s an image example:</p>
+<div class="wmd-container-form-group">
+  <img src="https://via.placeholder.com/400x300/cccccc/333333?text=Wireframe+Preview" alt="Sample Wireframe" class="wmd-image" />
+</div>
+<p class="wmd-paragraph">This demonstrates wiremd&#039;s image support using standard Markdown syntax.</p>
+<h2 class="wmd-h2">In a Card Container</h2>
+<div class="wmd-container-card">
+  <h3 class="wmd-h3">Product Image</h3>
+  <div class="wmd-container-form-group">
+  <img src="https://via.placeholder.com/250x250/ff6b6b/ffffff?text=Product" alt="Product Photo" class="wmd-image" />
+</div>
+  <p class="wmd-paragraph">This is a product card with an image.</p>
+  <button class="wmd-button wmd-button-primary">Add to Cart</button>
+</div>
+</body>
+</html>
