@@ -634,132 +634,6 @@
             gap: 16px;
         }
 
-        /* Live Playground */
-        .playground {
-            padding: 120px 0;
-            background: var(--bg-secondary);
-        }
-
-        .playground-container {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 24px;
-            margin-top: 48px;
-        }
-
-        .editor-pane {
-            background: var(--bg-code);
-            border: 1px solid var(--border-color);
-            border-radius: 16px;
-            overflow: hidden;
-            box-shadow: var(--shadow-lg);
-        }
-
-        .editor-header {
-            background: var(--bg-tertiary);
-            padding: 14px 20px;
-            border-bottom: 1px solid var(--border-color);
-            font-family: var(--font-mono);
-            font-size: 13px;
-            color: var(--text-secondary);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .live-indicator {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            color: var(--success);
-            font-size: 12px;
-        }
-
-        .live-indicator::before {
-            content: '';
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: var(--success);
-            animation: pulse-dot 2s ease-in-out infinite;
-        }
-
-        @keyframes pulse-dot {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
-        }
-
-        .editor-textarea {
-            width: 100%;
-            min-height: 500px;
-            padding: 20px;
-            background: transparent;
-            border: none;
-            color: var(--text-primary);
-            font-family: var(--font-mono);
-            font-size: 14px;
-            line-height: 1.8;
-            resize: none;
-            outline: none;
-            tab-size: 2;
-        }
-
-        .editor-textarea:focus {
-            background: rgba(37, 99, 235, 0.02);
-        }
-
-        .editor-textarea::selection {
-            background: rgba(37, 99, 235, 0.3);
-        }
-
-        .preview-pane {
-            background: var(--bg-code);
-            border: 1px solid var(--border-color);
-            border-radius: 16px;
-            overflow: hidden;
-            box-shadow: var(--shadow-lg);
-        }
-
-        .preview-content {
-            padding: 24px;
-            min-height: 500px;
-            background: white;
-            border-radius: 12px;
-            margin: 20px;
-            color: #1a1a1a;
-            font-family: var(--font-sans);
-            overflow-y: auto;
-        }
-
-        .preview-content::-webkit-scrollbar {
-            width: 8px;
-        }
-
-        .preview-content::-webkit-scrollbar-track {
-            background: #f5f5f5;
-            border-radius: 4px;
-        }
-
-        .preview-content::-webkit-scrollbar-thumb {
-            background: #ccc;
-            border-radius: 4px;
-        }
-
-        .preview-content::-webkit-scrollbar-thumb:hover {
-            background: #999;
-        }
-
-        #style-selector:hover {
-            border-color: var(--accent-primary);
-            color: var(--text-primary);
-        }
-
-        #style-selector:focus {
-            outline: none;
-            border-color: var(--accent-primary);
-            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
-        }
-
         /* Features Section */
         .features {
             padding: 120px 0;
@@ -1231,8 +1105,7 @@
 
         /* Responsive */
         @media (max-width: 1024px) {
-            .code-demo-container,
-            .playground-container {
+            .code-demo-container {
                 grid-template-columns: 1fr;
             }
 
@@ -1329,7 +1202,6 @@
             <ul class="nav-links">
                 <li><a href="#features">Features</a></li>
                 <li><a href="#demo">Demo</a></li>
-                <li><a href="#playground">Playground</a></li>
                 <li><a href="#installation">Install</a></li>
                 <li>
                     <a href="https://github.com/akonan/wiremd" class="github-button" target="_blank" rel="noopener noreferrer">
@@ -1359,20 +1231,20 @@
                     The text-first UI design tool for developers who think in code. Create wireframes and mockups as fast as you can type—no clicking, no dragging, just pure markdown magic.
                 </p>
                 <div class="hero-buttons">
-                    <a href="#playground" class="btn btn-primary">
-                        Try Live Demo
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <line x1="5" y1="12" x2="19" y2="12"></line>
-                            <polyline points="12 5 19 12 12 19"></polyline>
-                        </svg>
-                    </a>
-                    <a href="#installation" class="btn btn-secondary">
+                    <a href="#installation" class="btn btn-primary">
+                        Get Started
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
                             <polyline points="7 10 12 15 17 10"></polyline>
                             <line x1="12" y1="15" x2="12" y2="3"></line>
                         </svg>
-                        Install CLI
+                    </a>
+                    <a href="#demo" class="btn btn-secondary">
+                        See Demo
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                            <polyline points="12 5 19 12 12 19"></polyline>
+                        </svg>
                     </a>
                     <a href="https://github.com/akonan/wiremd" class="btn btn-ghost" target="_blank" rel="noopener noreferrer">
                         <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
@@ -1477,56 +1349,6 @@
                                 }
                             </style>
                         </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Live Playground -->
-    <section class="playground" id="playground">
-        <div class="container container-wide">
-            <div class="section-header">
-                <div class="section-badge">Playground</div>
-                <h2 class="section-title">Try it Yourself</h2>
-                <p class="section-description">Edit the markdown and watch your mockup update in real-time</p>
-            </div>
-
-            <div class="playground-container">
-                <div class="editor-pane">
-                    <div class="editor-header">
-                        <div class="code-title">input.wiremd</div>
-                        <div class="live-indicator">Live</div>
-                    </div>
-                    <textarea class="editor-textarea" id="markdown-input" spellcheck="false"># Login Page
-
-[[ Logo | Company Name ]]
-
-## Welcome Back
-Please sign in to continue
-
-[Email___________]
-[Password________] {type:password}
-
-[x] Remember me
-
-[Sign In] [Forgot Password?]
-
----
-Don't have an account? [Sign Up]</textarea>
-                </div>
-
-                <div class="preview-pane">
-                    <div class="editor-header">
-                        <div class="code-title">Preview</div>
-                        <select id="style-selector" style="background: var(--bg-tertiary); border: 1px solid var(--border-color); color: var(--text-secondary); padding: 6px 12px; padding-right: 28px; border-radius: 6px; font-size: 12px; cursor: pointer; transition: var(--transition); appearance: none; background-image: url(\"data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L6 6L11 1' stroke='%23a8a8a8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E\"); background-repeat: no-repeat; background-position: right 8px center;">
-                            <option>Sketch Style</option>
-                            <option>Clean Style</option>
-                            <option>Wireframe Style</option>
-                        </select>
-                    </div>
-                    <div class="preview-content" id="preview-output">
-                        <p style="color: #999; text-align: center; padding: 40px;">Start typing markdown to see the preview...</p>
                     </div>
                 </div>
             </div>
@@ -1806,7 +1628,6 @@ Don't have an account? [Sign Up]</textarea>
                     <ul class="footer-links">
                         <li><a href="#features">Features</a></li>
                         <li><a href="#demo">Demo</a></li>
-                        <li><a href="#playground">Playground</a></li>
                         <li><a href="#installation">Installation</a></li>
                     </ul>
                 </div>
@@ -1857,47 +1678,6 @@ Don't have an account? [Sign Up]</textarea>
                 navbar.classList.remove('scrolled');
             }
         });
-
-        // Live editor preview
-        const input = document.getElementById('markdown-input');
-        const preview = document.getElementById('preview-output');
-
-        function updatePreview() {
-            const markdown = input.value;
-            if (!markdown.trim()) {
-                preview.innerHTML = '<p style="color: #999; text-align: center; padding: 40px;">Start typing markdown to see the preview...</p>';
-                return;
-            }
-            
-            // Enhanced markdown to HTML conversion - order matters!
-            let html = markdown
-                // Headings
-                .replace(/^# (.+)$/gm, '<h1 style="font-size: 32px; font-weight: 700; margin-bottom: 24px;">$1</h1>')
-                .replace(/^## (.+)$/gm, '<h2 style="font-size: 24px; font-weight: 700; margin: 24px 0 16px;">$1</h2>')
-                .replace(/^### (.+)$/gm, '<h3 style="font-size: 20px; font-weight: 600; margin: 20px 0 12px;">$1</h3>')
-                // Inline containers
-                .replace(/\[\[(.+?)\]\]/g, '<div style="display: flex; justify-content: space-between; align-items: center; padding: 16px; background: #f5f5f5; border-radius: 8px; margin-bottom: 24px; font-weight: 600;">$1</div>')
-                // Checkboxes
-                .replace(/\[x\] (.+)/g, '<label style="display: flex; align-items: center; margin: 12px 0; cursor: pointer;"><input type="checkbox" checked style="margin-right: 8px; width: 18px; height: 18px; cursor: pointer;"> <span>$1</span></label>')
-                // Password inputs (must come before regular inputs)
-                .replace(/\[([^\]]+?)\] \{type:password\}/g, '<input type="password" placeholder="$1" style="width: 100%; padding: 12px; margin: 8px 0; border: 2px solid #e5e5e5; border-radius: 6px; font-size: 14px; font-family: inherit; box-sizing: border-box;">')
-                // Text inputs with underscores
-                .replace(/\[([^\]]+?)___+\]/g, '<input type="text" placeholder="$1" style="width: 100%; padding: 12px; margin: 8px 0; border: 2px solid #e5e5e5; border-radius: 6px; font-size: 14px; font-family: inherit; box-sizing: border-box;">')
-                // Horizontal rule
-                .replace(/---/g, '<hr style="margin: 32px 0; border: none; border-top: 2px solid #e5e5e5;">')
-                // Buttons (must come last, after all inputs are processed)
-                .replace(/\[([^\]]+?)\]/g, '<button style="padding: 10px 20px; margin: 4px; background: #2563eb; color: white; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; font-size: 14px; font-family: inherit; transition: all 0.2s ease;">$1</button>')
-                // Line breaks
-                .replace(/\n\n/g, '<br><br>');
-            
-            // Add hover effects to buttons via CSS
-            html = '<style>#preview-output button:hover { background: #1d4ed8 !important; transform: translateY(-1px); box-shadow: 0 4px 8px rgba(37, 99, 235, 0.3); }</style>' + html;
-            
-            preview.innerHTML = html;
-        }
-
-        input.addEventListener('input', updatePreview);
-        updatePreview();
 
         // Install tabs
         document.querySelectorAll('.install-tab').forEach(tab => {
