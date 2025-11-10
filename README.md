@@ -55,11 +55,11 @@ This renders into a styled HTML wireframe with a form, inputs, and buttons.
 - ✅ **Visual syntax** - Looks like what it renders
 - ✅ **Fast to write** - Intuitive shortcuts for common patterns
 - ✅ **Extensible** - Add classes and attributes as needed
-- ✅ **Multiple outputs** - HTML, JSON, Figma (via plugin)
+- ✅ **Multiple outputs** - HTML, JSON, React (JSX/TSX), Tailwind CSS, Figma (via plugin)
 - ✅ **7 visual styles** - sketch (Balsamiq-inspired), clean, wireframe, tailwind, material, brutal, none
 - ✅ **Full CLI tool** - Watch mode, live-reload dev server, style switching
 - ✅ **Rich examples** - Showcase files demonstrating all styles
-- 🚧 **Framework renderers** - React, Vue components (coming soon)
+- ✅ **Framework renderers** - React, Tailwind CSS classes (Vue, Svelte coming soon)
 - 🚧 **VS Code extension** - Live preview (planned)
 
 ## Project Structure
@@ -108,8 +108,10 @@ mdmock wireframe.md --style none       # Unstyled semantic HTML
 # Watch mode with live-reload dev server
 mdmock wireframe.md --watch --serve 3000
 
-# Generate JSON output
-mdmock wireframe.md --format json
+# Generate different output formats
+mdmock wireframe.md --format json      # JSON AST output
+mdmock wireframe.md --format react     # React/JSX component
+mdmock wireframe.md --format tailwind  # HTML with Tailwind CSS classes
 ```
 
 ## Exporting to Figma
@@ -160,7 +162,7 @@ See [figma-plugin/README.md](./figma-plugin/README.md) for complete documentatio
 ## Programmatic API
 
 ```typescript
-import { parse, renderToHTML, renderToJSON } from 'wiremd';
+import { parse, renderToHTML, renderToJSON, renderToReact, renderToTailwind } from 'wiremd';
 
 // Parse markdown to AST
 const ast = parse(`
@@ -173,11 +175,20 @@ const ast = parse(`
   [Submit]{.primary}
 `);
 
-// Render to HTML
+// Render to HTML with visual style
 const html = renderToHTML(ast, { style: 'sketch' });
 
 // Render to JSON
 const json = renderToJSON(ast, { pretty: true });
+
+// Render to React component (TypeScript)
+const reactComponent = renderToReact(ast, {
+  typescript: true,
+  componentName: 'ContactForm'
+});
+
+// Render to HTML with Tailwind CSS classes
+const tailwindHTML = renderToTailwind(ast, { pretty: true });
 ```
 
 ## Documentation
@@ -199,16 +210,18 @@ const json = renderToJSON(ast, { pretty: true });
 - [x] AST transformer with 40+ node types
 - [x] HTML renderer with 7 visual styles
 - [x] JSON output
-- [x] 48 passing tests
+- [x] 48+ passing tests
 - [x] Full-featured CLI tool with watch mode and live-reload
 - [x] Rich example showcase demonstrating all styles
+- [x] React component renderer (JSX/TSX output)
+- [x] Tailwind CSS class renderer
 
 ### 🚧 In Progress (Phase 3)
 - Documentation site
 - npm package publishing
 
 ### 📋 Coming Soon (Phase 4+)
-- Framework-specific renderers (React, Vue, Svelte)
+- Framework-specific renderers (Vue, Svelte)
 - VS Code extension with live preview
 - Interactive web playground
 
