@@ -29,6 +29,9 @@ jobs:
     - name: Install dependencies
       run: npm ci
 
+    - name: Build
+      run: npm run build
+
     - name: Run type check
       run: npm run typecheck
 
@@ -37,9 +40,6 @@ jobs:
 
     - name: Run tests
       run: npm test
-
-    - name: Build
-      run: npm run build
 
   coverage:
     name: Coverage
@@ -57,6 +57,9 @@ jobs:
 
     - name: Install dependencies
       run: npm ci
+
+    - name: Build
+      run: npm run build
 
     - name: Run tests with coverage
       run: npm run test:coverage

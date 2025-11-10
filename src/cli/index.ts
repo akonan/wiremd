@@ -9,7 +9,7 @@ import { readFileSync, writeFileSync, existsSync, watchFile } from 'fs';
 import { resolve } from 'path';
 import { parse } from '../parser/index.js';
 import { renderToHTML, renderToJSON } from '../renderer/index.js';
-import { startServer, notifyReload } from './server.js';
+import { startServer, notifyReload, notifyError } from './server.js';
 
 interface CLIOptions {
   input: string;
@@ -253,6 +253,11 @@ function main(): void {
           }
         } catch (error: any) {
           console.error(`❌ Error: ${error.message}`);
+
+          // Notify error to live-reload clients
+          if (options.serve) {
+            notifyError(error.message);
+          }
         }
       }, 100);
     });

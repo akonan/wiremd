@@ -10,15 +10,18 @@
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "import": "./dist/index.js"
+      "import": "./dist/index.js",
+      "require": "./dist/index.js"
     },
     "./parser": {
       "types": "./dist/parser/index.d.ts",
-      "import": "./dist/parser/index.js"
+      "import": "./dist/parser/index.js",
+      "require": "./dist/parser/index.js"
     },
     "./renderer": {
       "types": "./dist/renderer/index.d.ts",
-      "import": "./dist/renderer/index.js"
+      "import": "./dist/renderer/index.js",
+      "require": "./dist/renderer/index.js"
     }
   },
   "bin": {
@@ -43,16 +46,16 @@
     "docs:preview": "vitepress preview docs"
   },
   "dependencies": {
-    "unified": "^11.0.4",
-    "remark": "^15.0.1",
-    "remark-parse": "^11.0.0",
-    "remark-gfm": "^4.0.0",
-    "unist-util-visit": "^5.0.0",
     "mdast-util-from-markdown": "^2.0.0",
-    "mdast-util-to-markdown": "^2.1.0"
+    "mdast-util-to-markdown": "^2.1.0",
+    "remark": "^15.0.1",
+    "remark-gfm": "^4.0.0",
+    "remark-parse": "^11.0.0",
+    "unified": "^11.0.4",
+    "unist-util-visit": "^5.0.0"
   },
   "devDependencies": {
-    "@types/node": "^20.10.0",
+    "@types/node": "^20.19.24",
     "@typescript-eslint/eslint-plugin": "^6.13.0",
     "@typescript-eslint/parser": "^6.13.0",
     "@vitest/coverage-v8": "^1.0.0",
