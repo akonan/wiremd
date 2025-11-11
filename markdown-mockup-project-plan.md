@@ -45,7 +45,7 @@ A text-first UI design tool that allows developers to create wireframes and mock
 ---
 
 ## Core Library (MIT Licensed)
-**Name:** `markdown-mockup` or `mdmock`  
+**Name:** `markdown-mockup` or `wiremd`
 **License:** MIT  
 **Repository:** `github.com/[username]/markdown-mockup`
 
@@ -378,22 +378,22 @@ class HTMLRenderer {
 
 ```bash
 # Basic usage
-mdmock input.md                        # Outputs to stdout
-mdmock input.md -o output.html         # File output
-mdmock input.md --format json          # JSON output
-mdmock input.md --style clean          # Different style
+wiremd input.md                        # Outputs to stdout
+wiremd input.md -o output.html         # File output
+wiremd input.md --format json          # JSON output
+wiremd input.md --style clean          # Different style
 
 # Watch mode
-mdmock watch input.md --serve 3000     # Dev server
-mdmock watch *.md --out-dir ./dist     # Build directory
+wiremd watch input.md --serve 3000     # Dev server
+wiremd watch *.md --out-dir ./dist     # Build directory
 
 # Component library
-mdmock init                            # Initialize project
-mdmock component add button.mdmock     # Add to library
-mdmock build --components ./components # Use library
+wiremd init                            # Initialize project
+wiremd component add button.mdmock     # Add to library
+wiremd build --components ./components # Use library
 
 # Config file support
-mdmock --config .mdmockrc.json
+wiremd --config .mdmockrc.json
 ```
 
 #### 4.2 Configuration Schema
@@ -647,18 +647,18 @@ markdown-mockup/
 
 ### Links
 - GitHub: [github.com/username/markdown-mockup]
-- Documentation: [mdmock.dev]
-- Discord: [discord.gg/mdmock]
-- Twitter: [@mdmock]
+- Documentation: [wiremd.dev]
+- Discord: [discord.gg/wiremd]
+- Twitter: [@wiremd]
 
 ### Get Started
 ```bash
 # Install core library
-npm install -g mdmock
+npm install -g wiremd
 
 # Create your first mockup
 echo "[Hello World]" > hello.md
-mdmock hello.md --serve
+wiremd hello.md --serve
 
 # Install VS Code extension
 # Available in marketplace: "wiremd"

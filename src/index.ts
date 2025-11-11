@@ -1,5 +1,5 @@
 /**
- * markdown-mockup (mdmock)
+ * markdown-mockup (wiremd)
  * Parse markdown-based UI mockup syntax and render to HTML/JSON
  *
  * @packageDocumentation

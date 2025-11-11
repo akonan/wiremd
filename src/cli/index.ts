@@ -29,7 +29,7 @@ function showHelp(): void {
 └─────────────────────────────────────────────────────────────────┘
 
 USAGE:
-  mdmock <input.md> [options]
+  wiremd <input.md> [options]
 
 OPTIONS:
   -o, --output <file>      Output file path (default: <input>.html)
@@ -43,19 +43,19 @@ OPTIONS:
 
 EXAMPLES:
   # Generate HTML with default Balsamiq-style
-  mdmock wireframe.md
+  wiremd wireframe.md
 
   # Output to specific file
-  mdmock wireframe.md -o output.html
+  wiremd wireframe.md -o output.html
 
   # Use alternative style
-  mdmock wireframe.md --style clean
+  wiremd wireframe.md --style clean
 
   # Watch mode with live-reload
-  mdmock wireframe.md --watch --serve 3000
+  wiremd wireframe.md --watch --serve 3000
 
   # Generate JSON output
-  mdmock wireframe.md --format json
+  wiremd wireframe.md --format json
 
 STYLES:
   sketch     - Balsamiq-inspired hand-drawn look (default)
@@ -151,7 +151,7 @@ function parseArgs(args: string[]): CLIOptions | null {
       default:
         if (arg.startsWith('-')) {
           console.error(`Error: Unknown option "${arg}"`);
-          console.error('Run "mdmock --help" for usage information.');
+          console.error('Run "wiremd --help" for usage information.');
           process.exit(1);
         }
         if (!options.input) {
@@ -162,7 +162,7 @@ function parseArgs(args: string[]): CLIOptions | null {
 
   if (!options.input) {
     console.error('Error: No input file specified');
-    console.error('Run "mdmock --help" for usage information.');
+    console.error('Run "wiremd --help" for usage information.');
     process.exit(1);
   }
 
