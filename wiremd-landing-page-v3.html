@@ -1473,6 +1473,10 @@
                             <option value="sketch">Sketch Style</option>
                             <option value="clean">Clean Style</option>
                             <option value="wireframe">Wireframe Style</option>
+                            <option value="tailwind">Tailwind Style</option>
+                            <option value="material">Material Style</option>
+                            <option value="brutal">Brutal Style</option>
+                            <option value="none">None Style</option>
                         </select>
                     </div>
                     <div class="code-body">
@@ -2011,6 +2015,58 @@
                 link: 'color: #000; text-decoration: underline; cursor: pointer; font-size: 12px; font-weight: bold; text-transform: uppercase;',
                 hr: 'margin: 24px 0; border: none; border-top: 2px solid #000;',
                 footer: 'margin-top: 20px; text-align: center; font-size: 12px; color: #000; text-transform: uppercase;'
+            },
+            tailwind: {
+                container: 'background: #f9fafb; padding: 32px; border-radius: 12px; font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);',
+                nav: 'display: flex; justify-content: space-between; padding: 16px 20px; background: white; border-radius: 8px; margin-bottom: 24px; box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);',
+                navItem: 'font-weight: 500; font-size: 14px; color: #374151; padding: 6px 12px;',
+                heading: 'font-size: 2.25rem; font-weight: 800; margin: 24px 0 12px; color: #111827; letter-spacing: -0.025em;',
+                text: 'font-size: 15px; color: #6b7280; margin-bottom: 16px; line-height: 1.5;',
+                input: 'width: 100%; padding: 8px 12px; margin: 8px 0; border: 1px solid #e5e7eb; border-radius: 8px; background: white; font-size: 14px; box-sizing: border-box; transition: all 0.15s ease;',
+                checkbox: 'margin: 16px 0; font-size: 14px; color: #6b7280;',
+                button: 'padding: 8px 16px; background: #6366f1; color: white; border: none; border-radius: 8px; font-weight: 500; cursor: pointer; font-size: 14px; box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05); transition: all 0.15s ease; display: inline-block;',
+                link: 'color: #6366f1; text-decoration: none; cursor: pointer; font-size: 14px; font-weight: 500;',
+                hr: 'margin: 32px 0; border: none; border-top: 1px solid #e5e7eb;',
+                footer: 'margin-top: 24px; text-align: center; font-size: 13px; color: #9ca3af;'
+            },
+            material: {
+                container: 'background: #fafafa; padding: 32px; border-radius: 4px; font-family: Roboto, -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif; box-shadow: 0px 3px 1px -2px rgba(0,0,0,0.2), 0px 2px 2px 0px rgba(0,0,0,0.14), 0px 1px 5px 0px rgba(0,0,0,0.12);',
+                nav: 'display: flex; justify-content: space-between; padding: 16px 20px; background: #6200ee; border-radius: 4px; margin-bottom: 24px; box-shadow: 0px 2px 4px -1px rgba(0,0,0,0.2), 0px 4px 5px 0px rgba(0,0,0,0.14), 0px 1px 10px 0px rgba(0,0,0,0.12);',
+                navItem: 'font-weight: 500; font-size: 14px; color: white; padding: 6px 12px; letter-spacing: 0.02857em; text-transform: uppercase;',
+                heading: 'font-size: 2.125rem; font-weight: 400; margin: 24px 0 12px; color: rgba(0, 0, 0, 0.87); letter-spacing: 0;',
+                text: 'font-size: 15px; color: rgba(0, 0, 0, 0.6); margin-bottom: 16px; line-height: 1.5; letter-spacing: 0.00938em;',
+                input: 'width: 100%; padding: 12px; margin: 10px 0; border: none; border-bottom: 1px solid rgba(0, 0, 0, 0.42); background: transparent; font-size: 16px; box-sizing: border-box; transition: border-color 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;',
+                checkbox: 'margin: 16px 0; font-size: 14px; color: rgba(0, 0, 0, 0.6);',
+                button: 'padding: 6px 16px; background: #6200ee; color: white; border: none; border-radius: 4px; font-weight: 500; cursor: pointer; font-size: 14px; letter-spacing: 0.02857em; text-transform: uppercase; box-shadow: 0px 3px 1px -2px rgba(0,0,0,0.2), 0px 2px 2px 0px rgba(0,0,0,0.14), 0px 1px 5px 0px rgba(0,0,0,0.12); transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms; display: inline-block;',
+                link: 'color: #6200ee; text-decoration: none; cursor: pointer; font-size: 14px; font-weight: 500;',
+                hr: 'margin: 24px 0; border: none; border-top: 1px solid rgba(0, 0, 0, 0.12);',
+                footer: 'margin-top: 24px; text-align: center; font-size: 13px; color: rgba(0, 0, 0, 0.6);'
+            },
+            brutal: {
+                container: 'background: #fffcf2; padding: 32px; border: 3px solid #000; border-radius: 0; font-family: "Space Grotesk", "Inter", -apple-system, BlinkMacSystemFont, sans-serif; box-shadow: 8px 8px 0 #000;',
+                nav: 'display: flex; justify-content: space-between; padding: 16px 20px; background: #ffd93d; border: 3px solid #000; margin-bottom: 24px; box-shadow: 4px 4px 0 #000;',
+                navItem: 'font-weight: 900; font-size: 14px; color: #000; text-transform: uppercase; letter-spacing: 0.05em; padding: 6px 12px;',
+                heading: 'font-size: 3rem; font-weight: 900; margin: 24px 0 12px; color: #000; text-transform: uppercase; letter-spacing: -0.02em; text-shadow: 3px 3px 0 #ffd93d;',
+                text: 'font-size: 15px; color: #000; margin-bottom: 16px; font-weight: 500;',
+                input: 'width: 100%; padding: 12px; margin: 10px 0; border: 3px solid #000; border-radius: 0; background: white; font-size: 16px; font-weight: 600; box-sizing: border-box; box-shadow: 4px 4px 0 #000; transition: all 0.1s ease;',
+                checkbox: 'margin: 16px 0; font-size: 14px; color: #000; font-weight: 600;',
+                button: 'padding: 12px 24px; background: #ffd93d; color: #000; border: 3px solid #000; border-radius: 0; font-weight: 900; cursor: pointer; font-size: 14px; text-transform: uppercase; letter-spacing: 0.05em; box-shadow: 4px 4px 0 #000; transition: all 0.1s ease; display: inline-block;',
+                link: 'color: #000; text-decoration: underline; text-decoration-thickness: 3px; cursor: pointer; font-size: 14px; font-weight: 900; text-transform: uppercase;',
+                hr: 'margin: 24px 0; border: none; border-top: 3px solid #000;',
+                footer: 'margin-top: 24px; text-align: center; font-size: 13px; color: #000; font-weight: 600; text-transform: uppercase;'
+            },
+            none: {
+                container: 'padding: 20px; font-family: system-ui, -apple-system, sans-serif; max-width: 600px; margin: 0 auto;',
+                nav: 'display: flex; justify-content: space-between; padding: 12px 0; margin-bottom: 20px;',
+                navItem: 'font-size: 14px; color: #000; padding: 4px 8px;',
+                heading: 'font-size: 2em; font-weight: bold; margin: 20px 0 10px;',
+                text: 'font-size: 14px; margin-bottom: 12px;',
+                input: 'width: 100%; padding: 8px; margin: 8px 0; box-sizing: border-box;',
+                checkbox: 'margin: 12px 0;',
+                button: 'padding: 8px 16px; margin: 4px; cursor: pointer; display: inline-block;',
+                link: 'color: blue; text-decoration: underline; cursor: pointer;',
+                hr: 'margin: 20px 0;',
+                footer: 'margin-top: 20px; text-align: center; font-size: 12px;'
             }
         };
 
