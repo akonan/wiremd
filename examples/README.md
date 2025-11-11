@@ -13,24 +13,24 @@ This directory contains example wireframes and outputs in different styles.
 
 ```bash
 # Default Balsamiq-style
-mdmock hello.md
+wiremd hello.md
 
 # Alternative styles
-mdmock hello.md --style clean -o hello-clean.html
-mdmock hello.md --style wireframe -o hello-wireframe.html
-mdmock hello.md --style none -o hello-none.html
+wiremd hello.md --style clean -o hello-clean.html
+wiremd hello.md --style wireframe -o hello-wireframe.html
+wiremd hello.md --style none -o hello-none.html
 
 # JSON output
-mdmock hello.md --format json
+wiremd hello.md --format json
 ```
 
 ## Watch Mode
 
 ```bash
 # Watch for changes and regenerate
-mdmock hello.md --watch
+wiremd hello.md --watch
 
 # Watch + live-reload dev server
-mdmock hello.md --watch --serve 3000
+wiremd hello.md --watch --serve 3000
 # Open http://localhost:3000 in browser
 ```

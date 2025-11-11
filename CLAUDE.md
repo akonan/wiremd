@@ -6,7 +6,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 **wiremd** is a text-first UI design tool that allows developers to create wireframes and mockups using Markdown syntax.
 
-**Core Library** (`markdown-mockup` or `mdmock`) - MIT-licensed parser and renderer
+**Core Library** (`markdown-mockup` or `wiremd`) - MIT-licensed parser and renderer
 
 **Current Status:** ~75% of Phase 1 complete - Core parser and HTML renderer implemented with 48 passing tests. See `markdown-mockup-project-plan.md` for full roadmap.
 
@@ -119,21 +119,21 @@ npm run docs:dev
 ### CLI Tool Usage (in development)
 ```bash
 # Parse and render mockup (uses Balsamiq-style by default)
-mdmock input.md
+wiremd input.md
 
 # Output to file
-mdmock input.md -o output.html
+wiremd input.md -o output.html
 
 # JSON output
-mdmock input.md --format json
+wiremd input.md --format json
 
 # Watch mode with dev server and live-reload
-mdmock input.md --watch --serve 3000
+wiremd input.md --watch --serve 3000
 
 # Use alternative visual styles (examples in /examples/styles/)
-mdmock input.md --style clean      # Modern minimal
-mdmock input.md --style wireframe  # Traditional grayscale
-mdmock input.md --style none       # Unstyled semantic HTML
+wiremd input.md --style clean      # Modern minimal
+wiremd input.md --style wireframe  # Traditional grayscale
+wiremd input.md --style none       # Unstyled semantic HTML
 ```
 
 ## Testing Strategy

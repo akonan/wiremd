@@ -219,7 +219,7 @@ The REST API cannot:
 1. Document the workflow in README:
    ```bash
    # Generate HTML
-   mdmock wireframe.md -o output.html --serve 3000
+   wiremd wireframe.md -o output.html --serve 3000
 
    # Then use html.to.design Chrome extension to import to Figma
    ```
@@ -573,7 +573,7 @@ figma.ui.onmessage = async (msg) => {
 
 ```bash
 # Generate JSON for Figma import
-mdmock wireframe.md --format json -o wireframe.json
+wiremd wireframe.md --format json -o wireframe.json
 
 # User then:
 # 1. Opens Figma
@@ -586,7 +586,7 @@ mdmock wireframe.md --format json -o wireframe.json
 Add direct plugin integration:
 ```bash
 # Future: direct integration (would require plugin to accept URLs)
-mdmock wireframe.md --export figma --open
+wiremd wireframe.md --export figma --open
 ```
 
 ---
