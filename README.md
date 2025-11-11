@@ -43,7 +43,7 @@ Message
 Generate a wireframe:
 
 ```bash
-mdmock contact.md --style sketch
+wiremd contact.md --style sketch
 ```
 
 This renders into a styled HTML wireframe with a form, inputs, and buttons.
@@ -60,7 +60,7 @@ This renders into a styled HTML wireframe with a form, inputs, and buttons.
 - ✅ **Full CLI tool** - Watch mode, live-reload dev server, style switching
 - ✅ **Rich examples** - Showcase files demonstrating all styles
 - ✅ **Framework renderers** - React, Tailwind CSS classes (Vue, Svelte coming soon)
-- 🚧 **VS Code extension** - Live preview (planned)
+- ✅ **VS Code extension** - Live preview with real-time updates and style switching
 
 ## Project Structure
 
@@ -83,7 +83,7 @@ npm run build
 
 # Use the CLI
 npm link
-mdmock --help
+wiremd --help
 ```
 
 > Coming soon: `npm install -g wiremd`
@@ -92,26 +92,26 @@ mdmock --help
 
 ```bash
 # Generate HTML with default sketch style
-mdmock wireframe.md
+wiremd wireframe.md
 
 # Output to specific file
-mdmock wireframe.md -o output.html
+wiremd wireframe.md -o output.html
 
 # Use alternative styles
-mdmock wireframe.md --style clean      # Modern minimal
-mdmock wireframe.md --style wireframe  # Traditional grayscale
-mdmock wireframe.md --style tailwind   # Utility-first with purple accents
-mdmock wireframe.md --style material   # Google Material Design
-mdmock wireframe.md --style brutal     # Neo-brutalism style
-mdmock wireframe.md --style none       # Unstyled semantic HTML
+wiremd wireframe.md --style clean      # Modern minimal
+wiremd wireframe.md --style wireframe  # Traditional grayscale
+wiremd wireframe.md --style tailwind   # Utility-first with purple accents
+wiremd wireframe.md --style material   # Google Material Design
+wiremd wireframe.md --style brutal     # Neo-brutalism style
+wiremd wireframe.md --style none       # Unstyled semantic HTML
 
 # Watch mode with live-reload dev server
-mdmock wireframe.md --watch --serve 3000
+wiremd wireframe.md --watch --serve 3000
 
 # Generate different output formats
-mdmock wireframe.md --format json      # JSON AST output
-mdmock wireframe.md --format react     # React/JSX component
-mdmock wireframe.md --format tailwind  # HTML with Tailwind CSS classes
+wiremd wireframe.md --format json      # JSON AST output
+wiremd wireframe.md --format react     # React/JSX component
+wiremd wireframe.md --format tailwind  # HTML with Tailwind CSS classes
 ```
 
 ## Exporting to Figma
@@ -122,7 +122,7 @@ wiremd designs can be imported into Figma as fully editable, native Figma design
 
 1. **Generate JSON from your wiremd file:**
    ```bash
-   mdmock your-mockup.md --format json -o mockup.json
+   wiremd your-mockup.md --format json -o mockup.json
    ```
 
 2. **Install the Figma Plugin:**
@@ -222,7 +222,6 @@ const tailwindHTML = renderToTailwind(ast, { pretty: true });
 
 ### 📋 Coming Soon (Phase 4+)
 - Framework-specific renderers (Vue, Svelte)
-- VS Code extension with live preview
 - Interactive web playground
 
 See [Project Plan](./markdown-mockup-project-plan.md) for full roadmap.

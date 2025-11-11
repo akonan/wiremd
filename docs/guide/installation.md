@@ -27,7 +27,7 @@ pnpm add wiremd
 
 ## Global CLI Installation
 
-To use the `mdmock` command globally:
+To use the `wiremd` command globally:
 
 ```bash
 npm install -g wiremd
@@ -36,7 +36,7 @@ npm install -g wiremd
 Verify installation:
 
 ```bash
-mdmock --version
+wiremd --version
 ```
 
 ## Development Installation
@@ -70,7 +70,7 @@ npm link
 echo "## Test\n[Button]" > test.md
 
 # Render it
-mdmock test.md
+wiremd test.md
 
 # Should create test.html
 ```
