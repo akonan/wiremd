@@ -290,39 +290,32 @@
             display: flex;
             align-items: center;
             gap: 8px;
-            padding: 10px 28px;
-            background: var(--bg-tertiary);
-            border: 1px solid var(--border-color);
-            border-radius: 24px;
+            padding: 8px 0;
             color: var(--text-secondary);
             text-decoration: none;
-            font-size: 14px;
-            font-weight: 600;
+            font-size: 15px;
+            font-weight: 500;
             transition: var(--transition);
             position: relative;
-            overflow: hidden;
         }
 
-        .github-button::before {
+        .github-button::after {
             content: '';
             position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
-            transition: left 0.5s;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--accent-gradient);
+            transition: width 0.3s ease;
         }
 
-        .github-button:hover::before {
-            left: 100%;
+        .github-button:hover::after {
+            width: 100%;
         }
 
         .github-button:hover {
-            border-color: var(--accent-primary);
             color: var(--text-primary);
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-glow);
         }
 
         .github-button svg {
