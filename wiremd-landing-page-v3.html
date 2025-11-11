@@ -16,7 +16,7 @@
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
     
     <style>
         /* CSS Variables - Blue/Cyan Theme */
@@ -28,9 +28,9 @@
             --bg-card: #161b22;
             
             --text-primary: #ffffff;
-            --text-secondary: #a8a8a8;
-            --text-tertiary: #666666;
-            --text-muted: #484848;
+            --text-secondary: #b8b8b8; /* Increased from #a8a8a8 for WCAG AA */
+            --text-tertiary: #888888;  /* Increased from #666666 for WCAG AA */
+            --text-muted: #5a5a5a;     /* Increased from #484848 for WCAG AA */
             
             --accent-primary: #2563eb;
             --accent-secondary: #06b6d4;
@@ -336,6 +336,93 @@
             border-left: 1px solid var(--border-color);
             color: var(--accent-secondary);
             font-weight: 700;
+        }
+
+        /* Mobile Menu Button */
+        .mobile-menu-btn {
+            display: none;
+            background: transparent;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 8px;
+            cursor: pointer;
+            color: var(--text-primary);
+            transition: var(--transition);
+        }
+
+        .mobile-menu-btn:hover {
+            background: var(--bg-tertiary);
+            border-color: var(--accent-primary);
+        }
+
+        .mobile-menu-btn svg {
+            display: block;
+            width: 24px;
+            height: 24px;
+        }
+
+        /* Mobile Menu Overlay */
+        @media (max-width: 768px) {
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .nav-links {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 280px;
+                height: 100vh;
+                background: var(--bg-secondary);
+                border-left: 1px solid var(--border-color);
+                flex-direction: column;
+                padding: 80px 24px 24px;
+                gap: 16px;
+                transition: right 0.3s ease-in-out;
+                z-index: 999;
+                overflow-y: auto;
+            }
+
+            .nav-links.active {
+                right: 0;
+                box-shadow: -10px 0 30px rgba(0, 0, 0, 0.5);
+            }
+
+            .nav-links li {
+                width: 100%;
+            }
+
+            .nav-links a {
+                display: block;
+                padding: 12px 16px;
+                border-radius: 8px;
+                transition: var(--transition);
+            }
+
+            .nav-links a:hover {
+                background: var(--bg-tertiary);
+            }
+
+            .github-button {
+                width: 100%;
+                justify-content: center;
+            }
+
+            /* Mobile menu overlay backdrop */
+            .mobile-menu-backdrop {
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.5);
+                z-index: 998;
+            }
+
+            .mobile-menu-backdrop.active {
+                display: block;
+            }
         }
 
         /* Hero Section */
@@ -824,6 +911,12 @@
             color: white;
         }
 
+        .copy-btn.error {
+            background: var(--error);
+            border-color: var(--error);
+            color: white;
+        }
+
         /* Social Proof */
         .social-proof {
             padding: 120px 0;
@@ -1018,7 +1111,7 @@
             line-height: 1.6;
         }
 
-        .footer-section h4 {
+        .footer-section h3 {
             font-size: 16px;
             font-weight: 700;
             margin-bottom: 16px;
@@ -1132,9 +1225,7 @@
         }
 
         @media (max-width: 768px) {
-            .nav-links {
-                display: none;
-            }
+            /* Nav links styles now handled in mobile menu section above */
 
             .hero {
                 padding: 120px 0 80px;
@@ -1193,16 +1284,51 @@
             }
         }
 
-        /* Focus styles */
+        /* Enhanced Focus styles for better visibility */
         a:focus-visible,
         button:focus-visible {
             outline: 2px solid var(--accent-primary);
             outline-offset: 4px;
             border-radius: 4px;
+            box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.2),
+                        0 0 0 6px var(--accent-primary);
+        }
+
+        select:focus-visible,
+        input:focus-visible,
+        textarea:focus-visible {
+            outline: 2px solid var(--accent-primary);
+            outline-offset: 2px;
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+        }
+
+        /* Skip to main content link */
+        .skip-link {
+            position: absolute;
+            top: -40px;
+            left: 10px;
+            background: var(--accent-primary);
+            color: white;
+            padding: 8px 16px;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            z-index: 10000;
+            transition: top 0.2s ease;
+        }
+
+        .skip-link:focus {
+            top: 10px;
+            outline: 2px solid white;
+            outline-offset: 2px;
         }
     </style>
 </head>
 <body>
+    <!-- Skip to Main Content Link -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+
     <!-- Background Elements -->
     <div class="grid-bg"></div>
     <div class="gradient-orb"></div>
@@ -1216,7 +1342,15 @@
                 <div class="logo-icon">W</div>
                 WireMD
             </a>
-            <ul class="nav-links">
+            <button type="button" class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Open navigation menu" aria-expanded="false" aria-controls="nav-menu">
+                <svg class="menu-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M3 12h18M3 6h18M3 18h18"/>
+                </svg>
+                <svg class="close-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display: none;">
+                    <path d="M18 6L6 18M6 6l12 12"/>
+                </svg>
+            </button>
+            <ul class="nav-links" id="nav-menu">
                 <li><a href="#features">Features</a></li>
                 <li><a href="#demo">Demo</a></li>
                 <li><a href="#installation">Install</a></li>
@@ -1232,8 +1366,13 @@
         </div>
     </nav>
 
-    <!-- Hero Section -->
-    <section class="hero">
+    <!-- Mobile Menu Backdrop -->
+    <div class="mobile-menu-backdrop" id="mobile-menu-backdrop"></div>
+
+    <!-- Main Content -->
+    <main id="main-content">
+        <!-- Hero Section -->
+        <section class="hero">
         <div class="container">
             <div class="hero-content">
                 <div class="hero-badge">
@@ -1484,16 +1623,16 @@
                 <p class="section-description">Up and running in seconds</p>
             </div>
 
-            <div class="install-tabs">
-                <button class="install-tab active" data-tab="npm">npm</button>
-                <button class="install-tab" data-tab="yarn">yarn</button>
-                <button class="install-tab" data-tab="pnpm">pnpm</button>
-                <button class="install-tab" data-tab="brew">brew</button>
+            <div class="install-tabs" role="tablist" aria-label="Installation method">
+                <button type="button" class="install-tab active" data-tab="npm" role="tab" aria-selected="true" aria-controls="install-panel" id="tab-npm">npm</button>
+                <button type="button" class="install-tab" data-tab="yarn" role="tab" aria-selected="false" aria-controls="install-panel" id="tab-yarn">yarn</button>
+                <button type="button" class="install-tab" data-tab="pnpm" role="tab" aria-selected="false" aria-controls="install-panel" id="tab-pnpm">pnpm</button>
+                <button type="button" class="install-tab" data-tab="brew" role="tab" aria-selected="false" aria-controls="install-panel" id="tab-brew">brew</button>
             </div>
 
-            <div class="install-content">
+            <div class="install-content" role="tabpanel" id="install-panel" aria-labelledby="tab-npm">
                 <code class="install-command" id="install-command">npm install -g wiremd</code>
-                <button class="copy-btn" onclick="copyCommand()" aria-label="Copy installation command">Copy</button>
+                <button type="button" class="copy-btn" id="copy-btn" aria-label="Copy installation command">Copy</button>
             </div>
         </div>
     </section>
@@ -1601,6 +1740,7 @@
             </div>
         </div>
     </section>
+    </main>
 
     <!-- Footer -->
     <footer>
@@ -1616,7 +1756,7 @@
                     </p>
                 </div>
                 <div class="footer-section">
-                    <h4>Product</h4>
+                    <h3>Product</h3>
                     <ul class="footer-links">
                         <li><a href="#features">Features</a></li>
                         <li><a href="#demo">Demo</a></li>
@@ -1624,21 +1764,21 @@
                     </ul>
                 </div>
                 <div class="footer-section">
-                    <h4>Resources</h4>
+                    <h3>Resources</h3>
                     <ul class="footer-links">
-                        <li><a href="/docs">Documentation</a></li>
-                        <li><a href="/examples">Examples</a></li>
-                        <li><a href="/syntax">Syntax Guide</a></li>
-                        <li><a href="/changelog">Changelog</a></li>
+                        <li><a href="https://github.com/akonan/wiremd#documentation" target="_blank" rel="noopener noreferrer">Documentation</a></li>
+                        <li><a href="https://github.com/akonan/wiremd/tree/main/examples" target="_blank" rel="noopener noreferrer">Examples</a></li>
+                        <li><a href="https://github.com/akonan/wiremd#syntax" target="_blank" rel="noopener noreferrer">Syntax Guide</a></li>
+                        <li><a href="https://github.com/akonan/wiremd/releases" target="_blank" rel="noopener noreferrer">Changelog</a></li>
                     </ul>
                 </div>
                 <div class="footer-section">
-                    <h4>Community</h4>
+                    <h3>Community</h3>
                     <ul class="footer-links">
-                        <li><a href="https://github.com/akonan/wiremd">GitHub</a></li>
-                        <li><a href="/discussions">Discussions</a></li>
-                        <li><a href="/contributing">Contributing</a></li>
-                        <li><a href="/security">Security</a></li>
+                        <li><a href="https://github.com/akonan/wiremd" target="_blank" rel="noopener noreferrer">GitHub</a></li>
+                        <li><a href="https://github.com/akonan/wiremd/discussions" target="_blank" rel="noopener noreferrer">Discussions</a></li>
+                        <li><a href="https://github.com/akonan/wiremd/blob/main/CONTRIBUTING.md" target="_blank" rel="noopener noreferrer">Contributing</a></li>
+                        <li><a href="https://github.com/akonan/wiremd/security" target="_blank" rel="noopener noreferrer">Security</a></li>
                     </ul>
                 </div>
             </div>
@@ -1661,6 +1801,49 @@
     </footer>
 
     <script>
+        // Mobile menu toggle
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const navMenu = document.getElementById('nav-menu');
+        const mobileMenuBackdrop = document.getElementById('mobile-menu-backdrop');
+        const menuIcon = mobileMenuBtn.querySelector('.menu-icon');
+        const closeIcon = mobileMenuBtn.querySelector('.close-icon');
+
+        function toggleMobileMenu() {
+            const isOpen = navMenu.classList.contains('active');
+
+            if (isOpen) {
+                // Close menu
+                navMenu.classList.remove('active');
+                mobileMenuBackdrop.classList.remove('active');
+                mobileMenuBtn.setAttribute('aria-expanded', 'false');
+                mobileMenuBtn.setAttribute('aria-label', 'Open navigation menu');
+                menuIcon.style.display = 'block';
+                closeIcon.style.display = 'none';
+                document.body.style.overflow = '';
+            } else {
+                // Open menu
+                navMenu.classList.add('active');
+                mobileMenuBackdrop.classList.add('active');
+                mobileMenuBtn.setAttribute('aria-expanded', 'true');
+                mobileMenuBtn.setAttribute('aria-label', 'Close navigation menu');
+                menuIcon.style.display = 'none';
+                closeIcon.style.display = 'block';
+                document.body.style.overflow = 'hidden';
+            }
+        }
+
+        mobileMenuBtn.addEventListener('click', toggleMobileMenu);
+        mobileMenuBackdrop.addEventListener('click', toggleMobileMenu);
+
+        // Close mobile menu when clicking on a link
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                if (navMenu.classList.contains('active')) {
+                    toggleMobileMenu();
+                }
+            });
+        });
+
         // Navbar scroll effect
         window.addEventListener('scroll', () => {
             const navbar = document.getElementById('navbar');
@@ -1671,37 +1854,82 @@
             }
         });
 
-        // Install tabs
+        // Install tabs with ARIA support
         document.querySelectorAll('.install-tab').forEach(tab => {
             tab.addEventListener('click', (e) => {
-                document.querySelectorAll('.install-tab').forEach(t => t.classList.remove('active'));
+                // Remove active state from all tabs
+                document.querySelectorAll('.install-tab').forEach(t => {
+                    t.classList.remove('active');
+                    t.setAttribute('aria-selected', 'false');
+                });
+
+                // Add active state to clicked tab
                 e.target.classList.add('active');
-                
+                e.target.setAttribute('aria-selected', 'true');
+
+                // Update aria-labelledby for the panel
+                document.getElementById('install-panel').setAttribute('aria-labelledby', e.target.id);
+
+                // Update the command text
                 const commands = {
                     npm: 'npm install -g wiremd',
                     yarn: 'yarn global add wiremd',
                     pnpm: 'pnpm add -g wiremd',
                     brew: 'brew install wiremd'
                 };
-                
+
                 document.getElementById('install-command').textContent = commands[e.target.dataset.tab];
             });
         });
 
-        // Copy command
+        // Copy command functionality
+        function showCopyFeedback(btn, success) {
+            const originalText = btn.textContent;
+            btn.textContent = success ? 'Copied!' : 'Failed';
+            btn.classList.add(success ? 'copied' : 'error');
+            setTimeout(() => {
+                btn.textContent = originalText;
+                btn.classList.remove('copied', 'error');
+            }, 2000);
+        }
+
         function copyCommand() {
             const command = document.getElementById('install-command').textContent;
-            navigator.clipboard.writeText(command).then(() => {
-                const btn = document.querySelector('.copy-btn');
-                const originalText = btn.textContent;
-                btn.textContent = 'Copied!';
-                btn.classList.add('copied');
-                setTimeout(() => {
-                    btn.textContent = originalText;
-                    btn.classList.remove('copied');
-                }, 2000);
-            });
+            const btn = document.getElementById('copy-btn');
+
+            if (navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText(command).then(() => {
+                    showCopyFeedback(btn, true);
+                }).catch(() => {
+                    // Fallback for clipboard API failure
+                    fallbackCopy(command, btn);
+                });
+            } else {
+                // Fallback for older browsers or non-secure context
+                fallbackCopy(command, btn);
+            }
         }
+
+        function fallbackCopy(text, btn) {
+            const textArea = document.createElement('textarea');
+            textArea.value = text;
+            textArea.style.position = 'fixed';
+            textArea.style.left = '-999999px';
+            textArea.style.top = '-999999px';
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+            try {
+                const successful = document.execCommand('copy');
+                showCopyFeedback(btn, successful);
+            } catch (err) {
+                showCopyFeedback(btn, false);
+            }
+            document.body.removeChild(textArea);
+        }
+
+        // Add event listener for copy button
+        document.getElementById('copy-btn').addEventListener('click', copyCommand);
 
         // Smooth scroll
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {

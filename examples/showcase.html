@@ -349,6 +349,60 @@ body.wmd-root {
   text-align: right !important;
 }
 
+/* State Containers */
+.wmd-container-loading-state {
+  background: #fff;
+  border: 2px solid #87CEEB;
+  border-radius: 8px;
+  padding: 32px;
+  margin: 16px 0;
+  text-align: center;
+  position: relative;
+}
+
+.wmd-container-loading-state::before {
+  content: '⟳';
+  display: block;
+  font-size: 48px;
+  margin-bottom: 16px;
+  animation: spin 1.5s linear infinite;
+  transform-origin: center;
+}
+
+.wmd-container-empty-state {
+  background: #f5f5f5;
+  border: 2px dashed #999;
+  border-radius: 8px;
+  padding: 48px 32px;
+  margin: 16px 0;
+  text-align: center;
+  color: #666;
+}
+
+.wmd-container-empty-state::before {
+  content: '📭';
+  display: block;
+  font-size: 64px;
+  margin-bottom: 16px;
+  opacity: 0.5;
+}
+
+.wmd-container-error-state {
+  background: #FFE6E6;
+  border: 3px solid #DC143C;
+  border-radius: 8px;
+  padding: 32px;
+  margin: 16px 0;
+  text-align: center;
+}
+
+.wmd-container-error-state::before {
+  content: '⚠️';
+  display: block;
+  font-size: 48px;
+  margin-bottom: 16px;
+}
+
 /* Responsive */
 @media (max-width: 768px) {
   .wmd-grid {
@@ -368,6 +422,11 @@ body.wmd-root {
 @keyframes loading {
   0%, 100% { opacity: 1; }
   50% { opacity: 0.5; }
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
 
   </style>

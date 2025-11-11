@@ -276,11 +276,83 @@ body.wmd-root {
   margin: 24px 0;
 }
 
+/* State Containers */
+.wmd-container-loading-state {
+  background: repeating-linear-gradient(
+    0deg,
+    #fff,
+    #fff 2px,
+    #f5f5f5 2px,
+    #f5f5f5 4px
+  );
+  border: 2px solid #000;
+  padding: 40px;
+  margin: 16px 0;
+  text-align: center;
+  position: relative;
+}
+
+.wmd-container-loading-state::before {
+  content: '⟳';
+  display: block;
+  font-size: 48px;
+  font-weight: bold;
+  margin-bottom: 16px;
+  animation: spin 2s linear infinite;
+}
+
+.wmd-container-empty-state {
+  background: #fff;
+  border: 2px dashed #666;
+  padding: 60px 40px;
+  margin: 16px 0;
+  text-align: center;
+  color: #666;
+}
+
+.wmd-container-empty-state::before {
+  content: '[EMPTY]';
+  display: block;
+  font-size: 24px;
+  font-weight: bold;
+  letter-spacing: 0.2em;
+  margin-bottom: 16px;
+  color: #999;
+}
+
+.wmd-container-error-state {
+  background: repeating-linear-gradient(
+    45deg,
+    #fff,
+    #fff 10px,
+    #f0f0f0 10px,
+    #f0f0f0 20px
+  );
+  border: 3px solid #000;
+  padding: 40px;
+  margin: 16px 0;
+  text-align: center;
+}
+
+.wmd-container-error-state::before {
+  content: '⚠';
+  display: block;
+  font-size: 56px;
+  font-weight: bold;
+  margin-bottom: 16px;
+  color: #000;
+}
+
 /* Responsive */
 @media (max-width: 768px) {
   .wmd-grid {
     grid-template-columns: 1fr !important;
   }
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
 
   </style>
@@ -777,11 +849,11 @@ Are you sure you want to delete this item?
   <li class="wmd-list-item">Unlimited Users
 [Choose Pro]*</li>
 </ul>
-    <hr class="wmd-separator" />
   </div>
-  <div class="wmd-grid-item">
-    <h3 class="wmd-h3">3-Column Grid</h3>
-    <pre class="wmd-code-block"><code data-lang="markdown">## Features {.grid-3}
+</div>
+<h2 class="wmd-h2"></h2>
+<h3 class="wmd-h3">3-Column Grid</h3>
+<pre class="wmd-code-block"><code data-lang="markdown">## Features {.grid-3}
 
 ### :rocket: Fast
 Lightning quick performance
@@ -791,9 +863,7 @@ Bank-level security
 
 ### :gear: Flexible
 Fully customizable</code></pre>
-    <p class="wmd-paragraph"><strong>Rendered:</strong></p>
-  </div>
-</div>
+<p class="wmd-paragraph"><strong>Rendered:</strong></p>
 <div class="wmd-grid wmd-grid-3 wmd-grid-3" style="--grid-columns: 3">
   <div class="wmd-grid-item">
     <h3 class="wmd-h3"><span class="wmd-icon" data-icon="rocket" aria-label="rocket">🚀</span> Fast</h3>
@@ -806,11 +876,11 @@ Fully customizable</code></pre>
   <div class="wmd-grid-item">
     <h3 class="wmd-h3"><span class="wmd-icon" data-icon="gear" aria-label="gear">●</span> Flexible</h3>
     <p class="wmd-paragraph">Fully customizable</p>
-    <hr class="wmd-separator" />
   </div>
-  <div class="wmd-grid-item">
-    <h3 class="wmd-h3">4-Column Grid</h3>
-    <pre class="wmd-code-block"><code data-lang="markdown">## Stats {.grid-4}
+</div>
+<h2 class="wmd-h2"></h2>
+<h3 class="wmd-h3">4-Column Grid</h3>
+<pre class="wmd-code-block"><code data-lang="markdown">## Stats {.grid-4}
 
 ### Users
 10,000+
@@ -823,9 +893,7 @@ Fully customizable</code></pre>
 
 ### Uptime
 99.9%</code></pre>
-    <p class="wmd-paragraph"><strong>Rendered:</strong></p>
-  </div>
-</div>
+<p class="wmd-paragraph"><strong>Rendered:</strong></p>
 <div class="wmd-grid wmd-grid-4 wmd-grid-4" style="--grid-columns: 4">
   <div class="wmd-grid-item">
     <h3 class="wmd-h3">Users</h3>
