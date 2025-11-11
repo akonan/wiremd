@@ -60,7 +60,7 @@ This renders into a styled HTML wireframe with a form, inputs, and buttons.
 - ✅ **Full CLI tool** - Watch mode, live-reload dev server, style switching
 - ✅ **Rich examples** - Showcase files demonstrating all styles
 - ✅ **Framework renderers** - React, Tailwind CSS classes (Vue, Svelte coming soon)
-- 🚧 **VS Code extension** - Live preview (planned)
+- ✅ **VS Code extension** - Live preview with real-time updates and style switching
 
 ## Project Structure
 
@@ -222,7 +222,6 @@ const tailwindHTML = renderToTailwind(ast, { pretty: true });
 
 ### 📋 Coming Soon (Phase 4+)
 - Framework-specific renderers (Vue, Svelte)
-- VS Code extension with live preview
 - Interactive web playground
 
 See [Project Plan](./markdown-mockup-project-plan.md) for full roadmap.
