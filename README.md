@@ -21,6 +21,8 @@ wiremd is a markdown-based UI wireframing tool that lets you create wireframes a
 
 ## Quick Example
 
+### Contact Form
+
 Create a `contact.md` file:
 
 ```markdown
@@ -33,11 +35,9 @@ Email
 [_____________________________]{type:email required}
 
 Message
-[                             ]
-[                             ]
 [_____________________________]{rows:5}
 
-[Submit]{.primary} [Cancel]
+[Submit]* [Cancel]
 ```
 
 Generate a wireframe:
@@ -48,10 +48,36 @@ wiremd contact.md --style sketch
 
 This renders into a styled HTML wireframe with a form, inputs, and buttons.
 
+### Grid Layout
+
+Create a `features.md` file:
+
+```markdown
+## Product Features {.grid-3}
+
+### :rocket: Fast
+Lightning quick performance
+
+### :shield: Secure
+Bank-level security
+
+### :gear: Flexible
+Fully customizable
+```
+
+Generate a wireframe:
+
+```bash
+wiremd features.md --style sketch
+```
+
+This creates a responsive 3-column grid layout with icons and descriptions.
+
 ## Features
 
 - ✅ **Markdown-first** - Valid markdown that degrades gracefully
 - ✅ **Full markdown support** - Headings, text formatting, lists, links, images, blockquotes, code blocks, tables
+- ✅ **Grid layouts** - Responsive multi-column grids (2, 3, 4+ columns) with simple `.grid-N` syntax
 - ✅ **Visual syntax** - Looks like what it renders
 - ✅ **Fast to write** - Intuitive shortcuts for common patterns
 - ✅ **Extensible** - Add classes and attributes as needed
