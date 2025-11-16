@@ -221,9 +221,8 @@ const tailwindHTML = renderToTailwind(ast, { pretty: true });
 
 - [Syntax Specification v0.1](./SYNTAX-SPEC-v0.1.md) - Complete syntax reference
 - [Component Showcase](./examples/showcase.md) - Interactive examples of all components and styles
-- [Test Corpus v3 (Hybrid)](./test-corpus-v3-hybrid.md) - Examples of 20 common UI patterns
-- [Project Plan](./markdown-mockup-project-plan.md) - Full development roadmap
-- [Syntax Research](./syntax-research.md) - Research and design decisions
+- [Project Plan](./.github/dev-docs/markdown-mockup-project-plan.md) - Full development roadmap
+- [Syntax Research](./.github/dev-docs/syntax-research.md) - Research and design decisions
 
 ## Development Status
 

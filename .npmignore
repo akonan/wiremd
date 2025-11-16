@@ -1,0 +1,88 @@
+# Tests
+tests/
+*.test.ts
+*.spec.ts
+coverage/
+.nyc_output/
+
+# Build artifacts
+src/
+tsconfig.json
+vite.config.ts
+.tsbuildinfo
+
+# Documentation (keep README.md and LICENSE)
+docs/
+*.md
+!README.md
+CLAUDE.md
+SYNTAX-SPEC-v0.1.md
+TESTING.md
+SECURITY.md
+CODE_OF_CONDUCT.md
+CONTRIBUTING.md
+CHANGELOG.md
+LIVE_PREVIEW_GUIDE.md
+FIGMA_EXPORT_INVESTIGATION.md
+markdown-mockup-project-plan.md
+syntax-research.md
+
+# Examples and demos
+examples/
+index.html
+showcase-*.png
+
+# IDE and editor files
+.vscode/
+.idea/
+.cursor/
+*.swp
+*.swo
+*~
+
+# CI/CD
+.github/
+.travis.yml
+.circleci/
+azure-pipelines.yml
+
+# Git
+.git/
+.gitignore
+.gitattributes
+
+# Linting and formatting
+.eslintrc.*
+.prettierrc.*
+.editorconfig
+
+# Package managers
+yarn.lock
+pnpm-lock.yaml
+package-lock.json
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Environment
+.env
+.env.*
+*.pid
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Sub-projects (published separately)
+vscode-extension/
+figma-plugin/
+
+# Temporary
+tmp/
+temp/
+*.tmp

@@ -5,4 +5,12 @@ src/**
 .eslintrc.json
 tsconfig.json
 *.md
+!README.md
 node_modules/**
+*.sh
+test-*
+DEBUGGING-*
+RELOAD-*
+DEVELOPMENT.md
+TROUBLESHOOTING.md
+TESTING.md

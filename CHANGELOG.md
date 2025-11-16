@@ -7,21 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-### Added
-- Open source release preparation
-- Community health files (CONTRIBUTING.md, CODE_OF_CONDUCT.md, SECURITY.md)
-- GitHub issue and PR templates
-- GitHub Actions CI workflow
-- Comprehensive documentation improvements
+No unreleased changes yet.
 
-### Changed
-- Package name from `markdown-mockup` to `wiremd`
-- Enabled parser and renderer exports in main index
-
-### Fixed
-- LICENSE file cleanup (removed incorrect monorepo references)
-
-## [0.1.0] - 2025-01-XX (Upcoming)
+## [0.1.0] - TBD
 
 ### Added
 - Initial release of wiremd
@@ -31,8 +19,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Alternative visual styles: clean, wireframe, none, material, tailwind, brutal
 - JSON output format
 - CLI tool with watch mode and live-reload dev server
-- 48 passing tests
+- React component renderer (JSX/TSX output)
+- Tailwind CSS class renderer
+- VS Code extension with live preview
+- Figma plugin for design import
+- 48+ passing tests
 - TypeScript strict mode implementation
+- Community health files (CONTRIBUTING.md, CODE_OF_CONDUCT.md, SECURITY.md)
+- GitHub Actions CI workflow
+- .npmignore for clean package distribution
 - Support for:
   - Forms (inputs, textareas, selects, buttons)
   - Layout containers (sections, grids, headers, footers)
@@ -46,9 +41,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Documentation
 - Complete syntax specification (SYNTAX-SPEC-v0.1.md)
 - Comprehensive README with examples
-- Project plan and roadmap
-- Syntax research documentation
+- Project plan and roadmap (moved to .github/dev-docs)
+- Syntax research documentation (moved to .github/dev-docs)
 - Example wireframes and outputs
+- API documentation
+
+### Changed
+- Package name from `markdown-mockup` to `wiremd`
+- Enabled parser and renderer exports in main index
+- Moved internal documentation to .github/dev-docs/
+- Moved screenshot files to docs/screenshots/
+- Organized development files for cleaner repository structure
+
+### Fixed
+- LICENSE file cleanup (removed incorrect monorepo references)
+- Removed debug console.log statements from production code
+- Fixed broken documentation links
+- Cleaned up .gitignore to exclude build artifacts and temporary files
 
 ## Version History
 
