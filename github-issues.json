@@ -1,0 +1,266 @@
+[
+  {
+    "title": "Add validation layer for parsed AST",
+    "body": "## Description\nImplement the validation layer for the parsed AST to ensure component types, properties, and structure are valid.\n\n## Current Status\n- Skeleton validation code exists in the parser\n- Needs full implementation with proper error messages\n\n## Acceptance Criteria\n- [ ] Validate component types against allowed types\n- [ ] Validate required properties for each component type\n- [ ] Validate nested structure rules (e.g., buttons can't contain buttons)\n- [ ] Provide clear, actionable error messages\n- [ ] Add tests for validation logic\n\n## Related Files\n- `src/parser/index.ts`\n- `src/types.ts`\n\n## Priority\nHigh\n\n## Labels\nenhancement, parser, validation",
+    "labels": ["enhancement", "parser", "validation"],
+    "milestone": "v0.2.0"
+  },
+  {
+    "title": "Create demo/showcase website",
+    "body": "## Description\nBuild a demo website showcasing wiremd capabilities with live examples and interactive editor.\n\n## Requirements\n- Interactive markdown editor with live preview\n- Gallery of example wireframes\n- All 7 visual styles demonstrated\n- Syntax highlighting for markdown input\n- Export/download capabilities\n- Responsive design\n\n## Suggested Tech Stack\n- Vite + React/Vue\n- CodeMirror or Monaco Editor\n- Host on GitHub Pages or Vercel\n\n## Examples to Include\n- Contact forms\n- Landing pages\n- Dashboard layouts\n- E-commerce product pages\n- Admin panels\n\n## Priority\nHigh\n\n## Labels\ndocumentation, demo, website",
+    "labels": ["documentation", "demo", "website"],
+    "milestone": "v0.2.0"
+  },
+  {
+    "title": "Build CLI watch mode improvements",
+    "body": "## Description\nEnhance CLI watch mode with better error handling, file watching, and live reload.\n\n## Current Status\nBasic watch mode exists but needs improvements.\n\n## Enhancements Needed\n- [ ] Better file watching (handle renames, deletes)\n- [ ] Error recovery without crashing\n- [ ] Watch multiple files/directories\n- [ ] Configurable watch patterns\n- [ ] Better console output with colors\n- [ ] Performance optimization for large files\n\n## Related\n- CLI tool in `src/cli/`\n\n## Priority\nMedium\n\n## Labels\nenhancement, cli, watch-mode",
+    "labels": ["enhancement", "cli", "watch-mode"],
+    "milestone": "v0.2.0"
+  },
+  {
+    "title": "Add config file support (.wiremdrc.json)",
+    "body": "## Description\nImplement configuration file support for wiremd CLI to store default settings.\n\n## Proposed Schema\n```json\n{\n  \"version\": \"0.1.0\",\n  \"style\": \"sketch\",\n  \"output\": {\n    \"format\": \"html\",\n    \"dir\": \"./dist\",\n    \"filename\": \"[name].html\"\n  },\n  \"renderer\": {\n    \"semantic\": true,\n    \"responsive\": true,\n    \"includeStyles\": true\n  },\n  \"watch\": {\n    \"port\": 3000,\n    \"open\": true,\n    \"livereload\": true\n  }\n}\n```\n\n## Features\n- [ ] Support `.wiremdrc.json` in project root\n- [ ] Support `.wiremdrc` (JSON5 format)\n- [ ] Merge config with CLI flags (CLI flags take precedence)\n- [ ] Config validation with helpful error messages\n- [ ] `--config` flag to specify custom config path\n\n## Priority\nMedium\n\n## Labels\nenhancement, cli, configuration",
+    "labels": ["enhancement", "cli", "configuration"],
+    "milestone": "v0.2.0"
+  },
+  {
+    "title": "Prepare npm package for publication",
+    "body": "## Description\nPrepare the wiremd package for publication to npm registry.\n\n## Checklist\n- [ ] Choose final package name (wiremd vs markdown-mockup)\n- [ ] Verify package.json metadata (description, keywords, author, repository)\n- [ ] Add .npmignore file\n- [ ] Ensure dist/ files are included\n- [ ] Test package installation locally with `npm pack`\n- [ ] Set up npm organization (if needed)\n- [ ] Create npm account token for CI/CD\n- [ ] Add publishing workflow to GitHub Actions\n- [ ] Write PUBLISHING.md with release process\n- [ ] Verify bundle size is reasonable\n- [ ] Add package.json exports field for ESM/CJS\n\n## Priority\nHigh\n\n## Labels\nrelease, npm, packaging",
+    "labels": ["release", "npm", "packaging"],
+    "milestone": "v0.1.0"
+  },
+  {
+    "title": "Create comprehensive API documentation",
+    "body": "## Description\nExpand API documentation in `docs/api/` with detailed examples and type information.\n\n## Documentation Needed\n- Parser API (`parse()`, options, return types)\n- Renderer APIs (`renderToHTML()`, `renderToJSON()`, `renderToReact()`, `renderToTailwind()`)\n- Type definitions (all exported types)\n- Plugin API (for custom renderers)\n- Error handling guide\n- Migration guides (when syntax changes)\n\n## Format\n- Use VitePress for documentation site\n- Include TypeScript code examples\n- Add interactive examples where possible\n- Link to live demo site\n\n## Priority\nHigh\n\n## Labels\ndocumentation, api",
+    "labels": ["documentation", "api"],
+    "milestone": "v0.2.0"
+  },
+  {
+    "title": "Create VitePress documentation site",
+    "body": "## Description\nSet up VitePress documentation site in `docs/` directory.\n\n## Structure\n```\ndocs/\n├── .vitepress/\n│   └── config.ts\n├── index.md (home page)\n├── guide/\n│   ├── installation.md\n│   ├── getting-started.md\n│   ├── syntax.md\n│   └── examples.md\n├── api/\n│   ├── parser.md\n│   └── renderer.md\n└── reference/\n    ├── cli.md\n    └── components.md\n```\n\n## Features\n- [ ] Set up VitePress\n- [ ] Create navigation structure\n- [ ] Add search functionality\n- [ ] Theme customization\n- [ ] Deploy to GitHub Pages\n\n## Priority\nMedium\n\n## Labels\ndocumentation, vitepress, website",
+    "labels": ["documentation", "vitepress", "website"],
+    "milestone": "v0.2.0"
+  },
+  {
+    "title": "Implement Vue component renderer",
+    "body": "## Description\nCreate a renderer that outputs Vue 3 components from wiremd AST.\n\n## Features\n- Generate `.vue` Single File Components\n- Support Composition API\n- Include TypeScript types (`.vue` with `<script setup lang=\"ts\">`)\n- Proper props handling\n- Emit events for interactive components\n- Support Vue 3 features (Teleport, Suspense where applicable)\n\n## Example Output\n```vue\n<template>\n  <form class=\"wiremd-form\">\n    <input v-model=\"name\" type=\"text\" placeholder=\"Name\" />\n    <button @click=\"handleSubmit\">Submit</button>\n  </form>\n</template>\n\n<script setup lang=\"ts\">\nimport { ref } from 'vue';\n\nconst name = ref('');\n\nconst handleSubmit = () => {\n  console.log('Submitted:', name.value);\n};\n</script>\n```\n\n## Priority\nMedium\n\n## Labels\nenhancement, renderer, vue",
+    "labels": ["enhancement", "renderer", "vue"],
+    "milestone": "v0.3.0"
+  },
+  {
+    "title": "Implement Svelte component renderer",
+    "body": "## Description\nCreate a renderer that outputs Svelte components from wiremd AST.\n\n## Features\n- Generate `.svelte` component files\n- Include TypeScript support (`<script lang=\"ts\">`)\n- Proper reactive declarations\n- Event handlers and bindings\n- Svelte 4/5 compatible\n\n## Example Output\n```svelte\n<script lang=\"ts\">\n  let name = '';\n  \n  function handleSubmit() {\n    console.log('Submitted:', name);\n  }\n</script>\n\n<form class=\"wiremd-form\">\n  <input bind:value={name} type=\"text\" placeholder=\"Name\" />\n  <button on:click={handleSubmit}>Submit</button>\n</form>\n```\n\n## Priority\nMedium\n\n## Labels\nenhancement, renderer, svelte",
+    "labels": ["enhancement", "renderer", "svelte"],
+    "milestone": "v0.3.0"
+  },
+  {
+    "title": "Add Angular component renderer",
+    "body": "## Description\nCreate a renderer that outputs Angular components from wiremd AST.\n\n## Features\n- Generate Angular component files (.ts + .html + .css)\n- TypeScript with Angular decorators\n- Template syntax with Angular directives\n- Support for reactive forms\n- Component metadata\n\n## Priority\nLow\n\n## Labels\nenhancement, renderer, angular",
+    "labels": ["enhancement", "renderer", "angular"],
+    "milestone": "Future"
+  },
+  {
+    "title": "VS Code Extension: Publish to marketplace",
+    "body": "## Description\nPublish the VS Code extension to the Visual Studio Marketplace.\n\n## Prerequisites\n- [ ] Create publisher account on Visual Studio Marketplace\n- [ ] Generate Personal Access Token (PAT)\n- [ ] Configure vsce (VS Code Extension Manager)\n- [ ] Update extension metadata (README, icon, gallery banner)\n- [ ] Add screenshots and demo GIF\n- [ ] Test extension thoroughly\n\n## Publishing Checklist\n- [ ] Update version in package.json\n- [ ] Update CHANGELOG.md\n- [ ] Build extension: `vsce package`\n- [ ] Test .vsix locally\n- [ ] Publish: `vsce publish`\n- [ ] Verify in marketplace\n- [ ] Announce on social media\n\n## Priority\nHigh\n\n## Labels\nvscode-extension, release, marketplace",
+    "labels": ["vscode-extension", "release", "marketplace"],
+    "milestone": "v0.2.0"
+  },
+  {
+    "title": "VS Code Extension: Add syntax highlighting",
+    "body": "## Description\nAdd syntax highlighting for wiremd-specific syntax in markdown files.\n\n## Features\n- Highlight button syntax `[Text]`\n- Highlight input syntax `[___]`\n- Highlight container syntax `:::`\n- Highlight inline containers `[[...]]`\n- Highlight attributes `{.class}`, `{key:value}`\n- Different colors for different component types\n\n## Implementation\n- Create TextMate grammar (.tmLanguage.json)\n- Register in extension package.json\n- Test with various wiremd examples\n\n## Priority\nMedium\n\n## Labels\nvscode-extension, syntax-highlighting, enhancement",
+    "labels": ["vscode-extension", "syntax-highlighting", "enhancement"],
+    "milestone": "v0.3.0"
+  },
+  {
+    "title": "VS Code Extension: Add autocomplete/IntelliSense",
+    "body": "## Description\nImplement IntelliSense for wiremd syntax in VS Code.\n\n## Features\n- Autocomplete for component types (`::: hero`, `::: nav`, etc.)\n- Autocomplete for attributes (`.grid-3`, `{type:email}`, etc.)\n- Snippet completion for common patterns\n- Hover documentation for syntax\n- Parameter hints for attributes\n\n## Implementation\n- Create CompletionItemProvider\n- Create HoverProvider\n- Add snippets to package.json\n- Use Language Server Protocol (optional, for advanced features)\n\n## Priority\nMedium\n\n## Labels\nvscode-extension, intellisense, enhancement",
+    "labels": ["vscode-extension", "intellisense", "enhancement"],
+    "milestone": "v0.3.0"
+  },
+  {
+    "title": "Figma Plugin: Publish to Figma Community",
+    "body": "## Description\nPublish the wiremd Figma plugin to Figma Community.\n\n## Prerequisites\n- [ ] Create Figma plugin account\n- [ ] Finalize plugin name and description\n- [ ] Create plugin icon/thumbnail\n- [ ] Add screenshots showing features\n- [ ] Write comprehensive plugin description\n- [ ] Test plugin thoroughly\n\n## Publishing Checklist\n- [ ] Update manifest.json\n- [ ] Build plugin: `npm run build`\n- [ ] Test in Figma desktop app\n- [ ] Submit for review\n- [ ] Respond to Figma team feedback\n- [ ] Announce launch\n\n## Priority\nHigh\n\n## Labels\nfigma-plugin, release, figma-community",
+    "labels": ["figma-plugin", "release", "figma-community"],
+    "milestone": "v0.2.0"
+  },
+  {
+    "title": "Figma Plugin: Bi-directional sync (Figma → wiremd)",
+    "body": "## Description\nImplement export from Figma back to wiremd markdown syntax.\n\n## Features\n- Select Figma frames/components\n- Convert to wiremd markdown\n- Detect component types from Figma properties\n- Preserve styling hints (colors, spacing)\n- Export as downloadable .md file\n\n## Challenges\n- Mapping Figma components to wiremd syntax\n- Handling unsupported Figma features\n- Generating clean, readable markdown\n\n## Priority\nMedium\n\n## Labels\nfigma-plugin, enhancement, export",
+    "labels": ["figma-plugin", "enhancement", "export"],
+    "milestone": "v0.3.0"
+  },
+  {
+    "title": "Figma Plugin: Component variants support",
+    "body": "## Description\nAdd support for importing wiremd components as Figma component variants.\n\n## Features\n- Convert button states (primary, secondary, danger) to variants\n- Convert input states (normal, focus, error) to variants\n- Support hover/active/disabled states\n- Auto-generate variant properties\n\n## Benefits\n- More Figma-native workflow\n- Easier to swap between variants\n- Better design system integration\n\n## Priority\nMedium\n\n## Labels\nfigma-plugin, enhancement, components",
+    "labels": ["figma-plugin", "enhancement", "components"],
+    "milestone": "v0.3.0"
+  },
+  {
+    "title": "Figma Plugin: Custom color themes",
+    "body": "## Description\nAllow users to define custom color themes for wiremd imports.\n\n## Features\n- Theme editor UI in plugin\n- Save/load custom themes\n- Share themes as JSON\n- Apply theme colors to imported components\n- Theme presets library\n\n## Theme Properties\n- Primary/secondary/accent colors\n- Background colors\n- Text colors\n- Border colors\n- Shadow styles\n\n## Priority\nLow\n\n## Labels\nfigma-plugin, enhancement, theming",
+    "labels": ["figma-plugin", "enhancement", "theming"],
+    "milestone": "Future"
+  },
+  {
+    "title": "Figma Plugin: Load images from URLs",
+    "body": "## Description\nSupport loading actual images from URLs instead of using placeholders.\n\n## Features\n- Parse image URLs from wiremd AST\n- Fetch and load images into Figma\n- Handle loading errors gracefully\n- Show loading progress\n- Cache images for performance\n\n## Considerations\n- CORS restrictions\n- Image size limits\n- Async loading UX\n\n## Priority\nMedium\n\n## Labels\nfigma-plugin, enhancement, images",
+    "labels": ["figma-plugin", "enhancement", "images"],
+    "milestone": "v0.3.0"
+  },
+  {
+    "title": "Improve test coverage to 80%+",
+    "body": "## Description\nIncrease test coverage from current levels to 80%+ across all modules.\n\n## Current Coverage\n- Parser: ~70%\n- Renderer: ~60%\n- CLI: ~30%\n\n## Areas Needing Tests\n- [ ] Edge cases in parser (malformed input)\n- [ ] All renderer output formats\n- [ ] CLI error handling\n- [ ] Integration tests for full workflows\n- [ ] Performance tests\n\n## Testing Strategy\n- Unit tests for individual functions\n- Integration tests for end-to-end flows\n- Snapshot tests for renderer output\n- Performance benchmarks\n\n## Priority\nMedium\n\n## Labels\ntesting, quality, coverage",
+    "labels": ["testing", "quality", "coverage"],
+    "milestone": "v0.2.0"
+  },
+  {
+    "title": "Add performance benchmarks",
+    "body": "## Description\nCreate performance benchmarks to track parsing and rendering speed.\n\n## Benchmarks Needed\n- Parse time for various document sizes (small, medium, large)\n- Render time for different output formats\n- Memory usage during processing\n- CLI startup time\n- Watch mode responsiveness\n\n## Goals\n- Parse time: <100ms for typical documents\n- Render time: <200ms for HTML generation\n- Memory: <50MB for large documents\n\n## Implementation\n- Use benchmark.js or tinybench\n- Add `npm run benchmark` script\n- Track results over time\n- Add to CI/CD to catch regressions\n\n## Priority\nLow\n\n## Labels\ntesting, performance, benchmarks",
+    "labels": ["testing", "performance", "benchmarks"],
+    "milestone": "v0.3.0"
+  },
+  {
+    "title": "Set up GitHub Actions CI/CD",
+    "body": "## Description\nCreate comprehensive CI/CD workflows for automated testing and deployment.\n\n## Workflows Needed\n\n### 1. Test Workflow (on push/PR)\n- Run tests on Node 18, 20, 22\n- Run on Linux, macOS, Windows\n- Generate coverage report\n- Upload to Codecov\n\n### 2. Build Workflow\n- Type checking\n- Linting\n- Build library\n- Build CLI\n- Build extensions\n\n### 3. Release Workflow (on tag)\n- Run all tests\n- Build all packages\n- Publish to npm\n- Create GitHub release\n- Build and deploy docs\n\n### 4. Docs Deployment\n- Build VitePress site\n- Deploy to GitHub Pages\n\n## Priority\nHigh\n\n## Labels\nci-cd, github-actions, automation",
+    "labels": ["ci-cd", "github-actions", "automation"],
+    "milestone": "v0.1.0"
+  },
+  {
+    "title": "Create examples gallery with 20+ wireframes",
+    "body": "## Description\nBuild comprehensive examples gallery showcasing wiremd capabilities.\n\n## Example Categories\n\n### Forms (5 examples)\n- Contact form\n- Login form\n- Registration form\n- Search form\n- Multi-step form\n\n### Landing Pages (5 examples)\n- SaaS product page\n- Portfolio site\n- App landing page\n- E-commerce home\n- Agency site\n\n### Dashboards (5 examples)\n- Analytics dashboard\n- Admin panel\n- E-commerce dashboard\n- Project management\n- Social media dashboard\n\n### Components (5 examples)\n- Navigation patterns\n- Card layouts\n- Tables and data grids\n- Modals and dialogs\n- Form controls showcase\n\n## Each Example Should Include\n- Markdown source\n- All 7 rendered styles\n- Description and use case\n- Key features demonstrated\n\n## Priority\nMedium\n\n## Labels\nexamples, documentation, showcase",
+    "labels": ["examples", "documentation", "showcase"],
+    "milestone": "v0.2.0"
+  },
+  {
+    "title": "Add PDF export renderer",
+    "body": "## Description\nImplement PDF export capability for wireframes using headless browser.\n\n## Features\n- Generate PDF from HTML renderer output\n- Use Puppeteer or Playwright\n- Support custom page sizes (A4, Letter, custom)\n- Include all visual styles\n- Multi-page documents\n- Table of contents for long documents\n\n## CLI Usage\n```bash\nwiremd mockup.md --format pdf -o wireframe.pdf\nwiremd mockup.md --format pdf --page-size A4\n```\n\n## Considerations\n- Add puppeteer as optional dependency\n- Handle fonts correctly in PDF\n- Optimize file size\n\n## Priority\nLow\n\n## Labels\nenhancement, renderer, pdf, export",
+    "labels": ["enhancement", "renderer", "pdf", "export"],
+    "milestone": "Future"
+  },
+  {
+    "title": "Add PNG/SVG image export",
+    "body": "## Description\nSupport exporting wireframes as PNG or SVG images.\n\n## Features\n- Export individual components or full page\n- Configurable dimensions\n- Transparent backgrounds option\n- High-DPI support (2x, 3x)\n- SVG for vector output\n\n## CLI Usage\n```bash\nwiremd mockup.md --format png -o wireframe.png --width 1200\nwiremd mockup.md --format svg -o wireframe.svg\n```\n\n## Implementation\n- Use html-to-image or similar library\n- Or puppeteer screenshot\n\n## Priority\nLow\n\n## Labels\nenhancement, export, images",
+    "labels": ["enhancement", "export", "images"],
+    "milestone": "Future"
+  },
+  {
+    "title": "Organize private beta testing (20 users)",
+    "body": "## Description\nRecruit and organize private beta testing with 20 users before public launch.\n\n## Goals\n- Get feedback on core features\n- Identify bugs and edge cases\n- Test documentation clarity\n- Gather feature requests\n- Build initial community\n\n## Beta Program\n- [ ] Create beta signup form\n- [ ] Recruit from Twitter, dev communities\n- [ ] Provide beta access to npm package\n- [ ] Create private Discord channel\n- [ ] Send weekly check-ins\n- [ ] Collect structured feedback\n- [ ] Offer beta tester credits/recognition\n\n## Feedback Areas\n- Syntax intuitiveness\n- Documentation quality\n- CLI usability\n- VS Code extension features\n- Performance issues\n- Feature gaps\n\n## Duration\n2-4 weeks\n\n## Priority\nHigh\n\n## Labels\nbeta, testing, community",
+    "labels": ["beta", "testing", "community"],
+    "milestone": "v0.1.0"
+  },
+  {
+    "title": "Product Hunt launch preparation",
+    "body": "## Description\nPrepare for Product Hunt launch to gain visibility.\n\n## Pre-Launch Checklist\n- [ ] Create Product Hunt account\n- [ ] Schedule launch date (Tuesday-Thursday)\n- [ ] Create compelling tagline\n- [ ] Design thumbnail/icon\n- [ ] Create demo video (2-3 minutes)\n- [ ] Write launch post description\n- [ ] Prepare screenshots\n- [ ] Line up hunter (if possible)\n- [ ] Coordinate with beta users for upvotes\n- [ ] Prepare to respond to comments\n\n## Launch Day Strategy\n- Post early (12:01 AM PST)\n- Respond to all comments promptly\n- Share on social media\n- Engage with Product Hunt community\n- Monitor upvotes and feedback\n\n## Post-Launch\n- Thank supporters\n- Implement quick feedback\n- Follow up with interested users\n\n## Priority\nMedium\n\n## Labels\nmarketing, product-hunt, launch",
+    "labels": ["marketing", "product-hunt", "launch"],
+    "milestone": "v0.2.0"
+  },
+  {
+    "title": "Write technical blog posts series",
+    "body": "## Description\nCreate a series of technical blog posts about wiremd architecture, design decisions, and usage.\n\n## Blog Post Ideas\n\n### Technical Deep Dives\n1. \"Building a Markdown Parser: Lessons from wiremd\"\n2. \"Designing a Domain-Specific Language for UI Mockups\"\n3. \"Rendering Multiple Output Formats from a Single AST\"\n4. \"Performance Optimization: Sub-100ms Parsing\"\n\n### Tutorials\n5. \"Creating Wireframes with Markdown: A Complete Guide\"\n6. \"From Wireframe to Production: wiremd → React Workflow\"\n7. \"Designing in Plain Text: Why Markdown Mockups Matter\"\n\n### Case Studies\n8. \"How [Company] Uses wiremd in Their Design Process\"\n9. \"Replacing Figma with Markdown: An Experiment\"\n\n## Distribution\n- Dev.to\n- Medium\n- Personal blog\n- Hacker News (Show HN)\n- Reddit (r/webdev, r/javascript)\n\n## Priority\nMedium\n\n## Labels\nmarketing, content, blog",
+    "labels": ["marketing", "content", "blog"],
+    "milestone": "v0.2.0"
+  },
+  {
+    "title": "Create video tutorials and demos",
+    "body": "## Description\nProduce video content demonstrating wiremd features and workflows.\n\n## Video Ideas\n\n### Getting Started (5-10 min each)\n1. \"Install and First Wireframe\" \n2. \"Understanding wiremd Syntax\"\n3. \"Using the CLI Tool\"\n4. \"VS Code Extension Setup\"\n\n### Advanced Features (10-15 min each)\n5. \"Building Complex Layouts with Grids\"\n6. \"Exporting to React Components\"\n7. \"Figma Plugin Workflow\"\n8. \"Custom Styling and Themes\"\n\n### Real-World Projects (15-30 min)\n9. \"Building a Complete Landing Page\"\n10. \"Designing a SaaS Dashboard\"\n11. \"From Wireframe to Production App\"\n\n## Platform\n- YouTube (primary)\n- Loom (quick tutorials)\n- Embed in docs site\n\n## Priority\nLow\n\n## Labels\nmarketing, video, tutorials",
+    "labels": ["marketing", "video", "tutorials"],
+    "milestone": "Future"
+  },
+  {
+    "title": "Set up Discord/Slack community",
+    "body": "## Description\nCreate community space for users to get help, share wireframes, and discuss features.\n\n## Platform Choice\n- Discord (recommended for dev tools)\n- Slack (alternative)\n- GitHub Discussions (backup)\n\n## Channel Structure\n```\n#welcome\n#announcements\n#general\n#help\n#showcase (share your wireframes)\n#feature-requests\n#bug-reports\n#development (for contributors)\n#off-topic\n```\n\n## Moderation\n- Set up rules and Code of Conduct\n- Recruit moderators\n- Set up bots (welcome bot, FAQ bot)\n\n## Priority\nMedium\n\n## Labels\ncommunity, discord, support",
+    "labels": ["community", "discord", "support"],
+    "milestone": "v0.2.0"
+  },
+  {
+    "title": "Create component library/marketplace",
+    "body": "## Description\nBuild a marketplace for sharing reusable wiremd components and templates.\n\n## Features\n- Browse component library\n- Search by category (forms, navbars, cards, etc.)\n- Preview components\n- Copy wiremd markdown\n- Download as package\n- User-contributed components\n- Rating and reviews\n\n## Categories\n- Navigation patterns\n- Form templates\n- Card layouts\n- Dashboard widgets\n- Landing page sections\n- Complete page templates\n\n## Implementation\n- Static site or web app\n- GitHub-based (components in repo)\n- Submission via PR\n- Auto-generate previews\n\n## Priority\nLow\n\n## Labels\ncommunity, marketplace, components",
+    "labels": ["community", "marketplace", "components"],
+    "milestone": "Future"
+  },
+  {
+    "title": "Add dark mode theme variant",
+    "body": "## Description\nAdd dark mode variants for all visual styles.\n\n## Features\n- Dark versions of sketch, clean, wireframe, material, tailwind, brutal\n- Automatic dark mode detection\n- Toggle dark mode in CLI: `--dark`\n- Dark mode in VS Code extension\n- Proper contrast ratios for accessibility\n\n## Implementation\n- Add dark color schemes to styles.ts\n- CSS variable-based theming\n- Respect prefers-color-scheme media query\n\n## Priority\nMedium\n\n## Labels\nenhancement, styling, dark-mode",
+    "labels": ["enhancement", "styling", "dark-mode"],
+    "milestone": "v0.3.0"
+  },
+  {
+    "title": "Add accessibility (a11y) validation and features",
+    "body": "## Description\nEnsure wiremd output follows accessibility best practices.\n\n## Features\n\n### Validation\n- Check for alt text on images\n- Ensure form labels are present\n- Validate heading hierarchy\n- Check color contrast ratios\n- Verify keyboard navigation\n\n### Output Improvements\n- Add ARIA labels where appropriate\n- Semantic HTML tags\n- Focus indicators\n- Skip navigation links\n- Screen reader friendly\n\n### CLI Flag\n```bash\nwiremd mockup.md --a11y-check\n# Shows accessibility warnings\n```\n\n## Priority\nMedium\n\n## Labels\nenhancement, accessibility, a11y",
+    "labels": ["enhancement", "accessibility", "a11y"],
+    "milestone": "v0.3.0"
+  },
+  {
+    "title": "Add internationalization (i18n) support",
+    "body": "## Description\nSupport for multi-language wireframes and RTL (right-to-left) layouts.\n\n## Features\n- RTL layout support (for Arabic, Hebrew, etc.)\n- Language hints in markdown: `{:lang=ar :dir=rtl}`\n- Localized component labels\n- Multiple language examples in docs\n\n## Example\n```markdown\n{:lang=ar :dir=rtl}\n## نموذج اتصال\n[إرسال]\n```\n\n## Priority\nLow\n\n## Labels\nenhancement, i18n, internationalization",
+    "labels": ["enhancement", "i18n", "internationalization"],
+    "milestone": "Future"
+  },
+  {
+    "title": "Support responsive breakpoint syntax",
+    "body": "## Description\nAdd syntax for defining different layouts at different screen sizes.\n\n## Proposed Syntax\n```markdown\n## Features {.grid-3 .md:grid-2 .sm:grid-1}\n\n<!-- Or viewport blocks -->\n::: mobile\n## Features {.grid-1}\n:::\n\n::: desktop\n## Features {.grid-3}\n:::\n```\n\n## Implementation\n- Parse breakpoint modifiers\n- Generate responsive CSS\n- Add to AST metadata\n- Support in all renderers\n\n## Priority\nMedium\n\n## Labels\nenhancement, responsive, syntax",
+    "labels": ["enhancement", "responsive", "syntax"],
+    "milestone": "v0.3.0"
+  },
+  {
+    "title": "Add state syntax (hover, active, disabled)",
+    "body": "## Description\nAllow specifying component states in wiremd syntax.\n\n## Proposed Syntax\n```markdown\n[Submit]{:disabled}\n[Submit]{:hover}\n[Submit]{:loading}\n\n<!-- Or state blocks -->\n::: state=hover\n[Submit]\n:::\n```\n\n## States to Support\n- `:hover` - Hover state\n- `:active` - Active/pressed state\n- `:focus` - Focused state\n- `:disabled` - Disabled state\n- `:loading` - Loading state\n- `:error` - Error state\n- `:success` - Success state\n\n## Rendering\n- Show different visual styles\n- Generate CSS for pseudo-classes\n- Add to component AST\n\n## Priority\nMedium\n\n## Labels\nenhancement, syntax, states",
+    "labels": ["enhancement", "syntax", "states"],
+    "milestone": "v0.3.0"
+  },
+  {
+    "title": "Add annotation/comment syntax",
+    "body": "## Description\nSupport annotations and comments in wireframes for design notes.\n\n## Proposed Syntax\n```markdown\n[Submit] <!-- This should be primary CTA -->\n\n## Hero {.annotation=\"Needs approval from design team\"}\n\n::: note\nThis section is pending final copy from marketing.\n:::\n```\n\n## Features\n- Inline comments (not rendered in HTML)\n- Visual annotations (rendered as notes/tooltips)\n- Design decision documentation\n- TODO markers\n- Version notes\n\n## Rendering\n- Show annotations in special mode: `--show-annotations`\n- Hide by default in production renders\n- Include in JSON output\n\n## Priority\nLow\n\n## Labels\nenhancement, annotations, syntax",
+    "labels": ["enhancement", "annotations", "syntax"],
+    "milestone": "Future"
+  },
+  {
+    "title": "Support data placeholder syntax",
+    "body": "## Description\nAdd syntax for generating placeholder/dummy data in wireframes.\n\n## Proposed Syntax\n```markdown\n{{user.name}}          <!-- John Doe -->\n{{user.email}}         <!-- john@example.com -->\n{{lorem:2}}            <!-- 2 paragraphs of lorem ipsum -->\n{{image:400x300}}      <!-- Placeholder image -->\n{{date}}               <!-- 2025-01-15 -->\n{{number:1000-9999}}   <!-- Random number -->\n```\n\n## Use Cases\n- Realistic wireframe previews\n- Testing with sample data\n- Documentation examples\n- Design presentations\n\n## Implementation\n- Use faker.js or similar\n- Configurable data generation\n- Repeatable/seeded data option\n\n## Priority\nLow\n\n## Labels\nenhancement, placeholders, data",
+    "labels": ["enhancement", "placeholders", "data"],
+    "milestone": "Future"
+  },
+  {
+    "title": "Create migration tool from other formats",
+    "body": "## Description\nBuild tools to migrate from other wireframing/design tools to wiremd.\n\n## Supported Formats\n\n### Import from:\n- HTML → wiremd converter\n- Figma → wiremd (via API)\n- Balsamiq BMML → wiremd\n- Sketch → wiremd (via JSON export)\n- Mermaid diagrams → wiremd\n\n## CLI Usage\n```bash\nwiremd convert --from html --input page.html --output page.md\nwiremd convert --from figma --file-key ABC123 --output design.md\n```\n\n## Challenges\n- Lossy conversion (not all features map)\n- Component detection\n- Layout inference\n- Style mapping\n\n## Priority\nLow\n\n## Labels\nenhancement, migration, import",
+    "labels": ["enhancement", "migration", "import"],
+    "milestone": "Future"
+  },
+  {
+    "title": "Add plugin system for custom renderers",
+    "body": "## Description\nCreate a plugin API allowing third-party developers to add custom renderers.\n\n## Plugin API\n```typescript\ninterface WiremdPlugin {\n  name: string;\n  version: string;\n  renderers?: {\n    [format: string]: Renderer;\n  };\n  transformers?: {\n    [name: string]: Transformer;\n  };\n}\n\nfunction registerPlugin(plugin: WiremdPlugin): void;\n```\n\n## Example Plugin\n```typescript\nconst flutterPlugin: WiremdPlugin = {\n  name: 'wiremd-flutter',\n  version: '1.0.0',\n  renderers: {\n    flutter: (ast) => generateFlutterCode(ast)\n  }\n};\n\nregisterPlugin(flutterPlugin);\n```\n\n## Use Cases\n- Custom framework renderers (Flutter, React Native)\n- Custom visual styles\n- Domain-specific transformations\n- Export to proprietary formats\n\n## Priority\nMedium\n\n## Labels\nenhancement, plugins, api",
+    "labels": ["enhancement", "plugins", "api"],
+    "milestone": "v0.4.0"
+  },
+  {
+    "title": "Add telemetry and analytics (opt-in)",
+    "body": "## Description\nImplement opt-in telemetry to understand usage patterns and improve wiremd.\n\n## Data to Collect (Anonymous)\n- wiremd version\n- Command usage (parse, render, etc.)\n- Output format preferences\n- Document size statistics\n- Parse/render performance\n- Error frequency\n- OS and Node version\n\n## Privacy\n- Opt-in only (disabled by default)\n- No personal information\n- No file contents\n- Clear privacy policy\n- Easy opt-out: `wiremd telemetry disable`\n\n## Implementation\n- Use privacy-focused analytics (e.g., Telemetry)\n- Store preference in config\n- Show opt-in prompt on first run\n\n## Priority\nLow\n\n## Labels\nenhancement, telemetry, analytics",
+    "labels": ["enhancement", "telemetry", "analytics"],
+    "milestone": "Future"
+  },
+  {
+    "title": "Create educational content and tutorials",
+    "body": "## Description\nDevelop comprehensive educational resources for learning wiremd.\n\n## Content Types\n\n### Written Tutorials\n- Getting started guide\n- Syntax reference with examples\n- Best practices guide\n- Common patterns cookbook\n- Troubleshooting guide\n\n### Interactive Tutorials\n- Interactive playground with guided lessons\n- Step-by-step challenges\n- Quiz/assessment\n\n### Video Content\n- Intro video (2-3 min)\n- Feature walkthroughs\n- Real-world examples\n- Live coding sessions\n\n### Example Projects\n- Starter templates\n- Complete project examples\n- Before/after comparisons\n\n## Distribution\n- Docs site\n- YouTube channel\n- Dev.to articles\n- GitHub repos\n\n## Priority\nMedium\n\n## Labels\neducation, tutorials, documentation",
+    "labels": ["education", "tutorials", "documentation"],
+    "milestone": "v0.2.0"
+  },
+  {
+    "title": "Implement version migration tool",
+    "body": "## Description\nCreate tool to migrate wiremd files between syntax versions.\n\n## Features\n- Detect wiremd version from file\n- Migrate to latest syntax\n- Show what changed\n- Batch migration for projects\n- Preserve comments and formatting where possible\n\n## CLI Usage\n```bash\nwiremd migrate mockup-v0.1.md --to v0.2\nwiremd migrate ./wireframes/ --to latest --backup\n```\n\n## Priority\nMedium\n\n## Labels\nenhancement, migration, versioning",
+    "labels": ["enhancement", "migration", "versioning"],
+    "milestone": "v0.3.0"
+  },
+  {
+    "title": "Add linting and validation CLI commands",
+    "body": "## Description\nProvide linting and validation commands for wiremd files.\n\n## Features\n\n### Lint Command\n```bash\nwiremd lint mockup.md\n```\n- Check syntax errors\n- Validate component usage\n- Check best practices\n- Suggest improvements\n- Configurable rules\n\n### Validate Command\n```bash\nwiremd validate mockup.md --strict\n```\n- Schema validation\n- Type checking\n- Accessibility checks\n- Required field validation\n\n### Fix Command\n```bash\nwiremd lint mockup.md --fix\n```\n- Auto-fix common issues\n- Format code\n- Add missing attributes\n\n## Priority\nMedium\n\n## Labels\nenhancement, cli, linting, validation",
+    "labels": ["enhancement", "cli", "linting", "validation"],
+    "milestone": "v0.3.0"
+  },
+  {
+    "title": "Support component composition and reuse",
+    "body": "## Description\nAdd syntax for defining reusable components and composing them.\n\n## Proposed Syntax\n\n### Define Component\n```markdown\n<!-- Define in components/button.md -->\n## Button {#component}\n[{{text}}]{.{{variant}}}\n```\n\n### Use Component\n```markdown\n<!-- Use in main mockup -->\n<Button text=\"Submit\" variant=\"primary\" />\n<Button text=\"Cancel\" variant=\"secondary\" />\n```\n\n## Features\n- Component library support\n- Props/parameters\n- Default values\n- Slot/children support\n- Component variants\n\n## Implementation\n- Component registry\n- Template interpolation\n- Recursive rendering\n\n## Priority\nMedium\n\n## Labels\nenhancement, components, reusability",
+    "labels": ["enhancement", "components", "reusability"],
+    "milestone": "v0.4.0"
+  }
+]
