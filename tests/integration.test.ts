@@ -268,7 +268,7 @@ describe('Live Preview Integration', () => {
 
   describe('Documentation', () => {
     it('should have live preview guide', () => {
-      const guide = readFileSync('./LIVE_PREVIEW_GUIDE.md', 'utf-8');
+      const guide = readFileSync('./.github/dev-docs/LIVE_PREVIEW_GUIDE.md', 'utf-8');
 
       expect(guide).toContain('Live Preview');
       expect(guide).toContain('CLI');
@@ -276,7 +276,7 @@ describe('Live Preview Integration', () => {
     });
 
     it('should document viewport switcher', () => {
-      const guide = readFileSync('./LIVE_PREVIEW_GUIDE.md', 'utf-8');
+      const guide = readFileSync('./.github/dev-docs/LIVE_PREVIEW_GUIDE.md', 'utf-8');
 
       expect(guide).toContain('viewport');
       expect(guide).toContain('mobile');
@@ -285,14 +285,14 @@ describe('Live Preview Integration', () => {
     });
 
     it('should document error overlay', () => {
-      const guide = readFileSync('./LIVE_PREVIEW_GUIDE.md', 'utf-8');
+      const guide = readFileSync('./.github/dev-docs/LIVE_PREVIEW_GUIDE.md', 'utf-8');
 
       expect(guide).toContain('error');
       expect(guide).toContain('overlay');
     });
 
     it('should document troubleshooting', () => {
-      const guide = readFileSync('./LIVE_PREVIEW_GUIDE.md', 'utf-8');
+      const guide = readFileSync('./.github/dev-docs/LIVE_PREVIEW_GUIDE.md', 'utf-8');
 
       expect(guide).toContain('Troubleshooting');
     });
@@ -309,7 +309,7 @@ describe('Live Preview Integration', () => {
 
   describe('Complete Feature Coverage', () => {
     it('should implement all advertised features', () => {
-      const guide = readFileSync('./LIVE_PREVIEW_GUIDE.md', 'utf-8');
+      const guide = readFileSync('./.github/dev-docs/LIVE_PREVIEW_GUIDE.md', 'utf-8');
       const serverSource = readFileSync('./src/cli/server.ts', 'utf-8');
       const cliSource = readFileSync('./src/cli/index.ts', 'utf-8');
 
