@@ -1,0 +1,25 @@
+<svg width="128" height="128" viewBox="0 0 128 128" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="128" height="128" rx="16" fill="#2563EB"/>
+
+  <!-- Wireframe/Window frame -->
+  <rect x="24" y="24" width="80" height="80" rx="4" fill="white" opacity="0.2"/>
+  <rect x="28" y="28" width="72" height="72" rx="2" fill="none" stroke="white" stroke-width="2"/>
+
+  <!-- Top bar with circles (browser-like) -->
+  <line x1="28" y1="38" x2="100" y2="38" stroke="white" stroke-width="2"/>
+  <circle cx="36" cy="33" r="2" fill="white"/>
+  <circle cx="44" cy="33" r="2" fill="white"/>
+  <circle cx="52" cy="33" r="2" fill="white"/>
+
+  <!-- Content lines (representing wireframe elements) -->
+  <line x1="36" y1="48" x2="92" y2="48" stroke="white" stroke-width="2" stroke-linecap="round"/>
+  <line x1="36" y1="58" x2="80" y2="58" stroke="white" stroke-width="1.5" stroke-linecap="round" opacity="0.8"/>
+  <line x1="36" y1="66" x2="85" y2="66" stroke="white" stroke-width="1.5" stroke-linecap="round" opacity="0.8"/>
+
+  <!-- Button-like element -->
+  <rect x="36" y="76" width="24" height="12" rx="2" fill="none" stroke="white" stroke-width="1.5"/>
+
+  <!-- Markdown "M" symbol in corner -->
+  <text x="76" y="94" font-family="monospace" font-size="24" font-weight="bold" fill="white">M↓</text>
+</svg>

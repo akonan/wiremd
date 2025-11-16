@@ -244,8 +244,8 @@ const tailwindHTML = renderToTailwind(ast, { pretty: true });
 |----------|-------------|
 | **[Syntax Specification](./SYNTAX-SPEC-v0.1.md)** | Formal specification with parser rules |
 | **[API Documentation](./docs/api/README.md)** | Programmatic API reference |
-| **[Project Plan](./markdown-mockup-project-plan.md)** | Development roadmap |
-| **[CLAUDE.md](./CLAUDE.md)** | Project overview for AI assistants |
+| **[Project Plan](./.github/dev-docs/markdown-mockup-project-plan.md)** | Development roadmap |
+| **[CLAUDE.md](./.github/dev-docs/CLAUDE.md)** | Project overview for AI assistants |
 
 ### 🤝 Contributing
 

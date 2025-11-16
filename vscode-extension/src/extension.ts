@@ -9,8 +9,6 @@ import { WiremdPreviewProvider } from './preview-provider';
 let previewProvider: WiremdPreviewProvider;
 
 export function activate(context: vscode.ExtensionContext) {
-  console.log('Wiremd extension activated');
-
   // Create preview provider
   previewProvider = new WiremdPreviewProvider(context);
 

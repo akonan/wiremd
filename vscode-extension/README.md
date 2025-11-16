@@ -2,8 +2,6 @@
 
 Live preview for Wiremd markdown mockups directly in VS Code.
 
-![Wiremd Logo](https://via.placeholder.com/728x90.png?text=Wiremd+Live+Preview)
-
 ## Features
 
 - **Live Preview** - See your wireframe mockups update in real-time as you type

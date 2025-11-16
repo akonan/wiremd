@@ -246,13 +246,11 @@ export class WiremdPreviewProvider implements vscode.WebviewPanelSerializer {
 
       case 'requestStyleChange':
         // Trigger the VS Code command to show style picker
-        console.log('[Wiremd] Received requestStyleChange, executing command');
         vscode.commands.executeCommand('wiremd.changeStyle');
         break;
 
       case 'requestViewportChange':
         // Trigger the VS Code command to show viewport picker
-        console.log('[Wiremd] Received requestViewportChange, executing command');
         vscode.commands.executeCommand('wiremd.changeViewport');
         break;
 
@@ -493,19 +491,16 @@ export class WiremdPreviewProvider implements vscode.WebviewPanelSerializer {
 
     // Handle refresh button
     document.getElementById('refresh-btn').addEventListener('click', () => {
-      console.log('[Wiremd] Refresh button clicked');
       vscode.postMessage({ type: 'ready' });
     });
 
     // Handle style button - trigger VS Code command
     document.getElementById('style-btn').addEventListener('click', () => {
-      console.log('[Wiremd] Style button clicked, requesting style change');
       vscode.postMessage({ type: 'requestStyleChange' });
     });
 
     // Handle viewport button - trigger VS Code command
     document.getElementById('viewport-btn').addEventListener('click', () => {
-      console.log('[Wiremd] Viewport button clicked, requesting viewport change');
       vscode.postMessage({ type: 'requestViewportChange' });
     });
 

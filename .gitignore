@@ -15,6 +15,7 @@ coverage/
 # IDE
 .vscode/
 .idea/
+.cursor/
 *.swp
 *.swo
 *~
@@ -37,6 +38,7 @@ pnpm-debug.log*
 tmp/
 temp/
 *.tmp
+*.pid
 
 # OS
 .DS_Store
