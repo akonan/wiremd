@@ -13,6 +13,46 @@ Welcome to the comprehensive wiremd syntax guide! This document serves as both a
 > - `brutal` - Neo-brutalism with bold colors and thick borders
 > - `none` - Unstyled semantic HTML for custom CSS
 
+## Table of Contents
+
+- [📝 Standard Markdown Support](#-standard-markdown-support)
+- [🔘 Buttons](#-buttons)
+- [📋 Forms & Inputs](#-forms--inputs)
+  - [Text Inputs with Labels](#text-inputs-with-labels)
+  - [Input Types & Attributes](#input-types--attributes)
+  - [Textarea](#textarea-multi-line)
+  - [Checkboxes](#checkboxes)
+  - [Radio Buttons](#radio-buttons)
+  - [Dropdown/Select](#dropdownselect)
+- [🗂️ Navigation](#️-navigation)
+  - [Navigation Bar](#navigation-bar-syntax)
+  - [Breadcrumbs](#breadcrumbs)
+- [📦 Containers](#-containers)
+  - [Card Container](#card-container)
+  - [Hero Section](#hero-section)
+  - [Alert Types](#alert-types)
+  - [Modal Dialog](#modal-dialog)
+  - [Sidebar](#sidebar)
+  - [Footer](#footer)
+- [🏗️ Grid Layouts](#️-grid-layouts)
+  - [2-Column Grid](#2-column-grid)
+  - [3-Column Grid](#3-column-grid)
+  - [4-Column Grid](#4-column-grid)
+- [📊 Tables](#-tables)
+- [🎨 Icons](#-icons)
+- [🎯 Component States](#-component-states)
+- [🎛️ Interactive Components](#️-interactive-components)
+- [✅ Common Patterns & Best Practices](#-common-patterns--best-practices)
+  - [Complete Form Example](#complete-form-example)
+  - [Dashboard Layout](#dashboard-layout)
+- [🚀 Complete Page Example](#-complete-page-example)
+
+**Quick Links:**
+- [Quick Reference](../QUICK-REFERENCE.md) - One-page syntax cheat sheet
+- [FAQ](../FAQ.md) - Common questions and troubleshooting
+- [Syntax Guide](../docs/guide/syntax.md) - User-friendly guide
+- [Formal Specification](../SYNTAX-SPEC-v0.1.md) - Technical specification
+
 ---
 
 ## 📝 Standard Markdown Support
