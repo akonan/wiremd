@@ -219,10 +219,42 @@ const tailwindHTML = renderToTailwind(ast, { pretty: true });
 
 ## Documentation
 
-- [Syntax Specification v0.1](./SYNTAX-SPEC-v0.1.md) - Complete syntax reference
-- [Component Showcase](./examples/showcase.md) - Interactive examples of all components and styles
-- [Project Plan](./.github/dev-docs/markdown-mockup-project-plan.md) - Full development roadmap
-- [Syntax Research](./.github/dev-docs/syntax-research.md) - Research and design decisions
+**Not sure where to start?** → [Documentation Guide](./DOCUMENTATION-GUIDE.md)
+
+### 📖 Learning & Reference
+
+| Document | Description | Best For |
+|----------|-------------|----------|
+| **[Syntax Showcase](./examples/showcase.md)** | Comprehensive interactive guide with live examples | Learning by example, copying patterns |
+| **[Quick Reference](./QUICK-REFERENCE.md)** | One-page syntax cheat sheet | Quick lookups, experienced users |
+| **[Syntax Guide](./docs/guide/syntax.md)** | User-friendly tutorial with best practices | Structured learning |
+| **[FAQ](./FAQ.md)** | Common questions and troubleshooting | Solving problems, known issues |
+
+### 🚀 Getting Started
+
+| Document | Description |
+|----------|-------------|
+| **[Installation Guide](./docs/guide/installation.md)** | Setup instructions |
+| **[Getting Started](./docs/guide/getting-started.md)** | First steps with wiremd |
+| **[Examples](./examples/)** | Working wiremd files to copy and modify |
+
+### 🔧 Technical Documentation
+
+| Document | Description |
+|----------|-------------|
+| **[Syntax Specification](./SYNTAX-SPEC-v0.1.md)** | Formal specification with parser rules |
+| **[API Documentation](./docs/api/README.md)** | Programmatic API reference |
+| **[Project Plan](./.github/dev-docs/markdown-mockup-project-plan.md)** | Development roadmap |
+| **[CLAUDE.md](./.github/dev-docs/CLAUDE.md)** | Project overview for AI assistants |
+
+### 🤝 Contributing
+
+| Document | Description |
+|----------|-------------|
+| **[CONTRIBUTING.md](./CONTRIBUTING.md)** | Contribution guidelines |
+| **[TESTING.md](./TESTING.md)** | Testing strategy and guidelines |
+| **[CODE_OF_CONDUCT.md](./CODE_OF_CONDUCT.md)** | Community guidelines |
+| **[SECURITY.md](./SECURITY.md)** | Security policy |
 
 ## Development Status
 
