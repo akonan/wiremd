@@ -2,12 +2,28 @@
 
 This directory contains example wireframes and outputs in different styles.
 
-## Files
+## 🎨 Examples Gallery
+
+**NEW!** Check out our comprehensive [Examples Gallery](gallery/README.md) with **20 production-ready examples** across 4 categories:
+
+- **📋 Forms** (5 examples) - Contact, login, registration, search, multi-step
+- **🚀 Landing Pages** (5 examples) - SaaS, portfolio, app, e-commerce, agency
+- **📊 Dashboards** (5 examples) - Analytics, admin, e-commerce, project management, social media
+- **🧩 Components** (5 examples) - Navigation, cards, tables, modals, form controls
+
+Each example demonstrates real-world patterns and can be rendered in all 7 visual styles!
+
+**→ [Explore the Gallery](gallery/README.md)**
+
+---
+
+## Quick Start Files
 
 - `hello.md` - Simple login form example
 - `hello.html` - Generated with default sketch (Balsamiq) style
 - `hello-clean.html` - Generated with clean style
 - `hello.json` - JSON AST output
+- `showcase.md` - Complete syntax reference and component showcase
 
 ## Generate Examples
 
