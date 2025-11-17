@@ -1,6 +1,15 @@
 # API Documentation
 
-wiremd provides a simple programmatic API for parsing and rendering wireframes.
+wiremd provides a powerful programmatic API for parsing and rendering wireframes.
+
+## Quick Links
+
+- **[Parser API](./parser.md)** - Parse markdown to AST
+- **[Renderer APIs](./renderer.md)** - Render to HTML, JSON, React, and Tailwind
+- **[Type Definitions](./types.md)** - Complete TypeScript type reference
+- **[Plugin API](./plugins.md)** - Create custom renderers
+- **[Error Handling](./errors.md)** - Error handling guide
+- **[Migration Guides](./migration.md)** - Version migration guides
 
 ## Installation
 
@@ -30,169 +39,120 @@ const json = renderToJSON(ast, { pretty: true });
 
 ## Core Functions
 
-### `parse(input, options?)`
+### Parser Functions
 
-Parse markdown with wiremd syntax into an AST.
+- **[parse()](./parser.md#parse)** - Parse markdown with wiremd syntax into an AST
+- **[validate()](./parser.md#validate)** - Validate a wiremd AST for correctness
 
-**Parameters:**
-- `input: string` - Markdown string with wiremd syntax
-- `options?: ParseOptions` - Optional parsing options
+### Renderer Functions
 
-**Returns:** `DocumentNode` - wiremd AST
+- **[renderToHTML()](./renderer.md#rendertohtml)** - Render AST to HTML with styles
+- **[renderToJSON()](./renderer.md#rendertojson)** - Export AST as JSON
+- **[renderToReact()](./renderer.md#rendertoreact)** - Generate React/JSX components
+- **[renderToTailwind()](./renderer.md#rendertotailwind)** - Generate HTML with Tailwind classes
+- **[render()](./renderer.md#render)** - Universal renderer with format option
 
-**Example:**
+## API Reference
+
+### Parser API
+
+The parser converts markdown with wiremd syntax into an Abstract Syntax Tree (AST).
 
 ```typescript
 import { parse } from 'wiremd';
 
-const ast = parse('## Heading\n[Button]');
+const ast = parse('## Heading\n[Button]', {
+  position: true,  // Include position info
+  validate: true,  // Validate during parse
+  strict: false    // Strict mode
+});
 ```
 
-### `renderToHTML(ast, options?)`
+[Learn more about the Parser API →](./parser.md)
 
-Render wiremd AST to HTML.
+### Renderer APIs
 
-**Parameters:**
-- `ast: DocumentNode` - wiremd AST from `parse()`
-- `options?: RenderOptions` - Optional render options
-  - `style?: string` - Visual style: 'sketch', 'clean', 'wireframe', etc.
-  - `pretty?: boolean` - Pretty-print HTML (default: true)
-
-**Returns:** `string` - HTML string
-
-**Example:**
+wiremd provides multiple rendering targets:
 
 ```typescript
-import { parse, renderToHTML } from 'wiremd';
+import { renderToHTML, renderToReact, renderToTailwind } from 'wiremd';
 
-const ast = parse('## Heading\n[Button]');
-const html = renderToHTML(ast, { style: 'clean', pretty: true });
+// HTML with embedded styles
+const html = renderToHTML(ast, { style: 'sketch' });
+
+// React component
+const component = renderToReact(ast, { typescript: true });
+
+// Tailwind CSS
+const tailwind = renderToTailwind(ast);
 ```
 
-### `renderToJSON(ast, options?)`
+[Learn more about Renderer APIs →](./renderer.md)
 
-Render wiremd AST to JSON string.
+### Type Definitions
 
-**Parameters:**
-- `ast: DocumentNode` - wiremd AST from `parse()`
-- `options?: { pretty?: boolean }` - Optional formatting options
-
-**Returns:** `string` - JSON string
-
-**Example:**
+wiremd is fully typed with TypeScript:
 
 ```typescript
-import { parse, renderToJSON } from 'wiremd';
-
-const ast = parse('## Heading\n[Button]');
-const json = renderToJSON(ast, { pretty: true });
+import type {
+  DocumentNode,
+  WiremdNode,
+  ParseOptions,
+  RenderOptions,
+  ButtonNode,
+  InputNode
+} from 'wiremd';
 ```
 
-### `validate(ast)`
+[Explore all type definitions →](./types.md)
 
-Validate a wiremd AST for structural correctness.
+## Examples
 
-**Parameters:**
-- `ast: DocumentNode` - wiremd AST to validate
-
-**Returns:** `ValidationError[]` - Array of validation errors (empty if valid)
-
-**Example:**
+### Complete Rendering Pipeline
 
 ```typescript
-import { parse, validate } from 'wiremd';
-
-const ast = parse('## Heading\n[Button]');
-const errors = validate(ast);
-
-if (errors.length > 0) {
-  console.error('Validation errors:', errors);
-}
-```
-
-## Types
-
-### `DocumentNode`
-
-The root AST node representing a wiremd document.
-
-```typescript
-interface DocumentNode {
-  type: 'document';
-  meta: DocumentMeta;
-  children: WiremdNode[];
-}
-```
-
-### `WiremdNode`
-
-Union type representing all possible wiremd AST nodes.
-
-Includes: `button`, `input`, `textarea`, `select`, `heading`, `paragraph`, `container`, `grid`, and more.
-
-### `ParseOptions`
-
-Options for parsing markdown.
-
-```typescript
-interface ParseOptions {
-  // Future options will be added here
-}
-```
-
-### `RenderOptions`
-
-Options for rendering HTML.
-
-```typescript
-interface RenderOptions {
-  style?: 'sketch' | 'clean' | 'wireframe' | 'material' | 'tailwind' | 'brutal' | 'none';
-  pretty?: boolean;
-}
-```
-
-## Advanced Usage
-
-### Custom Rendering Pipeline
-
-```typescript
-import { parse, renderToHTML } from 'wiremd';
+import { parse, validate, renderToHTML } from 'wiremd';
 import { readFileSync, writeFileSync } from 'fs';
 
 // Read input
-const input = readFileSync('wireframe.md', 'utf-8');
+const markdown = readFileSync('wireframe.md', 'utf-8');
 
 // Parse
-const ast = parse(input);
+const ast = parse(markdown, { position: true });
 
-// Validate (optional)
+// Validate
 const errors = validate(ast);
 if (errors.length > 0) {
   throw new Error(`Validation failed: ${errors.map(e => e.message).join(', ')}`);
 }
 
-// Render with custom style
-const html = renderToHTML(ast, { style: 'material' });
+// Render
+const html = renderToHTML(ast, {
+  style: 'clean',
+  pretty: true
+});
 
 // Write output
 writeFileSync('output.html', html);
 ```
 
-### Batch Processing
+### Multiple Output Formats
 
 ```typescript
-import { parse, renderToHTML } from 'wiremd';
-import { readdirSync, readFileSync, writeFileSync } from 'fs';
+import { parse, renderToHTML, renderToReact, renderToJSON } from 'wiremd';
 
-const files = readdirSync('./wireframes').filter(f => f.endsWith('.md'));
+const markdown = '## Login\n[Submit]{.primary}';
+const ast = parse(markdown);
 
-for (const file of files) {
-  const input = readFileSync(`./wireframes/${file}`, 'utf-8');
-  const ast = parse(input);
-  const html = renderToHTML(ast);
-  const outputFile = file.replace('.md', '.html');
-  writeFileSync(`./output/${outputFile}`, html);
-}
+// Generate multiple formats
+const html = renderToHTML(ast, { style: 'sketch' });
+const react = renderToReact(ast, { typescript: true });
+const json = renderToJSON(ast, { pretty: true });
+
+// Save to different files
+writeFileSync('output.html', html);
+writeFileSync('Component.tsx', react);
+writeFileSync('ast.json', json);
 ```
 
 ### AST Manipulation
@@ -200,23 +160,88 @@ for (const file of files) {
 ```typescript
 import { parse, renderToHTML } from 'wiremd';
 
-const ast = parse('## Heading\n[Button]');
+const ast = parse('## Form\n[Button]');
 
 // Modify the AST
-ast.meta.theme = 'dark';
-
-// Add a new node
 ast.children.push({
   type: 'paragraph',
-  props: {},
-  children: [{ type: 'text', content: 'Added programmatically', props: {} }]
+  content: 'Added programmatically',
+  props: {}
 });
+
+// Traverse and modify
+function addClassToButtons(node: WiremdNode) {
+  if (node.type === 'button') {
+    node.props.classes = [...(node.props.classes || []), 'custom-class'];
+  }
+
+  if ('children' in node && node.children) {
+    node.children.forEach(addClassToButtons);
+  }
+}
+
+ast.children.forEach(addClassToButtons);
 
 const html = renderToHTML(ast);
 ```
 
+## Interactive Examples
+
+Try wiremd online with our [live demo site](https://github.com/akonan/wiremd) to see examples of:
+
+- Different visual styles (sketch, clean, wireframe, material, brutal)
+- Form components (buttons, inputs, selects, checkboxes)
+- Layout components (grids, containers, navigation)
+- Complex wireframes (dashboards, e-commerce, admin panels)
+
+## Advanced Topics
+
+### Custom Renderers
+
+Create custom renderers for other frameworks:
+
+```typescript
+import type { DocumentNode, WiremdNode } from 'wiremd';
+
+function renderToVue(ast: DocumentNode): string {
+  // Custom Vue renderer implementation
+}
+```
+
+[Learn how to create plugins →](./plugins.md)
+
+### Error Handling
+
+Handle parsing and validation errors gracefully:
+
+```typescript
+import { parse } from 'wiremd';
+
+try {
+  const ast = parse(userInput, { validate: true });
+} catch (error) {
+  console.error('Parse error:', error.message);
+  if (error.position) {
+    console.error(`At line ${error.position.start.line}`);
+  }
+}
+```
+
+[Read the error handling guide →](./errors.md)
+
 ## Next Steps
+
+- **[Parser API Documentation](./parser.md)** - Detailed parser reference
+- **[Renderer API Documentation](./renderer.md)** - All rendering options
+- **[Type Definitions](./types.md)** - Complete type reference
+- **[Plugin API](./plugins.md)** - Create custom renderers
+- **[Error Handling](./errors.md)** - Handle errors gracefully
+- **[Migration Guides](./migration.md)** - Upgrade between versions
+
+## More Resources
 
 - [Getting Started Guide](../guide/getting-started.md)
 - [Syntax Reference](../guide/syntax.md)
-- [Type Definitions](../../src/types.ts)
+- [Examples](../examples/)
+- [GitHub Repository](https://github.com/akonan/wiremd)
+- [Live Demo](https://github.com/akonan/wiremd)
