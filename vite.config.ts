@@ -27,6 +27,8 @@ export default defineConfig({
         'unist-util-visit',
         'mdast-util-from-markdown',
         'mdast-util-to-markdown',
+        'chokidar',
+        'chalk',
       ],
     },
     sourcemap: true,

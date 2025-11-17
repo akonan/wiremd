@@ -22,8 +22,12 @@ describe('CLI', () => {
   afterEach(() => {
     // Clean up test files
     try {
-      unlinkSync(TEST_INPUT);
-      unlinkSync(TEST_OUTPUT);
+      if (existsSync(TEST_INPUT)) {
+        unlinkSync(TEST_INPUT);
+      }
+      if (existsSync(TEST_OUTPUT)) {
+        unlinkSync(TEST_OUTPUT);
+      }
     } catch (e) {
       // Ignore if files don't exist
     }
@@ -127,8 +131,20 @@ describe('CLI', () => {
     });
 
     it('should apply default sketch style', () => {
-      execSync(`node dist/cli/index.js ${TEST_INPUT} -o ${TEST_OUTPUT}`);
+      try {
+        execSync(`node dist/cli/index.js ${TEST_INPUT} -o ${TEST_OUTPUT}`, {
+          stdio: 'pipe'
+        });
+      } catch (error: any) {
+        // If execSync throws, log the error for debugging
+        console.error('CLI command failed:', error.message);
+        if (error.stderr) {
+          console.error('stderr:', error.stderr.toString());
+        }
+        throw error;
+      }
 
+      expect(existsSync(TEST_OUTPUT)).toBe(true);
       const html = readFileSync(TEST_OUTPUT, 'utf-8');
       // Sketch style should include hand-drawn characteristics
       expect(html).toContain('style');
@@ -285,19 +301,19 @@ describe('CLI', () => {
     it('should accept watch option', () => {
       const cliSource = readFileSync('./src/cli/index.ts', 'utf-8');
       expect(cliSource).toContain('--watch');
-      expect(cliSource).toContain('watchFile');
+      expect(cliSource).toContain('chokidar');
     });
 
     it('should use debouncing for file changes', () => {
       const cliSource = readFileSync('./src/cli/index.ts', 'utf-8');
-      expect(cliSource).toContain('debounceTimer');
-      expect(cliSource).toContain('clearTimeout');
-      expect(cliSource).toContain('setTimeout');
+      expect(cliSource).toContain('awaitWriteFinish');
+      expect(cliSource).toContain('stabilityThreshold');
+      expect(cliSource).toContain('isProcessing');
     });
 
     it('should regenerate on file changes', () => {
       const cliSource = readFileSync('./src/cli/index.ts', 'utf-8');
-      expect(cliSource).toContain('File changed');
+      expect(cliSource).toContain('regenerate');
       expect(cliSource).toContain('generateOutput');
       expect(cliSource).toContain('writeFileSync');
     });
@@ -373,7 +389,7 @@ describe('CLI', () => {
       );
 
       expect(result).toContain('Generated');
-      expect(result).toContain('✅');
+      expect(result).toContain('✓');
     });
 
     it('should show style being used', () => {
