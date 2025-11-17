@@ -171,8 +171,9 @@ export interface ParseError extends Error {
   severity?: 'error' | 'warning';
 }
 
-export interface ValidationError extends Error {
-  node?: WiremdNode;
+export interface ValidationError {
+  message: string;
   path?: string[];
   code?: string;
+  node?: WiremdNode;
 }
