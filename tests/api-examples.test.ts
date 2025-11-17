@@ -339,14 +339,19 @@ Email
 
       ast.children.forEach(addClassToButtons);
 
-      // Check that buttons have the custom class
+      // Check that buttons have the custom class (traverse recursively)
       let buttonCount = 0;
-      ast.children.forEach(node => {
+      function countButtons(node: WiremdNode) {
         if (node.type === 'button') {
           buttonCount++;
           expect(node.props.classes).toContain('custom-class');
         }
-      });
+        if ('children' in node && node.children) {
+          node.children.forEach(countButtons);
+        }
+      }
+
+      ast.children.forEach(countButtons);
 
       expect(buttonCount).toBe(2);
     });
