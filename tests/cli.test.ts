@@ -89,8 +89,18 @@ describe('CLI', () => {
     });
 
     it('should include parsed content in output', () => {
-      execSync(`node dist/cli/index.js ${TEST_INPUT} -o ${TEST_OUTPUT}`);
+      try {
+        execSync(`node dist/cli/index.js ${TEST_INPUT} -o ${TEST_OUTPUT}`, {
+          encoding: 'utf-8',
+          stdio: 'pipe',
+        });
+      } catch (error: any) {
+        throw new Error(
+          `CLI command failed: ${error.message}\nStdout: ${error.stdout}\nStderr: ${error.stderr}`
+        );
+      }
 
+      expect(existsSync(TEST_OUTPUT)).toBe(true);
       const html = readFileSync(TEST_OUTPUT, 'utf-8');
       expect(html).toContain('Test Wireframe');
       expect(html).toContain('button');
