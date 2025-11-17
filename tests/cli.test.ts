@@ -80,7 +80,27 @@ describe('CLI', () => {
 
   describe('Basic file generation', () => {
     it('should generate HTML from markdown', () => {
-      execSync(`node dist/cli/index.js ${TEST_INPUT} -o ${TEST_OUTPUT}`);
+      let stdout = '';
+      let stderr = '';
+      try {
+        const result = execSync(`node dist/cli/index.js ${TEST_INPUT} -o ${TEST_OUTPUT}`, {
+          encoding: 'utf-8',
+          stdio: 'pipe',
+        });
+        stdout = result;
+      } catch (error: any) {
+        stdout = error.stdout || '';
+        stderr = error.stderr || '';
+        throw new Error(
+          `CLI command failed: ${error.message}\nStdout: ${stdout}\nStderr: ${stderr}`
+        );
+      }
+
+      if (!existsSync(TEST_OUTPUT)) {
+        throw new Error(
+          `Output file not created.\nStdout: ${stdout}\nStderr: ${stderr}\nInput exists: ${existsSync(TEST_INPUT)}`
+        );
+      }
 
       expect(existsSync(TEST_OUTPUT)).toBe(true);
       const html = readFileSync(TEST_OUTPUT, 'utf-8');

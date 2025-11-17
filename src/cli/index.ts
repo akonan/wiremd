@@ -273,13 +273,22 @@ function main(): void {
 
   // One-time generation
   console.log(`📄 Parsing: ${options.input}`);
-  const output = generateOutput(options);
 
-  // Write output
-  writeFileSync(options.output, output, 'utf-8');
-  console.log(`✅ Generated: ${options.output}`);
-  console.log(`🎨 Style: ${options.style}`);
-  console.log(`📦 Format: ${options.format}`);
+  try {
+    const output = generateOutput(options);
+
+    // Write output
+    writeFileSync(options.output, output, 'utf-8');
+    console.log(`✅ Generated: ${options.output}`);
+    console.log(`🎨 Style: ${options.style}`);
+    console.log(`📦 Format: ${options.format}`);
+  } catch (error: any) {
+    console.error(`❌ Error: ${error.message}`);
+    if (error.stack) {
+      console.error(error.stack);
+    }
+    process.exit(1);
+  }
 }
 
 main();
