@@ -267,7 +267,7 @@ function main(): void {
 
     // Initial generation
     try {
-      let output = generateOutput(options);
+      const output = generateOutput(options);
       writeFileSync(options.output, output, 'utf-8');
       logger.success(`Generated: ${chalk.bold(options.output)}`);
       logger.style(`Style: ${chalk.bold(options.style)}`);
