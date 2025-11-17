@@ -255,19 +255,19 @@ describe('CLI', () => {
     it('should accept watch option', () => {
       const cliSource = readFileSync('./src/cli/index.ts', 'utf-8');
       expect(cliSource).toContain('--watch');
-      expect(cliSource).toContain('watchFile');
+      expect(cliSource).toContain('chokidar');
     });
 
     it('should use debouncing for file changes', () => {
       const cliSource = readFileSync('./src/cli/index.ts', 'utf-8');
-      expect(cliSource).toContain('debounceTimer');
-      expect(cliSource).toContain('clearTimeout');
-      expect(cliSource).toContain('setTimeout');
+      expect(cliSource).toContain('awaitWriteFinish');
+      expect(cliSource).toContain('stabilityThreshold');
+      expect(cliSource).toContain('isProcessing');
     });
 
     it('should regenerate on file changes', () => {
       const cliSource = readFileSync('./src/cli/index.ts', 'utf-8');
-      expect(cliSource).toContain('File changed');
+      expect(cliSource).toContain('regenerate');
       expect(cliSource).toContain('generateOutput');
       expect(cliSource).toContain('writeFileSync');
     });
@@ -343,7 +343,7 @@ describe('CLI', () => {
       );
 
       expect(result).toContain('Generated');
-      expect(result).toContain('✅');
+      expect(result).toContain('✓');
     });
 
     it('should show style being used', () => {

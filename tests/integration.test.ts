@@ -37,7 +37,7 @@ describe('Live Preview Integration', () => {
       const cliSource = readFileSync('./src/cli/index.ts', 'utf-8');
 
       // Check for file watching
-      expect(cliSource).toContain('watchFile');
+      expect(cliSource).toContain('chokidar');
 
       // Check for regeneration
       expect(cliSource).toContain('generateOutput');
