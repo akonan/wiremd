@@ -365,7 +365,7 @@ describe('CLI Unit Tests', () => {
       }
     });
 
-    it('should generate HTML output', () => {
+    it('should generate HTML output', async () => {
       const options: CLIOptions = {
         input: TEST_FILE,
         format: 'html',
@@ -373,7 +373,7 @@ describe('CLI Unit Tests', () => {
         pretty: true,
       };
 
-      const output = generateOutput(options);
+      const output = await generateOutput(options);
 
       expect(output).toContain('<html');
       expect(output).toContain('</html>');
@@ -381,22 +381,22 @@ describe('CLI Unit Tests', () => {
       expect(output).toContain('button');
     });
 
-    it('should generate JSON output', () => {
+    it('should generate JSON output', async () => {
       const options: CLIOptions = {
         input: TEST_FILE,
         format: 'json',
         pretty: true,
       };
 
-      const output = generateOutput(options);
+      const output = await generateOutput(options);
 
-      expect(() => JSON.parse(output)).not.toThrow();
-      const json = JSON.parse(output);
+      expect(() => JSON.parse(output as string)).not.toThrow();
+      const json = JSON.parse(output as string);
       expect(json).toHaveProperty('type');
       expect(json).toHaveProperty('children');
     });
 
-    it('should apply sketch style', () => {
+    it('should apply sketch style', async () => {
       const options: CLIOptions = {
         input: TEST_FILE,
         format: 'html',
@@ -404,11 +404,11 @@ describe('CLI Unit Tests', () => {
         pretty: true,
       };
 
-      const output = generateOutput(options);
+      const output = await generateOutput(options);
       expect(output).toContain('style');
     });
 
-    it('should apply clean style', () => {
+    it('should apply clean style', async () => {
       const options: CLIOptions = {
         input: TEST_FILE,
         format: 'html',
@@ -416,11 +416,11 @@ describe('CLI Unit Tests', () => {
         pretty: true,
       };
 
-      const output = generateOutput(options);
+      const output = await generateOutput(options);
       expect(output).toContain('<html');
     });
 
-    it('should apply wireframe style', () => {
+    it('should apply wireframe style', async () => {
       const options: CLIOptions = {
         input: TEST_FILE,
         format: 'html',
@@ -428,11 +428,11 @@ describe('CLI Unit Tests', () => {
         pretty: true,
       };
 
-      const output = generateOutput(options);
+      const output = await generateOutput(options);
       expect(output).toContain('<html');
     });
 
-    it('should apply none style', () => {
+    it('should apply none style', async () => {
       const options: CLIOptions = {
         input: TEST_FILE,
         format: 'html',
@@ -440,11 +440,11 @@ describe('CLI Unit Tests', () => {
         pretty: true,
       };
 
-      const output = generateOutput(options);
+      const output = await generateOutput(options);
       expect(output).toContain('<html');
     });
 
-    it('should throw error for non-existent file', () => {
+    it('should throw error for non-existent file', async () => {
       const options: CLIOptions = {
         input: 'nonexistent.md',
         format: 'html',
@@ -452,10 +452,10 @@ describe('CLI Unit Tests', () => {
         pretty: true,
       };
 
-      expect(() => generateOutput(options)).toThrow('File not found: nonexistent.md');
+      await expect(generateOutput(options)).rejects.toThrow('File not found: nonexistent.md');
     });
 
-    it('should handle malformed markdown gracefully', () => {
+    it('should handle malformed markdown gracefully', async () => {
       const malformedFile = `${TEST_DIR}/malformed.md`;
       writeFileSync(malformedFile, '<<< invalid >>> markdown', 'utf-8');
 
@@ -467,7 +467,7 @@ describe('CLI Unit Tests', () => {
       };
 
       // Should not throw - parser handles malformed input
-      expect(() => generateOutput(options)).not.toThrow();
+      await expect(generateOutput(options)).resolves.not.toThrow();
     });
   });
 });
