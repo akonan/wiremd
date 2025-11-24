@@ -1,0 +1,1074 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>wiremd Mockup</title>
+  <style>
+
+/* Neo-Brutalism Style */
+body {
+  font-family: "Space Grotesk", "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+  background: #fffcf2;
+  color: #000000;
+  line-height: 1.4;
+  margin: 0;
+  padding: 20px;
+}
+
+/* Typography - Bold and Aggressive */
+.wmd-h1 {
+  font-size: 3rem;
+  font-weight: 900;
+  color: #000000;
+  margin: 0 0 1rem 0;
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+  text-shadow: 3px 3px 0 #ffd93d;
+}
+
+.wmd-h2 {
+  font-size: 2.25rem;
+  font-weight: 900;
+  color: #000000;
+  margin: 1.5rem 0 1rem 0;
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+}
+
+.wmd-h3 {
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: #000000;
+  margin: 1.25rem 0 0.75rem 0;
+  text-transform: uppercase;
+}
+
+.wmd-h4 {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: #000000;
+  margin: 1rem 0 0.5rem 0;
+  text-transform: uppercase;
+}
+
+.wmd-paragraph {
+  color: #000000;
+  margin: 0.75rem 0;
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+/* Brutal Buttons */
+.wmd-button {
+  padding: 12px 24px;
+  border: 3px solid #000000;
+  border-radius: 0;
+  font-weight: 900;
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  transition: all 0.1s ease;
+  cursor: pointer;
+  display: inline-block;
+  text-decoration: none;
+  background: #ffffff;
+  color: #000000;
+  box-shadow: 4px 4px 0 #000000;
+  position: relative;
+}
+
+.wmd-button:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0 #000000;
+}
+
+.wmd-button:active {
+  transform: translate(2px, 2px);
+  box-shadow: 2px 2px 0 #000000;
+}
+
+.wmd-button-primary, .wmd-button.wmd-button-primary {
+  background: #ffd93d;
+  color: #000000;
+}
+
+.wmd-button-primary:hover, .wmd-button.wmd-button-primary:hover {
+  background: #ffcc00;
+}
+
+.wmd-button:disabled, .wmd-button[disabled] {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none !important;
+  box-shadow: 4px 4px 0 #000000 !important;
+}
+
+/* Button States */
+.wmd-state-loading {
+  background: #bcf0da !important;
+  color: #000000 !important;
+  animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.02); }
+}
+
+.wmd-state-error {
+  background: #ff6b6b !important;
+  color: #000000 !important;
+}
+
+.wmd-state-success {
+  background: #6bcf7f !important;
+  color: #000000 !important;
+}
+
+/* Brutal Forms */
+.wmd-input, .wmd-textarea, .wmd-select {
+  width: 100%;
+  padding: 12px;
+  border: 3px solid #000000;
+  border-radius: 0;
+  font-size: 1rem;
+  font-weight: 600;
+  background: #ffffff;
+  color: #000000;
+  box-shadow: 4px 4px 0 #000000;
+  transition: all 0.1s ease;
+}
+
+.wmd-input:focus, .wmd-textarea:focus, .wmd-select:focus {
+  outline: none;
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0 #000000;
+  background: #ffd93d;
+}
+
+.wmd-input::placeholder, .wmd-textarea::placeholder {
+  color: #666666;
+  font-weight: 600;
+}
+
+.wmd-input[disabled], .wmd-input.wmd-state-disabled,
+.wmd-textarea[disabled], .wmd-textarea.wmd-state-disabled,
+.wmd-select[disabled], .wmd-select.wmd-state-disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background: #e0e0e0;
+  box-shadow: none;
+  transform: none !important;
+}
+
+.wmd-textarea {
+  resize: vertical;
+  min-height: 6rem;
+  font-family: inherit;
+}
+
+.wmd-select {
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='3' stroke-linecap='square'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 20px;
+  padding-right: 40px;
+}
+
+/* Brutal Checkboxes and Radios */
+.wmd-checkbox, .wmd-radio {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 8px 0;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.wmd-checkbox input[type="checkbox"],
+.wmd-radio input[type="radio"] {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  border: 3px solid #000000;
+  accent-color: #ffd93d;
+}
+
+/* Brutal Cards and Containers */
+.wmd-container-card {
+  background: #ffffff;
+  border: 3px solid #000000;
+  border-radius: 0;
+  box-shadow: 8px 8px 0 #000000;
+  padding: 24px;
+  margin: 24px 0;
+  transition: all 0.1s ease;
+}
+
+.wmd-container-card:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 10px 10px 0 #000000;
+}
+
+.wmd-container-hero {
+  background: linear-gradient(135deg, #ff6b6b 0%, #ffd93d 100%);
+  color: #000000;
+  border: 3px solid #000000;
+  border-radius: 0;
+  padding: 48px 32px;
+  margin: 32px 0;
+  text-align: center;
+  box-shadow: 12px 12px 0 #000000;
+  position: relative;
+  overflow: hidden;
+}
+
+.wmd-container-hero::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -50%;
+  width: 200%;
+  height: 200%;
+  background: repeating-linear-gradient(
+    45deg,
+    transparent,
+    transparent 10px,
+    rgba(0, 0, 0, 0.05) 10px,
+    rgba(0, 0, 0, 0.05) 20px
+  );
+  pointer-events: none;
+}
+
+.wmd-container-hero .wmd-h1,
+.wmd-container-hero .wmd-h2,
+.wmd-container-hero .wmd-h3,
+.wmd-container-hero .wmd-paragraph {
+  color: #000000;
+  position: relative;
+}
+
+.wmd-container-modal {
+  background: #ffffff;
+  border: 3px solid #000000;
+  border-radius: 0;
+  box-shadow: 12px 12px 0 #000000;
+  padding: 32px;
+  margin: 32px auto;
+  max-width: 600px;
+  position: relative;
+}
+
+.wmd-container-footer {
+  background: #000000;
+  color: #ffffff;
+  padding: 32px;
+  margin-top: 48px;
+  border: 3px solid #000000;
+  box-shadow: 8px 8px 0 #ffd93d;
+}
+
+.wmd-container-footer .wmd-paragraph,
+.wmd-container-footer .wmd-nav-item {
+  color: #ffffff;
+  font-weight: 600;
+}
+
+.wmd-container-section {
+  padding: 24px 0;
+  border-bottom: 3px solid #000000;
+}
+
+.wmd-container-section:last-child {
+  border-bottom: none;
+}
+
+/* Brutal Alerts */
+.wmd-container-alert {
+  padding: 16px 20px;
+  border: 3px solid #000000;
+  border-radius: 0;
+  margin: 20px 0;
+  box-shadow: 6px 6px 0 #000000;
+  font-weight: 600;
+}
+
+.wmd-container-alert.wmd-warning {
+  background: #ffeb3b;
+  color: #000000;
+}
+
+.wmd-container-alert.wmd-state-error {
+  background: #ff6b6b;
+  color: #000000;
+}
+
+.wmd-container-alert.wmd-state-success {
+  background: #6bcf7f;
+  color: #000000;
+}
+
+/* Brutal Navigation */
+.wmd-nav {
+  background: #ffd93d;
+  border: 3px solid #000000;
+  padding: 16px 20px;
+  box-shadow: 6px 6px 0 #000000;
+  margin-bottom: 32px;
+}
+
+.wmd-nav-content {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.wmd-nav-item {
+  color: #000000;
+  text-decoration: none;
+  padding: 8px 16px;
+  border: 2px solid transparent;
+  transition: all 0.1s ease;
+  font-size: 0.875rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.wmd-nav-item:hover {
+  background: #000000;
+  color: #ffd93d;
+  border: 2px solid #000000;
+  transform: translate(-2px, -2px);
+  box-shadow: 2px 2px 0 #000000;
+}
+
+.wmd-brand {
+  font-weight: 900;
+  font-size: 1.5rem;
+  color: #000000;
+  margin-right: auto;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+}
+
+/* Brutal Lists */
+.wmd-list {
+  margin: 20px 0;
+  padding: 0;
+  list-style: none;
+  border: 3px solid #000000;
+  background: #ffffff;
+  box-shadow: 6px 6px 0 #000000;
+}
+
+.wmd-list-item {
+  padding: 16px 20px;
+  border-bottom: 3px solid #000000;
+  color: #000000;
+  font-weight: 600;
+  transition: all 0.1s ease;
+}
+
+.wmd-list-item:hover {
+  background: #ffd93d;
+  padding-left: 28px;
+}
+
+.wmd-list-item:last-child {
+  border-bottom: none;
+}
+
+/* Brutal Grid */
+.wmd-grid {
+  display: grid;
+  gap: 24px;
+  margin: 32px 0;
+}
+
+.wmd-grid-2 {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.wmd-grid-3 {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.wmd-grid-4 {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.wmd-grid > * {
+  border: 3px solid #000000;
+  background: #ffffff;
+  padding: 20px;
+  box-shadow: 6px 6px 0 #000000;
+}
+
+/* Brutal Tables */
+.wmd-table {
+  width: 100%;
+  background: #ffffff;
+  border: 3px solid #000000;
+  border-collapse: separate;
+  border-spacing: 0;
+  box-shadow: 8px 8px 0 #000000;
+  margin: 20px 0;
+}
+
+.wmd-table th {
+  background: #ffd93d;
+  padding: 16px;
+  text-align: left;
+  font-weight: 900;
+  font-size: 0.875rem;
+  color: #000000;
+  border-bottom: 3px solid #000000;
+  border-right: 3px solid #000000;
+  text-transform: uppercase;
+}
+
+.wmd-table th:last-child {
+  border-right: none;
+}
+
+.wmd-table td {
+  padding: 16px;
+  border-bottom: 3px solid #000000;
+  border-right: 3px solid #000000;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #000000;
+}
+
+.wmd-table td:last-child {
+  border-right: none;
+}
+
+.wmd-table tr:last-child td {
+  border-bottom: none;
+}
+
+.wmd-table tr:hover td {
+  background: #bcf0da;
+}
+
+/* Table cell alignment - more specific to override th/td defaults */
+.wmd-table .wmd-align-left {
+  text-align: left !important;
+}
+
+.wmd-table .wmd-align-center {
+  text-align: center !important;
+}
+
+.wmd-table .wmd-align-right {
+  text-align: right !important;
+}
+
+/* Brutal Icons */
+.wmd-icon {
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+  vertical-align: middle;
+  font-weight: 900;
+}
+
+/* Utility classes */
+.wmd-separator {
+  border: none;
+  border-top: 3px solid #000000;
+  margin: 32px 0;
+}
+
+.wmd-image {
+  max-width: 100%;
+  height: auto;
+  border: 3px solid #000000;
+  box-shadow: 6px 6px 0 #000000;
+}
+
+.wmd-code {
+  background: #ffd93d;
+  padding: 4px 8px;
+  border: 2px solid #000000;
+  font-family: "JetBrains Mono", "Courier New", monospace;
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: #000000;
+}
+
+.wmd-blockquote {
+  border-left: 6px solid #000000;
+  padding-left: 20px;
+  margin: 20px 0;
+  color: #000000;
+  font-weight: 600;
+  font-style: normal;
+  background: linear-gradient(to right, rgba(255, 217, 61, 0.2), transparent);
+}
+
+/* Button group */
+.wmd-container-button-group {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin: 20px 0;
+}
+
+/* Form group */
+.wmd-container-form-group {
+  margin: 20px 0;
+}
+
+.wmd-container-form-group .wmd-input:not(:last-child),
+.wmd-container-form-group .wmd-textarea:not(:last-child),
+.wmd-container-form-group .wmd-select:not(:last-child) {
+  margin-bottom: 16px;
+}
+
+/* State Containers */
+.wmd-container-loading-state {
+  background: #ffffff;
+  border: 3px solid #000000;
+  padding: 56px 40px;
+  margin: 32px 0;
+  text-align: center;
+  box-shadow: 8px 8px 0 #000000;
+  position: relative;
+}
+
+.wmd-container-loading-state::before {
+  content: '⟳';
+  display: block;
+  font-size: 64px;
+  font-weight: 900;
+  margin-bottom: 24px;
+  animation: spin 1.5s ease-in-out infinite;
+  color: #ffd93d;
+  text-shadow: 3px 3px 0 #000000;
+}
+
+.wmd-container-empty-state {
+  background: #f5f5f5;
+  border: 3px dashed #000000;
+  padding: 72px 40px;
+  margin: 32px 0;
+  text-align: center;
+  color: #666666;
+  font-weight: 600;
+}
+
+.wmd-container-empty-state::before {
+  content: '[EMPTY]';
+  display: block;
+  font-size: 32px;
+  font-weight: 900;
+  letter-spacing: 0.3em;
+  margin-bottom: 24px;
+  color: #999999;
+  text-transform: uppercase;
+}
+
+.wmd-container-error-state {
+  background: #ff6b6b;
+  border: 3px solid #000000;
+  padding: 56px 40px;
+  margin: 32px 0;
+  text-align: center;
+  box-shadow: 8px 8px 0 #000000;
+  color: #000000;
+  font-weight: 600;
+}
+
+.wmd-container-error-state::before {
+  content: '⚠';
+  display: block;
+  font-size: 72px;
+  font-weight: 900;
+  margin-bottom: 24px;
+  text-shadow: 3px 3px 0 rgba(0, 0, 0, 0.2);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .wmd-h1 {
+    font-size: 2rem;
+  }
+
+  .wmd-h2 {
+    font-size: 1.75rem;
+  }
+
+  .wmd-grid-2,
+  .wmd-grid-3,
+  .wmd-grid-4 {
+    grid-template-columns: 1fr;
+  }
+
+  .wmd-nav-content {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .wmd-brand {
+    margin-right: 0;
+    margin-bottom: 12px;
+    font-size: 1.25rem;
+  }
+
+  .wmd-container-card,
+  .wmd-container-modal {
+    box-shadow: 6px 6px 0 #000000;
+  }
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+  </style>
+</head>
+<body class="wmd-root wmd-brutal">
+  <h1 class="wmd-h1">E-Commerce Homepage</h1>
+<blockquote class="wmd-blockquote">
+  <p class="wmd-paragraph"><strong>Use Case:</strong> Online store homepage with product categories, featured items, and promotions.</p>
+  <p class="wmd-paragraph"><strong>Key Features:</strong> Product grids, search, categories, cart, promotions, newsletter signup</p>
+</blockquote>
+<nav class="wmd-nav">
+  <div class="wmd-nav-content">
+    <div class="wmd-brand"><span class="wmd-icon" data-icon="logo" aria-label="logo">◈</span>ShopHub</div>
+    <a href="#" class="wmd-nav-item">Categories</a>
+    <a href="#" class="wmd-nav-item">Deals</a>
+    <a href="#" class="wmd-nav-item">New Arrivals</a>
+    <button class="wmd-button">Search...___________</button>
+    <a href="#" class="wmd-nav-item"><span class="wmd-icon" data-icon="user" aria-label="user">👤</span>Account</a>
+    <a href="#" class="wmd-nav-item"><span class="wmd-icon" data-icon="cart" aria-label="cart">🛒</span>Cart (3)</a>
+  </div>
+</nav>
+<hr class="wmd-separator" />
+<div class="wmd-container-alert success">
+  <div class="wmd-container-form-group">
+  🎉<strong>Black Friday Sale!</strong>Up to 70% off on selected items • Free shipping on orders over $50 • 
+  <button class="wmd-button">Shop Now →</button>
+</div>
+</div>
+<hr class="wmd-separator" />
+<div class="wmd-container-hero">
+  <h1 class="wmd-h1">Summer Collection 2025</h1>
+  <p class="wmd-paragraph">Discover our latest styles for the season</p>
+  <div class="wmd-container-button-group">
+  <button class="wmd-button">Shop Women</button>
+  <button class="wmd-button">Shop Men</button>
+  <button class="wmd-button">Shop Kids</button>
+</div>
+  <div class="wmd-container-form-group">
+  <img src="https://via.placeholder.com/1200x500" alt="Hero Banner" class="wmd-image" />
+</div>
+</div>
+<hr class="wmd-separator" />
+<div class="wmd-grid wmd-grid-6 wmd-grid-6" style="--grid-columns: 6">
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3"><span class="wmd-icon" data-icon="tshirt" aria-label="tshirt">●</span> Clothing</h3>
+    <p class="wmd-paragraph">2,450 items</p>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3"><span class="wmd-icon" data-icon="shoe" aria-label="shoe">●</span> Footwear</h3>
+    <p class="wmd-paragraph">890 items</p>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3"><span class="wmd-icon" data-icon="gem" aria-label="gem">●</span> Accessories</h3>
+    <p class="wmd-paragraph">1,230 items</p>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3"><span class="wmd-icon" data-icon="watch" aria-label="watch">●</span> Watches</h3>
+    <p class="wmd-paragraph">340 items</p>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3"><span class="wmd-icon" data-icon="briefcase" aria-label="briefcase">●</span> Bags</h3>
+    <p class="wmd-paragraph">560 items</p>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3"><span class="wmd-icon" data-icon="glasses" aria-label="glasses">●</span> Eyewear</h3>
+    <p class="wmd-paragraph">280 items</p>
+  </div>
+</div>
+<h2 class="wmd-h2"></h2>
+<hr class="wmd-separator" />
+<div class="wmd-grid wmd-grid-4 wmd-grid-4" style="--grid-columns: 4">
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Summer Dress</h3>
+    <div class="wmd-container-form-group">
+  <img src="https://via.placeholder.com/250x300" alt="Product" class="wmd-image" />
+</div>
+    <p class="wmd-paragraph">$89.99 <strong>$59.99</strong></p>
+    <p class="wmd-paragraph"><span class="wmd-icon" data-icon="star" aria-label="star">⭐</span><span class="wmd-icon" data-icon="star" aria-label="star">⭐</span><span class="wmd-icon" data-icon="star" aria-label="star">⭐</span><span class="wmd-icon" data-icon="star" aria-label="star">⭐</span><span class="wmd-icon" data-icon="star" aria-label="star">⭐</span>(127)</p>
+    <button class="wmd-button wmd-button-primary">Add to Cart</button>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Running Shoes</h3>
+    <div class="wmd-container-form-group">
+  <img src="https://via.placeholder.com/250x300" alt="Product" class="wmd-image" />
+</div>
+    <p class="wmd-paragraph">$129.99 <strong>$89.99</strong></p>
+    <p class="wmd-paragraph"><span class="wmd-icon" data-icon="star" aria-label="star">⭐</span><span class="wmd-icon" data-icon="star" aria-label="star">⭐</span><span class="wmd-icon" data-icon="star" aria-label="star">⭐</span><span class="wmd-icon" data-icon="star" aria-label="star">⭐</span>(89)</p>
+    <button class="wmd-button wmd-button-primary">Add to Cart</button>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Leather Wallet</h3>
+    <div class="wmd-container-form-group">
+  <img src="https://via.placeholder.com/250x300" alt="Product" class="wmd-image" />
+</div>
+    <p class="wmd-paragraph">$49.99 <strong>$29.99</strong></p>
+    <p class="wmd-paragraph"><span class="wmd-icon" data-icon="star" aria-label="star">⭐</span><span class="wmd-icon" data-icon="star" aria-label="star">⭐</span><span class="wmd-icon" data-icon="star" aria-label="star">⭐</span><span class="wmd-icon" data-icon="star" aria-label="star">⭐</span><span class="wmd-icon" data-icon="star" aria-label="star">⭐</span>(203)</p>
+    <button class="wmd-button wmd-button-primary">Add to Cart</button>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Sunglasses</h3>
+    <div class="wmd-container-form-group">
+  <img src="https://via.placeholder.com/250x300" alt="Product" class="wmd-image" />
+</div>
+    <p class="wmd-paragraph">$79.99 <strong>$49.99</strong></p>
+    <p class="wmd-paragraph"><span class="wmd-icon" data-icon="star" aria-label="star">⭐</span><span class="wmd-icon" data-icon="star" aria-label="star">⭐</span><span class="wmd-icon" data-icon="star" aria-label="star">⭐</span><span class="wmd-icon" data-icon="star" aria-label="star">⭐</span>(156)</p>
+    <button class="wmd-button wmd-button-primary">Add to Cart</button>
+  </div>
+</div>
+<h2 class="wmd-h2"></h2>
+<button class="wmd-button">View All Deals →</button>
+<hr class="wmd-separator" />
+<h2 class="wmd-h2">New Arrivals</h2>
+<div class="wmd-grid wmd-grid-3 wmd-grid-3" style="--grid-columns: 3">
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Designer Handbag</h3>
+    <div class="wmd-container-form-group">
+  <img src="https://via.placeholder.com/300x350" alt="Product" class="wmd-image" />
+</div>
+    <p class="wmd-paragraph"><strong>$199.99</strong></p>
+    <p class="wmd-paragraph">Premium leather with gold hardware</p>
+    <p class="wmd-paragraph"><span class="wmd-icon" data-icon="star" aria-label="star">⭐</span><span class="wmd-icon" data-icon="star" aria-label="star">⭐</span><span class="wmd-icon" data-icon="star" aria-label="star">⭐</span><span class="wmd-icon" data-icon="star" aria-label="star">⭐</span><span class="wmd-icon" data-icon="star" aria-label="star">⭐</span>(45)</p>
+    <div class="wmd-container-button-group">
+  <button class="wmd-button">Quick View</button>
+  <button class="wmd-button wmd-button-primary">Add to Cart</button>
+</div>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Casual Sneakers</h3>
+    <div class="wmd-container-form-group">
+  <img src="https://via.placeholder.com/300x350" alt="Product" class="wmd-image" />
+</div>
+    <p class="wmd-paragraph"><strong>$79.99</strong></p>
+    <p class="wmd-paragraph">Comfortable all-day wear</p>
+    <p class="wmd-paragraph"><span class="wmd-icon" data-icon="star" aria-label="star">⭐</span><span class="wmd-icon" data-icon="star" aria-label="star">⭐</span><span class="wmd-icon" data-icon="star" aria-label="star">⭐</span><span class="wmd-icon" data-icon="star" aria-label="star">⭐</span>(67)</p>
+    <div class="wmd-container-button-group">
+  <button class="wmd-button">Quick View</button>
+  <button class="wmd-button wmd-button-primary">Add to Cart</button>
+</div>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Smart Watch</h3>
+    <div class="wmd-container-form-group">
+  <img src="https://via.placeholder.com/300x350" alt="Product" class="wmd-image" />
+</div>
+    <p class="wmd-paragraph"><strong>$299.99</strong></p>
+    <p class="wmd-paragraph">Fitness tracking &amp; notifications</p>
+    <p class="wmd-paragraph"><span class="wmd-icon" data-icon="star" aria-label="star">⭐</span><span class="wmd-icon" data-icon="star" aria-label="star">⭐</span><span class="wmd-icon" data-icon="star" aria-label="star">⭐</span><span class="wmd-icon" data-icon="star" aria-label="star">⭐</span><span class="wmd-icon" data-icon="star" aria-label="star">⭐</span>(234)</p>
+    <div class="wmd-container-button-group">
+  <button class="wmd-button">Quick View</button>
+  <button class="wmd-button wmd-button-primary">Add to Cart</button>
+</div>
+  </div>
+</div>
+<h2 class="wmd-h2"></h2>
+<button class="wmd-button">See All New Items →</button>
+<hr class="wmd-separator" />
+<h2 class="wmd-h2">Shop by Brand</h2>
+<nav class="wmd-nav">
+  <div class="wmd-nav-content">
+    <a href="#" class="wmd-nav-item"><span class="wmd-icon" data-icon="brand" aria-label="brand">◆</span>Nike</a>
+    <a href="#" class="wmd-nav-item"><span class="wmd-icon" data-icon="brand" aria-label="brand">◆</span>Adidas</a>
+    <a href="#" class="wmd-nav-item"><span class="wmd-icon" data-icon="brand" aria-label="brand">◆</span>Zara</a>
+    <a href="#" class="wmd-nav-item"><span class="wmd-icon" data-icon="brand" aria-label="brand">◆</span>H&amp;M</a>
+    <a href="#" class="wmd-nav-item"><span class="wmd-icon" data-icon="brand" aria-label="brand">◆</span>Levi&#039;s</a>
+    <a href="#" class="wmd-nav-item"><span class="wmd-icon" data-icon="brand" aria-label="brand">◆</span>Puma</a>
+    <button class="wmd-button">View All Brands →</button>
+  </div>
+</nav>
+<hr class="wmd-separator" />
+<div class="wmd-grid wmd-grid-4 wmd-grid-4" style="--grid-columns: 4">
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3"><span class="wmd-icon" data-icon="truck" aria-label="truck">●</span> Free Shipping</h3>
+    <p class="wmd-paragraph">On orders over $50</p>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3"><span class="wmd-icon" data-icon="return" aria-label="return">●</span> Easy Returns</h3>
+    <p class="wmd-paragraph">30-day return policy</p>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3"><span class="wmd-icon" data-icon="shield" aria-label="shield">🛡️</span> Secure Checkout</h3>
+    <p class="wmd-paragraph">SSL encrypted payment</p>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3"><span class="wmd-icon" data-icon="support" aria-label="support">●</span> 24/7 Support</h3>
+    <p class="wmd-paragraph">Always here to help</p>
+  </div>
+</div>
+<h2 class="wmd-h2"></h2>
+<hr class="wmd-separator" />
+<h2 class="wmd-h2">Customer Reviews</h2>
+<div class="wmd-grid wmd-grid-3 wmd-grid-3" style="--grid-columns: 3">
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3"><span class="wmd-icon" data-icon="star" aria-label="star">⭐</span><span class="wmd-icon" data-icon="star" aria-label="star">⭐</span><span class="wmd-icon" data-icon="star" aria-label="star">⭐</span><span class="wmd-icon" data-icon="star" aria-label="star">⭐</span><span class="wmd-icon" data-icon="star" aria-label="star">⭐</span></h3>
+    <p class="wmd-paragraph"><em>"Best online shopping experience! Fast shipping and quality products."</em></p>
+    <p class="wmd-paragraph"><strong>Jennifer L.</strong>
+Verified Buyer</p>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3"><span class="wmd-icon" data-icon="star" aria-label="star">⭐</span><span class="wmd-icon" data-icon="star" aria-label="star">⭐</span><span class="wmd-icon" data-icon="star" aria-label="star">⭐</span><span class="wmd-icon" data-icon="star" aria-label="star">⭐</span><span class="wmd-icon" data-icon="star" aria-label="star">⭐</span></h3>
+    <p class="wmd-paragraph"><em>"Great prices and amazing customer service. Highly recommended!"</em></p>
+    <p class="wmd-paragraph"><strong>Michael T.</strong>
+Verified Buyer</p>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3"><span class="wmd-icon" data-icon="star" aria-label="star">⭐</span><span class="wmd-icon" data-icon="star" aria-label="star">⭐</span><span class="wmd-icon" data-icon="star" aria-label="star">⭐</span><span class="wmd-icon" data-icon="star" aria-label="star">⭐</span><span class="wmd-icon" data-icon="star" aria-label="star">⭐</span></h3>
+    <p class="wmd-paragraph"><em>"Love the variety and ease of returns. My go-to store now."</em></p>
+    <p class="wmd-paragraph"><strong>Sarah K.</strong>
+Verified Buyer</p>
+  </div>
+</div>
+<h2 class="wmd-h2"></h2>
+<hr class="wmd-separator" />
+<h2 class="wmd-h2">Trending Now</h2>
+<table class="wmd-table">
+  <thead>
+    <tr>
+      <th class="wmd-table-cell wmd-align-left">Product</th>
+    <th class="wmd-table-cell wmd-align-left">Category</th>
+    <th class="wmd-table-cell wmd-align-left">Price</th>
+    <th class="wmd-table-cell wmd-align-left">Rating</th>
+    <th class="wmd-table-cell wmd-align-left">Stock</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">![IMG] Classic White Tee</td>
+    <td class="wmd-table-cell wmd-align-left">Clothing</td>
+    <td class="wmd-table-cell wmd-align-left">$24.99</td>
+    <td class="wmd-table-cell wmd-align-left">:star::star::star::star::star:</td>
+    <td class="wmd-table-cell wmd-align-left">In Stock</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">![IMG] Denim Jacket</td>
+    <td class="wmd-table-cell wmd-align-left">Outerwear</td>
+    <td class="wmd-table-cell wmd-align-left">$89.99</td>
+    <td class="wmd-table-cell wmd-align-left">:star::star::star::star:</td>
+    <td class="wmd-table-cell wmd-align-left">Low Stock</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">![IMG] Leather Boots</td>
+    <td class="wmd-table-cell wmd-align-left">Footwear</td>
+    <td class="wmd-table-cell wmd-align-left">$149.99</td>
+    <td class="wmd-table-cell wmd-align-left">:star::star::star::star::star:</td>
+    <td class="wmd-table-cell wmd-align-left">In Stock</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">![IMG] Crossbody Bag</td>
+    <td class="wmd-table-cell wmd-align-left">Accessories</td>
+    <td class="wmd-table-cell wmd-align-left">$59.99</td>
+    <td class="wmd-table-cell wmd-align-left">:star::star::star::star:</td>
+    <td class="wmd-table-cell wmd-align-left">In Stock</td>
+  </tr>
+  </tbody>
+</table>
+<button class="wmd-button">Browse All Products →</button>
+<hr class="wmd-separator" />
+<h2 class="wmd-h2">Special Offers</h2>
+<div class="wmd-grid wmd-grid-2 wmd-grid-2" style="--grid-columns: 2">
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3"><span class="wmd-icon" data-icon="gift" aria-label="gift">🎁</span> Summer Sale</h3>
+    <p class="wmd-paragraph"><strong>Up to 50% Off</strong></p>
+    <div class="wmd-container-form-group">
+  <img src="https://via.placeholder.com/500x300" alt="Promo Banner" class="wmd-image" />
+</div>
+    <p class="wmd-paragraph">Shop seasonal favorites at unbeatable prices</p>
+    <button class="wmd-button wmd-button-primary">Shop Sale</button>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3"><span class="wmd-icon" data-icon="email" aria-label="email">●</span> New Customer Offer</h3>
+    <p class="wmd-paragraph"><strong>15% Off First Order</strong></p>
+    <div class="wmd-container-form-group">
+  <img src="https://via.placeholder.com/500x300" alt="Promo Banner" class="wmd-image" />
+</div>
+    <p class="wmd-paragraph">Sign up and get instant discount code</p>
+    <button class="wmd-button wmd-button-primary">Sign Up Now</button>
+  </div>
+</div>
+<h2 class="wmd-h2"></h2>
+<hr class="wmd-separator" />
+<h2 class="wmd-h2">Join Our Newsletter</h2>
+<div class="wmd-container-card">
+  <h3 class="wmd-h3">Get Exclusive Deals &amp; Updates</h3>
+  <p class="wmd-paragraph">Subscribe to receive special offers, style tips, and early access to sales.</p>
+  <div class="wmd-container-form-group">
+  Email Address
+  <input type="email" class="wmd-input" placeholder="your@email.com" style="width: 20ch; max-width: 20ch;" />
+</div>
+  <button class="wmd-button wmd-button-primary">Subscribe</button>
+  <ul class="wmd-list">
+  <label class="wmd-checkbox">
+    <input type="checkbox" />
+    <span>Yes, send me promotional emails</span>
+  </label>
+</ul>
+  <p class="wmd-paragraph">✨ Get <strong>15% off</strong> your first order when you subscribe!</p>
+</div>
+<hr class="wmd-separator" />
+<h2 class="wmd-h2">Follow Us</h2>
+<p class="wmd-paragraph">Stay connected for daily inspiration</p>
+<nav class="wmd-nav">
+  <div class="wmd-nav-content">
+    <a href="#" class="wmd-nav-item"><span class="wmd-icon" data-icon="instagram" aria-label="instagram" style="font-family: monospace; font-weight: bold; font-style: normal;">◉</span>Instagram</a>
+    <a href="#" class="wmd-nav-item"><span class="wmd-icon" data-icon="facebook" aria-label="facebook" style="font-family: monospace; font-weight: bold; font-style: normal;">f</span>Facebook</a>
+    <a href="#" class="wmd-nav-item"><span class="wmd-icon" data-icon="pinterest" aria-label="pinterest">●</span>Pinterest</a>
+    <a href="#" class="wmd-nav-item"><span class="wmd-icon" data-icon="twitter" aria-label="twitter" style="font-family: monospace; font-weight: bold; font-style: normal;">𝕏</span>Twitter</a>
+    <a href="#" class="wmd-nav-item"><span class="wmd-icon" data-icon="youtube" aria-label="youtube" style="font-family: monospace; font-weight: bold; font-style: normal;">▶</span>YouTube</a>
+  </div>
+</nav>
+<p class="wmd-paragraph"><strong>@shophub</strong> • Tag us to be featured!</p>
+<hr class="wmd-separator" />
+<h2 class="wmd-h2">Shop by Price</h2>
+<div class="wmd-grid wmd-grid-4 wmd-grid-4" style="--grid-columns: 4">
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Under $25</h3>
+    <div class="wmd-container-form-group">
+  1,234 items
+  <button class="wmd-button">Shop →</button>
+</div>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">$25 - $50</h3>
+    <div class="wmd-container-form-group">
+  2,456 items
+  <button class="wmd-button">Shop →</button>
+</div>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">$50 - $100</h3>
+    <div class="wmd-container-form-group">
+  1,890 items
+  <button class="wmd-button">Shop →</button>
+</div>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Over $100</h3>
+    <div class="wmd-container-form-group">
+  890 items
+  <button class="wmd-button">Shop →</button>
+</div>
+  </div>
+</div>
+<h2 class="wmd-h2"></h2>
+<hr class="wmd-separator" />
+<h2 class="wmd-h2">Customer Service</h2>
+<div class="wmd-container-card">
+  <h3 class="wmd-h3">Need Help?</h3>
+  <div class="wmd-container-form-group">
+  <strong>Live Chat:</strong> Available 24/7
+<strong>Email:</strong> 
+  <button class="wmd-button">email protected</button>
+  
+<strong>Phone:</strong> 1-800-SHOP-HUB (24/7)
+</div>
+  <p class="wmd-paragraph"><strong>Common Questions:</strong></p>
+  <ul class="wmd-list">
+  <li class="wmd-list-item">Track My Order</li>
+  <li class="wmd-list-item">Shipping Information</li>
+  <li class="wmd-list-item">Return Policy</li>
+  <li class="wmd-list-item">Size Guide</li>
+  <li class="wmd-list-item">Contact Us</li>
+</ul>
+  <button class="wmd-button">Visit Help Center →</button>
+</div>
+<hr class="wmd-separator" />
+<div class="wmd-container-footer">
+  <h2 class="wmd-h2 wmd-grid-5">Quick Links</h2>
+  <h3 class="wmd-h3">Shop</h3>
+  <ul class="wmd-list">
+  <li class="wmd-list-item">Women</li>
+  <li class="wmd-list-item">Men</li>
+  <li class="wmd-list-item">Kids</li>
+  <li class="wmd-list-item">Sale</li>
+  <li class="wmd-list-item">New Arrivals</li>
+</ul>
+  <h3 class="wmd-h3">Customer Care</h3>
+  <ul class="wmd-list">
+  <li class="wmd-list-item">Contact Us</li>
+  <li class="wmd-list-item">Track Order</li>
+  <li class="wmd-list-item">Returns</li>
+  <li class="wmd-list-item">Shipping Info</li>
+  <li class="wmd-list-item">Size Guide</li>
+</ul>
+  <h3 class="wmd-h3">About</h3>
+  <ul class="wmd-list">
+  <li class="wmd-list-item">Our Story</li>
+  <li class="wmd-list-item">Careers</li>
+  <li class="wmd-list-item">Press</li>
+  <li class="wmd-list-item">Sustainability</li>
+  <li class="wmd-list-item">Store Locator</li>
+</ul>
+  <h3 class="wmd-h3">Account</h3>
+  <ul class="wmd-list">
+  <li class="wmd-list-item">Sign In</li>
+  <li class="wmd-list-item">Register</li>
+  <li class="wmd-list-item">Order History</li>
+  <li class="wmd-list-item">Wishlist</li>
+  <li class="wmd-list-item">Gift Cards</li>
+</ul>
+  <h3 class="wmd-h3">Legal</h3>
+  <ul class="wmd-list">
+  <li class="wmd-list-item">Privacy Policy</li>
+  <li class="wmd-list-item">Terms of Service</li>
+  <li class="wmd-list-item">Accessibility</li>
+  <li class="wmd-list-item">Cookie Policy</li>
+  <li class="wmd-list-item">Sitemap</li>
+</ul>
+  <h2 class="wmd-h2"></h2>
+  <hr class="wmd-separator" />
+  <p class="wmd-paragraph"><strong>Secure Payment Methods</strong></p>
+  <nav class="wmd-nav">
+  <div class="wmd-nav-content">
+    <a href="#" class="wmd-nav-item"><span class="wmd-icon" data-icon="visa" aria-label="visa">●</span>Visa</a>
+    <a href="#" class="wmd-nav-item"><span class="wmd-icon" data-icon="mastercard" aria-label="mastercard">●</span>Mastercard</a>
+    <a href="#" class="wmd-nav-item"><span class="wmd-icon" data-icon="amex" aria-label="amex">●</span>Amex</a>
+    <a href="#" class="wmd-nav-item"><span class="wmd-icon" data-icon="paypal" aria-label="paypal">●</span>PayPal</a>
+    <a href="#" class="wmd-nav-item"><span class="wmd-icon" data-icon="applepay" aria-label="applepay">●</span>Apple Pay</a>
+    <a href="#" class="wmd-nav-item"><span class="wmd-icon" data-icon="googlepay" aria-label="googlepay">●</span>Google Pay</a>
+  </div>
+</nav>
+  <hr class="wmd-separator" />
+  <p class="wmd-paragraph">© 2025 ShopHub Inc. All rights reserved. • Made with ❤️ for shoppers worldwide</p>
+</div>
+<hr class="wmd-separator" />
+<p class="wmd-paragraph"><strong>Style Variations:</strong></p>
+<ul class="wmd-list">
+  <li class="wmd-list-item">sketch - Quick prototype for stakeholders</li>
+  <li class="wmd-list-item">clean - Modern, professional e-commerce</li>
+  <li class="wmd-list-item">wireframe - Focus on content structure</li>
+  <li class="wmd-list-item">tailwind - Contemporary retail aesthetic</li>
+  <li class="wmd-list-item">material - Google Shopping style</li>
+  <li class="wmd-list-item">brutal - Bold, distinctive brand</li>
+  <li class="wmd-list-item">none - Semantic markup for frameworks</li>
+</ul>
+<p class="wmd-paragraph"><strong>Generate this example:</strong></p>
+<pre class="wmd-code-block"><code data-lang="bash">wiremd ecommerce-home.md --style sketch
+wiremd ecommerce-home.md --style clean -o ecommerce-clean.html
+wiremd ecommerce-home.md --style material -o ecommerce-material.html</code></pre>
+</body>
+</html>

@@ -1,0 +1,966 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>wiremd Mockup</title>
+  <style>
+
+/* wiremd Clean Style - Minimal modern wireframes */
+* {
+  box-sizing: border-box;
+}
+
+body.wmd-root {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  background: #ffffff;
+  color: #1a1a1a;
+  padding: 40px;
+  margin: 0;
+  line-height: 1.6;
+}
+
+/* Headings */
+.wmd-h1, .wmd-h2, .wmd-h3, .wmd-h4, .wmd-h5, .wmd-h6 {
+  font-weight: 600;
+  margin: 1.5em 0 0.75em;
+  color: #000;
+  letter-spacing: -0.02em;
+}
+
+.wmd-h1 { font-size: 2.5em; border-bottom: 2px solid #e0e0e0; padding-bottom: 0.3em; }
+.wmd-h2 { font-size: 2em; }
+.wmd-h3 { font-size: 1.5em; }
+.wmd-h4 { font-size: 1.25em; }
+.wmd-h5 { font-size: 1.1em; }
+.wmd-h6 { font-size: 1em; }
+
+/* Paragraph */
+.wmd-paragraph {
+  margin: 0.75em 0;
+  color: #4a4a4a;
+}
+
+/* Buttons */
+.wmd-button {
+  display: inline-block;
+  padding: 10px 20px;
+  margin: 6px;
+  background: #f5f5f5;
+  border: 1px solid #d0d0d0;
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.wmd-button:hover {
+  background: #e8e8e8;
+  border-color: #b0b0b0;
+}
+
+.wmd-button-primary, .wmd-button.wmd-primary {
+  background: #0066cc;
+  color: #fff;
+  border-color: #0052a3;
+}
+
+.wmd-button-primary:hover, .wmd-button.wmd-primary:hover {
+  background: #0052a3;
+}
+
+.wmd-button-secondary, .wmd-button.wmd-secondary {
+  background: #fff;
+  border: 2px solid #d0d0d0;
+}
+
+.wmd-button-danger, .wmd-button.wmd-danger {
+  background: #dc3545;
+  color: #fff;
+  border-color: #c82333;
+}
+
+.wmd-button[disabled], .wmd-button.wmd-state-disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Inputs */
+.wmd-input, .wmd-textarea, .wmd-select {
+  display: block;
+  width: 100%;
+  max-width: 400px;
+  padding: 10px 12px;
+  margin: 6px 0;
+  font-family: inherit;
+  font-size: 14px;
+  background: #fff;
+  border: 1px solid #d0d0d0;
+  border-radius: 6px;
+  transition: border-color 0.2s;
+}
+
+.wmd-input:focus, .wmd-textarea:focus, .wmd-select:focus {
+  outline: none;
+  border-color: #0066cc;
+  box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.1);
+}
+
+.wmd-input[disabled], .wmd-input.wmd-state-disabled,
+.wmd-textarea[disabled], .wmd-textarea.wmd-state-disabled,
+.wmd-select[disabled], .wmd-select.wmd-state-disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  background: #f5f5f5;
+  border-color: #e0e0e0;
+}
+
+.wmd-textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+/* Checkboxes and Radios */
+.wmd-checkbox, .wmd-radio {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 8px 0;
+  cursor: pointer;
+}
+
+.wmd-checkbox input[type="checkbox"],
+.wmd-radio input[type="radio"] {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+}
+
+/* Icons */
+.wmd-icon {
+  display: inline-block;
+  width: 1.2em;
+  height: 1.2em;
+  margin: 0 4px;
+  vertical-align: middle;
+  color: #666;
+}
+
+
+/* Containers */
+.wmd-container-hero, .wmd-container-card, .wmd-container-modal {
+  background: #fafafa;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 32px;
+  margin: 24px 0;
+}
+
+.wmd-container-hero {
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  text-align: center;
+  padding: 60px 32px;
+}
+
+.wmd-container-card {
+  max-width: 400px;
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.wmd-container-modal {
+  max-width: 500px;
+  margin: 40px auto;
+  background: #fff;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+}
+
+/* Radio Groups */
+.wmd-radio-group {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin: 12px 0;
+}
+
+.wmd-radio-group-inline {
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.wmd-radio-group-inline .wmd-radio {
+  margin: 0;
+}
+
+/* Icons */
+.wmd-icon {
+  display: inline-block;
+  font-size: 1.1em;
+  line-height: 1;
+  vertical-align: middle;
+  margin: 0 0.25em;
+}
+
+/* Navigation */
+.wmd-nav {
+  background: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 16px 24px;
+  margin: 24px 0;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.wmd-nav-content {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+.wmd-brand {
+  font-weight: 600;
+  font-size: 1.25em;
+  margin-right: auto;
+}
+
+.wmd-nav-item {
+  color: #4a4a4a;
+  text-decoration: none;
+  font-weight: 500;
+  padding: 6px 12px;
+  border-radius: 4px;
+  transition: background 0.2s;
+}
+
+.wmd-nav-item:hover {
+  background: #f5f5f5;
+}
+
+/* Grid */
+.wmd-grid {
+  display: grid;
+  grid-template-columns: repeat(var(--grid-columns, 3), 1fr);
+  gap: 24px;
+  margin: 32px 0;
+}
+
+.wmd-grid-item {
+  background: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 24px;
+  transition: box-shadow 0.2s;
+}
+
+.wmd-grid-item:hover {
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+/* Lists */
+.wmd-list {
+  margin: 16px 0;
+  padding-left: 28px;
+}
+
+.wmd-list-item {
+  margin: 6px 0;
+}
+
+/* Blockquote */
+.wmd-blockquote {
+  border-left: 3px solid #0066cc;
+  padding-left: 20px;
+  margin: 20px 0;
+  color: #4a4a4a;
+}
+
+/* Code */
+.wmd-code-inline {
+  background: #f5f5f5;
+  border: 1px solid #e0e0e0;
+  border-radius: 3px;
+  padding: 2px 6px;
+  font-family: 'SF Mono', Monaco, Consolas, monospace;
+  font-size: 0.9em;
+  color: #d63384;
+}
+
+.wmd-code-block {
+  background: #f8f9fa;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  padding: 16px;
+  margin: 16px 0;
+  overflow-x: auto;
+}
+
+.wmd-code-block code {
+  font-family: 'SF Mono', Monaco, Consolas, monospace;
+  font-size: 0.9em;
+  color: #1a1a1a;
+}
+
+/* Separator */
+.wmd-separator {
+  border: none;
+  border-top: 1px solid #e0e0e0;
+  margin: 32px 0;
+}
+
+/* State Containers */
+.wmd-container-loading-state {
+  background: #f5f7fa;
+  border: 1px solid #d0d0d0;
+  border-radius: 8px;
+  padding: 40px;
+  margin: 24px 0;
+  text-align: center;
+  position: relative;
+}
+
+.wmd-container-loading-state::before {
+  content: '';
+  display: block;
+  width: 40px;
+  height: 40px;
+  margin: 0 auto 20px;
+  border: 3px solid #e0e0e0;
+  border-top-color: #0066cc;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+.wmd-container-empty-state {
+  background: #fafafa;
+  border: 1px dashed #d0d0d0;
+  border-radius: 8px;
+  padding: 60px 40px;
+  margin: 24px 0;
+  text-align: center;
+  color: #888;
+}
+
+.wmd-container-empty-state::before {
+  content: '📭';
+  display: block;
+  font-size: 72px;
+  margin-bottom: 20px;
+  opacity: 0.4;
+  filter: grayscale(30%);
+}
+
+.wmd-container-error-state {
+  background: #fff5f5;
+  border: 1px solid #dc3545;
+  border-radius: 8px;
+  padding: 40px;
+  margin: 24px 0;
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(220, 53, 69, 0.1);
+}
+
+.wmd-container-error-state::before {
+  content: '⚠️';
+  display: block;
+  font-size: 48px;
+  margin-bottom: 20px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  body.wmd-root {
+    padding: 20px;
+  }
+
+  .wmd-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .wmd-nav-content {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+  </style>
+</head>
+<body class="wmd-root wmd-clean">
+  <h1 class="wmd-h1">Agency Website</h1>
+<blockquote class="wmd-blockquote">
+  <p class="wmd-paragraph"><strong>Use Case:</strong> Digital agency, creative studio, or consultancy website with portfolio and services.</p>
+  <p class="wmd-paragraph"><strong>Key Features:</strong> Bold hero, service offerings, case studies, team showcase, contact form</p>
+</blockquote>
+<nav class="wmd-nav">
+  <div class="wmd-nav-content">
+    <div class="wmd-brand"><span class="wmd-icon" data-icon="logo" aria-label="logo">◈</span>CreativeCo</div>
+    <a href="#" class="wmd-nav-item">Services</a>
+    <a href="#" class="wmd-nav-item">Work</a>
+    <a href="#" class="wmd-nav-item">About</a>
+    <a href="#" class="wmd-nav-item">Blog</a>
+    <a href="#" class="wmd-nav-item">Careers</a>
+    <button class="wmd-button wmd-button-primary">Get in Touch</button>
+  </div>
+</nav>
+<hr class="wmd-separator" />
+<div class="wmd-container-hero">
+  <h1 class="wmd-h1">We Build Digital Experiences That Matter</h1>
+  <p class="wmd-paragraph">Award-winning creative agency specializing in branding, web design, and digital marketing for forward-thinking companies.</p>
+  <div class="wmd-container-button-group">
+  <button class="wmd-button">View Our Work ↓</button>
+  <button class="wmd-button wmd-button-primary">Start a Project</button>
+  <button class="wmd-button">Schedule Call</button>
+</div>
+</div>
+<hr class="wmd-separator" />
+<h2 class="wmd-h2">Trusted by Industry Leaders</h2>
+<nav class="wmd-nav">
+  <div class="wmd-nav-content">
+    <div class="wmd-brand"><span class="wmd-icon" data-icon="logo" aria-label="logo">◈</span>Google</div>
+    <div class="wmd-brand"><span class="wmd-icon" data-icon="logo" aria-label="logo">◈</span>Apple</div>
+    <div class="wmd-brand"><span class="wmd-icon" data-icon="logo" aria-label="logo">◈</span>Amazon</div>
+    <div class="wmd-brand"><span class="wmd-icon" data-icon="logo" aria-label="logo">◈</span>Microsoft</div>
+    <div class="wmd-brand"><span class="wmd-icon" data-icon="logo" aria-label="logo">◈</span>Tesla</div>
+    <div class="wmd-brand"><span class="wmd-icon" data-icon="logo" aria-label="logo">◈</span>Spotify</div>
+  </div>
+</nav>
+<p class="wmd-paragraph"><strong>250+ brands trust us with their digital presence</strong></p>
+<hr class="wmd-separator" />
+<div class="wmd-grid wmd-grid-3 wmd-grid-3" style="--grid-columns: 3">
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3"><span class="wmd-icon" data-icon="art" aria-label="art">●</span> Brand Strategy &amp; Design</h3>
+    <p class="wmd-paragraph">We craft compelling brand identities that resonate with your audience and stand out in the market.</p>
+    <p class="wmd-paragraph"><strong>Services:</strong></p>
+    <ul class="wmd-list">
+  <li class="wmd-list-item">Brand Strategy</li>
+  <li class="wmd-list-item">Logo &amp; Identity</li>
+  <li class="wmd-list-item">Brand Guidelines</li>
+  <li class="wmd-list-item">Packaging Design</li>
+  <li class="wmd-list-item">Print Collateral</li>
+</ul>
+    <button class="wmd-button">Learn More →</button>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3"><span class="wmd-icon" data-icon="laptop" aria-label="laptop">●</span> Web Design &amp; Development</h3>
+    <p class="wmd-paragraph">Beautiful, performant websites built with the latest technologies and best practices.</p>
+    <p class="wmd-paragraph"><strong>Services:</strong></p>
+    <ul class="wmd-list">
+  <li class="wmd-list-item">UI/UX Design</li>
+  <li class="wmd-list-item">Web Development</li>
+  <li class="wmd-list-item">E-Commerce</li>
+  <li class="wmd-list-item">CMS Implementation</li>
+  <li class="wmd-list-item">Web Applications</li>
+</ul>
+    <button class="wmd-button">Learn More →</button>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3"><span class="wmd-icon" data-icon="chart" aria-label="chart">📊</span> Digital Marketing</h3>
+    <p class="wmd-paragraph">Data-driven marketing strategies that drive growth and measurable results.</p>
+    <p class="wmd-paragraph"><strong>Services:</strong></p>
+    <ul class="wmd-list">
+  <li class="wmd-list-item">SEO &amp; SEM</li>
+  <li class="wmd-list-item">Content Marketing</li>
+  <li class="wmd-list-item">Social Media</li>
+  <li class="wmd-list-item">Email Campaigns</li>
+  <li class="wmd-list-item">Analytics &amp; Reporting</li>
+</ul>
+    <button class="wmd-button">Learn More →</button>
+  </div>
+</div>
+<h2 class="wmd-h2"></h2>
+<hr class="wmd-separator" />
+<h2 class="wmd-h2">Featured Work</h2>
+<div class="wmd-grid wmd-grid-2 wmd-grid-2" style="--grid-columns: 2">
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">TechStart - Brand Redesign</h3>
+    <div class="wmd-container-form-group">
+  <img src="https://via.placeholder.com/600x400" alt="Case Study" class="wmd-image" />
+</div>
+    <p class="wmd-paragraph"><strong>Branding • Web Design • Marketing</strong></p>
+    <p class="wmd-paragraph">Complete brand overhaul for B2B SaaS startup, resulting in 300% increase in leads.</p>
+    <p class="wmd-paragraph"><strong>Results:</strong></p>
+    <ul class="wmd-list">
+  <li class="wmd-list-item">300% increase in qualified leads</li>
+  <li class="wmd-list-item">85% improvement in brand recall</li>
+  <li class="wmd-list-item">Featured in Forbes &amp; TechCrunch</li>
+</ul>
+    <button class="wmd-button">View Case Study →</button>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">EcoMarket - E-Commerce Platform</h3>
+    <div class="wmd-container-form-group">
+  <img src="https://via.placeholder.com/600x400" alt="Case Study" class="wmd-image" />
+</div>
+    <p class="wmd-paragraph"><strong>UX/UI • Development • Strategy</strong></p>
+    <p class="wmd-paragraph">Sustainable e-commerce platform serving 50K+ customers with 4.9★ rating.</p>
+    <p class="wmd-paragraph"><strong>Results:</strong></p>
+    <ul class="wmd-list">
+  <li class="wmd-list-item">250% revenue growth in year 1</li>
+  <li class="wmd-list-item">45% conversion rate improvement</li>
+  <li class="wmd-list-item">Awwwards Site of the Day</li>
+</ul>
+    <button class="wmd-button">View Case Study →</button>
+  </div>
+</div>
+<h2 class="wmd-h2"></h2>
+<button class="wmd-button">View All Projects →</button>
+<hr class="wmd-separator" />
+<h2 class="wmd-h2">Our Process</h2>
+<div class="wmd-grid wmd-grid-4 wmd-grid-4" style="--grid-columns: 4">
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">1. Discovery</h3>
+    <p class="wmd-paragraph"><strong>Week 1</strong></p>
+    <ul class="wmd-list">
+  <li class="wmd-list-item">Kickoff meeting</li>
+  <li class="wmd-list-item">Research &amp; analysis</li>
+  <li class="wmd-list-item">Stakeholder interviews</li>
+  <li class="wmd-list-item">Competitive audit</li>
+</ul>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">2. Strategy</h3>
+    <p class="wmd-paragraph"><strong>Week 2-3</strong></p>
+    <ul class="wmd-list">
+  <li class="wmd-list-item">Brand positioning</li>
+  <li class="wmd-list-item">User research</li>
+  <li class="wmd-list-item">Information architecture</li>
+  <li class="wmd-list-item">Content strategy</li>
+</ul>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">3. Design</h3>
+    <p class="wmd-paragraph"><strong>Week 4-6</strong></p>
+    <ul class="wmd-list">
+  <li class="wmd-list-item">Wireframing</li>
+  <li class="wmd-list-item">Visual design</li>
+  <li class="wmd-list-item">Prototyping</li>
+  <li class="wmd-list-item">User testing</li>
+</ul>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">4. Development</h3>
+    <p class="wmd-paragraph"><strong>Week 7-10</strong></p>
+    <ul class="wmd-list">
+  <li class="wmd-list-item">Front-end dev</li>
+  <li class="wmd-list-item">Back-end dev</li>
+  <li class="wmd-list-item">QA testing</li>
+  <li class="wmd-list-item">Launch &amp; support</li>
+</ul>
+  </div>
+</div>
+<h2 class="wmd-h2"></h2>
+<hr class="wmd-separator" />
+<h2 class="wmd-h2">Why Choose Us?</h2>
+<div class="wmd-container-card">
+  <h2 class="wmd-h2 wmd-grid-4">Results That Speak for Themselves</h2>
+  <h3 class="wmd-h3">250+</h3>
+  <p class="wmd-paragraph">Projects Delivered</p>
+  <h3 class="wmd-h3">98%</h3>
+  <p class="wmd-paragraph">Client Satisfaction</p>
+  <h3 class="wmd-h3">50+</h3>
+  <p class="wmd-paragraph">Industry Awards</p>
+  <h3 class="wmd-h3">12yrs</h3>
+  <p class="wmd-paragraph">In Business</p>
+  <h2 class="wmd-h2"></h2>
+</div>
+<hr class="wmd-separator" />
+<h2 class="wmd-h2">Client Testimonials</h2>
+<div class="wmd-grid wmd-grid-3 wmd-grid-3" style="--grid-columns: 3">
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3"><span class="wmd-icon" data-icon="star" aria-label="star">⭐</span><span class="wmd-icon" data-icon="star" aria-label="star">⭐</span><span class="wmd-icon" data-icon="star" aria-label="star">⭐</span><span class="wmd-icon" data-icon="star" aria-label="star">⭐</span><span class="wmd-icon" data-icon="star" aria-label="star">⭐</span></h3>
+    <p class="wmd-paragraph"><em>"CreativeCo transformed our brand. Their strategic approach and creative execution exceeded all expectations."</em></p>
+    <p class="wmd-paragraph"><strong>Sarah Johnson</strong>
+CEO, TechStart Inc.</p>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3"><span class="wmd-icon" data-icon="star" aria-label="star">⭐</span><span class="wmd-icon" data-icon="star" aria-label="star">⭐</span><span class="wmd-icon" data-icon="star" aria-label="star">⭐</span><span class="wmd-icon" data-icon="star" aria-label="star">⭐</span><span class="wmd-icon" data-icon="star" aria-label="star">⭐</span></h3>
+    <p class="wmd-paragraph"><em>"Best agency we've worked with. Professional, creative, and always delivers on time and on budget."</em></p>
+    <p class="wmd-paragraph"><strong>Michael Chen</strong>
+Marketing Director, GlobalCorp</p>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3"><span class="wmd-icon" data-icon="star" aria-label="star">⭐</span><span class="wmd-icon" data-icon="star" aria-label="star">⭐</span><span class="wmd-icon" data-icon="star" aria-label="star">⭐</span><span class="wmd-icon" data-icon="star" aria-label="star">⭐</span><span class="wmd-icon" data-icon="star" aria-label="star">⭐</span></h3>
+    <p class="wmd-paragraph"><em>"They took the time to understand our business and created a website that truly represents our brand."</em></p>
+    <p class="wmd-paragraph"><strong>Emily Rodriguez</strong>
+Founder, EcoMarket</p>
+  </div>
+</div>
+<h2 class="wmd-h2"></h2>
+<hr class="wmd-separator" />
+<h2 class="wmd-h2">Our Team</h2>
+<div class="wmd-grid wmd-grid-4 wmd-grid-4" style="--grid-columns: 4">
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">John Doe</h3>
+    <div class="wmd-container-form-group">
+  <img src="https://via.placeholder.com/250x250" alt="Team Member" class="wmd-image" />
+</div>
+    <p class="wmd-paragraph"><strong>Creative Director</strong></p>
+    <div class="wmd-container-button-group">
+  <button class="wmd-button">LinkedIn</button>
+  <button class="wmd-button">Twitter</button>
+</div>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Jane Smith</h3>
+    <div class="wmd-container-form-group">
+  <img src="https://via.placeholder.com/250x250" alt="Team Member" class="wmd-image" />
+</div>
+    <p class="wmd-paragraph"><strong>Strategy Lead</strong></p>
+    <div class="wmd-container-button-group">
+  <button class="wmd-button">LinkedIn</button>
+  <button class="wmd-button">Twitter</button>
+</div>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Alex Johnson</h3>
+    <div class="wmd-container-form-group">
+  <img src="https://via.placeholder.com/250x250" alt="Team Member" class="wmd-image" />
+</div>
+    <p class="wmd-paragraph"><strong>Lead Developer</strong></p>
+    <div class="wmd-container-button-group">
+  <button class="wmd-button">LinkedIn</button>
+  <button class="wmd-button">GitHub</button>
+</div>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Sarah Lee</h3>
+    <div class="wmd-container-form-group">
+  <img src="https://via.placeholder.com/250x250" alt="Team Member" class="wmd-image" />
+</div>
+    <p class="wmd-paragraph"><strong>UX Designer</strong></p>
+    <div class="wmd-container-button-group">
+  <button class="wmd-button">LinkedIn</button>
+  <button class="wmd-button">Dribbble</button>
+</div>
+  </div>
+</div>
+<h2 class="wmd-h2"></h2>
+<div class="wmd-container-button-group">
+  <button class="wmd-button">View Full Team →</button>
+  <button class="wmd-button">We&#039;re Hiring! →</button>
+</div>
+<hr class="wmd-separator" />
+<h2 class="wmd-h2">Recognition &amp; Awards</h2>
+<div class="wmd-grid wmd-grid-6 wmd-grid-6" style="--grid-columns: 6">
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Awwwards</h3>
+    <p class="wmd-paragraph">5x Site of the Day</p>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">CSS Awards</h3>
+    <p class="wmd-paragraph">3x Best Agency</p>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Webby Awards</h3>
+    <p class="wmd-paragraph">2x Winner</p>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">FWA</h3>
+    <p class="wmd-paragraph">10x Featured</p>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Dribbble</h3>
+    <p class="wmd-paragraph">Team of the Year</p>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Fast Company</h3>
+    <p class="wmd-paragraph">Innovation Award</p>
+  </div>
+</div>
+<h2 class="wmd-h2"></h2>
+<hr class="wmd-separator" />
+<h2 class="wmd-h2">Our Expertise</h2>
+<div class="wmd-grid wmd-grid-3 wmd-grid-3" style="--grid-columns: 3">
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Design</h3>
+    <ul class="wmd-list">
+  <li class="wmd-list-item">Figma</li>
+  <li class="wmd-list-item">Adobe Creative Suite</li>
+  <li class="wmd-list-item">Sketch</li>
+  <li class="wmd-list-item">Principle</li>
+  <li class="wmd-list-item">After Effects</li>
+</ul>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Development</h3>
+    <ul class="wmd-list">
+  <li class="wmd-list-item">React &amp; Next.js</li>
+  <li class="wmd-list-item">Vue &amp; Nuxt</li>
+  <li class="wmd-list-item">TypeScript</li>
+  <li class="wmd-list-item">Node.js</li>
+  <li class="wmd-list-item">Python/Django</li>
+</ul>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Marketing</h3>
+    <ul class="wmd-list">
+  <li class="wmd-list-item">Google Analytics</li>
+  <li class="wmd-list-item">SEMrush</li>
+  <li class="wmd-list-item">HubSpot</li>
+  <li class="wmd-list-item">Mailchimp</li>
+  <li class="wmd-list-item">Hootsuite</li>
+</ul>
+  </div>
+</div>
+<h2 class="wmd-h2"></h2>
+<hr class="wmd-separator" />
+<h2 class="wmd-h2">Let&#039;s Create Something Amazing</h2>
+<div class="wmd-container-hero">
+  <h1 class="wmd-h1">Ready to Start Your Project?</h1>
+  <p class="wmd-paragraph">We&#039;d love to hear about your vision and explore how we can help bring it to life.</p>
+  <div class="wmd-container-button-group">
+  <button class="wmd-button wmd-button-primary">Start a Project</button>
+  <button class="wmd-button">Schedule Call</button>
+  <button class="wmd-button">View Pricing</button>
+</div>
+</div>
+<hr class="wmd-separator" />
+<h2 class="wmd-h2">Get in Touch</h2>
+<div class="wmd-grid wmd-grid-2 wmd-grid-2" style="--grid-columns: 2">
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Send Us a Message</h3>
+    <div class="wmd-container-form-group">
+  Name
+  <input type="text" class="wmd-input" required style="width: 29ch; max-width: 29ch;" />
+</div>
+    <div class="wmd-container-form-group">
+  Email
+  <input type="email" class="wmd-input" required style="width: 29ch; max-width: 29ch;" />
+</div>
+    <div class="wmd-container-form-group">
+  Company
+  <input type="text" class="wmd-input" style="width: 29ch; max-width: 29ch;" />
+</div>
+    <div class="wmd-container-form-group">
+  Phone
+  <input type="tel" class="wmd-input" style="width: 29ch; max-width: 29ch;" />
+</div>
+    <hr class="wmd-separator" />
+    <div class="wmd-container-form-group">
+  Project Type
+  <select class="wmd-select">
+    <option value="" disabled selected>Select service...</option>
+    <option value="Brand Strategy &amp; Design">Brand Strategy &amp; Design</option>
+    <option value="Web Design &amp; Development">Web Design &amp; Development</option>
+    <option value="Digital Marketing">Digital Marketing</option>
+    <option value="Mobile App Development">Mobile App Development</option>
+    <option value="E-Commerce">E-Commerce</option>
+    <option value="Other">Other</option>
+  </select>
+</div>
+    <ul class="wmd-list">
+  <li class="wmd-list-item">Brand Strategy &amp; Design</li>
+  <li class="wmd-list-item">Web Design &amp; Development</li>
+  <li class="wmd-list-item">Digital Marketing</li>
+  <li class="wmd-list-item">Mobile App Development</li>
+  <li class="wmd-list-item">E-Commerce</li>
+  <li class="wmd-list-item">Other</li>
+</ul>
+    <p class="wmd-paragraph">Budget Range</p>
+    <ul class="wmd-list">
+  <label class="wmd-radio">
+    <input type="radio" />
+    <span>$10K - $25K</span>
+  </label>
+  <label class="wmd-radio">
+    <input type="radio" checked />
+    <span>$25K - $50K</span>
+  </label>
+  <label class="wmd-radio">
+    <input type="radio" />
+    <span>$50K - $100K</span>
+  </label>
+  <label class="wmd-radio">
+    <input type="radio" />
+    <span>$100K+</span>
+  </label>
+</ul>
+    <hr class="wmd-separator" />
+    <div class="wmd-container-form-group">
+  Project Details
+  <textarea class="wmd-textarea" rows="6" placeholder="Tell us about your project..." required></textarea>
+</div>
+    <div class="wmd-container-form-group">
+  How did you hear about us?
+  <select class="wmd-select">
+    <option value="" disabled selected>Select source...</option>
+    <option value="Google Search">Google Search</option>
+    <option value="Social Media">Social Media</option>
+    <option value="Referral">Referral</option>
+    <option value="Previous Client">Previous Client</option>
+    <option value="Industry Event">Industry Event</option>
+    <option value="Other">Other</option>
+  </select>
+</div>
+    <ul class="wmd-list">
+  <li class="wmd-list-item">Google Search</li>
+  <li class="wmd-list-item">Social Media</li>
+  <li class="wmd-list-item">Referral</li>
+  <li class="wmd-list-item">Previous Client</li>
+  <li class="wmd-list-item">Industry Event</li>
+  <li class="wmd-list-item">Other</li>
+</ul>
+    <p class="wmd-paragraph">Timeline</p>
+    <ul class="wmd-list">
+  <label class="wmd-radio">
+    <input type="radio" />
+    <span>ASAP</span>
+  </label>
+  <label class="wmd-radio">
+    <input type="radio" checked />
+    <span>1-3 months</span>
+  </label>
+  <label class="wmd-radio">
+    <input type="radio" />
+    <span>3-6 months</span>
+  </label>
+  <label class="wmd-radio">
+    <input type="radio" />
+    <span>6+ months</span>
+  </label>
+</ul>
+    <div class="wmd-container-button-group">
+  <button class="wmd-button wmd-button-primary">Send Message</button>
+  <button class="wmd-button">Clear</button>
+</div>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Visit Our Studio</h3>
+    <p class="wmd-paragraph"><strong>CreativeCo HQ</strong></p>
+    <p class="wmd-paragraph">123 Design Street
+San Francisco, CA 94103</p>
+    <div class="wmd-container-form-group">
+  <strong>Contact:</strong>
+Phone: +1 (555) 123-4567
+Email: 
+  <button class="wmd-button">email protected</button>
+</div>
+    <p class="wmd-paragraph"><strong>Office Hours:</strong>
+Monday - Friday: 9am - 6pm
+Saturday: By appointment
+Sunday: Closed</p>
+    <button class="wmd-button">Get Directions →</button>
+    <div class="wmd-container-form-group">
+  <img src="https://via.placeholder.com/500x300" alt="Office Photo" class="wmd-image" />
+</div>
+  </div>
+</div>
+<h2 class="wmd-h2"></h2>
+<hr class="wmd-separator" />
+<h2 class="wmd-h2">Latest from Our Blog</h2>
+<div class="wmd-grid wmd-grid-3 wmd-grid-3" style="--grid-columns: 3">
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">The Future of Web Design</h3>
+    <div class="wmd-container-form-group">
+  <img src="https://via.placeholder.com/350x200" alt="Blog Post" class="wmd-image" />
+</div>
+    <p class="wmd-paragraph">Exploring emerging trends and technologies shaping the future of digital experiences.</p>
+    <p class="wmd-paragraph"><strong>Design</strong> • 5 min read • Mar 15, 2025</p>
+    <button class="wmd-button">Read More →</button>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Brand Strategy 101</h3>
+    <div class="wmd-container-form-group">
+  <img src="https://via.placeholder.com/350x200" alt="Blog Post" class="wmd-image" />
+</div>
+    <p class="wmd-paragraph">Essential guide to building a brand that resonates with your target audience.</p>
+    <p class="wmd-paragraph"><strong>Branding</strong> • 8 min read • Mar 10, 2025</p>
+    <button class="wmd-button">Read More →</button>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">SEO Best Practices 2025</h3>
+    <div class="wmd-container-form-group">
+  <img src="https://via.placeholder.com/350x200" alt="Blog Post" class="wmd-image" />
+</div>
+    <p class="wmd-paragraph">Latest strategies to improve your search rankings and organic traffic.</p>
+    <p class="wmd-paragraph"><strong>Marketing</strong> • 6 min read • Mar 5, 2025</p>
+    <button class="wmd-button">Read More →</button>
+  </div>
+</div>
+<h2 class="wmd-h2"></h2>
+<button class="wmd-button">Visit Blog →</button>
+<hr class="wmd-separator" />
+<div class="wmd-container-footer">
+  <h2 class="wmd-h2 wmd-grid-4">Links</h2>
+  <h3 class="wmd-h3">Services</h3>
+  <ul class="wmd-list">
+  <li class="wmd-list-item">Brand Strategy</li>
+  <li class="wmd-list-item">Web Design</li>
+  <li class="wmd-list-item">Development</li>
+  <li class="wmd-list-item">Digital Marketing</li>
+  <li class="wmd-list-item">E-Commerce</li>
+  <li class="wmd-list-item">Consulting</li>
+</ul>
+  <h3 class="wmd-h3">Company</h3>
+  <ul class="wmd-list">
+  <li class="wmd-list-item">About Us</li>
+  <li class="wmd-list-item">Our Team</li>
+  <li class="wmd-list-item">Careers</li>
+  <li class="wmd-list-item">Case Studies</li>
+  <li class="wmd-list-item">Process</li>
+  <li class="wmd-list-item">Pricing</li>
+</ul>
+  <h3 class="wmd-h3">Resources</h3>
+  <ul class="wmd-list">
+  <li class="wmd-list-item">Blog</li>
+  <li class="wmd-list-item">Newsletter</li>
+  <li class="wmd-list-item">Design Tips</li>
+  <li class="wmd-list-item">Free Tools</li>
+  <li class="wmd-list-item">Webinars</li>
+  <li class="wmd-list-item">Downloads</li>
+</ul>
+  <h3 class="wmd-h3">Contact</h3>
+  <ul class="wmd-list">
+  <li class="wmd-list-item">Get in Touch</li>
+  <li class="wmd-list-item">Office Location</li>
+  <li class="wmd-list-item">Careers</li>
+  <li class="wmd-list-item">Partnership</li>
+  <li class="wmd-list-item">Press Kit</li>
+  <li class="wmd-list-item">Support</li>
+</ul>
+  <h2 class="wmd-h2"></h2>
+  <hr class="wmd-separator" />
+  <p class="wmd-paragraph"><strong>Connect With Us</strong></p>
+  <nav class="wmd-nav">
+  <div class="wmd-nav-content">
+    <a href="#" class="wmd-nav-item"><span class="wmd-icon" data-icon="linkedin" aria-label="linkedin" style="font-family: monospace; font-weight: bold; font-style: normal;">in</span>LinkedIn</a>
+    <a href="#" class="wmd-nav-item"><span class="wmd-icon" data-icon="twitter" aria-label="twitter" style="font-family: monospace; font-weight: bold; font-style: normal;">𝕏</span>Twitter</a>
+    <a href="#" class="wmd-nav-item"><span class="wmd-icon" data-icon="instagram" aria-label="instagram" style="font-family: monospace; font-weight: bold; font-style: normal;">◉</span>Instagram</a>
+    <a href="#" class="wmd-nav-item"><span class="wmd-icon" data-icon="dribbble" aria-label="dribbble">●</span>Dribbble</a>
+    <a href="#" class="wmd-nav-item"><span class="wmd-icon" data-icon="behance" aria-label="behance">●</span>Behance</a>
+  </div>
+</nav>
+  <hr class="wmd-separator" />
+  <div class="wmd-container-form-group">
+  <strong>Office:</strong> 123 Design St, San Francisco, CA 94103
+<strong>Email:</strong> 
+  <button class="wmd-button">email protected</button>
+   • <strong>Phone:</strong> +1 (555) 123-4567
+</div>
+  <p class="wmd-paragraph">© 2025 CreativeCo Agency. All rights reserved. • <a href="https://example.com/privacy">Privacy</a> • <a href="https://example.com/terms">Terms</a></p>
+</div>
+<hr class="wmd-separator" />
+<p class="wmd-paragraph"><strong>Style Variations:</strong></p>
+<ul class="wmd-list">
+  <li class="wmd-list-item">sketch - Casual, creative agency vibe</li>
+  <li class="wmd-list-item">clean - Professional, corporate aesthetic</li>
+  <li class="wmd-list-item">wireframe - Content structure focus</li>
+  <li class="wmd-list-item">tailwind - Modern, colorful branding</li>
+  <li class="wmd-list-item">material - Polished, layered design</li>
+  <li class="wmd-list-item">brutal - Bold, distinctive identity</li>
+  <li class="wmd-list-item">none - Semantic markup for custom CSS</li>
+</ul>
+<p class="wmd-paragraph"><strong>Generate this example:</strong></p>
+<pre class="wmd-code-block"><code data-lang="bash">wiremd agency-site.md --style sketch
+wiremd agency-site.md --style brutal -o agency-brutal.html
+wiremd agency-site.md --style clean -o agency-clean.html</code></pre>
+</body>
+</html>

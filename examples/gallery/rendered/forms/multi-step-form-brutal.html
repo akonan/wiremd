@@ -1,0 +1,955 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>wiremd Mockup</title>
+  <style>
+
+/* Neo-Brutalism Style */
+body {
+  font-family: "Space Grotesk", "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+  background: #fffcf2;
+  color: #000000;
+  line-height: 1.4;
+  margin: 0;
+  padding: 20px;
+}
+
+/* Typography - Bold and Aggressive */
+.wmd-h1 {
+  font-size: 3rem;
+  font-weight: 900;
+  color: #000000;
+  margin: 0 0 1rem 0;
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+  text-shadow: 3px 3px 0 #ffd93d;
+}
+
+.wmd-h2 {
+  font-size: 2.25rem;
+  font-weight: 900;
+  color: #000000;
+  margin: 1.5rem 0 1rem 0;
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+}
+
+.wmd-h3 {
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: #000000;
+  margin: 1.25rem 0 0.75rem 0;
+  text-transform: uppercase;
+}
+
+.wmd-h4 {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: #000000;
+  margin: 1rem 0 0.5rem 0;
+  text-transform: uppercase;
+}
+
+.wmd-paragraph {
+  color: #000000;
+  margin: 0.75rem 0;
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+/* Brutal Buttons */
+.wmd-button {
+  padding: 12px 24px;
+  border: 3px solid #000000;
+  border-radius: 0;
+  font-weight: 900;
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  transition: all 0.1s ease;
+  cursor: pointer;
+  display: inline-block;
+  text-decoration: none;
+  background: #ffffff;
+  color: #000000;
+  box-shadow: 4px 4px 0 #000000;
+  position: relative;
+}
+
+.wmd-button:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0 #000000;
+}
+
+.wmd-button:active {
+  transform: translate(2px, 2px);
+  box-shadow: 2px 2px 0 #000000;
+}
+
+.wmd-button-primary, .wmd-button.wmd-button-primary {
+  background: #ffd93d;
+  color: #000000;
+}
+
+.wmd-button-primary:hover, .wmd-button.wmd-button-primary:hover {
+  background: #ffcc00;
+}
+
+.wmd-button:disabled, .wmd-button[disabled] {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none !important;
+  box-shadow: 4px 4px 0 #000000 !important;
+}
+
+/* Button States */
+.wmd-state-loading {
+  background: #bcf0da !important;
+  color: #000000 !important;
+  animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.02); }
+}
+
+.wmd-state-error {
+  background: #ff6b6b !important;
+  color: #000000 !important;
+}
+
+.wmd-state-success {
+  background: #6bcf7f !important;
+  color: #000000 !important;
+}
+
+/* Brutal Forms */
+.wmd-input, .wmd-textarea, .wmd-select {
+  width: 100%;
+  padding: 12px;
+  border: 3px solid #000000;
+  border-radius: 0;
+  font-size: 1rem;
+  font-weight: 600;
+  background: #ffffff;
+  color: #000000;
+  box-shadow: 4px 4px 0 #000000;
+  transition: all 0.1s ease;
+}
+
+.wmd-input:focus, .wmd-textarea:focus, .wmd-select:focus {
+  outline: none;
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0 #000000;
+  background: #ffd93d;
+}
+
+.wmd-input::placeholder, .wmd-textarea::placeholder {
+  color: #666666;
+  font-weight: 600;
+}
+
+.wmd-input[disabled], .wmd-input.wmd-state-disabled,
+.wmd-textarea[disabled], .wmd-textarea.wmd-state-disabled,
+.wmd-select[disabled], .wmd-select.wmd-state-disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background: #e0e0e0;
+  box-shadow: none;
+  transform: none !important;
+}
+
+.wmd-textarea {
+  resize: vertical;
+  min-height: 6rem;
+  font-family: inherit;
+}
+
+.wmd-select {
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='3' stroke-linecap='square'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 20px;
+  padding-right: 40px;
+}
+
+/* Brutal Checkboxes and Radios */
+.wmd-checkbox, .wmd-radio {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 8px 0;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.wmd-checkbox input[type="checkbox"],
+.wmd-radio input[type="radio"] {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  border: 3px solid #000000;
+  accent-color: #ffd93d;
+}
+
+/* Brutal Cards and Containers */
+.wmd-container-card {
+  background: #ffffff;
+  border: 3px solid #000000;
+  border-radius: 0;
+  box-shadow: 8px 8px 0 #000000;
+  padding: 24px;
+  margin: 24px 0;
+  transition: all 0.1s ease;
+}
+
+.wmd-container-card:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 10px 10px 0 #000000;
+}
+
+.wmd-container-hero {
+  background: linear-gradient(135deg, #ff6b6b 0%, #ffd93d 100%);
+  color: #000000;
+  border: 3px solid #000000;
+  border-radius: 0;
+  padding: 48px 32px;
+  margin: 32px 0;
+  text-align: center;
+  box-shadow: 12px 12px 0 #000000;
+  position: relative;
+  overflow: hidden;
+}
+
+.wmd-container-hero::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -50%;
+  width: 200%;
+  height: 200%;
+  background: repeating-linear-gradient(
+    45deg,
+    transparent,
+    transparent 10px,
+    rgba(0, 0, 0, 0.05) 10px,
+    rgba(0, 0, 0, 0.05) 20px
+  );
+  pointer-events: none;
+}
+
+.wmd-container-hero .wmd-h1,
+.wmd-container-hero .wmd-h2,
+.wmd-container-hero .wmd-h3,
+.wmd-container-hero .wmd-paragraph {
+  color: #000000;
+  position: relative;
+}
+
+.wmd-container-modal {
+  background: #ffffff;
+  border: 3px solid #000000;
+  border-radius: 0;
+  box-shadow: 12px 12px 0 #000000;
+  padding: 32px;
+  margin: 32px auto;
+  max-width: 600px;
+  position: relative;
+}
+
+.wmd-container-footer {
+  background: #000000;
+  color: #ffffff;
+  padding: 32px;
+  margin-top: 48px;
+  border: 3px solid #000000;
+  box-shadow: 8px 8px 0 #ffd93d;
+}
+
+.wmd-container-footer .wmd-paragraph,
+.wmd-container-footer .wmd-nav-item {
+  color: #ffffff;
+  font-weight: 600;
+}
+
+.wmd-container-section {
+  padding: 24px 0;
+  border-bottom: 3px solid #000000;
+}
+
+.wmd-container-section:last-child {
+  border-bottom: none;
+}
+
+/* Brutal Alerts */
+.wmd-container-alert {
+  padding: 16px 20px;
+  border: 3px solid #000000;
+  border-radius: 0;
+  margin: 20px 0;
+  box-shadow: 6px 6px 0 #000000;
+  font-weight: 600;
+}
+
+.wmd-container-alert.wmd-warning {
+  background: #ffeb3b;
+  color: #000000;
+}
+
+.wmd-container-alert.wmd-state-error {
+  background: #ff6b6b;
+  color: #000000;
+}
+
+.wmd-container-alert.wmd-state-success {
+  background: #6bcf7f;
+  color: #000000;
+}
+
+/* Brutal Navigation */
+.wmd-nav {
+  background: #ffd93d;
+  border: 3px solid #000000;
+  padding: 16px 20px;
+  box-shadow: 6px 6px 0 #000000;
+  margin-bottom: 32px;
+}
+
+.wmd-nav-content {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.wmd-nav-item {
+  color: #000000;
+  text-decoration: none;
+  padding: 8px 16px;
+  border: 2px solid transparent;
+  transition: all 0.1s ease;
+  font-size: 0.875rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.wmd-nav-item:hover {
+  background: #000000;
+  color: #ffd93d;
+  border: 2px solid #000000;
+  transform: translate(-2px, -2px);
+  box-shadow: 2px 2px 0 #000000;
+}
+
+.wmd-brand {
+  font-weight: 900;
+  font-size: 1.5rem;
+  color: #000000;
+  margin-right: auto;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+}
+
+/* Brutal Lists */
+.wmd-list {
+  margin: 20px 0;
+  padding: 0;
+  list-style: none;
+  border: 3px solid #000000;
+  background: #ffffff;
+  box-shadow: 6px 6px 0 #000000;
+}
+
+.wmd-list-item {
+  padding: 16px 20px;
+  border-bottom: 3px solid #000000;
+  color: #000000;
+  font-weight: 600;
+  transition: all 0.1s ease;
+}
+
+.wmd-list-item:hover {
+  background: #ffd93d;
+  padding-left: 28px;
+}
+
+.wmd-list-item:last-child {
+  border-bottom: none;
+}
+
+/* Brutal Grid */
+.wmd-grid {
+  display: grid;
+  gap: 24px;
+  margin: 32px 0;
+}
+
+.wmd-grid-2 {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.wmd-grid-3 {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.wmd-grid-4 {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.wmd-grid > * {
+  border: 3px solid #000000;
+  background: #ffffff;
+  padding: 20px;
+  box-shadow: 6px 6px 0 #000000;
+}
+
+/* Brutal Tables */
+.wmd-table {
+  width: 100%;
+  background: #ffffff;
+  border: 3px solid #000000;
+  border-collapse: separate;
+  border-spacing: 0;
+  box-shadow: 8px 8px 0 #000000;
+  margin: 20px 0;
+}
+
+.wmd-table th {
+  background: #ffd93d;
+  padding: 16px;
+  text-align: left;
+  font-weight: 900;
+  font-size: 0.875rem;
+  color: #000000;
+  border-bottom: 3px solid #000000;
+  border-right: 3px solid #000000;
+  text-transform: uppercase;
+}
+
+.wmd-table th:last-child {
+  border-right: none;
+}
+
+.wmd-table td {
+  padding: 16px;
+  border-bottom: 3px solid #000000;
+  border-right: 3px solid #000000;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #000000;
+}
+
+.wmd-table td:last-child {
+  border-right: none;
+}
+
+.wmd-table tr:last-child td {
+  border-bottom: none;
+}
+
+.wmd-table tr:hover td {
+  background: #bcf0da;
+}
+
+/* Table cell alignment - more specific to override th/td defaults */
+.wmd-table .wmd-align-left {
+  text-align: left !important;
+}
+
+.wmd-table .wmd-align-center {
+  text-align: center !important;
+}
+
+.wmd-table .wmd-align-right {
+  text-align: right !important;
+}
+
+/* Brutal Icons */
+.wmd-icon {
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+  vertical-align: middle;
+  font-weight: 900;
+}
+
+/* Utility classes */
+.wmd-separator {
+  border: none;
+  border-top: 3px solid #000000;
+  margin: 32px 0;
+}
+
+.wmd-image {
+  max-width: 100%;
+  height: auto;
+  border: 3px solid #000000;
+  box-shadow: 6px 6px 0 #000000;
+}
+
+.wmd-code {
+  background: #ffd93d;
+  padding: 4px 8px;
+  border: 2px solid #000000;
+  font-family: "JetBrains Mono", "Courier New", monospace;
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: #000000;
+}
+
+.wmd-blockquote {
+  border-left: 6px solid #000000;
+  padding-left: 20px;
+  margin: 20px 0;
+  color: #000000;
+  font-weight: 600;
+  font-style: normal;
+  background: linear-gradient(to right, rgba(255, 217, 61, 0.2), transparent);
+}
+
+/* Button group */
+.wmd-container-button-group {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin: 20px 0;
+}
+
+/* Form group */
+.wmd-container-form-group {
+  margin: 20px 0;
+}
+
+.wmd-container-form-group .wmd-input:not(:last-child),
+.wmd-container-form-group .wmd-textarea:not(:last-child),
+.wmd-container-form-group .wmd-select:not(:last-child) {
+  margin-bottom: 16px;
+}
+
+/* State Containers */
+.wmd-container-loading-state {
+  background: #ffffff;
+  border: 3px solid #000000;
+  padding: 56px 40px;
+  margin: 32px 0;
+  text-align: center;
+  box-shadow: 8px 8px 0 #000000;
+  position: relative;
+}
+
+.wmd-container-loading-state::before {
+  content: '⟳';
+  display: block;
+  font-size: 64px;
+  font-weight: 900;
+  margin-bottom: 24px;
+  animation: spin 1.5s ease-in-out infinite;
+  color: #ffd93d;
+  text-shadow: 3px 3px 0 #000000;
+}
+
+.wmd-container-empty-state {
+  background: #f5f5f5;
+  border: 3px dashed #000000;
+  padding: 72px 40px;
+  margin: 32px 0;
+  text-align: center;
+  color: #666666;
+  font-weight: 600;
+}
+
+.wmd-container-empty-state::before {
+  content: '[EMPTY]';
+  display: block;
+  font-size: 32px;
+  font-weight: 900;
+  letter-spacing: 0.3em;
+  margin-bottom: 24px;
+  color: #999999;
+  text-transform: uppercase;
+}
+
+.wmd-container-error-state {
+  background: #ff6b6b;
+  border: 3px solid #000000;
+  padding: 56px 40px;
+  margin: 32px 0;
+  text-align: center;
+  box-shadow: 8px 8px 0 #000000;
+  color: #000000;
+  font-weight: 600;
+}
+
+.wmd-container-error-state::before {
+  content: '⚠';
+  display: block;
+  font-size: 72px;
+  font-weight: 900;
+  margin-bottom: 24px;
+  text-shadow: 3px 3px 0 rgba(0, 0, 0, 0.2);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .wmd-h1 {
+    font-size: 2rem;
+  }
+
+  .wmd-h2 {
+    font-size: 1.75rem;
+  }
+
+  .wmd-grid-2,
+  .wmd-grid-3,
+  .wmd-grid-4 {
+    grid-template-columns: 1fr;
+  }
+
+  .wmd-nav-content {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .wmd-brand {
+    margin-right: 0;
+    margin-bottom: 12px;
+    font-size: 1.25rem;
+  }
+
+  .wmd-container-card,
+  .wmd-container-modal {
+    box-shadow: 6px 6px 0 #000000;
+  }
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+  </style>
+</head>
+<body class="wmd-root wmd-brutal">
+  <h1 class="wmd-h1">Multi-Step Form</h1>
+<blockquote class="wmd-blockquote">
+  <p class="wmd-paragraph"><strong>Use Case:</strong> Complex onboarding flows, checkout processes, surveys, or application forms.</p>
+  <p class="wmd-paragraph"><strong>Key Features:</strong> Progress indicator, step navigation, form validation, data persistence, review step</p>
+</blockquote>
+<nav class="wmd-nav">
+  <div class="wmd-nav-content">
+    <div class="wmd-brand"><span class="wmd-icon" data-icon="logo" aria-label="logo">◈</span>OnboardFlow</div>
+    <a href="#" class="wmd-nav-item">Dashboard</a>
+    <button class="wmd-button">Sign Out</button>
+  </div>
+</nav>
+<hr class="wmd-separator" />
+<h1 class="wmd-h1">Account Setup Wizard</h1>
+<p class="wmd-paragraph">Complete your profile in 4 easy steps</p>
+<hr class="wmd-separator" />
+<h2 class="wmd-h2">Progress</h2>
+<p class="wmd-paragraph">[########__________] Step 2 of 4</p>
+<nav class="wmd-nav">
+  <div class="wmd-nav-content">
+    <a href="#" class="wmd-nav-item"><span class="wmd-icon" data-icon="check" aria-label="check">✓</span>Step 1</a>
+    <a href="#" class="wmd-nav-item"></a>
+    <a href="#" class="wmd-nav-item">Step 3</a>
+    <a href="#" class="wmd-nav-item">Step 4</a>
+  </div>
+</nav>
+<hr class="wmd-separator" />
+<h2 class="wmd-h2">Step 2: Personal Information</h2>
+<div class="wmd-container-card">
+  <h3 class="wmd-h3">Tell Us About Yourself</h3>
+  <div class="wmd-container-form-group">
+  Profile Picture
+
+  <button class="wmd-button">Choose File</button>
+   <em>profile-photo.jpg</em>
+</div>
+  <div class="wmd-container-form-group">
+  First Name
+  <input type="text" class="wmd-input" required style="width: 29ch; max-width: 29ch;" />
+</div>
+  <div class="wmd-container-form-group">
+  Middle Name (Optional)
+  <input type="text" class="wmd-input" style="width: 29ch; max-width: 29ch;" />
+</div>
+  <div class="wmd-container-form-group">
+  Last Name
+  <input type="text" class="wmd-input" required style="width: 29ch; max-width: 29ch;" />
+</div>
+  <div class="wmd-container-form-group">
+  Date of Birth
+  <input type="date" class="wmd-input" required style="width: 29ch; max-width: 29ch;" />
+</div>
+  <p class="wmd-paragraph">Gender</p>
+  <ul class="wmd-list">
+  <label class="wmd-radio">
+    <input type="radio" checked />
+    <span>Prefer not to say</span>
+  </label>
+  <label class="wmd-radio">
+    <input type="radio" />
+    <span>Male</span>
+  </label>
+  <label class="wmd-radio">
+    <input type="radio" />
+    <span>Female</span>
+  </label>
+  <label class="wmd-radio">
+    <input type="radio" />
+    <span>Non-binary</span>
+  </label>
+  <label class="wmd-radio">
+    <input type="radio" />
+    <span>Other</span>
+  </label>
+</ul>
+  <hr class="wmd-separator" />
+  <h3 class="wmd-h3">Contact Information</h3>
+  <p class="wmd-paragraph">Primary Email
+[_____________________________] {type:email required:true state:disabled}
+<em>Verified ✓</em></p>
+  <div class="wmd-container-form-group">
+  Secondary Email (Optional)
+  <input type="email" class="wmd-input" style="width: 29ch; max-width: 29ch;" />
+</div>
+  <div class="wmd-container-form-group">
+  Mobile Phone
+  <input type="tel" class="wmd-input" required style="width: 29ch; max-width: 29ch;" />
+</div>
+  <div class="wmd-container-form-group">
+  Landline (Optional)
+  <input type="tel" class="wmd-input" style="width: 29ch; max-width: 29ch;" />
+</div>
+  <p class="wmd-paragraph">Preferred Contact</p>
+  <ul class="wmd-list">
+  <label class="wmd-radio">
+    <input type="radio" checked />
+    <span>Email</span>
+  </label>
+  <label class="wmd-radio">
+    <input type="radio" />
+    <span>Phone</span>
+  </label>
+  <label class="wmd-radio">
+    <input type="radio" />
+    <span>SMS</span>
+  </label>
+</ul>
+</div>
+<hr class="wmd-separator" />
+<div class="wmd-grid wmd-grid-2 wmd-grid-2" style="--grid-columns: 2">
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Home Address</h3>
+    <div class="wmd-container-form-group">
+  Street Address
+  <input type="text" class="wmd-input" required style="width: 29ch; max-width: 29ch;" />
+</div>
+    <div class="wmd-container-form-group">
+  Apartment, Suite, etc.
+  <input type="text" class="wmd-input" style="width: 29ch; max-width: 29ch;" />
+</div>
+    <div class="wmd-container-form-group">
+  City
+  <input type="text" class="wmd-input" required style="width: 29ch; max-width: 29ch;" />
+</div>
+    <div class="wmd-container-form-group">
+  State/Province
+  <select class="wmd-select">
+    <option value="" disabled selected>Select state...</option>
+    <option value="California">California</option>
+    <option value="New York">New York</option>
+    <option value="Texas">Texas</option>
+    <option value="Florida">Florida</option>
+    <option value="Other">Other</option>
+  </select>
+</div>
+    <ul class="wmd-list">
+  <li class="wmd-list-item">California</li>
+  <li class="wmd-list-item">New York</li>
+  <li class="wmd-list-item">Texas</li>
+  <li class="wmd-list-item">Florida</li>
+  <li class="wmd-list-item">Other</li>
+</ul>
+    <div class="wmd-container-form-group">
+  Zip/Postal Code
+  <input type="text" class="wmd-input" required style="width: 5ch; max-width: 5ch;" />
+</div>
+    <div class="wmd-container-form-group">
+  Country
+  <select class="wmd-select">
+    <option value="" disabled selected>United States...</option>
+    
+  </select>
+</div>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Billing Address</h3>
+    <ul class="wmd-list">
+  <label class="wmd-checkbox">
+    <input type="checkbox" />
+    <span>Same as home address</span>
+  </label>
+</ul>
+    <div class="wmd-container-form-group">
+  Street Address
+  <input type="text" class="wmd-input" style="width: 29ch; max-width: 29ch;" />
+</div>
+    <div class="wmd-container-form-group">
+  City
+  <input type="text" class="wmd-input" style="width: 29ch; max-width: 29ch;" />
+</div>
+    <div class="wmd-container-form-group">
+  State/Province
+  <select class="wmd-select">
+    <option value="" disabled selected>Select state...</option>
+    
+  </select>
+</div>
+    <div class="wmd-container-form-group">
+  Zip/Postal Code
+  <input type="text" class="wmd-input" style="width: 5ch; max-width: 5ch;" />
+</div>
+  </div>
+</div>
+<h2 class="wmd-h2"></h2>
+<hr class="wmd-separator" />
+<div class="wmd-container-card">
+  <h3 class="wmd-h3">Preferences</h3>
+  <div class="wmd-container-form-group">
+  Language
+  <select class="wmd-select">
+    <option value="" disabled selected>Select language...</option>
+    <option value="English">English</option>
+    <option value="Spanish">Spanish</option>
+    <option value="French">French</option>
+    <option value="German">German</option>
+    <option value="Chinese">Chinese</option>
+    <option value="Japanese">Japanese</option>
+  </select>
+</div>
+  <ul class="wmd-list">
+  <li class="wmd-list-item">English</li>
+  <li class="wmd-list-item">Spanish</li>
+  <li class="wmd-list-item">French</li>
+  <li class="wmd-list-item">German</li>
+  <li class="wmd-list-item">Chinese</li>
+  <li class="wmd-list-item">Japanese</li>
+</ul>
+  <div class="wmd-container-form-group">
+  Timezone
+  <select class="wmd-select">
+    <option value="" disabled selected>Select timezone...</option>
+    <option value="(GMT-8) Pacific Time">(GMT-8) Pacific Time</option>
+    <option value="(GMT-5) Eastern Time">(GMT-5) Eastern Time</option>
+    <option value="(GMT) London">(GMT) London</option>
+    <option value="(GMT+1) Paris">(GMT+1) Paris</option>
+  </select>
+</div>
+  <ul class="wmd-list">
+  <li class="wmd-list-item">(GMT-8) Pacific Time</li>
+  <li class="wmd-list-item">(GMT-5) Eastern Time</li>
+  <li class="wmd-list-item">(GMT) London</li>
+  <li class="wmd-list-item">(GMT+1) Paris</li>
+</ul>
+  <p class="wmd-paragraph">Communication Preferences</p>
+  <ul class="wmd-list">
+  <label class="wmd-checkbox">
+    <input type="checkbox" checked />
+    <span>Email notifications</span>
+  </label>
+  <label class="wmd-checkbox">
+    <input type="checkbox" checked />
+    <span>SMS alerts</span>
+  </label>
+  <label class="wmd-checkbox">
+    <input type="checkbox" />
+    <span>Push notifications</span>
+  </label>
+  <label class="wmd-checkbox">
+    <input type="checkbox" />
+    <span>Phone calls</span>
+  </label>
+</ul>
+  <p class="wmd-paragraph">Newsletter Topics</p>
+  <ul class="wmd-list">
+  <label class="wmd-checkbox">
+    <input type="checkbox" checked />
+    <span>Product Updates</span>
+  </label>
+  <label class="wmd-checkbox">
+    <input type="checkbox" checked />
+    <span>Industry News</span>
+  </label>
+  <label class="wmd-checkbox">
+    <input type="checkbox" />
+    <span>Special Offers</span>
+  </label>
+  <label class="wmd-checkbox">
+    <input type="checkbox" />
+    <span>Events &amp; Webinars</span>
+  </label>
+</ul>
+</div>
+<hr class="wmd-separator" />
+<h2 class="wmd-h2">Navigation</h2>
+<div class="wmd-container-button-group">
+  <button class="wmd-button">← Previous Step</button>
+  <button class="wmd-button">Save Draft</button>
+  <button class="wmd-button wmd-button-primary">Next Step →</button>
+  <button class="wmd-button">Cancel</button>
+</div>
+<div class="wmd-container-alert info">
+  <p class="wmd-paragraph">ℹ️ Your progress is automatically saved. You can return to this form anytime.</p>
+</div>
+<hr class="wmd-separator" />
+<h2 class="wmd-h2">All Steps Overview</h2>
+<div class="wmd-container-card wmd-minimal">
+  <h3 class="wmd-h3">Wizard Steps</h3>
+  <ol class="wmd-list">
+  <li class="wmd-list-item">Account Basics ✓ Completed<ul class="wmd-list">
+  <li class="wmd-list-item">Username, password, email verification</li>
+</ul></li>
+  <li class="wmd-list-item">Personal Information In Progress<ul class="wmd-list">
+  <li class="wmd-list-item">Profile details, contact info, address</li>
+</ul></li>
+  <li class="wmd-list-item">Professional Details Pending<ul class="wmd-list">
+  <li class="wmd-list-item">Job title, company, industry, experience</li>
+</ul></li>
+  <li class="wmd-list-item">Review &amp; Submit Pending<ul class="wmd-list">
+  <li class="wmd-list-item">Confirm all information and activate account</li>
+</ul></li>
+</ol>
+</div>
+<hr class="wmd-separator" />
+<div class="wmd-container-footer">
+  <div class="wmd-container-form-group">
+  Need help?<a href="https://example.com/support">Contact Support</a>| 
+  <button class="wmd-button">Save &amp; Exit</button>
+</div>
+</div>
+<hr class="wmd-separator" />
+<p class="wmd-paragraph"><strong>Style Variations:</strong></p>
+<ul class="wmd-list">
+  <li class="wmd-list-item">sketch - Low-fidelity wireframe for UX testing</li>
+  <li class="wmd-list-item">clean - Polished multi-step experience</li>
+  <li class="wmd-list-item">wireframe - Focus on form flow structure</li>
+  <li class="wmd-list-item">tailwind - Modern step indicator design</li>
+  <li class="wmd-list-item">material - Elevated cards with transitions</li>
+  <li class="wmd-list-item">brutal - Bold step navigation</li>
+  <li class="wmd-list-item">none - Semantic markup for frameworks</li>
+</ul>
+<p class="wmd-paragraph"><strong>Generate this example:</strong></p>
+<pre class="wmd-code-block"><code data-lang="bash">wiremd multi-step-form.md --style sketch
+wiremd multi-step-form.md --style tailwind -o multi-step-tailwind.html</code></pre>
+</body>
+</html>

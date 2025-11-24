@@ -1,0 +1,1554 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>wiremd Mockup</title>
+  <style>
+
+/* Neo-Brutalism Style */
+body {
+  font-family: "Space Grotesk", "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+  background: #fffcf2;
+  color: #000000;
+  line-height: 1.4;
+  margin: 0;
+  padding: 20px;
+}
+
+/* Typography - Bold and Aggressive */
+.wmd-h1 {
+  font-size: 3rem;
+  font-weight: 900;
+  color: #000000;
+  margin: 0 0 1rem 0;
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+  text-shadow: 3px 3px 0 #ffd93d;
+}
+
+.wmd-h2 {
+  font-size: 2.25rem;
+  font-weight: 900;
+  color: #000000;
+  margin: 1.5rem 0 1rem 0;
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+}
+
+.wmd-h3 {
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: #000000;
+  margin: 1.25rem 0 0.75rem 0;
+  text-transform: uppercase;
+}
+
+.wmd-h4 {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: #000000;
+  margin: 1rem 0 0.5rem 0;
+  text-transform: uppercase;
+}
+
+.wmd-paragraph {
+  color: #000000;
+  margin: 0.75rem 0;
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+/* Brutal Buttons */
+.wmd-button {
+  padding: 12px 24px;
+  border: 3px solid #000000;
+  border-radius: 0;
+  font-weight: 900;
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  transition: all 0.1s ease;
+  cursor: pointer;
+  display: inline-block;
+  text-decoration: none;
+  background: #ffffff;
+  color: #000000;
+  box-shadow: 4px 4px 0 #000000;
+  position: relative;
+}
+
+.wmd-button:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0 #000000;
+}
+
+.wmd-button:active {
+  transform: translate(2px, 2px);
+  box-shadow: 2px 2px 0 #000000;
+}
+
+.wmd-button-primary, .wmd-button.wmd-button-primary {
+  background: #ffd93d;
+  color: #000000;
+}
+
+.wmd-button-primary:hover, .wmd-button.wmd-button-primary:hover {
+  background: #ffcc00;
+}
+
+.wmd-button:disabled, .wmd-button[disabled] {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none !important;
+  box-shadow: 4px 4px 0 #000000 !important;
+}
+
+/* Button States */
+.wmd-state-loading {
+  background: #bcf0da !important;
+  color: #000000 !important;
+  animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.02); }
+}
+
+.wmd-state-error {
+  background: #ff6b6b !important;
+  color: #000000 !important;
+}
+
+.wmd-state-success {
+  background: #6bcf7f !important;
+  color: #000000 !important;
+}
+
+/* Brutal Forms */
+.wmd-input, .wmd-textarea, .wmd-select {
+  width: 100%;
+  padding: 12px;
+  border: 3px solid #000000;
+  border-radius: 0;
+  font-size: 1rem;
+  font-weight: 600;
+  background: #ffffff;
+  color: #000000;
+  box-shadow: 4px 4px 0 #000000;
+  transition: all 0.1s ease;
+}
+
+.wmd-input:focus, .wmd-textarea:focus, .wmd-select:focus {
+  outline: none;
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0 #000000;
+  background: #ffd93d;
+}
+
+.wmd-input::placeholder, .wmd-textarea::placeholder {
+  color: #666666;
+  font-weight: 600;
+}
+
+.wmd-input[disabled], .wmd-input.wmd-state-disabled,
+.wmd-textarea[disabled], .wmd-textarea.wmd-state-disabled,
+.wmd-select[disabled], .wmd-select.wmd-state-disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background: #e0e0e0;
+  box-shadow: none;
+  transform: none !important;
+}
+
+.wmd-textarea {
+  resize: vertical;
+  min-height: 6rem;
+  font-family: inherit;
+}
+
+.wmd-select {
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='3' stroke-linecap='square'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 20px;
+  padding-right: 40px;
+}
+
+/* Brutal Checkboxes and Radios */
+.wmd-checkbox, .wmd-radio {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 8px 0;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.wmd-checkbox input[type="checkbox"],
+.wmd-radio input[type="radio"] {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  border: 3px solid #000000;
+  accent-color: #ffd93d;
+}
+
+/* Brutal Cards and Containers */
+.wmd-container-card {
+  background: #ffffff;
+  border: 3px solid #000000;
+  border-radius: 0;
+  box-shadow: 8px 8px 0 #000000;
+  padding: 24px;
+  margin: 24px 0;
+  transition: all 0.1s ease;
+}
+
+.wmd-container-card:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 10px 10px 0 #000000;
+}
+
+.wmd-container-hero {
+  background: linear-gradient(135deg, #ff6b6b 0%, #ffd93d 100%);
+  color: #000000;
+  border: 3px solid #000000;
+  border-radius: 0;
+  padding: 48px 32px;
+  margin: 32px 0;
+  text-align: center;
+  box-shadow: 12px 12px 0 #000000;
+  position: relative;
+  overflow: hidden;
+}
+
+.wmd-container-hero::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -50%;
+  width: 200%;
+  height: 200%;
+  background: repeating-linear-gradient(
+    45deg,
+    transparent,
+    transparent 10px,
+    rgba(0, 0, 0, 0.05) 10px,
+    rgba(0, 0, 0, 0.05) 20px
+  );
+  pointer-events: none;
+}
+
+.wmd-container-hero .wmd-h1,
+.wmd-container-hero .wmd-h2,
+.wmd-container-hero .wmd-h3,
+.wmd-container-hero .wmd-paragraph {
+  color: #000000;
+  position: relative;
+}
+
+.wmd-container-modal {
+  background: #ffffff;
+  border: 3px solid #000000;
+  border-radius: 0;
+  box-shadow: 12px 12px 0 #000000;
+  padding: 32px;
+  margin: 32px auto;
+  max-width: 600px;
+  position: relative;
+}
+
+.wmd-container-footer {
+  background: #000000;
+  color: #ffffff;
+  padding: 32px;
+  margin-top: 48px;
+  border: 3px solid #000000;
+  box-shadow: 8px 8px 0 #ffd93d;
+}
+
+.wmd-container-footer .wmd-paragraph,
+.wmd-container-footer .wmd-nav-item {
+  color: #ffffff;
+  font-weight: 600;
+}
+
+.wmd-container-section {
+  padding: 24px 0;
+  border-bottom: 3px solid #000000;
+}
+
+.wmd-container-section:last-child {
+  border-bottom: none;
+}
+
+/* Brutal Alerts */
+.wmd-container-alert {
+  padding: 16px 20px;
+  border: 3px solid #000000;
+  border-radius: 0;
+  margin: 20px 0;
+  box-shadow: 6px 6px 0 #000000;
+  font-weight: 600;
+}
+
+.wmd-container-alert.wmd-warning {
+  background: #ffeb3b;
+  color: #000000;
+}
+
+.wmd-container-alert.wmd-state-error {
+  background: #ff6b6b;
+  color: #000000;
+}
+
+.wmd-container-alert.wmd-state-success {
+  background: #6bcf7f;
+  color: #000000;
+}
+
+/* Brutal Navigation */
+.wmd-nav {
+  background: #ffd93d;
+  border: 3px solid #000000;
+  padding: 16px 20px;
+  box-shadow: 6px 6px 0 #000000;
+  margin-bottom: 32px;
+}
+
+.wmd-nav-content {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.wmd-nav-item {
+  color: #000000;
+  text-decoration: none;
+  padding: 8px 16px;
+  border: 2px solid transparent;
+  transition: all 0.1s ease;
+  font-size: 0.875rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.wmd-nav-item:hover {
+  background: #000000;
+  color: #ffd93d;
+  border: 2px solid #000000;
+  transform: translate(-2px, -2px);
+  box-shadow: 2px 2px 0 #000000;
+}
+
+.wmd-brand {
+  font-weight: 900;
+  font-size: 1.5rem;
+  color: #000000;
+  margin-right: auto;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+}
+
+/* Brutal Lists */
+.wmd-list {
+  margin: 20px 0;
+  padding: 0;
+  list-style: none;
+  border: 3px solid #000000;
+  background: #ffffff;
+  box-shadow: 6px 6px 0 #000000;
+}
+
+.wmd-list-item {
+  padding: 16px 20px;
+  border-bottom: 3px solid #000000;
+  color: #000000;
+  font-weight: 600;
+  transition: all 0.1s ease;
+}
+
+.wmd-list-item:hover {
+  background: #ffd93d;
+  padding-left: 28px;
+}
+
+.wmd-list-item:last-child {
+  border-bottom: none;
+}
+
+/* Brutal Grid */
+.wmd-grid {
+  display: grid;
+  gap: 24px;
+  margin: 32px 0;
+}
+
+.wmd-grid-2 {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.wmd-grid-3 {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.wmd-grid-4 {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.wmd-grid > * {
+  border: 3px solid #000000;
+  background: #ffffff;
+  padding: 20px;
+  box-shadow: 6px 6px 0 #000000;
+}
+
+/* Brutal Tables */
+.wmd-table {
+  width: 100%;
+  background: #ffffff;
+  border: 3px solid #000000;
+  border-collapse: separate;
+  border-spacing: 0;
+  box-shadow: 8px 8px 0 #000000;
+  margin: 20px 0;
+}
+
+.wmd-table th {
+  background: #ffd93d;
+  padding: 16px;
+  text-align: left;
+  font-weight: 900;
+  font-size: 0.875rem;
+  color: #000000;
+  border-bottom: 3px solid #000000;
+  border-right: 3px solid #000000;
+  text-transform: uppercase;
+}
+
+.wmd-table th:last-child {
+  border-right: none;
+}
+
+.wmd-table td {
+  padding: 16px;
+  border-bottom: 3px solid #000000;
+  border-right: 3px solid #000000;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #000000;
+}
+
+.wmd-table td:last-child {
+  border-right: none;
+}
+
+.wmd-table tr:last-child td {
+  border-bottom: none;
+}
+
+.wmd-table tr:hover td {
+  background: #bcf0da;
+}
+
+/* Table cell alignment - more specific to override th/td defaults */
+.wmd-table .wmd-align-left {
+  text-align: left !important;
+}
+
+.wmd-table .wmd-align-center {
+  text-align: center !important;
+}
+
+.wmd-table .wmd-align-right {
+  text-align: right !important;
+}
+
+/* Brutal Icons */
+.wmd-icon {
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+  vertical-align: middle;
+  font-weight: 900;
+}
+
+/* Utility classes */
+.wmd-separator {
+  border: none;
+  border-top: 3px solid #000000;
+  margin: 32px 0;
+}
+
+.wmd-image {
+  max-width: 100%;
+  height: auto;
+  border: 3px solid #000000;
+  box-shadow: 6px 6px 0 #000000;
+}
+
+.wmd-code {
+  background: #ffd93d;
+  padding: 4px 8px;
+  border: 2px solid #000000;
+  font-family: "JetBrains Mono", "Courier New", monospace;
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: #000000;
+}
+
+.wmd-blockquote {
+  border-left: 6px solid #000000;
+  padding-left: 20px;
+  margin: 20px 0;
+  color: #000000;
+  font-weight: 600;
+  font-style: normal;
+  background: linear-gradient(to right, rgba(255, 217, 61, 0.2), transparent);
+}
+
+/* Button group */
+.wmd-container-button-group {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin: 20px 0;
+}
+
+/* Form group */
+.wmd-container-form-group {
+  margin: 20px 0;
+}
+
+.wmd-container-form-group .wmd-input:not(:last-child),
+.wmd-container-form-group .wmd-textarea:not(:last-child),
+.wmd-container-form-group .wmd-select:not(:last-child) {
+  margin-bottom: 16px;
+}
+
+/* State Containers */
+.wmd-container-loading-state {
+  background: #ffffff;
+  border: 3px solid #000000;
+  padding: 56px 40px;
+  margin: 32px 0;
+  text-align: center;
+  box-shadow: 8px 8px 0 #000000;
+  position: relative;
+}
+
+.wmd-container-loading-state::before {
+  content: '⟳';
+  display: block;
+  font-size: 64px;
+  font-weight: 900;
+  margin-bottom: 24px;
+  animation: spin 1.5s ease-in-out infinite;
+  color: #ffd93d;
+  text-shadow: 3px 3px 0 #000000;
+}
+
+.wmd-container-empty-state {
+  background: #f5f5f5;
+  border: 3px dashed #000000;
+  padding: 72px 40px;
+  margin: 32px 0;
+  text-align: center;
+  color: #666666;
+  font-weight: 600;
+}
+
+.wmd-container-empty-state::before {
+  content: '[EMPTY]';
+  display: block;
+  font-size: 32px;
+  font-weight: 900;
+  letter-spacing: 0.3em;
+  margin-bottom: 24px;
+  color: #999999;
+  text-transform: uppercase;
+}
+
+.wmd-container-error-state {
+  background: #ff6b6b;
+  border: 3px solid #000000;
+  padding: 56px 40px;
+  margin: 32px 0;
+  text-align: center;
+  box-shadow: 8px 8px 0 #000000;
+  color: #000000;
+  font-weight: 600;
+}
+
+.wmd-container-error-state::before {
+  content: '⚠';
+  display: block;
+  font-size: 72px;
+  font-weight: 900;
+  margin-bottom: 24px;
+  text-shadow: 3px 3px 0 rgba(0, 0, 0, 0.2);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .wmd-h1 {
+    font-size: 2rem;
+  }
+
+  .wmd-h2 {
+    font-size: 1.75rem;
+  }
+
+  .wmd-grid-2,
+  .wmd-grid-3,
+  .wmd-grid-4 {
+    grid-template-columns: 1fr;
+  }
+
+  .wmd-nav-content {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .wmd-brand {
+    margin-right: 0;
+    margin-bottom: 12px;
+    font-size: 1.25rem;
+  }
+
+  .wmd-container-card,
+  .wmd-container-modal {
+    box-shadow: 6px 6px 0 #000000;
+  }
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+  </style>
+</head>
+<body class="wmd-root wmd-brutal">
+  <h1 class="wmd-h1">Social Media Dashboard</h1>
+<blockquote class="wmd-blockquote">
+  <p class="wmd-paragraph"><strong>Use Case:</strong> Social media management and analytics dashboard for managing multiple platforms.</p>
+  <p class="wmd-paragraph"><strong>Key Features:</strong> Post scheduling, engagement metrics, audience analytics, content calendar</p>
+</blockquote>
+<nav class="wmd-nav">
+  <div class="wmd-nav-content">
+    <div class="wmd-brand"><span class="wmd-icon" data-icon="logo" aria-label="logo">◈</span>SocialHub</div>
+    <a href="#" class="wmd-nav-item"></a>
+    <a href="#" class="wmd-nav-item">Posts</a>
+    <a href="#" class="wmd-nav-item">Analytics</a>
+    <a href="#" class="wmd-nav-item">Messages</a>
+    <a href="#" class="wmd-nav-item">Schedule</a>
+    <a href="#" class="wmd-nav-item">Settings</a>
+    <a href="#" class="wmd-nav-item"><span class="wmd-icon" data-icon="bell" aria-label="bell">🔔</span>(24)</a>
+    <a href="#" class="wmd-nav-item"><span class="wmd-icon" data-icon="user" aria-label="user">👤</span>Social Manager</a>
+  </div>
+</nav>
+<hr class="wmd-separator" />
+<h2 class="wmd-h2">Overview</h2>
+<nav class="wmd-nav">
+  <div class="wmd-nav-content">
+    <a href="#" class="wmd-nav-item">Dashboard &gt; Social Media Analytics</a>
+  </div>
+</nav>
+<div class="wmd-container-form-group">
+  <strong>Date Range:</strong> 
+  <button class="wmd-button">Last 30 days...v</button>
+   <strong>Accounts:</strong> 
+  <button class="wmd-button">All Platforms...v</button>
+   
+  <button class="wmd-button">Export Report</button>
+</div>
+<hr class="wmd-separator" />
+<h2 class="wmd-h2">Connected Accounts</h2>
+<nav class="wmd-nav">
+  <div class="wmd-nav-content">
+    <a href="#" class="wmd-nav-item"><span class="wmd-icon" data-icon="facebook" aria-label="facebook" style="font-family: monospace; font-weight: bold; font-style: normal;">f</span>Facebook</a>
+    <a href="#" class="wmd-nav-item"><span class="wmd-icon" data-icon="twitter" aria-label="twitter" style="font-family: monospace; font-weight: bold; font-style: normal;">𝕏</span>Twitter</a>
+    <a href="#" class="wmd-nav-item"><span class="wmd-icon" data-icon="instagram" aria-label="instagram" style="font-family: monospace; font-weight: bold; font-style: normal;">◉</span>Instagram</a>
+    <a href="#" class="wmd-nav-item"><span class="wmd-icon" data-icon="linkedin" aria-label="linkedin" style="font-family: monospace; font-weight: bold; font-style: normal;">in</span>LinkedIn</a>
+    <a href="#" class="wmd-nav-item"><span class="wmd-icon" data-icon="youtube" aria-label="youtube" style="font-family: monospace; font-weight: bold; font-style: normal;">▶</span>YouTube</a>
+    <a href="#" class="wmd-nav-item"><span class="wmd-icon" data-icon="tiktok" aria-label="tiktok">●</span>TikTok</a>
+    <button class="wmd-button">+ Connect Account</button>
+  </div>
+</nav>
+<hr class="wmd-separator" />
+<div class="wmd-grid wmd-grid-5 wmd-grid-5" style="--grid-columns: 5">
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Total Followers</h3>
+    <div class="wmd-container-form-group">
+  <strong>458,234</strong>
+
+  <span class="wmd-icon" data-icon="chart" aria-label="chart">📊</span>
+   +8,234 (+1.8%) this month
+</div>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Total Engagement</h3>
+    <div class="wmd-container-form-group">
+  <strong>89,567</strong>
+
+  <span class="wmd-icon" data-icon="chart" aria-label="chart">📊</span>
+   +12,345 (+16%) this month
+</div>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Posts Published</h3>
+    <div class="wmd-container-form-group">
+  <strong>124</strong>
+
+  <span class="wmd-icon" data-icon="chart" aria-label="chart">📊</span>
+   +23 (+23%) vs last month
+</div>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Reach</h3>
+    <div class="wmd-container-form-group">
+  <strong>2.4M</strong>
+
+  <span class="wmd-icon" data-icon="chart" aria-label="chart">📊</span>
+   +340K (+16.5%) this month
+</div>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Engagement Rate</h3>
+    <div class="wmd-container-form-group">
+  <strong>3.8%</strong>
+
+  <span class="wmd-icon" data-icon="chart" aria-label="chart">📊</span>
+   +0.5% vs last month
+</div>
+  </div>
+</div>
+<h2 class="wmd-h2"></h2>
+<hr class="wmd-separator" />
+<div class="wmd-grid wmd-grid-3 wmd-grid-3" style="--grid-columns: 3">
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3"><span class="wmd-icon" data-icon="instagram" aria-label="instagram" style="font-family: monospace; font-weight: bold; font-style: normal;">◉</span> Instagram</h3>
+    <p class="wmd-paragraph"><strong>Followers:</strong> 234,567 (+2,345)</p>
+    <p class="wmd-paragraph"><strong>This Month:</strong></p>
+    <ul class="wmd-list">
+  <li class="wmd-list-item">Posts: 45</li>
+  <li class="wmd-list-item">Engagement: 45,678</li>
+  <li class="wmd-list-item">Reach: 1.2M</li>
+  <li class="wmd-list-item">Best Post: 12.4K likes</li>
+</ul>
+    <button class="wmd-button">View Details →</button>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3"><span class="wmd-icon" data-icon="twitter" aria-label="twitter" style="font-family: monospace; font-weight: bold; font-style: normal;">𝕏</span> Twitter</h3>
+    <p class="wmd-paragraph"><strong>Followers:</strong> 123,456 (+1,234)</p>
+    <p class="wmd-paragraph"><strong>This Month:</strong></p>
+    <ul class="wmd-list">
+  <li class="wmd-list-item">Tweets: 56</li>
+  <li class="wmd-list-item">Engagement: 23,456</li>
+  <li class="wmd-list-item">Impressions: 890K</li>
+  <li class="wmd-list-item">Best Tweet: 5.6K retweets</li>
+</ul>
+    <button class="wmd-button">View Details →</button>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3"><span class="wmd-icon" data-icon="facebook" aria-label="facebook" style="font-family: monospace; font-weight: bold; font-style: normal;">f</span> Facebook</h3>
+    <p class="wmd-paragraph"><strong>Followers:</strong> 89,234 (+890)</p>
+    <p class="wmd-paragraph"><strong>This Month:</strong></p>
+    <ul class="wmd-list">
+  <li class="wmd-list-item">Posts: 23</li>
+  <li class="wmd-list-item">Engagement: 20,433</li>
+  <li class="wmd-list-item">Reach: 340K</li>
+  <li class="wmd-list-item">Best Post: 3.4K reactions</li>
+</ul>
+    <button class="wmd-button">View Details →</button>
+  </div>
+</div>
+<h2 class="wmd-h2"></h2>
+<hr class="wmd-separator" />
+<h2 class="wmd-h2">Recent Posts</h2>
+<div class="wmd-container-card">
+  <h3 class="wmd-h3">Latest Published Content</h3>
+  <table class="wmd-table">
+  <thead>
+    <tr>
+      <th class="wmd-table-cell wmd-align-left">Platform</th>
+    <th class="wmd-table-cell wmd-align-left">Content</th>
+    <th class="wmd-table-cell wmd-align-left">Posted</th>
+    <th class="wmd-table-cell wmd-align-left">Engagement</th>
+    <th class="wmd-table-cell wmd-align-left">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">:instagram:</td>
+    <td class="wmd-table-cell wmd-align-left">&quot;Spring collection preview! 🌸 Check...&quot;</td>
+    <td class="wmd-table-cell wmd-align-left">2h ago</td>
+    <td class="wmd-table-cell wmd-align-left">1,234 ❤️ 89 💬</td>
+    <td class="wmd-table-cell wmd-align-left">[View] [Boost]</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">:twitter:</td>
+    <td class="wmd-table-cell wmd-align-left">&quot;Exciting news coming tomorrow! Stay...&quot;</td>
+    <td class="wmd-table-cell wmd-align-left">5h ago</td>
+    <td class="wmd-table-cell wmd-align-left">567 ❤️ 234 🔁</td>
+    <td class="wmd-table-cell wmd-align-left">[View] [Promote]</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">:facebook:</td>
+    <td class="wmd-table-cell wmd-align-left">&quot;Behind the scenes of our latest...&quot;</td>
+    <td class="wmd-table-cell wmd-align-left">8h ago</td>
+    <td class="wmd-table-cell wmd-align-left">890 👍 45 💬</td>
+    <td class="wmd-table-cell wmd-align-left">[View] [Boost]</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">:linkedin:</td>
+    <td class="wmd-table-cell wmd-align-left">&quot;5 tips for productivity in 2025...&quot;</td>
+    <td class="wmd-table-cell wmd-align-left">1d ago</td>
+    <td class="wmd-table-cell wmd-align-left">345 👍 67 💬</td>
+    <td class="wmd-table-cell wmd-align-left">[View] [Share]</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">:youtube:</td>
+    <td class="wmd-table-cell wmd-align-left">&quot;Product Tutorial: Getting Started&quot;</td>
+    <td class="wmd-table-cell wmd-align-left">2d ago</td>
+    <td class="wmd-table-cell wmd-align-left">4.5K 👍 234 💬</td>
+    <td class="wmd-table-cell wmd-align-left">[View] [Promote]</td>
+  </tr>
+  </tbody>
+</table>
+  <div class="wmd-container-button-group">
+  <button class="wmd-button">View All Posts →</button>
+  <button class="wmd-button wmd-button-primary">Schedule New Post →</button>
+</div>
+</div>
+<hr class="wmd-separator" />
+<h2 class="wmd-h2">Content Calendar</h2>
+<div class="wmd-grid wmd-grid-7 wmd-grid-7" style="--grid-columns: 7">
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Mon, Mar 17</h3>
+    <p class="wmd-paragraph"><strong>2 posts</strong></p>
+    <p class="wmd-paragraph"><span class="wmd-icon" data-icon="instagram" aria-label="instagram" style="font-family: monospace; font-weight: bold; font-style: normal;">◉</span>9:00 AM
+Product feature</p>
+    <p class="wmd-paragraph"><span class="wmd-icon" data-icon="twitter" aria-label="twitter" style="font-family: monospace; font-weight: bold; font-style: normal;">𝕏</span>3:00 PM
+Industry news</p>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Tue, Mar 18</h3>
+    <p class="wmd-paragraph"><strong>3 posts</strong></p>
+    <p class="wmd-paragraph"><span class="wmd-icon" data-icon="facebook" aria-label="facebook" style="font-family: monospace; font-weight: bold; font-style: normal;">f</span>10:00 AM
+Tutorial video</p>
+    <p class="wmd-paragraph"><span class="wmd-icon" data-icon="instagram" aria-label="instagram" style="font-family: monospace; font-weight: bold; font-style: normal;">◉</span>2:00 PM
+User testimonial</p>
+    <p class="wmd-paragraph"><span class="wmd-icon" data-icon="linkedin" aria-label="linkedin" style="font-family: monospace; font-weight: bold; font-style: normal;">in</span>4:00 PM
+Blog post</p>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Wed, Mar 19</h3>
+    <p class="wmd-paragraph"><strong>1 post</strong></p>
+    <p class="wmd-paragraph"><span class="wmd-icon" data-icon="twitter" aria-label="twitter" style="font-family: monospace; font-weight: bold; font-style: normal;">𝕏</span>11:00 AM
+Poll question</p>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Thu, Mar 20</h3>
+    <p class="wmd-paragraph"><strong>3 posts</strong></p>
+    <p class="wmd-paragraph"><span class="wmd-icon" data-icon="instagram" aria-label="instagram" style="font-family: monospace; font-weight: bold; font-style: normal;">◉</span>9:00 AM
+Behind-scenes</p>
+    <p class="wmd-paragraph"><span class="wmd-icon" data-icon="youtube" aria-label="youtube" style="font-family: monospace; font-weight: bold; font-style: normal;">▶</span>12:00 PM
+Product demo</p>
+    <p class="wmd-paragraph"><span class="wmd-icon" data-icon="twitter" aria-label="twitter" style="font-family: monospace; font-weight: bold; font-style: normal;">𝕏</span>5:00 PM
+Quick tip</p>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Fri, Mar 21</h3>
+    <p class="wmd-paragraph"><strong>2 posts</strong></p>
+    <p class="wmd-paragraph"><span class="wmd-icon" data-icon="facebook" aria-label="facebook" style="font-family: monospace; font-weight: bold; font-style: normal;">f</span>10:00 AM
+Weekend sale</p>
+    <p class="wmd-paragraph"><span class="wmd-icon" data-icon="instagram" aria-label="instagram" style="font-family: monospace; font-weight: bold; font-style: normal;">◉</span>6:00 PM
+User content</p>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Sat, Mar 22</h3>
+    <p class="wmd-paragraph"><strong>1 post</strong></p>
+    <p class="wmd-paragraph"><span class="wmd-icon" data-icon="instagram" aria-label="instagram" style="font-family: monospace; font-weight: bold; font-style: normal;">◉</span>12:00 PM
+Lifestyle shot</p>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Sun, Mar 23</h3>
+    <p class="wmd-paragraph"><strong>1 post</strong></p>
+    <p class="wmd-paragraph"><span class="wmd-icon" data-icon="twitter" aria-label="twitter" style="font-family: monospace; font-weight: bold; font-style: normal;">𝕏</span>4:00 PM
+Weekly recap</p>
+  </div>
+</div>
+<h2 class="wmd-h2"></h2>
+<div class="wmd-container-button-group">
+  <button class="wmd-button wmd-button-primary">+ Schedule Post</button>
+  <button class="wmd-button">View Full Calendar →</button>
+</div>
+<hr class="wmd-separator" />
+<h2 class="wmd-h2">Engagement Analytics</h2>
+<div class="wmd-grid wmd-grid-2 wmd-grid-2" style="--grid-columns: 2">
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Engagement Over Time</h3>
+    <div class="wmd-container-form-group">
+  <img src="https://via.placeholder.com/600x300" alt="Line Chart" class="wmd-image" />
+</div>
+    <p class="wmd-paragraph"><strong>30-Day Trend:</strong></p>
+    <ul class="wmd-list">
+  <li class="wmd-list-item">Peak: 4,567 (Mar 15 - Product launch)</li>
+  <li class="wmd-list-item">Average: 2,985/day</li>
+  <li class="wmd-list-item">Growth: +16% vs previous period</li>
+</ul>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Engagement by Type</h3>
+    <div class="wmd-container-form-group">
+  <img src="https://via.placeholder.com/600x300" alt="Pie Chart" class="wmd-image" />
+</div>
+    <table class="wmd-table">
+  <thead>
+    <tr>
+      <th class="wmd-table-cell wmd-align-left">Type</th>
+    <th class="wmd-table-cell wmd-align-left">Count</th>
+    <th class="wmd-table-cell wmd-align-left">Percentage</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">Likes/Reactions</td>
+    <td class="wmd-table-cell wmd-align-left">56,789</td>
+    <td class="wmd-table-cell wmd-align-left">63%</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">Comments</td>
+    <td class="wmd-table-cell wmd-align-left">18,234</td>
+    <td class="wmd-table-cell wmd-align-left">21%</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">Shares/Retweets</td>
+    <td class="wmd-table-cell wmd-align-left">10,456</td>
+    <td class="wmd-table-cell wmd-align-left">12%</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">Saves</td>
+    <td class="wmd-table-cell wmd-align-left">4,088</td>
+    <td class="wmd-table-cell wmd-align-left">4%</td>
+  </tr>
+  </tbody>
+</table>
+  </div>
+</div>
+<h2 class="wmd-h2"></h2>
+<hr class="wmd-separator" />
+<div class="wmd-grid wmd-grid-3 wmd-grid-3" style="--grid-columns: 3">
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Demographics</h3>
+    <p class="wmd-paragraph"><strong>Age Groups:</strong></p>
+    <ul class="wmd-list">
+  <li class="wmd-list-item">18-24: 23%</li>
+  <li class="wmd-list-item">25-34: 45%</li>
+  <li class="wmd-list-item">35-44: 21%</li>
+  <li class="wmd-list-item">45-54: 8%</li>
+  <li class="wmd-list-item">55+: 3%</li>
+</ul>
+    <p class="wmd-paragraph"><strong>Gender:</strong></p>
+    <ul class="wmd-list">
+  <li class="wmd-list-item">Female: 58%</li>
+  <li class="wmd-list-item">Male: 40%</li>
+  <li class="wmd-list-item">Other: 2%</li>
+</ul>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Top Locations</h3>
+    <p class="wmd-paragraph"><strong>Countries:</strong></p>
+    <ol class="wmd-list">
+  <li class="wmd-list-item">🇺🇸 United States (45%)</li>
+  <li class="wmd-list-item">🇬🇧 United Kingdom (18%)</li>
+  <li class="wmd-list-item">🇨🇦 Canada (12%)</li>
+  <li class="wmd-list-item">🇦🇺 Australia (8%)</li>
+  <li class="wmd-list-item">🇩🇪 Germany (6%)</li>
+</ol>
+    <p class="wmd-paragraph"><strong>Cities:</strong></p>
+    <ol class="wmd-list">
+  <li class="wmd-list-item">New York</li>
+  <li class="wmd-list-item">London</li>
+  <li class="wmd-list-item">Los Angeles</li>
+  <li class="wmd-list-item">Toronto</li>
+  <li class="wmd-list-item">Sydney</li>
+</ol>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Active Times</h3>
+    <p class="wmd-paragraph"><strong>Best Times to Post:</strong></p>
+    <ul class="wmd-list">
+  <li class="wmd-list-item">Weekdays: 9-11 AM, 2-4 PM</li>
+  <li class="wmd-list-item">Weekends: 12-2 PM</li>
+</ul>
+    <p class="wmd-paragraph"><strong>Peak Engagement:</strong></p>
+    <ul class="wmd-list">
+  <li class="wmd-list-item">Monday: 3 PM</li>
+  <li class="wmd-list-item">Wednesday: 10 AM</li>
+  <li class="wmd-list-item">Friday: 2 PM</li>
+</ul>
+    <div class="wmd-container-form-group">
+  <img src="https://via.placeholder.com/350x200" alt="Heatmap" class="wmd-image" />
+</div>
+  </div>
+</div>
+<h2 class="wmd-h2"></h2>
+<hr class="wmd-separator" />
+<h2 class="wmd-h2">Top Performing Content</h2>
+<div class="wmd-container-card">
+  <h3 class="wmd-h3">Best Posts This Month</h3>
+  <div class="wmd-container-form-group">
+  <strong>Most Liked:</strong>
+
+  <span class="wmd-icon" data-icon="instagram" aria-label="instagram" style="font-family: monospace; font-weight: bold; font-style: normal;">◉</span>
+   &quot;Spring collection preview&quot;
+</div>
+  <ul class="wmd-list">
+  <li class="wmd-list-item">12,456 likes</li>
+  <li class="wmd-list-item">234 comments</li>
+  <li class="wmd-list-item">89 shares</li>
+  <li class="wmd-list-item">Posted: Mar 15 at 10:00 AM</li>
+</ul>
+  <div class="wmd-container-button-group">
+  <button class="wmd-button">View Post →</button>
+  <button class="wmd-button">Boost Similar Content →</button>
+</div>
+  <hr class="wmd-separator" />
+  <div class="wmd-container-form-group">
+  <strong>Most Engaged:</strong>
+
+  <span class="wmd-icon" data-icon="twitter" aria-label="twitter" style="font-family: monospace; font-weight: bold; font-style: normal;">𝕏</span>
+   &quot;What&#039;s your favorite productivity hack?&quot;
+</div>
+  <ul class="wmd-list">
+  <li class="wmd-list-item">5,678 likes</li>
+  <li class="wmd-list-item">1,234 replies</li>
+  <li class="wmd-list-item">890 retweets</li>
+  <li class="wmd-list-item">Posted: Mar 12 at 2:00 PM</li>
+</ul>
+  <div class="wmd-container-button-group">
+  <button class="wmd-button">View Thread →</button>
+  <button class="wmd-button">Create Similar Poll →</button>
+</div>
+  <hr class="wmd-separator" />
+  <div class="wmd-container-form-group">
+  <strong>Most Shared:</strong>
+
+  <span class="wmd-icon" data-icon="facebook" aria-label="facebook" style="font-family: monospace; font-weight: bold; font-style: normal;">f</span>
+   &quot;Behind the scenes: Our creative process&quot;
+</div>
+  <ul class="wmd-list">
+  <li class="wmd-list-item">3,456 reactions</li>
+  <li class="wmd-list-item">456 comments</li>
+  <li class="wmd-list-item">2,345 shares</li>
+  <li class="wmd-list-item">Posted: Mar 10 at 9:00 AM</li>
+</ul>
+  <div class="wmd-container-button-group">
+  <button class="wmd-button">View Post →</button>
+  <button class="wmd-button wmd-button-primary">Boost Post →</button>
+</div>
+</div>
+<hr class="wmd-separator" />
+<h2 class="wmd-h2">Content Performance by Type</h2>
+<table class="wmd-table">
+  <thead>
+    <tr>
+      <th class="wmd-table-cell wmd-align-left">Content Type</th>
+    <th class="wmd-table-cell wmd-align-left">Posts</th>
+    <th class="wmd-table-cell wmd-align-left">Avg Engagement</th>
+    <th class="wmd-table-cell wmd-align-left">Best Platform</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">Product Photos</td>
+    <td class="wmd-table-cell wmd-align-left">34</td>
+    <td class="wmd-table-cell wmd-align-left">2,345</td>
+    <td class="wmd-table-cell wmd-align-left">Instagram</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">Videos</td>
+    <td class="wmd-table-cell wmd-align-left">23</td>
+    <td class="wmd-table-cell wmd-align-left">4,567</td>
+    <td class="wmd-table-cell wmd-align-left">YouTube/TikTok</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">Blog Posts</td>
+    <td class="wmd-table-cell wmd-align-left">18</td>
+    <td class="wmd-table-cell wmd-align-left">1,234</td>
+    <td class="wmd-table-cell wmd-align-left">LinkedIn</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">User Generated</td>
+    <td class="wmd-table-cell wmd-align-left">15</td>
+    <td class="wmd-table-cell wmd-align-left">3,456</td>
+    <td class="wmd-table-cell wmd-align-left">Instagram</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">Memes/Humor</td>
+    <td class="wmd-table-cell wmd-align-left">12</td>
+    <td class="wmd-table-cell wmd-align-left">5,678</td>
+    <td class="wmd-table-cell wmd-align-left">Twitter</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">Infographics</td>
+    <td class="wmd-table-cell wmd-align-left">10</td>
+    <td class="wmd-table-cell wmd-align-left">2,890</td>
+    <td class="wmd-table-cell wmd-align-left">Facebook</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">Polls/Questions</td>
+    <td class="wmd-table-cell wmd-align-left">8</td>
+    <td class="wmd-table-cell wmd-align-left">4,123</td>
+    <td class="wmd-table-cell wmd-align-left">Twitter</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">Behind-Scenes</td>
+    <td class="wmd-table-cell wmd-align-left">4</td>
+    <td class="wmd-table-cell wmd-align-left">3,789</td>
+    <td class="wmd-table-cell wmd-align-left">Instagram</td>
+  </tr>
+  </tbody>
+</table>
+<button class="wmd-button">Analyze Content Strategy →</button>
+<hr class="wmd-separator" />
+<h2 class="wmd-h2">Messages &amp; Mentions</h2>
+<div class="wmd-grid wmd-grid-4 wmd-grid-4" style="--grid-columns: 4">
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Unread Messages</h3>
+    <p class="wmd-paragraph"><strong>45</strong>
+Across all platforms</p>
+    <button class="wmd-button wmd-button-primary">View Inbox →</button>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Pending Comments</h3>
+    <p class="wmd-paragraph"><strong>23</strong>
+Awaiting response</p>
+    <button class="wmd-button">Respond →</button>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">New Mentions</h3>
+    <p class="wmd-paragraph"><strong>89</strong>
+Last 24 hours</p>
+    <button class="wmd-button">Review →</button>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Spam Filtered</h3>
+    <p class="wmd-paragraph"><strong>234</strong>
+Auto-filtered</p>
+    <button class="wmd-button">Review →</button>
+  </div>
+</div>
+<h2 class="wmd-h2"></h2>
+<hr class="wmd-separator" />
+<h2 class="wmd-h2">Recent Messages</h2>
+<div class="wmd-container-card">
+  <table class="wmd-table">
+  <thead>
+    <tr>
+      <th class="wmd-table-cell wmd-align-left">Platform</th>
+    <th class="wmd-table-cell wmd-align-left">From</th>
+    <th class="wmd-table-cell wmd-align-left">Message</th>
+    <th class="wmd-table-cell wmd-align-left">Time</th>
+    <th class="wmd-table-cell wmd-align-left">Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">:instagram:</td>
+    <td class="wmd-table-cell wmd-align-left">@user123</td>
+    <td class="wmd-table-cell wmd-align-left">&quot;When will this be back in stock?&quot;</td>
+    <td class="wmd-table-cell wmd-align-left">5m ago</td>
+    <td class="wmd-table-cell wmd-align-left">[Reply]</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">:twitter:</td>
+    <td class="wmd-table-cell wmd-align-left">@customer456</td>
+    <td class="wmd-table-cell wmd-align-left">&quot;Great product! Quick question...&quot;</td>
+    <td class="wmd-table-cell wmd-align-left">15m ago</td>
+    <td class="wmd-table-cell wmd-align-left">[Reply]</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">:facebook:</td>
+    <td class="wmd-table-cell wmd-align-left">John Doe</td>
+    <td class="wmd-table-cell wmd-align-left">&quot;Hi, I need help with my order&quot;</td>
+    <td class="wmd-table-cell wmd-align-left">30m ago</td>
+    <td class="wmd-table-cell wmd-align-left">[Reply]</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">:linkedin:</td>
+    <td class="wmd-table-cell wmd-align-left">Sarah Smith</td>
+    <td class="wmd-table-cell wmd-align-left">&quot;Interested in partnership&quot;</td>
+    <td class="wmd-table-cell wmd-align-left">1h ago</td>
+    <td class="wmd-table-cell wmd-align-left">[Reply]</td>
+  </tr>
+  </tbody>
+</table>
+  <div class="wmd-container-button-group">
+  <button class="wmd-button">View All Messages →</button>
+  <button class="wmd-button">Auto-Reply Settings →</button>
+</div>
+</div>
+<hr class="wmd-separator" />
+<h2 class="wmd-h2">Hashtag Performance</h2>
+<div class="wmd-container-card">
+  <h3 class="wmd-h3">Top Hashtags This Month</h3>
+  <table class="wmd-table">
+  <thead>
+    <tr>
+      <th class="wmd-table-cell wmd-align-left">Hashtag</th>
+    <th class="wmd-table-cell wmd-align-left">Uses</th>
+    <th class="wmd-table-cell wmd-align-left">Reach</th>
+    <th class="wmd-table-cell wmd-align-left">Engagement</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">#productname</td>
+    <td class="wmd-table-cell wmd-align-left">45</td>
+    <td class="wmd-table-cell wmd-align-left">234K</td>
+    <td class="wmd-table-cell wmd-align-left">12.4K</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">#industry</td>
+    <td class="wmd-table-cell wmd-align-left">34</td>
+    <td class="wmd-table-cell wmd-align-left">189K</td>
+    <td class="wmd-table-cell wmd-align-left">8.9K</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">#lifestyle</td>
+    <td class="wmd-table-cell wmd-align-left">28</td>
+    <td class="wmd-table-cell wmd-align-left">156K</td>
+    <td class="wmd-table-cell wmd-align-left">7.8K</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">#brandname</td>
+    <td class="wmd-table-cell wmd-align-left">67</td>
+    <td class="wmd-table-cell wmd-align-left">145K</td>
+    <td class="wmd-table-cell wmd-align-left">6.7K</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">#trending</td>
+    <td class="wmd-table-cell wmd-align-left">23</td>
+    <td class="wmd-table-cell wmd-align-left">123K</td>
+    <td class="wmd-table-cell wmd-align-left">5.6K</td>
+  </tr>
+  </tbody>
+</table>
+  <p class="wmd-paragraph"><strong>Trending Opportunities:</strong></p>
+  <ul class="wmd-list">
+  <li class="wmd-list-item">#newtrend (Rising +234%)</li>
+  <li class="wmd-list-item">#seasonaltopic (Hot this week)</li>
+  <li class="wmd-list-item">#industryevent (Relevant now)</li>
+</ul>
+  <button class="wmd-button">Discover Hashtags →</button>
+</div>
+<hr class="wmd-separator" />
+<h2 class="wmd-h2">Competitor Analysis</h2>
+<div class="wmd-grid wmd-grid-3 wmd-grid-3" style="--grid-columns: 3">
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Competitor A</h3>
+    <p class="wmd-paragraph"><strong>Followers:</strong> 567K</p>
+    <p class="wmd-paragraph"><strong>Engagement Rate:</strong> 4.2%
+<strong>Posts/Week:</strong> 12
+<strong>Best Content:</strong> Video tutorials</p>
+    <button class="wmd-button">Analyze →</button>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Competitor B</h3>
+    <p class="wmd-paragraph"><strong>Followers:</strong> 423K</p>
+    <p class="wmd-paragraph"><strong>Engagement Rate:</strong> 3.5%
+<strong>Posts/Week:</strong> 8
+<strong>Best Content:</strong> User stories</p>
+    <button class="wmd-button">Analyze →</button>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Competitor C</h3>
+    <p class="wmd-paragraph"><strong>Followers:</strong> 389K</p>
+    <p class="wmd-paragraph"><strong>Engagement Rate:</strong> 3.9%
+<strong>Posts/Week:</strong> 15
+<strong>Best Content:</strong> Product photos</p>
+    <button class="wmd-button">Analyze →</button>
+  </div>
+</div>
+<h2 class="wmd-h2"></h2>
+<hr class="wmd-separator" />
+<h2 class="wmd-h2">Influencer Partnerships</h2>
+<div class="wmd-container-card">
+  <h3 class="wmd-h3">Active Collaborations</h3>
+  <table class="wmd-table">
+  <thead>
+    <tr>
+      <th class="wmd-table-cell wmd-align-left">Influencer</th>
+    <th class="wmd-table-cell wmd-align-left">Platform</th>
+    <th class="wmd-table-cell wmd-align-left">Followers</th>
+    <th class="wmd-table-cell wmd-align-left">Campaign</th>
+    <th class="wmd-table-cell wmd-align-left">Status</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">@influencer1</td>
+    <td class="wmd-table-cell wmd-align-left">Instagram</td>
+    <td class="wmd-table-cell wmd-align-left">234K</td>
+    <td class="wmd-table-cell wmd-align-left">Spring Launch</td>
+    <td class="wmd-table-cell wmd-align-left">Active</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">@influencer2</td>
+    <td class="wmd-table-cell wmd-align-left">YouTube</td>
+    <td class="wmd-table-cell wmd-align-left">456K</td>
+    <td class="wmd-table-cell wmd-align-left">Product Review</td>
+    <td class="wmd-table-cell wmd-align-left">Scheduled</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">@influencer3</td>
+    <td class="wmd-table-cell wmd-align-left">TikTok</td>
+    <td class="wmd-table-cell wmd-align-left">189K</td>
+    <td class="wmd-table-cell wmd-align-left">Tutorial Series</td>
+    <td class="wmd-table-cell wmd-align-left">In Review</td>
+  </tr>
+  </tbody>
+</table>
+  <div class="wmd-container-button-group">
+  <button class="wmd-button">Manage Influencers →</button>
+  <button class="wmd-button">Find New Partners →</button>
+</div>
+</div>
+<hr class="wmd-separator" />
+<h2 class="wmd-h2">Schedule Post</h2>
+<div class="wmd-container-card">
+  <h3 class="wmd-h3">Create New Post</h3>
+  <p class="wmd-paragraph"><strong>Platforms:</strong></p>
+  <ul class="wmd-list">
+  <label class="wmd-checkbox">
+    <input type="checkbox" checked />
+    <span>Instagram</span>
+  </label>
+  <label class="wmd-checkbox">
+    <input type="checkbox" checked />
+    <span>Facebook</span>
+  </label>
+  <label class="wmd-checkbox">
+    <input type="checkbox" checked />
+    <span>Twitter</span>
+  </label>
+  <label class="wmd-checkbox">
+    <input type="checkbox" />
+    <span>LinkedIn</span>
+  </label>
+  <label class="wmd-checkbox">
+    <input type="checkbox" />
+    <span>YouTube</span>
+  </label>
+  <label class="wmd-checkbox">
+    <input type="checkbox" />
+    <span>TikTok</span>
+  </label>
+</ul>
+  <hr class="wmd-separator" />
+  <p class="wmd-paragraph"><strong>Content:</strong></p>
+  <div class="wmd-container-form-group">
+  Caption
+  <textarea class="wmd-textarea" rows="5" placeholder="Write your caption..."></textarea>
+</div>
+  <div class="wmd-container-button-group">
+  <button class="wmd-button">Add Emoji 😊</button>
+  <button class="wmd-button">Add Hashtags #</button>
+  <button class="wmd-button">@ Mention</button>
+</div>
+  <hr class="wmd-separator" />
+  <div class="wmd-container-form-group">
+  <strong>Media:</strong>
+
+  <button class="wmd-button">Upload Image/Video</button>
+   
+  <button class="wmd-button">Choose from Library</button>
+</div>
+  <ul class="wmd-list">
+  <li class="wmd-list-item">📸 product-photo.jpg (2.4 MB) [x]</li>
+</ul>
+  <button class="wmd-button">Add Alt Text</button>
+  <hr class="wmd-separator" />
+  <p class="wmd-paragraph"><strong>Scheduling:</strong></p>
+  <p class="wmd-paragraph">Post Timing</p>
+  <ul class="wmd-list">
+  <label class="wmd-radio">
+    <input type="radio" checked />
+    <span>Schedule for later</span>
+  </label>
+  <label class="wmd-radio">
+    <input type="radio" />
+    <span>Post now</span>
+  </label>
+  <label class="wmd-radio">
+    <input type="radio" />
+    <span>Add to queue</span>
+  </label>
+</ul>
+  <div class="wmd-container-form-group">
+  Date &amp; Time
+  <button class="wmd-button">2025-03-20___________</button>
+  <button class="wmd-button">14:00</button>
+</div>
+  <p class="wmd-paragraph"><strong>Optimal Posting Time:</strong> 2:00 PM (Wed)</p>
+  <hr class="wmd-separator" />
+  <p class="wmd-paragraph"><strong>Settings:</strong></p>
+  <ul class="wmd-list">
+  <label class="wmd-checkbox">
+    <input type="checkbox" checked />
+    <span>Enable first comment</span>
+  </label>
+  <label class="wmd-checkbox">
+    <input type="checkbox" />
+    <span>Turn off commenting</span>
+  </label>
+  <label class="wmd-checkbox">
+    <input type="checkbox" />
+    <span>Add location tag</span>
+  </label>
+  <label class="wmd-checkbox">
+    <input type="checkbox" checked />
+    <span>Cross-post to Stories</span>
+  </label>
+</ul>
+  <div class="wmd-container-form-group">
+  First Comment (Instagram)
+  <button class="wmd-button">Add links and hashtags here...</button>
+</div>
+  <hr class="wmd-separator" />
+  <div class="wmd-container-button-group">
+  <button class="wmd-button wmd-button-primary">Schedule Post</button>
+  <button class="wmd-button">Save as Draft</button>
+  <button class="wmd-button">Preview</button>
+  <button class="wmd-button">Cancel</button>
+</div>
+</div>
+<hr class="wmd-separator" />
+<h2 class="wmd-h2">Reports &amp; Insights</h2>
+<div class="wmd-container-card">
+  <h3 class="wmd-h3">Generate Custom Report</h3>
+  <div class="wmd-container-form-group">
+  Report Type
+  <select class="wmd-select">
+    <option value="" disabled selected>Monthly Performance...</option>
+    <option value="Weekly Summary">Weekly Summary</option>
+    <option value="Monthly Performance">Monthly Performance</option>
+    <option value="Quarterly Review">Quarterly Review</option>
+    <option value="Campaign Analysis">Campaign Analysis</option>
+    <option value="Competitor Report">Competitor Report</option>
+    <option value="Audience Insights">Audience Insights</option>
+  </select>
+</div>
+  <ul class="wmd-list">
+  <li class="wmd-list-item">Weekly Summary</li>
+  <li class="wmd-list-item">Monthly Performance</li>
+  <li class="wmd-list-item">Quarterly Review</li>
+  <li class="wmd-list-item">Campaign Analysis</li>
+  <li class="wmd-list-item">Competitor Report</li>
+  <li class="wmd-list-item">Audience Insights</li>
+</ul>
+  <p class="wmd-paragraph">Date Range
+From: [<em>] {type:date}
+To: [</em>] {type:date}</p>
+  <p class="wmd-paragraph">Include Platforms</p>
+  <ul class="wmd-list">
+  <label class="wmd-checkbox">
+    <input type="checkbox" checked />
+    <span>All Platforms</span>
+  </label>
+  <label class="wmd-checkbox">
+    <input type="checkbox" />
+    <span>Select Specific</span>
+  </label>
+</ul>
+  <p class="wmd-paragraph">Include Metrics</p>
+  <ul class="wmd-list">
+  <label class="wmd-checkbox">
+    <input type="checkbox" checked />
+    <span>Engagement</span>
+  </label>
+  <label class="wmd-checkbox">
+    <input type="checkbox" checked />
+    <span>Reach</span>
+  </label>
+  <label class="wmd-checkbox">
+    <input type="checkbox" checked />
+    <span>Followers</span>
+  </label>
+  <label class="wmd-checkbox">
+    <input type="checkbox" checked />
+    <span>Top Posts</span>
+  </label>
+  <label class="wmd-checkbox">
+    <input type="checkbox" />
+    <span>Hashtag Performance</span>
+  </label>
+  <label class="wmd-checkbox">
+    <input type="checkbox" />
+    <span>Audience Demographics</span>
+  </label>
+</ul>
+  <p class="wmd-paragraph">Export Format</p>
+  <ul class="wmd-list">
+  <label class="wmd-radio">
+    <input type="radio" checked />
+    <span>PDF</span>
+  </label>
+  <label class="wmd-radio">
+    <input type="radio" />
+    <span>Excel</span>
+  </label>
+  <label class="wmd-radio">
+    <input type="radio" />
+    <span>PowerPoint</span>
+  </label>
+  <label class="wmd-radio">
+    <input type="radio" />
+    <span>CSV</span>
+  </label>
+</ul>
+  <div class="wmd-container-button-group">
+  <button class="wmd-button wmd-button-primary">Generate Report</button>
+  <button class="wmd-button">Schedule Recurring</button>
+</div>
+</div>
+<hr class="wmd-separator" />
+<div class="wmd-container-footer">
+  <div class="wmd-container-form-group">
+  <strong>Last Sync:</strong> 2 minutes ago • <strong>Next Scheduled Post:</strong>Today at 3:00 PM • 
+  <button class="wmd-button">Refresh</button>
+   • 
+  <button class="wmd-button">Help</button>
+   • 
+  <button class="wmd-button">Keyboard Shortcuts</button>
+</div>
+</div>
+<hr class="wmd-separator" />
+<p class="wmd-paragraph"><strong>Style Variations:</strong></p>
+<ul class="wmd-list">
+  <li class="wmd-list-item">sketch - Quick social dashboard wireframe</li>
+  <li class="wmd-list-item">clean - Professional social media tool</li>
+  <li class="wmd-list-item">wireframe - Content structure focus</li>
+  <li class="wmd-list-item">tailwind - Modern vibrant interface</li>
+  <li class="wmd-list-item">material - Google-style social hub</li>
+  <li class="wmd-list-item">brutal - Bold engagement dashboard</li>
+  <li class="wmd-list-item">none - Semantic HTML for frameworks</li>
+</ul>
+<p class="wmd-paragraph"><strong>Generate this example:</strong></p>
+<pre class="wmd-code-block"><code data-lang="bash">wiremd social-media-dashboard.md --style sketch
+wiremd social-media-dashboard.md --style clean -o social-clean.html
+wiremd social-media-dashboard.md --style tailwind -o social-tailwind.html</code></pre>
+</body>
+</html>

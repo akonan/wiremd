@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>wiremd Mockup</title>
+  <style>
+
+/* Tailwind-Inspired Style */
+body {
+  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: #f9fafb;
+  color: #111827;
+  line-height: 1.5;
+  margin: 0;
+  padding: 20px;
+}
+
+/* Typography */
+.wmd-h1 {
+  font-size: 2.25rem;
+  font-weight: 800;
+  color: #111827;
+  margin: 0 0 1rem 0;
+  letter-spacing: -0.025em;
+}
+
+.wmd-h2 {
+  font-size: 1.875rem;
+  font-weight: 700;
+  color: #1f2937;
+  margin: 1.5rem 0 1rem 0;
+  letter-spacing: -0.025em;
+}
+
+.wmd-h3 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #374151;
+  margin: 1.25rem 0 0.75rem 0;
+}
+
+.wmd-h4 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #4b5563;
+  margin: 1rem 0 0.5rem 0;
+}
+
+.wmd-paragraph {
+  color: #6b7280;
+  margin: 0.75rem 0;
+  font-size: 1rem;
+}
+
+/* Buttons */
+.wmd-button {
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  font-weight: 500;
+  font-size: 0.875rem;
+  transition: all 0.15s ease;
+  border: none;
+  cursor: pointer;
+  display: inline-block;
+  text-decoration: none;
+  background: #e5e7eb;
+  color: #374151;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+}
+
+.wmd-button:hover {
+  background: #d1d5db;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.wmd-button-primary, .wmd-button.wmd-button-primary {
+  background: #6366f1;
+  color: white;
+}
+
+.wmd-button-primary:hover, .wmd-button.wmd-button-primary:hover {
+  background: #4f46e5;
+}
+
+.wmd-button:disabled, .wmd-button[disabled] {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Button States */
+.wmd-state-loading {
+  background: #e0e7ff !important;
+  color: #6366f1 !important;
+  position: relative;
+  padding-left: 2.5rem;
+}
+
+.wmd-state-loading::before {
+  content: '';
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 1rem;
+  height: 1rem;
+  border: 2px solid #6366f1;
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+}
+
+.wmd-state-error {
+  background: #fef2f2 !important;
+  color: #ef4444 !important;
+  border: 1px solid #fca5a5;
+}
+
+.wmd-state-success {
+  background: #f0fdf4 !important;
+  color: #22c55e !important;
+  border: 1px solid #86efac;
+}
+
+@keyframes spin {
+  to { transform: translateY(-50%) rotate(360deg); }
+}
+
+/* Forms */
+.wmd-input, .wmd-textarea, .wmd-select {
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  background: white;
+  transition: all 0.15s ease;
+  color: #111827;
+}
+
+.wmd-input:focus, .wmd-textarea:focus, .wmd-select:focus {
+  outline: none;
+  border-color: #6366f1;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+}
+
+.wmd-input::placeholder, .wmd-textarea::placeholder {
+  color: #9ca3af;
+}
+
+.wmd-input[disabled], .wmd-input.wmd-state-disabled,
+.wmd-textarea[disabled], .wmd-textarea.wmd-state-disabled,
+.wmd-select[disabled], .wmd-select.wmd-state-disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  background: #f9fafb;
+  border-color: #e5e7eb;
+}
+
+.wmd-textarea {
+  resize: vertical;
+  min-height: 6rem;
+  font-family: inherit;
+}
+
+.wmd-select {
+  cursor: pointer;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 0.5rem center;
+  background-size: 1.5rem;
+  padding-right: 2.5rem;
+}
+
+/* Checkboxes and Radios */
+.wmd-checkbox, .wmd-radio {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0.5rem 0;
+  cursor: pointer;
+}
+
+.wmd-checkbox input[type="checkbox"],
+.wmd-radio input[type="radio"] {
+  width: 1rem;
+  height: 1rem;
+  cursor: pointer;
+  accent-color: #6366f1;
+}
+
+/* Cards and Containers */
+.wmd-container-card {
+  background: white;
+  border-radius: 0.75rem;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  padding: 1.5rem;
+  margin: 1rem 0;
+}
+
+.wmd-container-hero {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border-radius: 1rem;
+  padding: 3rem 2rem;
+  margin: 2rem 0;
+  text-align: center;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+.wmd-container-hero .wmd-h1,
+.wmd-container-hero .wmd-h2,
+.wmd-container-hero .wmd-h3,
+.wmd-container-hero .wmd-paragraph {
+  color: white;
+}
+
+.wmd-container-modal {
+  background: white;
+  border-radius: 1rem;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  padding: 2rem;
+  margin: 2rem auto;
+  max-width: 600px;
+  position: relative;
+}
+
+.wmd-container-footer {
+  background: #1f2937;
+  color: #e5e7eb;
+  padding: 2rem;
+  margin-top: 3rem;
+  border-radius: 0.75rem;
+}
+
+.wmd-container-footer .wmd-paragraph,
+.wmd-container-footer .wmd-nav-item {
+  color: #e5e7eb;
+}
+
+.wmd-container-section {
+  padding: 1.5rem 0;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.wmd-container-section:last-child {
+  border-bottom: none;
+}
+
+/* Alerts */
+.wmd-container-alert {
+  padding: 1rem 1.25rem;
+  border-radius: 0.5rem;
+  margin: 1rem 0;
+  border-left: 4px solid;
+}
+
+.wmd-container-alert.wmd-warning {
+  background: #fef3c7;
+  border-left-color: #f59e0b;
+  color: #92400e;
+}
+
+.wmd-container-alert.wmd-state-error {
+  background: #fee2e2;
+  border-left-color: #ef4444;
+  color: #991b1b;
+}
+
+.wmd-container-alert.wmd-state-success {
+  background: #d1fae5;
+  border-left-color: #10b981;
+  color: #065f46;
+}
+
+/* Navigation */
+.wmd-nav {
+  background: white;
+  padding: 1rem 1.5rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  margin-bottom: 2rem;
+}
+
+.wmd-nav-content {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.wmd-nav-item {
+  color: #4b5563;
+  text-decoration: none;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.375rem;
+  transition: all 0.15s ease;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.wmd-nav-item:hover {
+  background: #f3f4f6;
+  color: #111827;
+}
+
+.wmd-brand {
+  font-weight: 700;
+  font-size: 1.125rem;
+  color: #111827;
+  margin-right: auto;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Lists */
+.wmd-list {
+  margin: 1rem 0;
+  padding: 0;
+  list-style: none;
+}
+
+.wmd-list-item {
+  padding: 0.75rem 0;
+  border-bottom: 1px solid #f3f4f6;
+  color: #4b5563;
+}
+
+.wmd-list-item:last-child {
+  border-bottom: none;
+}
+
+/* Grid */
+.wmd-grid {
+  display: grid;
+  gap: 1rem;
+  margin: 1.5rem 0;
+}
+
+.wmd-grid-2 {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.wmd-grid-3 {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.wmd-grid-4 {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+/* Tables */
+.wmd-table {
+  width: 100%;
+  background: white;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  margin: 1rem 0;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.wmd-table th {
+  background: #f9fafb;
+  padding: 0.75rem 1rem;
+  text-align: left;
+  font-weight: 600;
+  font-size: 0.875rem;
+  color: #111827;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.wmd-table td {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid #f3f4f6;
+  font-size: 0.875rem;
+  color: #4b5563;
+}
+
+.wmd-table tr:last-child td {
+  border-bottom: none;
+}
+
+/* Table cell alignment - more specific to override th/td defaults */
+.wmd-table .wmd-align-left {
+  text-align: left !important;
+}
+
+.wmd-table .wmd-align-center {
+  text-align: center !important;
+}
+
+.wmd-table .wmd-align-right {
+  text-align: right !important;
+}
+
+/* Icons */
+.wmd-icon {
+  display: inline-block;
+  width: 1.25rem;
+  height: 1.25rem;
+  vertical-align: middle;
+}
+
+
+/* Utility classes */
+.wmd-separator {
+  border: none;
+  border-top: 1px solid #e5e7eb;
+  margin: 2rem 0;
+}
+
+.wmd-image {
+  max-width: 100%;
+  height: auto;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.wmd-code {
+  background: #f3f4f6;
+  padding: 0.125rem 0.375rem;
+  border-radius: 0.25rem;
+  font-family: ui-monospace, SFMono-Regular, "SF Mono", Consolas, monospace;
+  font-size: 0.875rem;
+  color: #6366f1;
+}
+
+.wmd-blockquote {
+  border-left: 4px solid #6366f1;
+  padding-left: 1rem;
+  margin: 1.5rem 0;
+  color: #4b5563;
+  font-style: italic;
+}
+
+/* Button group */
+.wmd-container-button-group {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin: 1rem 0;
+}
+
+/* Form group */
+.wmd-container-form-group {
+  margin: 1rem 0;
+}
+
+/* State Containers */
+.wmd-container-loading-state {
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.75rem;
+  padding: 3rem 2rem;
+  margin: 2rem 0;
+  text-align: center;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+}
+
+.wmd-container-loading-state::before {
+  content: '';
+  display: block;
+  width: 48px;
+  height: 48px;
+  margin: 0 auto 1.5rem;
+  border: 4px solid #e5e7eb;
+  border-top-color: #6366f1;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+.wmd-container-empty-state {
+  background: #f9fafb;
+  border: 2px dashed #d1d5db;
+  border-radius: 0.75rem;
+  padding: 4rem 2rem;
+  margin: 2rem 0;
+  text-align: center;
+  color: #6b7280;
+}
+
+.wmd-container-empty-state::before {
+  content: '📭';
+  display: block;
+  font-size: 4rem;
+  margin-bottom: 1.5rem;
+  opacity: 0.5;
+}
+
+.wmd-container-error-state {
+  background: #fef2f2;
+  border: 1px solid #fca5a5;
+  border-radius: 0.75rem;
+  padding: 3rem 2rem;
+  margin: 2rem 0;
+  text-align: center;
+  color: #991b1b;
+}
+
+.wmd-container-error-state::before {
+  content: '⚠️';
+  display: block;
+  font-size: 3rem;
+  margin-bottom: 1.5rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .wmd-grid-2,
+  .wmd-grid-3,
+  .wmd-grid-4 {
+    grid-template-columns: 1fr;
+  }
+
+  .wmd-nav-content {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .wmd-brand {
+    margin-right: 0;
+    margin-bottom: 0.5rem;
+  }
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+  </style>
+</head>
+<body class="wmd-root wmd-tailwind">
+  <h1 class="wmd-h1">SaaS Product Landing Page</h1>
+<blockquote class="wmd-blockquote">
+  <p class="wmd-paragraph"><strong>Use Case:</strong> Software-as-a-Service product landing page with features, pricing, testimonials.</p>
+  <p class="wmd-paragraph"><strong>Key Features:</strong> Hero section, feature grid, pricing tiers, CTA buttons, social proof, footer</p>
+</blockquote>
+<nav class="wmd-nav">
+  <div class="wmd-nav-content">
+    <div class="wmd-brand"><span class="wmd-icon" data-icon="logo" aria-label="logo">◈</span>CloudFlow</div>
+    <a href="#" class="wmd-nav-item">Features</a>
+    <a href="#" class="wmd-nav-item">Pricing</a>
+    <a href="#" class="wmd-nav-item">Customers</a>
+    <a href="#" class="wmd-nav-item">Docs</a>
+    <a href="#" class="wmd-nav-item">Blog</a>
+    <button class="wmd-button">Sign In</button>
+    <button class="wmd-button wmd-button-primary">Start Free Trial</button>
+  </div>
+</nav>
+<hr class="wmd-separator" />
+<div class="wmd-container-hero">
+  <h1 class="wmd-h1">Streamline Your Workflow in the Cloud</h1>
+  <p class="wmd-paragraph">The all-in-one platform for modern teams to collaborate, automate, and scale their business operations.</p>
+  <div class="wmd-container-button-group">
+  <button class="wmd-button wmd-button-primary">Start Free Trial</button>
+  <button class="wmd-button">Watch Demo</button>
+  <button class="wmd-button">Schedule Demo</button>
+</div>
+  <p class="wmd-paragraph"><strong>No credit card required • 14-day free trial • Cancel anytime</strong></p>
+  <div class="wmd-container-form-group">
+  <img src="https://via.placeholder.com/800x400" alt="Hero Dashboard Screenshot" class="wmd-image" />
+</div>
+</div>
+<hr class="wmd-separator" />
+<h2 class="wmd-h2">Trusted by 50,000+ Teams Worldwide</h2>
+<nav class="wmd-nav">
+  <div class="wmd-nav-content">
+    <div class="wmd-brand"><span class="wmd-icon" data-icon="logo" aria-label="logo">◈</span>Company1</div>
+    <div class="wmd-brand"><span class="wmd-icon" data-icon="logo" aria-label="logo">◈</span>Company2</div>
+    <div class="wmd-brand"><span class="wmd-icon" data-icon="logo" aria-label="logo">◈</span>Company3</div>
+    <div class="wmd-brand"><span class="wmd-icon" data-icon="logo" aria-label="logo">◈</span>Company4</div>
+    <div class="wmd-brand"><span class="wmd-icon" data-icon="logo" aria-label="logo">◈</span>Company5</div>
+    <div class="wmd-brand"><span class="wmd-icon" data-icon="logo" aria-label="logo">◈</span>Company6</div>
+  </div>
+</nav>
+<hr class="wmd-separator" />
+<div class="wmd-grid wmd-grid-3 wmd-grid-3" style="--grid-columns: 3">
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3"><span class="wmd-icon" data-icon="rocket" aria-label="rocket">🚀</span> Lightning Fast</h3>
+    <p class="wmd-paragraph">Deploy in seconds, not hours. Our infrastructure handles millions of requests with 99.99% uptime.</p>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3"><span class="wmd-icon" data-icon="shield" aria-label="shield">🛡️</span> Enterprise Security</h3>
+    <p class="wmd-paragraph">Bank-level encryption, SOC 2 compliance, and advanced access controls keep your data safe.</p>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3"><span class="wmd-icon" data-icon="gear" aria-label="gear">●</span> Fully Customizable</h3>
+    <p class="wmd-paragraph">Powerful API, webhooks, and integrations with 500+ tools you already use.</p>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3"><span class="wmd-icon" data-icon="chart" aria-label="chart">📊</span> Real-time Analytics</h3>
+    <p class="wmd-paragraph">Track performance, user behavior, and business metrics with beautiful dashboards.</p>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3"><span class="wmd-icon" data-icon="people" aria-label="people">●</span> Team Collaboration</h3>
+    <p class="wmd-paragraph">Built for teams with seamless sharing, commenting, and real-time updates.</p>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3"><span class="wmd-icon" data-icon="support" aria-label="support">●</span> 24/7 Support</h3>
+    <p class="wmd-paragraph">Expert support team available around the clock via chat, email, and phone.</p>
+  </div>
+</div>
+<h2 class="wmd-h2"></h2>
+<hr class="wmd-separator" />
+<div class="wmd-grid wmd-grid-2 wmd-grid-2" style="--grid-columns: 2">
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Automation That Just Works</h3>
+    <div class="wmd-container-form-group">
+  <img src="https://via.placeholder.com/500x300" alt="Automation Screenshot" class="wmd-image" />
+</div>
+    <ul class="wmd-list">
+  <li class="wmd-list-item">Smart Workflows - Visual automation builder</li>
+  <li class="wmd-list-item">No-Code Required - Drag and drop interface</li>
+  <li class="wmd-list-item">500+ Integrations - Connect your favorite tools</li>
+  <li class="wmd-list-item">Scheduled Tasks - Run automations on schedule</li>
+  <li class="wmd-list-item">Error Handling - Built-in retry logic</li>
+</ul>
+    <button class="wmd-button">Learn More →</button>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Analytics &amp; Insights</h3>
+    <div class="wmd-container-form-group">
+  <img src="https://via.placeholder.com/500x300" alt="Analytics Screenshot" class="wmd-image" />
+</div>
+    <ul class="wmd-list">
+  <li class="wmd-list-item">Real-time Dashboards - Live data visualization</li>
+  <li class="wmd-list-item">Custom Reports - Build any report you need</li>
+  <li class="wmd-list-item">Data Export - CSV, JSON, API access</li>
+  <li class="wmd-list-item">Predictive AI - Machine learning insights</li>
+  <li class="wmd-list-item">Team Performance - Track productivity metrics</li>
+</ul>
+    <button class="wmd-button">See Examples →</button>
+  </div>
+</div>
+<h2 class="wmd-h2"></h2>
+<hr class="wmd-separator" />
+<div class="wmd-grid wmd-grid-3 wmd-grid-3" style="--grid-columns: 3">
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Starter</h3>
+    <p class="wmd-paragraph"><strong>$29</strong> /month</p>
+    <p class="wmd-paragraph">Perfect for small teams</p>
+    <ul class="wmd-list">
+  <li class="wmd-list-item">5 Team Members</li>
+  <li class="wmd-list-item">10 GB Storage</li>
+  <li class="wmd-list-item">100 Automations/month</li>
+  <li class="wmd-list-item">Email Support</li>
+  <li class="wmd-list-item">Basic Analytics</li>
+</ul>
+    <button class="wmd-button wmd-button-primary">Start Free Trial</button>
+    <p class="wmd-paragraph"><em>Most Popular</em></p>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Professional</h3>
+    <p class="wmd-paragraph"><strong>$99</strong> /month</p>
+    <p class="wmd-paragraph">For growing businesses</p>
+    <ul class="wmd-list">
+  <li class="wmd-list-item">25 Team Members</li>
+  <li class="wmd-list-item">100 GB Storage</li>
+  <li class="wmd-list-item">Unlimited Automations</li>
+  <li class="wmd-list-item">Priority Support</li>
+  <li class="wmd-list-item">Advanced Analytics</li>
+  <li class="wmd-list-item">API Access</li>
+</ul>
+    <button class="wmd-button wmd-button-primary">Start Free Trial</button>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Enterprise</h3>
+    <p class="wmd-paragraph"><strong>Custom</strong></p>
+    <p class="wmd-paragraph">For large organizations</p>
+    <ul class="wmd-list">
+  <li class="wmd-list-item">Unlimited Members</li>
+  <li class="wmd-list-item">Unlimited Storage</li>
+  <li class="wmd-list-item">Unlimited Everything</li>
+  <li class="wmd-list-item">Dedicated Support</li>
+  <li class="wmd-list-item">Custom Integration</li>
+  <li class="wmd-list-item">SLA Guarantee</li>
+  <li class="wmd-list-item">On-premise Option</li>
+</ul>
+    <button class="wmd-button wmd-button-primary">Contact Sales</button>
+  </div>
+</div>
+<h2 class="wmd-h2"></h2>
+<hr class="wmd-separator" />
+<h2 class="wmd-h2">What Our Customers Say</h2>
+<div class="wmd-grid wmd-grid-3 wmd-grid-3" style="--grid-columns: 3">
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3"><span class="wmd-icon" data-icon="star" aria-label="star">⭐</span><span class="wmd-icon" data-icon="star" aria-label="star">⭐</span><span class="wmd-icon" data-icon="star" aria-label="star">⭐</span><span class="wmd-icon" data-icon="star" aria-label="star">⭐</span><span class="wmd-icon" data-icon="star" aria-label="star">⭐</span></h3>
+    <p class="wmd-paragraph"><em>"CloudFlow transformed how our team works. We've saved 20 hours per week on manual tasks."</em></p>
+    <p class="wmd-paragraph"><strong>Sarah Johnson</strong>
+CEO, TechStart Inc.</p>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3"><span class="wmd-icon" data-icon="star" aria-label="star">⭐</span><span class="wmd-icon" data-icon="star" aria-label="star">⭐</span><span class="wmd-icon" data-icon="star" aria-label="star">⭐</span><span class="wmd-icon" data-icon="star" aria-label="star">⭐</span><span class="wmd-icon" data-icon="star" aria-label="star">⭐</span></h3>
+    <p class="wmd-paragraph"><em>"The best investment we made this year. ROI was clear within the first month."</em></p>
+    <p class="wmd-paragraph"><strong>Michael Chen</strong>
+CTO, DataCorp</p>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3"><span class="wmd-icon" data-icon="star" aria-label="star">⭐</span><span class="wmd-icon" data-icon="star" aria-label="star">⭐</span><span class="wmd-icon" data-icon="star" aria-label="star">⭐</span><span class="wmd-icon" data-icon="star" aria-label="star">⭐</span><span class="wmd-icon" data-icon="star" aria-label="star">⭐</span></h3>
+    <p class="wmd-paragraph"><em>"Support team is amazing. They helped us migrate 5 years of data seamlessly."</em></p>
+    <p class="wmd-paragraph"><strong>Emily Rodriguez</strong>
+Operations Director, GlobalTech</p>
+  </div>
+</div>
+<h2 class="wmd-h2"></h2>
+<hr class="wmd-separator" />
+<h2 class="wmd-h2">Integrations</h2>
+<p class="wmd-paragraph">Connect with tools you already love</p>
+<nav class="wmd-nav">
+  <div class="wmd-nav-content">
+    <a href="#" class="wmd-nav-item"><span class="wmd-icon" data-icon="slack" aria-label="slack">●</span>Slack</a>
+    <a href="#" class="wmd-nav-item"><span class="wmd-icon" data-icon="github" aria-label="github" style="font-family: monospace; font-weight: bold; font-style: normal;">⊙</span>GitHub</a>
+    <a href="#" class="wmd-nav-item"><span class="wmd-icon" data-icon="google" aria-label="google">●</span>Google</a>
+    <a href="#" class="wmd-nav-item"><span class="wmd-icon" data-icon="dropbox" aria-label="dropbox">●</span>Dropbox</a>
+    <a href="#" class="wmd-nav-item"><span class="wmd-icon" data-icon="stripe" aria-label="stripe">●</span>Stripe</a>
+    <a href="#" class="wmd-nav-item"><span class="wmd-icon" data-icon="zoom" aria-label="zoom">●</span>Zoom</a>
+    <a href="#" class="wmd-nav-item"><span class="wmd-icon" data-icon="salesforce" aria-label="salesforce">●</span>Salesforce</a>
+    <a href="#" class="wmd-nav-item"><span class="wmd-icon" data-icon="jira" aria-label="jira">●</span>Jira</a>
+  </div>
+</nav>
+<button class="wmd-button">View All 500+ Integrations →</button>
+<hr class="wmd-separator" />
+<h2 class="wmd-h2">Frequently Asked Questions</h2>
+<div class="wmd-container-card">
+  <h3 class="wmd-h3">Do I need a credit card for the free trial?</h3>
+  <p class="wmd-paragraph">No! Start your 14-day free trial without entering any payment information.</p>
+  <h3 class="wmd-h3">Can I change plans anytime?</h3>
+  <p class="wmd-paragraph">Yes, upgrade or downgrade anytime. Changes take effect immediately.</p>
+  <h3 class="wmd-h3">What happens to my data if I cancel?</h3>
+  <p class="wmd-paragraph">You can export all your data anytime. We keep it for 30 days after cancellation.</p>
+  <h3 class="wmd-h3">Do you offer refunds?</h3>
+  <p class="wmd-paragraph">Yes, 30-day money-back guarantee. No questions asked.</p>
+</div>
+<button class="wmd-button">See All FAQs →</button>
+<hr class="wmd-separator" />
+<h2 class="wmd-h2">Ready to Get Started?</h2>
+<div class="wmd-container-hero">
+  <h1 class="wmd-h1">Join 50,000+ Teams Using CloudFlow</h1>
+  <p class="wmd-paragraph">Start your free trial today. No credit card required.</p>
+  <div class="wmd-container-button-group">
+  <button class="wmd-button wmd-button-primary">Start Free Trial</button>
+  <button class="wmd-button">Schedule Demo</button>
+  <button class="wmd-button">View Pricing</button>
+</div>
+</div>
+<hr class="wmd-separator" />
+<div class="wmd-container-footer">
+  <h2 class="wmd-h2 wmd-grid-4">Quick Links</h2>
+  <h3 class="wmd-h3">Product</h3>
+  <ul class="wmd-list">
+  <li class="wmd-list-item">Features</li>
+  <li class="wmd-list-item">Pricing</li>
+  <li class="wmd-list-item">Integrations</li>
+  <li class="wmd-list-item">Changelog</li>
+  <li class="wmd-list-item">Roadmap</li>
+</ul>
+  <h3 class="wmd-h3">Resources</h3>
+  <ul class="wmd-list">
+  <li class="wmd-list-item">Documentation</li>
+  <li class="wmd-list-item">API Reference</li>
+  <li class="wmd-list-item">Tutorials</li>
+  <li class="wmd-list-item">Blog</li>
+  <li class="wmd-list-item">Case Studies</li>
+</ul>
+  <h3 class="wmd-h3">Company</h3>
+  <ul class="wmd-list">
+  <li class="wmd-list-item">About Us</li>
+  <li class="wmd-list-item">Careers</li>
+  <li class="wmd-list-item">Press Kit</li>
+  <li class="wmd-list-item">Contact</li>
+  <li class="wmd-list-item">Partners</li>
+</ul>
+  <h3 class="wmd-h3">Legal</h3>
+  <ul class="wmd-list">
+  <li class="wmd-list-item">Privacy Policy</li>
+  <li class="wmd-list-item">Terms of Service</li>
+  <li class="wmd-list-item">Security</li>
+  <li class="wmd-list-item">GDPR</li>
+  <li class="wmd-list-item">Compliance</li>
+</ul>
+  <h2 class="wmd-h2"></h2>
+  <hr class="wmd-separator" />
+  <nav class="wmd-nav">
+  <div class="wmd-nav-content">
+    <span class="wmd-icon" data-icon="twitter" aria-label="twitter" style="font-family: monospace; font-weight: bold; font-style: normal;">𝕏</span>
+    <span class="wmd-icon" data-icon="linkedin" aria-label="linkedin" style="font-family: monospace; font-weight: bold; font-style: normal;">in</span>
+    <span class="wmd-icon" data-icon="github" aria-label="github" style="font-family: monospace; font-weight: bold; font-style: normal;">⊙</span>
+    <span class="wmd-icon" data-icon="youtube" aria-label="youtube" style="font-family: monospace; font-weight: bold; font-style: normal;">▶</span>
+  </div>
+</nav>
+  <p class="wmd-paragraph">© 2025 CloudFlow Inc. All rights reserved.</p>
+</div>
+<hr class="wmd-separator" />
+<p class="wmd-paragraph"><strong>Style Variations:</strong></p>
+<ul class="wmd-list">
+  <li class="wmd-list-item">sketch - Quick prototype for stakeholder review</li>
+  <li class="wmd-list-item">clean - Modern, professional SaaS aesthetic</li>
+  <li class="wmd-list-item">wireframe - Content hierarchy visualization</li>
+  <li class="wmd-list-item">tailwind - Contemporary design with gradients</li>
+  <li class="wmd-list-item">material - Google-style elevation and cards</li>
+  <li class="wmd-list-item">brutal - Bold, distinctive branding</li>
+  <li class="wmd-list-item">none - Semantic HTML for custom framework</li>
+</ul>
+<p class="wmd-paragraph"><strong>Generate this example:</strong></p>
+<pre class="wmd-code-block"><code data-lang="bash">wiremd saas-product.md --style sketch
+wiremd saas-product.md --style clean -o saas-clean.html
+wiremd saas-product.md --style tailwind -o saas-tailwind.html</code></pre>
+</body>
+</html>

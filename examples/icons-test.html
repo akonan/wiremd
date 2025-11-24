@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>wiremd Mockup</title>
+  <style>
+
+/* wiremd Sketch Style - Balsamiq-inspired hand-drawn mockups */
+* {
+  box-sizing: border-box;
+}
+
+body.wmd-root {
+  font-family: 'Comic Sans MS', 'Marker Felt', 'Chalkboard', cursive, sans-serif;
+  background: #f5f5dc;
+  color: #333;
+  padding: 20px;
+  margin: 0;
+  line-height: 1.6;
+}
+
+/* Headings */
+.wmd-h1, .wmd-h2, .wmd-h3, .wmd-h4, .wmd-h5, .wmd-h6 {
+  font-weight: bold;
+  margin: 1em 0 0.5em;
+  line-height: 1.3;
+}
+
+.wmd-h1 { font-size: 2em; text-decoration: underline; }
+.wmd-h2 { font-size: 1.75em; }
+.wmd-h3 { font-size: 1.5em; }
+.wmd-h4 { font-size: 1.25em; }
+.wmd-h5 { font-size: 1.1em; }
+.wmd-h6 { font-size: 1em; }
+
+/* Paragraph */
+.wmd-paragraph {
+  margin: 0.5em 0;
+}
+
+/* Buttons */
+.wmd-button {
+  display: inline-block;
+  padding: 8px 16px;
+  margin: 4px;
+  background: #fff;
+  border: 2px solid #000;
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 2px 2px 0 rgba(0,0,0,0.2);
+  transform: rotate(-0.5deg);
+  transition: all 0.1s;
+}
+
+.wmd-button:hover {
+  transform: rotate(-0.5deg) translateY(-2px);
+  box-shadow: 3px 3px 0 rgba(0,0,0,0.2);
+}
+
+.wmd-button-primary, .wmd-button.wmd-primary {
+  background: #87CEEB;
+  border-color: #4682B4;
+}
+
+.wmd-button-secondary, .wmd-button.wmd-secondary {
+  background: #DDD;
+  border-color: #999;
+}
+
+.wmd-button-danger, .wmd-button.wmd-danger {
+  background: #FFB6C1;
+  border-color: #DC143C;
+}
+
+.wmd-button[disabled], .wmd-button.wmd-state-disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.wmd-button.wmd-loading::after {
+  content: '...';
+  animation: loading 1s infinite;
+}
+
+/* Inputs */
+.wmd-input, .wmd-textarea, .wmd-select {
+  display: block;
+  width: 100%;
+  max-width: 400px;
+  padding: 8px 12px;
+  margin: 4px 0;
+  font-family: inherit;
+  font-size: 14px;
+  background: #fff;
+  border: 2px solid #666;
+  border-radius: 4px;
+  transform: rotate(0.3deg);
+}
+
+.wmd-input:focus, .wmd-textarea:focus, .wmd-select:focus {
+  outline: 2px solid #4682B4;
+  outline-offset: 2px;
+}
+
+.wmd-textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+/* Checkboxes and Radios */
+.wmd-checkbox, .wmd-radio {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 6px 0;
+  cursor: pointer;
+  user-select: none;
+}
+
+.wmd-checkbox input[type="checkbox"],
+.wmd-radio input[type="radio"] {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+}
+
+/* Icons */
+.wmd-icon {
+  display: inline-block;
+  width: 1.2em;
+  height: 1.2em;
+  margin: 0 4px;
+  vertical-align: middle;
+}
+
+.wmd-icon::before {
+  content: '◉';
+  font-size: 1.2em;
+}
+
+.wmd-icon[data-icon="house"]::before { content: '🏠'; }
+.wmd-icon[data-icon="user"]::before { content: '👤'; }
+.wmd-icon[data-icon="gear"]::before { content: '⚙️'; }
+.wmd-icon[data-icon="logo"]::before { content: '⭐'; }
+.wmd-icon[data-icon="rocket"]::before { content: '🚀'; }
+.wmd-icon[data-icon="shield"]::before { content: '🛡️'; }
+.wmd-icon[data-icon="zap"]::before { content: '⚡'; }
+.wmd-icon[data-icon="magnifying-glass"]::before { content: '🔍'; }
+.wmd-icon[data-icon="bell"]::before { content: '🔔'; }
+.wmd-icon[data-icon="inbox"]::before { content: '📥'; }
+
+/* Social Media Icons */
+.wmd-icon[data-icon="twitter"]::before { content: '𝕏'; }
+.wmd-icon[data-icon="github"]::before { content: '🐙'; }
+.wmd-icon[data-icon="linkedin"]::before { content: '🔗'; }
+.wmd-icon[data-icon="facebook"]::before { content: 'f'; font-weight: bold; }
+.wmd-icon[data-icon="youtube"]::before { content: '▶'; }
+
+/* Containers */
+.wmd-container-hero, .wmd-container-card, .wmd-container-modal {
+  background: #fff;
+  border: 3px solid #000;
+  border-radius: 12px;
+  padding: 24px;
+  margin: 16px 0;
+  box-shadow: 4px 4px 0 rgba(0,0,0,0.15);
+  transform: rotate(-0.3deg);
+}
+
+.wmd-container-hero {
+  background: linear-gradient(135deg, #FFF9E6 0%, #FFE6CC 100%);
+  text-align: center;
+  padding: 48px 24px;
+}
+
+.wmd-container-card {
+  max-width: 400px;
+}
+
+.wmd-container-modal {
+  position: relative;
+  max-width: 500px;
+  margin: 32px auto;
+  border-width: 4px;
+}
+
+/* Radio Groups */
+.wmd-radio-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 8px 0;
+}
+
+.wmd-radio-group-inline {
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.wmd-radio-group-inline .wmd-radio {
+  margin: 0;
+}
+
+/* Icons */
+.wmd-icon {
+  display: inline-block;
+  font-size: 1.2em;
+  line-height: 1;
+  vertical-align: middle;
+  margin: 0 0.2em;
+}
+
+.wmd-icon[data-icon="twitter"],
+.wmd-icon[data-icon="github"],
+.wmd-icon[data-icon="linkedin"],
+.wmd-icon[data-icon="facebook"] {
+  background: white;
+  border: 2px solid #4682B4;
+  border-radius: 4px;
+  padding: 4px 6px;
+  font-size: 0.9em;
+  font-weight: bold;
+}
+
+/* Navigation */
+.wmd-nav {
+  background: #87CEEB;
+  border: 3px solid #4682B4;
+  border-radius: 8px;
+  padding: 12px 16px;
+  margin: 16px 0;
+  box-shadow: 3px 3px 0 rgba(0,0,0,0.15);
+}
+
+.wmd-nav-content {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.wmd-brand {
+  font-weight: bold;
+  font-size: 1.2em;
+  margin-right: auto;
+}
+
+.wmd-nav-item {
+  color: #000;
+  text-decoration: none;
+  font-weight: bold;
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+
+.wmd-nav-item:hover {
+  background: rgba(255,255,255,0.3);
+}
+
+.wmd-nav .wmd-button {
+  margin: 0;
+}
+
+/* Grid */
+.wmd-grid {
+  display: grid;
+  grid-template-columns: repeat(var(--grid-columns, 3), 1fr);
+  gap: 24px;
+  margin: 24px 0;
+}
+
+.wmd-grid-2 { grid-template-columns: repeat(2, 1fr); }
+.wmd-grid-3 { grid-template-columns: repeat(3, 1fr); }
+.wmd-grid-4 { grid-template-columns: repeat(4, 1fr); }
+
+.wmd-grid-item {
+  background: #fff;
+  border: 2px solid #666;
+  border-radius: 8px;
+  padding: 16px;
+  box-shadow: 2px 2px 0 rgba(0,0,0,0.1);
+  transform: rotate(0.5deg);
+}
+
+.wmd-grid-item:nth-child(even) {
+  transform: rotate(-0.5deg);
+}
+
+/* Lists */
+.wmd-list {
+  margin: 12px 0;
+  padding-left: 24px;
+}
+
+.wmd-list-item {
+  margin: 4px 0;
+}
+
+/* Blockquote */
+.wmd-blockquote {
+  border-left: 4px solid #666;
+  padding-left: 16px;
+  margin: 16px 0;
+  font-style: italic;
+  color: #555;
+}
+
+/* Code */
+.wmd-code-inline {
+  background: #FFF3CD;
+  border: 1px solid #FFC107;
+  border-radius: 3px;
+  padding: 2px 6px;
+  font-family: 'Courier New', monospace;
+  font-size: 0.9em;
+}
+
+.wmd-code-block {
+  background: #FFF3CD;
+  border: 2px solid #FFC107;
+  border-radius: 6px;
+  padding: 12px;
+  margin: 12px 0;
+  overflow-x: auto;
+}
+
+.wmd-code-block code {
+  font-family: 'Courier New', monospace;
+  font-size: 0.9em;
+}
+
+/* Separator */
+.wmd-separator {
+  border: none;
+  border-top: 3px dashed #666;
+  margin: 24px 0;
+}
+
+/* Table */
+.wmd-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  border: 3px solid #000;
+  border-radius: 8px;
+  margin: 16px 0;
+  overflow: hidden;
+}
+
+.wmd-table th, .wmd-table td {
+  border: 2px solid #666;
+  padding: 8px 12px;
+  text-align: left;
+}
+
+.wmd-table th {
+  background: #DDD;
+  font-weight: bold;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .wmd-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .wmd-nav-content {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .wmd-brand {
+    margin-right: 0;
+  }
+}
+
+@keyframes loading {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+  </style>
+</head>
+<body class="wmd-root wmd-sketch">
+  <h1 class="wmd-h1">Icon Test Page</h1>
+<h2 class="wmd-h2">Social Media Footer</h2>
+<div class="wmd-container-section">
+  <nav class="wmd-nav">
+  <div class="wmd-nav-content">
+    <a href="#" class="wmd-nav-item">Privacy</a>
+    <a href="#" class="wmd-nav-item">Terms</a>
+    <a href="#" class="wmd-nav-item">Contact</a>
+    <span class="wmd-icon" data-icon="twitter" aria-label="twitter" style="font-family: monospace; font-weight: bold; font-style: normal;">𝕏</span>
+    <span class="wmd-icon" data-icon="github" aria-label="github" style="font-family: monospace; font-weight: bold; font-style: normal;">⊙</span>
+    <span class="wmd-icon" data-icon="linkedin" aria-label="linkedin" style="font-family: monospace; font-weight: bold; font-style: normal;">in</span>
+  </div>
+</nav>
+  <p class="wmd-paragraph">© 2024 Example Corp. All rights reserved.</p>
+</div>
+<h2 class="wmd-h2">Navigation with Icons</h2>
+<nav class="wmd-nav">
+  <div class="wmd-nav-content">
+    <div class="wmd-brand"><span class="wmd-icon" data-icon="home" aria-label="home">🏠</span>Home</div>
+    <div class="wmd-brand"><span class="wmd-icon" data-icon="user" aria-label="user">👤</span>Profile</div>
+    <div class="wmd-brand"><span class="wmd-icon" data-icon="settings" aria-label="settings">⚙️</span>Settings</div>
+    <div class="wmd-brand"><span class="wmd-icon" data-icon="bell" aria-label="bell">🔔</span>Notifications</div>
+  </div>
+</nav>
+<h2 class="wmd-h2">Standalone Icons</h2>
+<div class="wmd-container-section">
+  <p class="wmd-paragraph"><span class="wmd-icon" data-icon="star" aria-label="star">⭐</span> Star Icon</p>
+  <p class="wmd-paragraph"><span class="wmd-icon" data-icon="heart" aria-label="heart">❤️</span> Heart Icon</p>
+  <p class="wmd-paragraph"><span class="wmd-icon" data-icon="rocket" aria-label="rocket">🚀</span> Rocket Icon</p>
+  <p class="wmd-paragraph"><span class="wmd-icon" data-icon="shield" aria-label="shield">🛡️</span> Shield Icon</p>
+</div>
+<h2 class="wmd-h2">Buttons with Icons</h2>
+<div class="wmd-container-button-group">
+  <button class="wmd-button"><span class="wmd-icon" data-icon="download" aria-label="download">⬇️</span> Download</button>
+  <button class="wmd-button"><span class="wmd-icon" data-icon="upload" aria-label="upload">⬆️</span> Upload</button>
+  <button class="wmd-button"><span class="wmd-icon" data-icon="edit" aria-label="edit">✏️</span> Edit</button>
+</div>
+<h2 class="wmd-h2">List with Icons</h2>
+<ul class="wmd-list">
+  <li class="wmd-list-item"><span class="wmd-icon" data-icon="check" aria-label="check">✓</span> Task completed</li>
+  <li class="wmd-list-item"><span class="wmd-icon" data-icon="warning" aria-label="warning">⚠️</span> Needs attention</li>
+  <li class="wmd-list-item"><span class="wmd-icon" data-icon="error" aria-label="error">❌</span> Failed task</li>
+  <li class="wmd-list-item"><span class="wmd-icon" data-icon="info" aria-label="info">ℹ️</span> Information item</li>
+</ul>
+<div class="wmd-grid wmd-grid-4 wmd-grid-4" style="--grid-columns: 4">
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3"><span class="wmd-icon" data-icon="chart" aria-label="chart">📊</span></h3>
+    <p class="wmd-paragraph">Analytics</p>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3"><span class="wmd-icon" data-icon="dollar" aria-label="dollar">$</span></h3>
+    <p class="wmd-paragraph">Finance</p>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3"><span class="wmd-icon" data-icon="calendar" aria-label="calendar">📅</span></h3>
+    <p class="wmd-paragraph">Schedule</p>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3"><span class="wmd-icon" data-icon="mail" aria-label="mail">✉️</span></h3>
+    <p class="wmd-paragraph">Messages</p>
+  </div>
+</div>
+</body>
+</html>

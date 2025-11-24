@@ -1,0 +1,1166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>wiremd Mockup</title>
+  <style>
+
+/* Material Design Inspired Style */
+body {
+  font-family: Roboto, -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  background: #fafafa;
+  color: rgba(0, 0, 0, 0.87);
+  line-height: 1.5;
+  margin: 0;
+  padding: 20px;
+}
+
+/* Typography - Material Design Type Scale */
+.wmd-h1 {
+  font-size: 2.125rem;
+  font-weight: 400;
+  color: rgba(0, 0, 0, 0.87);
+  margin: 0 0 1rem 0;
+  letter-spacing: 0;
+}
+
+.wmd-h2 {
+  font-size: 1.5rem;
+  font-weight: 500;
+  color: rgba(0, 0, 0, 0.87);
+  margin: 1.5rem 0 1rem 0;
+  letter-spacing: 0.0075em;
+}
+
+.wmd-h3 {
+  font-size: 1.25rem;
+  font-weight: 500;
+  color: rgba(0, 0, 0, 0.87);
+  margin: 1.25rem 0 0.75rem 0;
+  letter-spacing: 0.0125em;
+}
+
+.wmd-h4 {
+  font-size: 1rem;
+  font-weight: 500;
+  color: rgba(0, 0, 0, 0.87);
+  margin: 1rem 0 0.5rem 0;
+  letter-spacing: 0.015em;
+}
+
+.wmd-paragraph {
+  color: rgba(0, 0, 0, 0.6);
+  margin: 0.75rem 0;
+  font-size: 1rem;
+  letter-spacing: 0.00938em;
+}
+
+/* Material Buttons */
+.wmd-button {
+  padding: 6px 16px;
+  border-radius: 4px;
+  font-weight: 500;
+  font-size: 0.875rem;
+  letter-spacing: 0.02857em;
+  text-transform: uppercase;
+  transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,
+              box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,
+              border-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+  border: none;
+  cursor: pointer;
+  display: inline-block;
+  text-decoration: none;
+  background: transparent;
+  color: #6200ee;
+  position: relative;
+  overflow: hidden;
+}
+
+.wmd-button::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(98, 0, 238, 0.2);
+  transform: translate(-50%, -50%);
+  transition: width 0.6s, height 0.6s;
+}
+
+.wmd-button:hover::before {
+  width: 300px;
+  height: 300px;
+}
+
+.wmd-button:hover {
+  background: rgba(98, 0, 238, 0.04);
+}
+
+.wmd-button-primary, .wmd-button.wmd-button-primary {
+  background: #6200ee;
+  color: white;
+  box-shadow: 0px 3px 1px -2px rgba(0,0,0,0.2),
+              0px 2px 2px 0px rgba(0,0,0,0.14),
+              0px 1px 5px 0px rgba(0,0,0,0.12);
+}
+
+.wmd-button-primary::before {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.wmd-button-primary:hover, .wmd-button.wmd-button-primary:hover {
+  background: #6200ee;
+  box-shadow: 0px 2px 4px -1px rgba(0,0,0,0.2),
+              0px 4px 5px 0px rgba(0,0,0,0.14),
+              0px 1px 10px 0px rgba(0,0,0,0.12);
+}
+
+.wmd-button:disabled, .wmd-button[disabled] {
+  color: rgba(0, 0, 0, 0.26);
+  background: rgba(0, 0, 0, 0.12);
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+/* Button States */
+.wmd-state-loading {
+  background: #e8eaf6 !important;
+  color: #6200ee !important;
+  position: relative;
+  padding-left: 2.5rem;
+}
+
+.wmd-state-loading::after {
+  content: '';
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 1rem;
+  height: 1rem;
+  border: 2px solid #6200ee;
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+.wmd-state-error {
+  background: #b00020 !important;
+  color: white !important;
+}
+
+.wmd-state-success {
+  background: #00c853 !important;
+  color: white !important;
+}
+
+@keyframes spin {
+  to { transform: translateY(-50%) rotate(360deg); }
+}
+
+/* Material Form Inputs */
+.wmd-input, .wmd-textarea, .wmd-select {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.42);
+  font-size: 1rem;
+  background: transparent;
+  transition: border-color 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+  color: rgba(0, 0, 0, 0.87);
+}
+
+.wmd-input:focus, .wmd-textarea:focus, .wmd-select:focus {
+  outline: none;
+  border-bottom: 2px solid #6200ee;
+  margin-bottom: -1px;
+}
+
+.wmd-input::placeholder, .wmd-textarea::placeholder {
+  color: rgba(0, 0, 0, 0.42);
+}
+
+.wmd-input[disabled], .wmd-input.wmd-state-disabled,
+.wmd-textarea[disabled], .wmd-textarea.wmd-state-disabled,
+.wmd-select[disabled], .wmd-select.wmd-state-disabled {
+  color: rgba(0, 0, 0, 0.38);
+  cursor: not-allowed;
+  background: rgba(0, 0, 0, 0.02);
+  border-bottom-color: rgba(0, 0, 0, 0.26);
+}
+
+.wmd-textarea {
+  resize: vertical;
+  min-height: 6rem;
+  font-family: inherit;
+  border: 1px solid rgba(0, 0, 0, 0.42);
+  border-radius: 4px;
+  padding: 12px;
+}
+
+.wmd-textarea:focus {
+  border: 2px solid #6200ee;
+  margin: -1px;
+}
+
+.wmd-select {
+  cursor: pointer;
+}
+
+/* Checkboxes and Radios - Material Style */
+.wmd-checkbox, .wmd-radio {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0.5rem 0;
+  cursor: pointer;
+}
+
+.wmd-checkbox input[type="checkbox"],
+.wmd-radio input[type="radio"] {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+  accent-color: #6200ee;
+}
+
+/* Material Cards - Elevation System */
+.wmd-container-card {
+  background: white;
+  border-radius: 4px;
+  box-shadow: 0px 2px 1px -1px rgba(0,0,0,0.2),
+              0px 1px 1px 0px rgba(0,0,0,0.14),
+              0px 1px 3px 0px rgba(0,0,0,0.12);
+  padding: 16px;
+  margin: 16px 0;
+  transition: box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+}
+
+.wmd-container-card:hover {
+  box-shadow: 0px 3px 3px -2px rgba(0,0,0,0.2),
+              0px 3px 4px 0px rgba(0,0,0,0.14),
+              0px 1px 8px 0px rgba(0,0,0,0.12);
+}
+
+.wmd-container-hero {
+  background: linear-gradient(135deg, #6200ee 0%, #3700b3 100%);
+  color: white;
+  border-radius: 4px;
+  padding: 48px 24px;
+  margin: 24px 0;
+  text-align: center;
+  box-shadow: 0px 3px 5px -1px rgba(0,0,0,0.2),
+              0px 6px 10px 0px rgba(0,0,0,0.14),
+              0px 1px 18px 0px rgba(0,0,0,0.12);
+}
+
+.wmd-container-hero .wmd-h1,
+.wmd-container-hero .wmd-h2,
+.wmd-container-hero .wmd-h3,
+.wmd-container-hero .wmd-paragraph {
+  color: white;
+}
+
+.wmd-container-modal {
+  background: white;
+  border-radius: 4px;
+  box-shadow: 0px 11px 15px -7px rgba(0,0,0,0.2),
+              0px 24px 38px 3px rgba(0,0,0,0.14),
+              0px 9px 46px 8px rgba(0,0,0,0.12);
+  padding: 24px;
+  margin: 24px auto;
+  max-width: 600px;
+  position: relative;
+}
+
+.wmd-container-footer {
+  background: #212121;
+  color: rgba(255, 255, 255, 0.87);
+  padding: 24px;
+  margin-top: 48px;
+  border-radius: 4px;
+}
+
+.wmd-container-footer .wmd-paragraph,
+.wmd-container-footer .wmd-nav-item {
+  color: rgba(255, 255, 255, 0.87);
+}
+
+.wmd-container-section {
+  padding: 24px 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+}
+
+.wmd-container-section:last-child {
+  border-bottom: none;
+}
+
+/* Material Alerts */
+.wmd-container-alert {
+  padding: 12px 16px;
+  border-radius: 4px;
+  margin: 16px 0;
+  display: flex;
+  align-items: center;
+}
+
+.wmd-container-alert.wmd-warning {
+  background: #fff3e0;
+  color: #e65100;
+}
+
+.wmd-container-alert.wmd-state-error {
+  background: #ffebee;
+  color: #c62828;
+}
+
+.wmd-container-alert.wmd-state-success {
+  background: #e8f5e9;
+  color: #2e7d32;
+}
+
+/* Material Navigation - App Bar Style */
+.wmd-nav {
+  background: #6200ee;
+  color: white;
+  padding: 0 16px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  box-shadow: 0px 2px 4px -1px rgba(0,0,0,0.2),
+              0px 4px 5px 0px rgba(0,0,0,0.14),
+              0px 1px 10px 0px rgba(0,0,0,0.12);
+  margin-bottom: 24px;
+  border-radius: 4px;
+}
+
+.wmd-nav-content {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.wmd-nav-item {
+  color: rgba(255, 255, 255, 0.87);
+  text-decoration: none;
+  padding: 8px 12px;
+  border-radius: 4px;
+  transition: background-color 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.wmd-nav-item:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.wmd-brand {
+  font-weight: 500;
+  font-size: 1.25rem;
+  color: white;
+  margin-right: auto;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Material Lists */
+.wmd-list {
+  margin: 16px 0;
+  padding: 0;
+  list-style: none;
+  background: white;
+  border-radius: 4px;
+  box-shadow: 0px 1px 3px 0px rgba(0,0,0,0.2),
+              0px 1px 1px 0px rgba(0,0,0,0.14),
+              0px 2px 1px -1px rgba(0,0,0,0.12);
+}
+
+.wmd-list-item {
+  padding: 12px 16px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+  color: rgba(0, 0, 0, 0.87);
+  transition: background-color 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+}
+
+.wmd-list-item:hover {
+  background: rgba(0, 0, 0, 0.04);
+}
+
+.wmd-list-item:last-child {
+  border-bottom: none;
+}
+
+/* Material Grid */
+.wmd-grid {
+  display: grid;
+  gap: 16px;
+  margin: 24px 0;
+}
+
+.wmd-grid-2 {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.wmd-grid-3 {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.wmd-grid-4 {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+/* Material Tables */
+.wmd-table {
+  width: 100%;
+  background: white;
+  border-radius: 4px;
+  overflow: hidden;
+  box-shadow: 0px 1px 3px 0px rgba(0,0,0,0.2),
+              0px 1px 1px 0px rgba(0,0,0,0.14),
+              0px 2px 1px -1px rgba(0,0,0,0.12);
+  margin: 16px 0;
+}
+
+.wmd-table th {
+  background: #fafafa;
+  padding: 16px;
+  text-align: left;
+  font-weight: 500;
+  font-size: 0.875rem;
+  color: rgba(0, 0, 0, 0.87);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+}
+
+.wmd-table td {
+  padding: 16px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+  font-size: 0.875rem;
+  color: rgba(0, 0, 0, 0.87);
+}
+
+.wmd-table tr:last-child td {
+  border-bottom: none;
+}
+
+.wmd-table tr:hover {
+  background: rgba(0, 0, 0, 0.04);
+}
+
+/* Table cell alignment - more specific to override th/td defaults */
+.wmd-table .wmd-align-left {
+  text-align: left !important;
+}
+
+.wmd-table .wmd-align-center {
+  text-align: center !important;
+}
+
+.wmd-table .wmd-align-right {
+  text-align: right !important;
+}
+
+/* Material Icons */
+.wmd-icon {
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+  vertical-align: middle;
+}
+
+/* Utility classes */
+.wmd-separator {
+  border: none;
+  border-top: 1px solid rgba(0, 0, 0, 0.12);
+  margin: 24px 0;
+}
+
+.wmd-image {
+  max-width: 100%;
+  height: auto;
+  border-radius: 4px;
+  box-shadow: 0px 1px 3px 0px rgba(0,0,0,0.2),
+              0px 1px 1px 0px rgba(0,0,0,0.14),
+              0px 2px 1px -1px rgba(0,0,0,0.12);
+}
+
+.wmd-code {
+  background: rgba(98, 0, 238, 0.12);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-family: "Roboto Mono", monospace;
+  font-size: 0.875rem;
+  color: #6200ee;
+}
+
+.wmd-blockquote {
+  border-left: 4px solid #6200ee;
+  padding-left: 16px;
+  margin: 16px 0;
+  color: rgba(0, 0, 0, 0.6);
+  font-style: italic;
+}
+
+/* Button group */
+.wmd-container-button-group {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin: 16px 0;
+}
+
+/* Form group */
+.wmd-container-form-group {
+  margin: 16px 0;
+}
+
+/* State Containers */
+.wmd-container-loading-state {
+  background: white;
+  border-radius: 4px;
+  padding: 48px 32px;
+  margin: 24px 0;
+  text-align: center;
+  box-shadow: 0px 2px 4px -1px rgba(0,0,0,0.2),
+              0px 4px 5px 0px rgba(0,0,0,0.14),
+              0px 1px 10px 0px rgba(0,0,0,0.12);
+}
+
+.wmd-container-loading-state::before {
+  content: '';
+  display: block;
+  width: 48px;
+  height: 48px;
+  margin: 0 auto 24px;
+  border: 3px solid rgba(98, 0, 238, 0.2);
+  border-top-color: #6200ee;
+  border-radius: 50%;
+  animation: spin 1s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+.wmd-container-empty-state {
+  background: #fafafa;
+  border: 1px dashed rgba(0, 0, 0, 0.12);
+  border-radius: 4px;
+  padding: 64px 32px;
+  margin: 24px 0;
+  text-align: center;
+  color: rgba(0, 0, 0, 0.38);
+}
+
+.wmd-container-empty-state::before {
+  content: '📭';
+  display: block;
+  font-size: 64px;
+  margin-bottom: 24px;
+  opacity: 0.3;
+}
+
+.wmd-container-error-state {
+  background: #ffebee;
+  border-radius: 4px;
+  padding: 48px 32px;
+  margin: 24px 0;
+  text-align: center;
+  color: #c62828;
+  box-shadow: 0px 1px 3px 0px rgba(198, 40, 40, 0.2);
+}
+
+.wmd-container-error-state::before {
+  content: '⚠️';
+  display: block;
+  font-size: 48px;
+  margin-bottom: 24px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .wmd-grid-2,
+  .wmd-grid-3,
+  .wmd-grid-4 {
+    grid-template-columns: 1fr;
+  }
+
+  .wmd-nav-content {
+    flex-direction: column;
+    align-items: flex-start;
+    height: auto;
+    padding: 12px 0;
+  }
+
+  .wmd-nav {
+    height: auto;
+  }
+
+  .wmd-brand {
+    margin-right: 0;
+    margin-bottom: 8px;
+  }
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+  </style>
+</head>
+<body class="wmd-root wmd-material">
+  <h1 class="wmd-h1">Navigation Patterns</h1>
+<blockquote class="wmd-blockquote">
+  <p class="wmd-paragraph"><strong>Use Case:</strong> Comprehensive showcase of navigation components for websites and applications.</p>
+  <p class="wmd-paragraph"><strong>Key Features:</strong> Top navigation, breadcrumbs, tabs, sidebar menus, mobile navigation, footer links</p>
+</blockquote>
+<h2 class="wmd-h2">Navigation Component Showcase</h2>
+<p class="wmd-paragraph">This example demonstrates various navigation patterns supported by wiremd.</p>
+<hr class="wmd-separator" />
+<h2 class="wmd-h2">1. Top Navigation Bars</h2>
+<h3 class="wmd-h3">Basic Navigation</h3>
+<pre class="wmd-code-block"><code data-lang="markdown">[[ Home | Products | Services | About | Contact ]]</code></pre>
+<p class="wmd-paragraph"><strong>Rendered:</strong></p>
+<nav class="wmd-nav">
+  <div class="wmd-nav-content">
+    <a href="#" class="wmd-nav-item">Home</a>
+    <a href="#" class="wmd-nav-item">Products</a>
+    <a href="#" class="wmd-nav-item">Services</a>
+    <a href="#" class="wmd-nav-item">About</a>
+    <a href="#" class="wmd-nav-item">Contact</a>
+  </div>
+</nav>
+<hr class="wmd-separator" />
+<h3 class="wmd-h3">Navigation with Logo and Buttons</h3>
+<pre class="wmd-code-block"><code data-lang="markdown">[[ :logo: Brand | Features | Pricing | Docs | [Sign In] | [Get Started]* ]]</code></pre>
+<p class="wmd-paragraph"><strong>Rendered:</strong></p>
+<nav class="wmd-nav">
+  <div class="wmd-nav-content">
+    <div class="wmd-brand"><span class="wmd-icon" data-icon="logo" aria-label="logo">◈</span>Brand</div>
+    <a href="#" class="wmd-nav-item">Features</a>
+    <a href="#" class="wmd-nav-item">Pricing</a>
+    <a href="#" class="wmd-nav-item">Docs</a>
+    <button class="wmd-button">Sign In</button>
+    <button class="wmd-button wmd-button-primary">Get Started</button>
+  </div>
+</nav>
+<hr class="wmd-separator" />
+<h3 class="wmd-h3">Navigation with Active State</h3>
+<pre class="wmd-code-block"><code data-lang="markdown">[[ Logo | Home | *Products* | Services | About | Contact ]]</code></pre>
+<p class="wmd-paragraph"><strong>Rendered:</strong></p>
+<nav class="wmd-nav">
+  <div class="wmd-nav-content">
+    <a href="#" class="wmd-nav-item">Logo</a>
+    <a href="#" class="wmd-nav-item">Home</a>
+    <a href="#" class="wmd-nav-item"></a>
+    <a href="#" class="wmd-nav-item">Services</a>
+    <a href="#" class="wmd-nav-item">About</a>
+    <a href="#" class="wmd-nav-item">Contact</a>
+  </div>
+</nav>
+<hr class="wmd-separator" />
+<h3 class="wmd-h3">Navigation with Icons</h3>
+<pre class="wmd-code-block"><code data-lang="markdown">[[ :home: Home | :shopping: Shop | :info: About | :mail: Contact | :user: Account ]]</code></pre>
+<p class="wmd-paragraph"><strong>Rendered:</strong></p>
+<nav class="wmd-nav">
+  <div class="wmd-nav-content">
+    <a href="#" class="wmd-nav-item"><span class="wmd-icon" data-icon="home" aria-label="home">🏠</span>Home</a>
+    <a href="#" class="wmd-nav-item"><span class="wmd-icon" data-icon="shopping" aria-label="shopping">●</span>Shop</a>
+    <a href="#" class="wmd-nav-item"><span class="wmd-icon" data-icon="info" aria-label="info">ℹ️</span>About</a>
+    <a href="#" class="wmd-nav-item"><span class="wmd-icon" data-icon="mail" aria-label="mail">✉️</span>Contact</a>
+    <a href="#" class="wmd-nav-item"><span class="wmd-icon" data-icon="user" aria-label="user">👤</span>Account</a>
+  </div>
+</nav>
+<hr class="wmd-separator" />
+<h3 class="wmd-h3">Full Featured Navigation</h3>
+<pre class="wmd-code-block"><code data-lang="markdown">[[ :logo: MyApp | Home | Features | Pricing | Resources | Blog | :search: | :bell: (3) | :user: John Doe | [Sign Out] ]]</code></pre>
+<p class="wmd-paragraph"><strong>Rendered:</strong></p>
+<nav class="wmd-nav">
+  <div class="wmd-nav-content">
+    <div class="wmd-brand"><span class="wmd-icon" data-icon="logo" aria-label="logo">◈</span>MyApp</div>
+    <a href="#" class="wmd-nav-item">Home</a>
+    <a href="#" class="wmd-nav-item">Features</a>
+    <a href="#" class="wmd-nav-item">Pricing</a>
+    <a href="#" class="wmd-nav-item">Resources</a>
+    <a href="#" class="wmd-nav-item">Blog</a>
+    <span class="wmd-icon" data-icon="search" aria-label="search">🔍</span>
+    <a href="#" class="wmd-nav-item"><span class="wmd-icon" data-icon="bell" aria-label="bell">🔔</span>(3)</a>
+    <a href="#" class="wmd-nav-item"><span class="wmd-icon" data-icon="user" aria-label="user">👤</span>John Doe</a>
+    <button class="wmd-button">Sign Out</button>
+  </div>
+</nav>
+<hr class="wmd-separator" />
+<h2 class="wmd-h2">2. Breadcrumb Navigation</h2>
+<h3 class="wmd-h3">Simple Breadcrumbs</h3>
+<pre class="wmd-code-block"><code data-lang="markdown">[[ Home &gt; Products &gt; Electronics &gt; Laptops ]]</code></pre>
+<p class="wmd-paragraph"><strong>Rendered:</strong></p>
+<nav class="wmd-nav">
+  <div class="wmd-nav-content">
+    <a href="#" class="wmd-nav-item">Home &gt; Products &gt; Electronics &gt; Laptops</a>
+  </div>
+</nav>
+<hr class="wmd-separator" />
+<h3 class="wmd-h3">Breadcrumbs with Icons</h3>
+<pre class="wmd-code-block"><code data-lang="markdown">[[ :home: Home &gt; :folder: Documents &gt; :file: Report.pdf ]]</code></pre>
+<p class="wmd-paragraph"><strong>Rendered:</strong></p>
+<nav class="wmd-nav">
+  <div class="wmd-nav-content">
+    <a href="#" class="wmd-nav-item"><span class="wmd-icon" data-icon="home" aria-label="home">🏠</span>Home &gt; :folder: Documents &gt; :file: Report.pdf</a>
+  </div>
+</nav>
+<hr class="wmd-separator" />
+<h3 class="wmd-h3">Multi-Level Breadcrumbs</h3>
+<pre class="wmd-code-block"><code data-lang="markdown">[[ Dashboard &gt; Projects &gt; Mobile App v2.0 &gt; Sprint 12 &gt; Tasks ]]</code></pre>
+<p class="wmd-paragraph"><strong>Rendered:</strong></p>
+<nav class="wmd-nav">
+  <div class="wmd-nav-content">
+    <a href="#" class="wmd-nav-item">Dashboard &gt; Projects &gt; Mobile App v2.0 &gt; Sprint 12 &gt; Tasks</a>
+  </div>
+</nav>
+<hr class="wmd-separator" />
+<h2 class="wmd-h2">3. Sidebar Navigation</h2>
+<h3 class="wmd-h3">Basic Sidebar</h3>
+<pre class="wmd-code-block"><code data-lang="markdown">::: sidebar
+#### Navigation
+- Dashboard
+- Profile
+- Settings
+- Logout
+:::</code></pre>
+<p class="wmd-paragraph"><strong>Rendered:</strong></p>
+<div class="wmd-container-sidebar">
+  <h4 class="wmd-h4">Navigation</h4>
+  <ul class="wmd-list">
+  <li class="wmd-list-item">Dashboard</li>
+  <li class="wmd-list-item">Profile</li>
+  <li class="wmd-list-item">Settings</li>
+  <li class="wmd-list-item">Logout</li>
+</ul>
+</div>
+<hr class="wmd-separator" />
+<h3 class="wmd-h3">Sidebar with Icons and Badges</h3>
+<pre class="wmd-code-block"><code data-lang="markdown">::: sidebar
+### Main Menu
+- :home: Dashboard
+- :users: Team Members (12)
+- :calendar: Calendar
+- :chart: Analytics
+- :settings: Settings
+- :bell: Notifications (5)
+- :help: Help &amp; Support
+
+### Quick Actions
+[+ New Project]*
+[+ Invite User]
+
+### Account
+:user: John Doe
+[Sign Out]
+:::</code></pre>
+<p class="wmd-paragraph"><strong>Rendered:</strong></p>
+<div class="wmd-container-sidebar">
+  <h3 class="wmd-h3">Main Menu</h3>
+  <ul class="wmd-list">
+  <li class="wmd-list-item"><span class="wmd-icon" data-icon="home" aria-label="home">🏠</span> Dashboard</li>
+  <li class="wmd-list-item"><span class="wmd-icon" data-icon="users" aria-label="users">●</span> Team Members (12)</li>
+  <li class="wmd-list-item"><span class="wmd-icon" data-icon="calendar" aria-label="calendar">📅</span> Calendar</li>
+  <li class="wmd-list-item"><span class="wmd-icon" data-icon="chart" aria-label="chart">📊</span> Analytics</li>
+  <li class="wmd-list-item"><span class="wmd-icon" data-icon="settings" aria-label="settings">⚙️</span> Settings</li>
+  <li class="wmd-list-item"><span class="wmd-icon" data-icon="bell" aria-label="bell">🔔</span> Notifications (5)</li>
+  <li class="wmd-list-item"><span class="wmd-icon" data-icon="help" aria-label="help">●</span> Help &amp; Support</li>
+</ul>
+  <h3 class="wmd-h3">Quick Actions</h3>
+  <div class="wmd-container-button-group">
+  <button class="wmd-button wmd-button-primary">+ New Project</button>
+  <button class="wmd-button">+ Invite User</button>
+</div>
+  <h3 class="wmd-h3">Account</h3>
+  <div class="wmd-container-form-group">
+  :user: John Doe
+  <button class="wmd-button">Sign Out</button>
+</div>
+</div>
+<hr class="wmd-separator" />
+<h3 class="wmd-h3">Collapsible Sidebar Sections</h3>
+<pre class="wmd-code-block"><code data-lang="markdown">::: sidebar
+### Projects
+- :star: Favorites
+  - Mobile App
+  - Website Redesign
+- :folder: Active Projects
+  - E-Commerce Platform
+  - Marketing Campaign
+  - API Integration
+- :archive: Archived
+  - Old Project 1
+  - Old Project 2
+
+### Settings
+- :user: Profile
+- :bell: Notifications
+- :lock: Privacy
+- :credit-card: Billing
+:::</code></pre>
+<p class="wmd-paragraph"><strong>Rendered:</strong></p>
+<div class="wmd-container-sidebar">
+  <h3 class="wmd-h3">Projects</h3>
+  <ul class="wmd-list">
+  <li class="wmd-list-item"><span class="wmd-icon" data-icon="star" aria-label="star">⭐</span> Favorites<ul class="wmd-list">
+  <li class="wmd-list-item">Mobile App</li>
+  <li class="wmd-list-item">Website Redesign</li>
+</ul></li>
+  <li class="wmd-list-item"><span class="wmd-icon" data-icon="folder" aria-label="folder">📁</span> Active Projects<ul class="wmd-list">
+  <li class="wmd-list-item">E-Commerce Platform</li>
+  <li class="wmd-list-item">Marketing Campaign</li>
+  <li class="wmd-list-item">API Integration</li>
+</ul></li>
+  <li class="wmd-list-item"><span class="wmd-icon" data-icon="archive" aria-label="archive">●</span> Archived<ul class="wmd-list">
+  <li class="wmd-list-item">Old Project 1</li>
+  <li class="wmd-list-item">Old Project 2</li>
+</ul></li>
+</ul>
+  <h3 class="wmd-h3">Settings</h3>
+  <ul class="wmd-list">
+  <li class="wmd-list-item"><span class="wmd-icon" data-icon="user" aria-label="user">👤</span> Profile</li>
+  <li class="wmd-list-item"><span class="wmd-icon" data-icon="bell" aria-label="bell">🔔</span> Notifications</li>
+  <li class="wmd-list-item"><span class="wmd-icon" data-icon="lock" aria-label="lock">🔒</span> Privacy</li>
+  <li class="wmd-list-item"><span class="wmd-icon" data-icon="credit-card" aria-label="credit-card">💳</span> Billing</li>
+</ul>
+</div>
+<hr class="wmd-separator" />
+<h2 class="wmd-h2">4. Tab Navigation</h2>
+<h3 class="wmd-h3">Horizontal Tabs (Concept)</h3>
+<pre class="wmd-code-block"><code data-lang="markdown">Navigation items in a single row:
+[[ Overview | Details | Settings | History ]]</code></pre>
+<p class="wmd-paragraph"><strong>As Horizontal Nav:</strong></p>
+<nav class="wmd-nav">
+  <div class="wmd-nav-content">
+    <a href="#" class="wmd-nav-item">Overview</a>
+    <a href="#" class="wmd-nav-item"></a>
+    <a href="#" class="wmd-nav-item">Settings</a>
+    <a href="#" class="wmd-nav-item">History</a>
+  </div>
+</nav>
+<hr class="wmd-separator" />
+<h3 class="wmd-h3">Tab Navigation with Content</h3>
+<pre class="wmd-code-block"><code data-lang="markdown">## Account Settings
+
+[[ *Profile* | Security | Notifications | Billing ]]
+
+---
+
+### Profile Settings
+
+Full Name
+[John Doe___________]
+
+Email
+[[email protected]___________] {type:email}
+
+[Save Changes]*</code></pre>
+<p class="wmd-paragraph"><strong>Rendered:</strong></p>
+<h2 class="wmd-h2">Account Settings</h2>
+<nav class="wmd-nav">
+  <div class="wmd-nav-content">
+    <a href="#" class="wmd-nav-item"></a>
+    <a href="#" class="wmd-nav-item">Security</a>
+    <a href="#" class="wmd-nav-item">Notifications</a>
+    <a href="#" class="wmd-nav-item">Billing</a>
+  </div>
+</nav>
+<hr class="wmd-separator" />
+<h3 class="wmd-h3">Profile Settings</h3>
+<div class="wmd-container-form-group">
+  Full Name
+  <input type="text" class="wmd-input" placeholder="John Doe" style="width: 14ch; max-width: 14ch;" />
+</div>
+<div class="wmd-container-form-group">
+  Email
+  <button class="wmd-button">[email protected</button>
+</div>
+<button class="wmd-button wmd-button-primary">Save Changes</button>
+<hr class="wmd-separator" />
+<h2 class="wmd-h2">5. Footer Navigation</h2>
+<h3 class="wmd-h3">Simple Footer</h3>
+<pre class="wmd-code-block"><code data-lang="markdown">::: footer
+[[ Privacy | Terms | Contact ]]
+© 2025 Company Name
+:::</code></pre>
+<p class="wmd-paragraph"><strong>Rendered:</strong></p>
+<div class="wmd-container-footer">
+  <div class="wmd-container-section">
+  <nav class="wmd-nav">
+  <div class="wmd-nav-content">
+    <a href="#" class="wmd-nav-item">Privacy</a>
+    <a href="#" class="wmd-nav-item">Terms</a>
+    <a href="#" class="wmd-nav-item">Contact</a>
+  </div>
+</nav>
+  <p class="wmd-paragraph">© 2025 Company Name</p>
+</div>
+</div>
+<hr class="wmd-separator" />
+<h3 class="wmd-h3">Multi-Column Footer</h3>
+<pre class="wmd-code-block"><code data-lang="markdown">::: footer
+
+## Links {.grid-4}
+
+### Product
+- Features
+- Pricing
+- Changelog
+- Roadmap
+
+### Resources
+- Documentation
+- Tutorials
+- Blog
+- API Reference
+
+### Company
+- About
+- Careers
+- Press
+- Partners
+
+### Legal
+- Privacy Policy
+- Terms of Service
+- Cookie Policy
+- GDPR
+
+##
+
+---
+
+[[ :twitter: Twitter | :facebook: Facebook | :linkedin: LinkedIn | :github: GitHub ]]
+
+© 2025 Company Inc. All rights reserved.
+
+:::</code></pre>
+<p class="wmd-paragraph"><strong>Rendered:</strong></p>
+<div class="wmd-container-footer">
+  <h2 class="wmd-h2 wmd-grid-4">Links</h2>
+  <h3 class="wmd-h3">Product</h3>
+  <ul class="wmd-list">
+  <li class="wmd-list-item">Features</li>
+  <li class="wmd-list-item">Pricing</li>
+  <li class="wmd-list-item">Changelog</li>
+  <li class="wmd-list-item">Roadmap</li>
+</ul>
+  <h3 class="wmd-h3">Resources</h3>
+  <ul class="wmd-list">
+  <li class="wmd-list-item">Documentation</li>
+  <li class="wmd-list-item">Tutorials</li>
+  <li class="wmd-list-item">Blog</li>
+  <li class="wmd-list-item">API Reference</li>
+</ul>
+  <h3 class="wmd-h3">Company</h3>
+  <ul class="wmd-list">
+  <li class="wmd-list-item">About</li>
+  <li class="wmd-list-item">Careers</li>
+  <li class="wmd-list-item">Press</li>
+  <li class="wmd-list-item">Partners</li>
+</ul>
+  <h3 class="wmd-h3">Legal</h3>
+  <ul class="wmd-list">
+  <li class="wmd-list-item">Privacy Policy</li>
+  <li class="wmd-list-item">Terms of Service</li>
+  <li class="wmd-list-item">Cookie Policy</li>
+  <li class="wmd-list-item">GDPR</li>
+</ul>
+  <h2 class="wmd-h2"></h2>
+  <hr class="wmd-separator" />
+  <nav class="wmd-nav">
+  <div class="wmd-nav-content">
+    <a href="#" class="wmd-nav-item"><span class="wmd-icon" data-icon="twitter" aria-label="twitter" style="font-family: monospace; font-weight: bold; font-style: normal;">𝕏</span>Twitter</a>
+    <a href="#" class="wmd-nav-item"><span class="wmd-icon" data-icon="facebook" aria-label="facebook" style="font-family: monospace; font-weight: bold; font-style: normal;">f</span>Facebook</a>
+    <a href="#" class="wmd-nav-item"><span class="wmd-icon" data-icon="linkedin" aria-label="linkedin" style="font-family: monospace; font-weight: bold; font-style: normal;">in</span>LinkedIn</a>
+    <a href="#" class="wmd-nav-item"><span class="wmd-icon" data-icon="github" aria-label="github" style="font-family: monospace; font-weight: bold; font-style: normal;">⊙</span>GitHub</a>
+  </div>
+</nav>
+  <p class="wmd-paragraph">© 2025 Company Inc. All rights reserved.</p>
+</div>
+<hr class="wmd-separator" />
+<h2 class="wmd-h2">6. Mobile Navigation (Hamburger Menu Concept)</h2>
+<h3 class="wmd-h3">Mobile Menu Structure</h3>
+<pre class="wmd-code-block"><code data-lang="markdown">::: sidebar {.mobile-menu}
+### Menu
+
+:hamburger: Menu
+
+- :home: Home
+- :shopping: Products
+- :info: About
+- :mail: Contact
+
+### Account
+- :user: Profile
+- :settings: Settings
+- :logout: Sign Out
+
+[Search...___________] {type:search}
+:::</code></pre>
+<p class="wmd-paragraph"><strong>Rendered:</strong></p>
+<div class="wmd-container-sidebar">
+  <h3 class="wmd-h3">Menu</h3>
+  <ul class="wmd-list">
+  <li class="wmd-list-item"><span class="wmd-icon" data-icon="home" aria-label="home">🏠</span> Home</li>
+  <li class="wmd-list-item"><span class="wmd-icon" data-icon="shopping" aria-label="shopping">●</span> Products</li>
+  <li class="wmd-list-item"><span class="wmd-icon" data-icon="info" aria-label="info">ℹ️</span> About</li>
+  <li class="wmd-list-item"><span class="wmd-icon" data-icon="mail" aria-label="mail">✉️</span> Contact</li>
+</ul>
+  <h3 class="wmd-h3">Account</h3>
+  <ul class="wmd-list">
+  <li class="wmd-list-item"><span class="wmd-icon" data-icon="user" aria-label="user">👤</span> Profile</li>
+  <li class="wmd-list-item"><span class="wmd-icon" data-icon="settings" aria-label="settings">⚙️</span> Settings</li>
+  <li class="wmd-list-item"><span class="wmd-icon" data-icon="logout" aria-label="logout">●</span> Sign Out</li>
+</ul>
+  <input type="search" class="wmd-input" placeholder="Search..." />
+</div>
+<hr class="wmd-separator" />
+<h2 class="wmd-h2">7. Pagination Navigation</h2>
+<h3 class="wmd-h3">Basic Pagination</h3>
+<pre class="wmd-code-block"><code data-lang="markdown">Showing 1-20 of 1,234 items
+
+[← Previous] [1] [2] [3] ... [62] [Next →]</code></pre>
+<p class="wmd-paragraph"><strong>Rendered:</strong></p>
+<p class="wmd-paragraph">Showing 1-20 of 1,234 items</p>
+<p class="wmd-paragraph">[← Previous] [1] [2] [3] ... [62] [Next →]</p>
+<hr class="wmd-separator" />
+<h3 class="wmd-h3">Advanced Pagination</h3>
+<pre class="wmd-code-block"><code data-lang="markdown">Page [3___] of 62 | Show [20...v] per page
+
+[« First] [‹ Prev] [1] [2] [*3*] [4] [5] [Next ›] [Last »]
+
+Jump to page: [___] [Go]</code></pre>
+<p class="wmd-paragraph"><strong>Rendered:</strong></p>
+<p class="wmd-paragraph">Page [3___] of 62 | Show [20...v] per page</p>
+<div class="wmd-container-button-group">
+  <button class="wmd-button">« First</button>
+  <button class="wmd-button">‹ Prev</button>
+  <button class="wmd-button">1</button>
+  <button class="wmd-button">2</button>
+  <button class="wmd-button">3</button>
+  <button class="wmd-button">4</button>
+  <button class="wmd-button">5</button>
+  <button class="wmd-button">Next ›</button>
+  <button class="wmd-button">Last »</button>
+</div>
+<p class="wmd-paragraph">Jump to page: [___] [Go]</p>
+<hr class="wmd-separator" />
+<h2 class="wmd-h2">8. Step Navigation (Wizard)</h2>
+<h3 class="wmd-h3">Progress Steps</h3>
+<pre class="wmd-code-block"><code data-lang="markdown">## Account Setup Progress
+
+[########__________] Step 2 of 4
+
+[[ :check: Step 1 | *Step 2* | Step 3 | Step 4 ]]
+
+Currently on: **Personal Information**
+
+[← Previous Step] [Next Step →]*</code></pre>
+<p class="wmd-paragraph"><strong>Rendered:</strong></p>
+<h2 class="wmd-h2">Account Setup Progress</h2>
+<p class="wmd-paragraph">[########__________] Step 2 of 4</p>
+<nav class="wmd-nav">
+  <div class="wmd-nav-content">
+    <a href="#" class="wmd-nav-item"><span class="wmd-icon" data-icon="check" aria-label="check">✓</span>Step 1</a>
+    <a href="#" class="wmd-nav-item"></a>
+    <a href="#" class="wmd-nav-item">Step 3</a>
+    <a href="#" class="wmd-nav-item">Step 4</a>
+  </div>
+</nav>
+<p class="wmd-paragraph">Currently on: <strong>Personal Information</strong></p>
+<div class="wmd-container-button-group">
+  <button class="wmd-button">← Previous Step</button>
+  <button class="wmd-button wmd-button-primary">Next Step →</button>
+</div>
+<hr class="wmd-separator" />
+<h2 class="wmd-h2">9. Context Menu / Action Menu</h2>
+<h3 class="wmd-h3">Action Menu</h3>
+<pre class="wmd-code-block"><code data-lang="markdown">Actions:
+- :edit: Edit
+- :copy: Duplicate
+- :share: Share
+- :download: Download
+- :trash: Delete</code></pre>
+<p class="wmd-paragraph"><strong>Rendered:</strong></p>
+<p class="wmd-paragraph">Actions:</p>
+<ul class="wmd-list">
+  <li class="wmd-list-item"><span class="wmd-icon" data-icon="edit" aria-label="edit">✏️</span> Edit</li>
+  <li class="wmd-list-item"><span class="wmd-icon" data-icon="copy" aria-label="copy">●</span> Duplicate</li>
+  <li class="wmd-list-item"><span class="wmd-icon" data-icon="share" aria-label="share">●</span> Share</li>
+  <li class="wmd-list-item"><span class="wmd-icon" data-icon="download" aria-label="download">⬇️</span> Download</li>
+  <li class="wmd-list-item"><span class="wmd-icon" data-icon="trash" aria-label="trash">●</span> Delete</li>
+</ul>
+<hr class="wmd-separator" />
+<h2 class="wmd-h2">10. Tag/Filter Navigation</h2>
+<h3 class="wmd-h3">Tag Cloud</h3>
+<pre class="wmd-code-block"><code data-lang="markdown">Filter by tags:
+
+[All] [Design (45)] [Development (32)] [Marketing (23)] [Sales (12)] [Support (8)]
+
+**Selected:** Design • Development</code></pre>
+<p class="wmd-paragraph"><strong>Rendered:</strong></p>
+<p class="wmd-paragraph">Filter by tags:</p>
+<div class="wmd-container-button-group">
+  <button class="wmd-button">All</button>
+  <button class="wmd-button">Design (45)</button>
+  <button class="wmd-button">Development (32)</button>
+  <button class="wmd-button">Marketing (23)</button>
+  <button class="wmd-button">Sales (12)</button>
+  <button class="wmd-button">Support (8)</button>
+</div>
+<p class="wmd-paragraph"><strong>Selected:</strong> Design • Development</p>
+<hr class="wmd-separator" />
+<h2 class="wmd-h2">Best Practices</h2>
+<div class="wmd-container-card">
+  <h3 class="wmd-h3">Navigation Design Tips</h3>
+  <ol class="wmd-list">
+  <li class="wmd-list-item">Keep it Simple<ul class="wmd-list">
+  <li class="wmd-list-item">Limit top navigation to 5-7 items</li>
+  <li class="wmd-list-item">Use clear, concise labels</li>
+  <li class="wmd-list-item">Maintain consistent positioning</li>
+</ul></li>
+  <li class="wmd-list-item">Show Current Location<ul class="wmd-list">
+  <li class="wmd-list-item">Use active states (Item)</li>
+  <li class="wmd-list-item">Include breadcrumbs for deep hierarchies</li>
+  <li class="wmd-list-item">Highlight current page</li>
+</ul></li>
+  <li class="wmd-list-item">Mobile Considerations<ul class="wmd-list">
+  <li class="wmd-list-item">Use hamburger menu for mobile</li>
+  <li class="wmd-list-item">Ensure touch targets are large enough</li>
+  <li class="wmd-list-item">Consider sticky navigation</li>
+</ul></li>
+  <li class="wmd-list-item">Accessibility<ul class="wmd-list">
+  <li class="wmd-list-item">Use semantic navigation elements</li>
+  <li class="wmd-list-item">Provide keyboard navigation</li>
+  <li class="wmd-list-item">Include skip links</li>
+</ul></li>
+  <li class="wmd-list-item">Visual Hierarchy<ul class="wmd-list">
+  <li class="wmd-list-item">Primary actions should stand out</li>
+  <li class="wmd-list-item">Use icons sparingly and meaningfully</li>
+  <li class="wmd-list-item">Group related items</li>
+</ul></li>
+</ol>
+</div>
+<hr class="wmd-separator" />
+<p class="wmd-paragraph"><strong>Style Variations:</strong></p>
+<ul class="wmd-list">
+  <li class="wmd-list-item">sketch - Hand-drawn navigation wireframes</li>
+  <li class="wmd-list-item">clean - Modern, minimal navigation</li>
+  <li class="wmd-list-item">wireframe - Structure-focused navigation</li>
+  <li class="wmd-list-item">tailwind - Contemporary nav with accents</li>
+  <li class="wmd-list-item">material - Google-style navigation</li>
+  <li class="wmd-list-item">brutal - Bold, distinctive nav</li>
+  <li class="wmd-list-item">none - Semantic HTML for custom styling</li>
+</ul>
+<p class="wmd-paragraph"><strong>Generate this example:</strong></p>
+<pre class="wmd-code-block"><code data-lang="bash">wiremd navigation-patterns.md --style sketch
+wiremd navigation-patterns.md --style clean -o nav-clean.html
+wiremd navigation-patterns.md --style material -o nav-material.html</code></pre>
+</body>
+</html>

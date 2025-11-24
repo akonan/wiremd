@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>wiremd Mockup</title>
+  <style>
+
+/* wiremd None Style - Minimal semantic styling */
+* {
+  box-sizing: border-box;
+}
+
+body.wmd-root {
+  font-family: system-ui, -apple-system, sans-serif;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 20px;
+  line-height: 1.6;
+}
+
+.wmd-button {
+  padding: 8px 16px;
+  margin: 4px;
+}
+
+.wmd-input, .wmd-textarea, .wmd-select {
+  display: block;
+  width: 100%;
+  max-width: 400px;
+  padding: 8px;
+  margin: 4px 0;
+}
+
+.wmd-grid {
+  display: grid;
+  grid-template-columns: repeat(var(--grid-columns, 3), 1fr);
+  gap: 20px;
+  margin: 20px 0;
+}
+
+.wmd-nav-content {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.wmd-brand {
+  margin-right: auto;
+  font-weight: bold;
+}
+
+/* State Containers */
+.wmd-container-loading-state,
+.wmd-container-empty-state,
+.wmd-container-error-state {
+  padding: 40px;
+  margin: 20px 0;
+  text-align: center;
+}
+
+@media (max-width: 768px) {
+  .wmd-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+  </style>
+</head>
+<body class="wmd-root wmd-none">
+  <h1 class="wmd-h1">Search Form</h1>
+<blockquote class="wmd-blockquote">
+  <p class="wmd-paragraph"><strong>Use Case:</strong> Advanced search interface for e-commerce, job boards, real estate, or content platforms.</p>
+  <p class="wmd-paragraph"><strong>Key Features:</strong> Search input, filters, checkboxes, range inputs, date pickers, instant results</p>
+</blockquote>
+<nav class="wmd-nav">
+  <div class="wmd-nav-content">
+    <div class="wmd-brand"><span class="wmd-icon" data-icon="logo" aria-label="logo">◈</span>SearchHub</div>
+    <a href="#" class="wmd-nav-item">Home</a>
+    <a href="#" class="wmd-nav-item">Categories</a>
+    <a href="#" class="wmd-nav-item">Deals</a>
+    <button class="wmd-button">Sign In</button>
+    <button class="wmd-button">Cart (3)</button>
+  </div>
+</nav>
+<hr class="wmd-separator" />
+<div class="wmd-container-hero">
+  <h1 class="wmd-h1">Find What You&#039;re Looking For</h1>
+  <p class="wmd-paragraph">Over 1 million items ready to ship</p>
+</div>
+<hr class="wmd-separator" />
+<div class="wmd-grid wmd-grid-4 wmd-grid-4" style="--grid-columns: 4">
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Main Search</h3>
+    <div class="wmd-container-form-group">
+  Search products
+  <input type="search" class="wmd-input" placeholder="Enter keywords..." style="width: 23ch; max-width: 23ch;" />
+</div>
+    <button class="wmd-button wmd-button-primary">Search</button>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Category</h3>
+    <div class="wmd-container-form-group">
+  Product Type
+  <select class="wmd-select">
+    <option value="" disabled selected>All Categories...</option>
+    <option value="Electronics">Electronics</option>
+    <option value="Clothing">Clothing</option>
+    <option value="Home &amp; Garden">Home &amp; Garden</option>
+    <option value="Sports &amp; Outdoors">Sports &amp; Outdoors</option>
+    <option value="Books &amp; Media">Books &amp; Media</option>
+    <option value="Toys &amp; Games">Toys &amp; Games</option>
+  </select>
+</div>
+    <ul class="wmd-list">
+  <li class="wmd-list-item">Electronics</li>
+  <li class="wmd-list-item">Clothing</li>
+  <li class="wmd-list-item">Home &amp; Garden</li>
+  <li class="wmd-list-item">Sports &amp; Outdoors</li>
+  <li class="wmd-list-item">Books &amp; Media</li>
+  <li class="wmd-list-item">Toys &amp; Games</li>
+</ul>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Price Range</h3>
+    <div class="wmd-container-form-group">
+  Min Price
+  <input type="number" class="wmd-input" placeholder="$" style="width: 7ch; max-width: 7ch;" />
+</div>
+    <div class="wmd-container-form-group">
+  Max Price
+  <input type="number" class="wmd-input" placeholder="$" style="width: 7ch; max-width: 7ch;" />
+</div>
+    <button class="wmd-button">Apply</button>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">More Filters</h3>
+    <p class="wmd-paragraph">Condition</p>
+    <ul class="wmd-list">
+  <label class="wmd-checkbox">
+    <input type="checkbox" checked />
+    <span>New</span>
+  </label>
+  <label class="wmd-checkbox">
+    <input type="checkbox" checked />
+    <span>Like New</span>
+  </label>
+  <label class="wmd-checkbox">
+    <input type="checkbox" />
+    <span>Used</span>
+  </label>
+  <label class="wmd-checkbox">
+    <input type="checkbox" />
+    <span>Refurbished</span>
+  </label>
+</ul>
+    <p class="wmd-paragraph">Shipping</p>
+    <ul class="wmd-list">
+  <label class="wmd-checkbox">
+    <input type="checkbox" checked />
+    <span>Free Shipping</span>
+  </label>
+  <label class="wmd-checkbox">
+    <input type="checkbox" />
+    <span>Ships Today</span>
+  </label>
+  <label class="wmd-checkbox">
+    <input type="checkbox" />
+    <span>Local Pickup</span>
+  </label>
+</ul>
+    <p class="wmd-paragraph">Rating</p>
+    <ul class="wmd-list">
+  <label class="wmd-checkbox">
+    <input type="checkbox" checked />
+    <span>4+ Stars</span>
+  </label>
+  <label class="wmd-checkbox">
+    <input type="checkbox" />
+    <span>3+ Stars</span>
+  </label>
+</ul>
+  </div>
+</div>
+<h2 class="wmd-h2"></h2>
+<hr class="wmd-separator" />
+<h2 class="wmd-h2">Advanced Search Options</h2>
+<div class="wmd-container-card">
+  <h3 class="wmd-h3">Detailed Filters</h3>
+  <div class="wmd-container-form-group">
+  Brand
+  <input type="text" class="wmd-input" style="width: 29ch; max-width: 29ch;" />
+</div>
+  <p class="wmd-paragraph">Color</p>
+  <ul class="wmd-list">
+  <label class="wmd-checkbox">
+    <input type="checkbox" />
+    <span>Black</span>
+  </label>
+  <label class="wmd-checkbox">
+    <input type="checkbox" />
+    <span>White</span>
+  </label>
+  <label class="wmd-checkbox">
+    <input type="checkbox" />
+    <span>Blue</span>
+  </label>
+  <label class="wmd-checkbox">
+    <input type="checkbox" />
+    <span>Red</span>
+  </label>
+  <label class="wmd-checkbox">
+    <input type="checkbox" />
+    <span>Other</span>
+  </label>
+</ul>
+  <p class="wmd-paragraph">Size</p>
+  <ul class="wmd-list">
+  <label class="wmd-radio">
+    <input type="radio" />
+    <span>Small</span>
+  </label>
+  <label class="wmd-radio">
+    <input type="radio" checked />
+    <span>Medium</span>
+  </label>
+  <label class="wmd-radio">
+    <input type="radio" />
+    <span>Large</span>
+  </label>
+  <label class="wmd-radio">
+    <input type="radio" />
+    <span>X-Large</span>
+  </label>
+</ul>
+  <p class="wmd-paragraph">Availability</p>
+  <ul class="wmd-list">
+  <label class="wmd-checkbox">
+    <input type="checkbox" checked />
+    <span>In Stock Only</span>
+  </label>
+  <label class="wmd-checkbox">
+    <input type="checkbox" />
+    <span>Include Pre-Orders</span>
+  </label>
+  <label class="wmd-checkbox">
+    <input type="checkbox" />
+    <span>Include Back-Orders</span>
+  </label>
+</ul>
+  <p class="wmd-paragraph">Date Listed
+From: [<em>] {type:date}
+To: [</em>] {type:date}</p>
+  <div class="wmd-container-form-group">
+  Sort Results By
+  <select class="wmd-select">
+    <option value="" disabled selected>Select sorting...</option>
+    <option value="Relevance">Relevance</option>
+    <option value="Price: Low to High">Price: Low to High</option>
+    <option value="Price: High to Low">Price: High to Low</option>
+    <option value="Newest First">Newest First</option>
+    <option value="Best Rating">Best Rating</option>
+    <option value="Most Popular">Most Popular</option>
+  </select>
+</div>
+  <ul class="wmd-list">
+  <li class="wmd-list-item">Relevance</li>
+  <li class="wmd-list-item">Price: Low to High</li>
+  <li class="wmd-list-item">Price: High to Low</li>
+  <li class="wmd-list-item">Newest First</li>
+  <li class="wmd-list-item">Best Rating</li>
+  <li class="wmd-list-item">Most Popular</li>
+</ul>
+  <div class="wmd-container-button-group">
+  <button class="wmd-button wmd-button-primary">Apply Filters</button>
+  <button class="wmd-button">Reset All</button>
+</div>
+</div>
+<hr class="wmd-separator" />
+<h2 class="wmd-h2">Search Results</h2>
+<div class="wmd-container-alert info">
+  <p class="wmd-paragraph">ℹ️<strong>Found 1,247 results</strong>for your search criteria</p>
+</div>
+<table class="wmd-table">
+  <thead>
+    <tr>
+      <th class="wmd-table-cell wmd-align-left">Image</th>
+    <th class="wmd-table-cell wmd-align-left">Product</th>
+    <th class="wmd-table-cell wmd-align-left">Price</th>
+    <th class="wmd-table-cell wmd-align-left">Rating</th>
+    <th class="wmd-table-cell wmd-align-left">Stock</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">[IMG]</td>
+    <td class="wmd-table-cell wmd-align-left">Premium Wireless Headphones</td>
+    <td class="wmd-table-cell wmd-align-left">$129.99</td>
+    <td class="wmd-table-cell wmd-align-left">⭐⭐⭐⭐⭐</td>
+    <td class="wmd-table-cell wmd-align-left">In Stock</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">[IMG]</td>
+    <td class="wmd-table-cell wmd-align-left">Smart Watch Series 5</td>
+    <td class="wmd-table-cell wmd-align-left">$299.00</td>
+    <td class="wmd-table-cell wmd-align-left">⭐⭐⭐⭐</td>
+    <td class="wmd-table-cell wmd-align-left">In Stock</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">[IMG]</td>
+    <td class="wmd-table-cell wmd-align-left">Portable Bluetooth Speaker</td>
+    <td class="wmd-table-cell wmd-align-left">$79.99</td>
+    <td class="wmd-table-cell wmd-align-left">⭐⭐⭐⭐⭐</td>
+    <td class="wmd-table-cell wmd-align-left">Low Stock</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">[IMG]</td>
+    <td class="wmd-table-cell wmd-align-left">USB-C Hub 7-in-1</td>
+    <td class="wmd-table-cell wmd-align-left">$49.99</td>
+    <td class="wmd-table-cell wmd-align-left">⭐⭐⭐⭐</td>
+    <td class="wmd-table-cell wmd-align-left">In Stock</td>
+  </tr>
+  </tbody>
+</table>
+<button class="wmd-button">Load More Results</button>
+<hr class="wmd-separator" />
+<div class="wmd-container-footer">
+  <div class="wmd-container-section">
+  <nav class="wmd-nav">
+  <div class="wmd-nav-content">
+    <a href="#" class="wmd-nav-item">Help</a>
+    <a href="#" class="wmd-nav-item">Shipping Info</a>
+    <a href="#" class="wmd-nav-item">Returns</a>
+    <a href="#" class="wmd-nav-item">Contact</a>
+  </div>
+</nav>
+  <p class="wmd-paragraph">© 2025 SearchHub</p>
+</div>
+</div>
+<hr class="wmd-separator" />
+<p class="wmd-paragraph"><strong>Style Variations:</strong></p>
+<ul class="wmd-list">
+  <li class="wmd-list-item">sketch - Quick wireframe for testing UX</li>
+  <li class="wmd-list-item">clean - Modern e-commerce aesthetic</li>
+  <li class="wmd-list-item">wireframe - Focus on filter hierarchy</li>
+  <li class="wmd-list-item">tailwind - Vibrant, contemporary search</li>
+  <li class="wmd-list-item">material - Layered cards and chips</li>
+  <li class="wmd-list-item">brutal - Bold, high-contrast interface</li>
+  <li class="wmd-list-item">none - Semantic HTML for custom styling</li>
+</ul>
+<p class="wmd-paragraph"><strong>Generate this example:</strong></p>
+<pre class="wmd-code-block"><code data-lang="bash">wiremd search-form.md --style sketch
+wiremd search-form.md --style clean -o search-clean.html</code></pre>
+</body>
+</html>

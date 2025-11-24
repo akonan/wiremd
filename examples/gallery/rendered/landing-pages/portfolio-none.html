@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>wiremd Mockup</title>
+  <style>
+
+/* wiremd None Style - Minimal semantic styling */
+* {
+  box-sizing: border-box;
+}
+
+body.wmd-root {
+  font-family: system-ui, -apple-system, sans-serif;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 20px;
+  line-height: 1.6;
+}
+
+.wmd-button {
+  padding: 8px 16px;
+  margin: 4px;
+}
+
+.wmd-input, .wmd-textarea, .wmd-select {
+  display: block;
+  width: 100%;
+  max-width: 400px;
+  padding: 8px;
+  margin: 4px 0;
+}
+
+.wmd-grid {
+  display: grid;
+  grid-template-columns: repeat(var(--grid-columns, 3), 1fr);
+  gap: 20px;
+  margin: 20px 0;
+}
+
+.wmd-nav-content {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.wmd-brand {
+  margin-right: auto;
+  font-weight: bold;
+}
+
+/* State Containers */
+.wmd-container-loading-state,
+.wmd-container-empty-state,
+.wmd-container-error-state {
+  padding: 40px;
+  margin: 20px 0;
+  text-align: center;
+}
+
+@media (max-width: 768px) {
+  .wmd-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+  </style>
+</head>
+<body class="wmd-root wmd-none">
+  <h1 class="wmd-h1">Portfolio Site</h1>
+<blockquote class="wmd-blockquote">
+  <p class="wmd-paragraph"><strong>Use Case:</strong> Personal portfolio for designers, developers, photographers, or creative professionals.</p>
+  <p class="wmd-paragraph"><strong>Key Features:</strong> Hero introduction, project gallery, skills showcase, contact form, responsive grid</p>
+</blockquote>
+<nav class="wmd-nav">
+  <div class="wmd-nav-content">
+    <a href="#" class="wmd-nav-item">Jane Doe</a>
+    <a href="#" class="wmd-nav-item"></a>
+    <a href="#" class="wmd-nav-item">About</a>
+    <a href="#" class="wmd-nav-item">Contact</a>
+  </div>
+</nav>
+<hr class="wmd-separator" />
+<div class="wmd-container-hero">
+  <h1 class="wmd-h1">Hi, I&#039;m Jane Doe</h1>
+  <p class="wmd-paragraph"><strong>Product Designer & Creative Developer</strong></p>
+  <p class="wmd-paragraph">I design beautiful, functional digital experiences that users love.</p>
+  <p class="wmd-paragraph">[View My Work ↓] [Download Resume] [[email protected]]</p>
+</div>
+<hr class="wmd-separator" />
+<div class="wmd-container-form-group">
+  <img src="https://via.placeholder.com/200x200" alt="Profile Photo" class="wmd-image" />
+</div>
+<hr class="wmd-separator" />
+<h2 class="wmd-h2">Featured Work</h2>
+<div class="wmd-grid wmd-grid-2 wmd-grid-2" style="--grid-columns: 2">
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">E-Commerce Redesign</h3>
+    <div class="wmd-container-form-group">
+  <img src="https://via.placeholder.com/500x350" alt="Project Screenshot" class="wmd-image" />
+</div>
+    <p class="wmd-paragraph"><strong>Mobile App Design</strong> • 2024</p>
+    <p class="wmd-paragraph">Redesigned the shopping experience for 2M+ users, increasing conversion by 35%.</p>
+    <p class="wmd-paragraph"><strong>Skills:</strong> UI/UX, Figma, User Research, A/B Testing</p>
+    <button class="wmd-button">View Case Study →</button>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">SaaS Dashboard</h3>
+    <div class="wmd-container-form-group">
+  <img src="https://via.placeholder.com/500x350" alt="Project Screenshot" class="wmd-image" />
+</div>
+    <p class="wmd-paragraph"><strong>Web Application</strong> • 2024</p>
+    <p class="wmd-paragraph">Analytics platform for B2B customers with real-time data visualization.</p>
+    <p class="wmd-paragraph"><strong>Skills:</strong> React, TypeScript, D3.js, Design System</p>
+    <button class="wmd-button">View Live Site →</button>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Brand Identity</h3>
+    <div class="wmd-container-form-group">
+  <img src="https://via.placeholder.com/500x350" alt="Project Screenshot" class="wmd-image" />
+</div>
+    <p class="wmd-paragraph"><strong>Branding & Marketing</strong> • 2023</p>
+    <p class="wmd-paragraph">Complete brand identity for sustainable fashion startup including logo, guidelines, and website.</p>
+    <p class="wmd-paragraph"><strong>Skills:</strong> Brand Strategy, Illustration, Web Design</p>
+    <button class="wmd-button">View Portfolio →</button>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Mobile Banking App</h3>
+    <div class="wmd-container-form-group">
+  <img src="https://via.placeholder.com/500x350" alt="Project Screenshot" class="wmd-image" />
+</div>
+    <p class="wmd-paragraph"><strong>Fintech Product</strong> • 2023</p>
+    <p class="wmd-paragraph">Secure, accessible banking app serving 500K+ users with 4.8★ rating.</p>
+    <p class="wmd-paragraph"><strong>Skills:</strong> iOS, Swift, Accessibility, Security</p>
+    <button class="wmd-button">View Case Study →</button>
+  </div>
+</div>
+<h2 class="wmd-h2"></h2>
+<hr class="wmd-separator" />
+<h2 class="wmd-h2">All Projects</h2>
+<table class="wmd-table">
+  <thead>
+    <tr>
+      <th class="wmd-table-cell wmd-align-left">Project</th>
+    <th class="wmd-table-cell wmd-align-left">Year</th>
+    <th class="wmd-table-cell wmd-align-left">Type</th>
+    <th class="wmd-table-cell wmd-align-left">Link</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">:art: E-Commerce Platform</td>
+    <td class="wmd-table-cell wmd-align-left">2024</td>
+    <td class="wmd-table-cell wmd-align-left">UI/UX Design</td>
+    <td class="wmd-table-cell wmd-align-left">[View →]</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">:mobile: Fitness Tracking App</td>
+    <td class="wmd-table-cell wmd-align-left">2024</td>
+    <td class="wmd-table-cell wmd-align-left">Mobile Design</td>
+    <td class="wmd-table-cell wmd-align-left">[View →]</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">:chart: Analytics Dashboard</td>
+    <td class="wmd-table-cell wmd-align-left">2024</td>
+    <td class="wmd-table-cell wmd-align-left">Web Development</td>
+    <td class="wmd-table-cell wmd-align-left">[View →]</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">:palette: Brand Identity System</td>
+    <td class="wmd-table-cell wmd-align-left">2023</td>
+    <td class="wmd-table-cell wmd-align-left">Branding</td>
+    <td class="wmd-table-cell wmd-align-left">[View →]</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">:shopping: Marketplace Redesign</td>
+    <td class="wmd-table-cell wmd-align-left">2023</td>
+    <td class="wmd-table-cell wmd-align-left">Product Design</td>
+    <td class="wmd-table-cell wmd-align-left">[View →]</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">:camera: Photography Portfolio</td>
+    <td class="wmd-table-cell wmd-align-left">2023</td>
+    <td class="wmd-table-cell wmd-align-left">Web Design</td>
+    <td class="wmd-table-cell wmd-align-left">[View →]</td>
+  </tr>
+  </tbody>
+</table>
+<button class="wmd-button">Load More Projects</button>
+<hr class="wmd-separator" />
+<h2 class="wmd-h2">Skills &amp; Expertise</h2>
+<div class="wmd-grid wmd-grid-3 wmd-grid-3" style="--grid-columns: 3">
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">UI/UX Design</h3>
+    <ul class="wmd-list">
+  <li class="wmd-list-item">User Research</li>
+  <li class="wmd-list-item">Wireframing</li>
+  <li class="wmd-list-item">Prototyping</li>
+  <li class="wmd-list-item">User Testing</li>
+  <li class="wmd-list-item">Design Systems</li>
+</ul>
+    <p class="wmd-paragraph"><strong>Tools:</strong> Figma, Sketch, Adobe XD</p>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Visual Design</h3>
+    <ul class="wmd-list">
+  <li class="wmd-list-item">Typography</li>
+  <li class="wmd-list-item">Color Theory</li>
+  <li class="wmd-list-item">Iconography</li>
+  <li class="wmd-list-item">Illustration</li>
+  <li class="wmd-list-item">Brand Identity</li>
+</ul>
+    <p class="wmd-paragraph"><strong>Tools:</strong> Illustrator, Photoshop</p>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Development</h3>
+    <ul class="wmd-list">
+  <li class="wmd-list-item">HTML/CSS</li>
+  <li class="wmd-list-item">JavaScript</li>
+  <li class="wmd-list-item">React/Vue</li>
+  <li class="wmd-list-item">TypeScript</li>
+  <li class="wmd-list-item">Responsive Design</li>
+</ul>
+    <p class="wmd-paragraph"><strong>Tools:</strong> VS Code, Git, Tailwind</p>
+  </div>
+</div>
+<h2 class="wmd-h2"></h2>
+<hr class="wmd-separator" />
+<h2 class="wmd-h2">Tools I Love</h2>
+<nav class="wmd-nav">
+  <div class="wmd-nav-content">
+    <a href="#" class="wmd-nav-item"><span class="wmd-icon" data-icon="figma" aria-label="figma">●</span>Figma</a>
+    <a href="#" class="wmd-nav-item"><span class="wmd-icon" data-icon="sketch" aria-label="sketch">●</span>Sketch</a>
+    <a href="#" class="wmd-nav-item"><span class="wmd-icon" data-icon="adobe" aria-label="adobe">●</span>Adobe CC</a>
+    <a href="#" class="wmd-nav-item"><span class="wmd-icon" data-icon="react" aria-label="react">●</span>React</a>
+    <a href="#" class="wmd-nav-item"><span class="wmd-icon" data-icon="vue" aria-label="vue">●</span>Vue</a>
+    <a href="#" class="wmd-nav-item"><span class="wmd-icon" data-icon="tailwind" aria-label="tailwind">●</span>Tailwind</a>
+  </div>
+</nav>
+<hr class="wmd-separator" />
+<h2 class="wmd-h2">About Me</h2>
+<div class="wmd-container-card">
+  <h3 class="wmd-h3">My Story</h3>
+  <p class="wmd-paragraph">I&#039;m a product designer with 8+ years of experience creating digital experiences that blend beautiful aesthetics with intuitive functionality. I specialize in user-centered design, working closely with cross-functional teams to bring ideas to life.</p>
+  <p class="wmd-paragraph"><strong>Background:</strong></p>
+  <ul class="wmd-list">
+  <li class="wmd-list-item">🎓 BFA in Graphic Design, Rhode Island School of Design</li>
+  <li class="wmd-list-item">💼 Previously at Google, Airbnb, and various startups</li>
+  <li class="wmd-list-item">🏆 Awwwards Site of the Day (3x)</li>
+  <li class="wmd-list-item">📱 Apps featured on App Store (5+)</li>
+</ul>
+  <p class="wmd-paragraph"><strong>When I'm not designing:</strong></p>
+  <ul class="wmd-list">
+  <li class="wmd-list-item">📸 Exploring photography and visual storytelling</li>
+  <li class="wmd-list-item">✈️ Traveling to experience different cultures</li>
+  <li class="wmd-list-item">📚 Reading about psychology and human behavior</li>
+  <li class="wmd-list-item">🎨 Teaching design workshops for beginners</li>
+</ul>
+</div>
+<hr class="wmd-separator" />
+<h2 class="wmd-h2">Recognition &amp; Awards</h2>
+<div class="wmd-grid wmd-grid-4 wmd-grid-4" style="--grid-columns: 4">
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Awwwards</h3>
+    <p class="wmd-paragraph">3x Site of the Day
+2x Mobile Excellence</p>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">App Store</h3>
+    <p class="wmd-paragraph">5 Featured Apps
+4.8 Average Rating</p>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Dribbble</h3>
+    <p class="wmd-paragraph">Top 1% Designer
+50K+ Followers</p>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Speaking</h3>
+    <p class="wmd-paragraph">10+ Conferences
+TEDx Speaker</p>
+  </div>
+</div>
+<h2 class="wmd-h2"></h2>
+<hr class="wmd-separator" />
+<h2 class="wmd-h2">Let&#039;s Work Together</h2>
+<div class="wmd-container-hero">
+  <h1 class="wmd-h1">Have a Project in Mind?</h1>
+  <p class="wmd-paragraph">I&#039;m currently available for freelance work and new opportunities.</p>
+  <div class="wmd-container-button-group">
+  <button class="wmd-button wmd-button-primary">Get in Touch</button>
+  <button class="wmd-button">Schedule Call</button>
+</div>
+</div>
+<hr class="wmd-separator" />
+<h2 class="wmd-h2">Contact Me</h2>
+<div class="wmd-container-card">
+  <h3 class="wmd-h3">Send a Message</h3>
+  <div class="wmd-container-form-group">
+  Name
+  <input type="text" class="wmd-input" required style="width: 29ch; max-width: 29ch;" />
+</div>
+  <div class="wmd-container-form-group">
+  Email
+  <input type="email" class="wmd-input" required style="width: 29ch; max-width: 29ch;" />
+</div>
+  <div class="wmd-container-form-group">
+  Project Type
+  <select class="wmd-select">
+    <option value="" disabled selected>Select type...</option>
+    <option value="Product Design">Product Design</option>
+    <option value="Web Development">Web Development</option>
+    <option value="Branding">Branding</option>
+    <option value="Consulting">Consulting</option>
+    <option value="Other">Other</option>
+  </select>
+</div>
+  <ul class="wmd-list">
+  <li class="wmd-list-item">Product Design</li>
+  <li class="wmd-list-item">Web Development</li>
+  <li class="wmd-list-item">Branding</li>
+  <li class="wmd-list-item">Consulting</li>
+  <li class="wmd-list-item">Other</li>
+</ul>
+  <p class="wmd-paragraph">Budget Range</p>
+  <ul class="wmd-list">
+  <label class="wmd-radio">
+    <input type="radio" />
+    <span>&lt; $5,000</span>
+  </label>
+  <label class="wmd-radio">
+    <input type="radio" checked />
+    <span>$5,000 - $15,000</span>
+  </label>
+  <label class="wmd-radio">
+    <input type="radio" />
+    <span>$15,000 - $50,000</span>
+  </label>
+  <label class="wmd-radio">
+    <input type="radio" />
+    <span>$50,000+</span>
+  </label>
+</ul>
+  <div class="wmd-container-form-group">
+  Message
+  <textarea class="wmd-textarea" rows="6" placeholder="Tell me about your project..." required></textarea>
+</div>
+  <div class="wmd-container-button-group">
+  <button class="wmd-button wmd-button-primary">Send Message</button>
+  <button class="wmd-button">Clear</button>
+</div>
+</div>
+<hr class="wmd-separator" />
+<div class="wmd-container-footer">
+  <h2 class="wmd-h2 wmd-grid-3">Connect</h2>
+  <h3 class="wmd-h3">Work</h3>
+  <ul class="wmd-list">
+  <li class="wmd-list-item">Portfolio</li>
+  <li class="wmd-list-item">Dribbble</li>
+  <li class="wmd-list-item">Behance</li>
+</ul>
+  <h3 class="wmd-h3">Social</h3>
+  <ul class="wmd-list">
+  <li class="wmd-list-item">Twitter</li>
+  <li class="wmd-list-item">LinkedIn</li>
+  <li class="wmd-list-item">Instagram</li>
+</ul>
+  <h3 class="wmd-h3">Contact</h3>
+  <ul class="wmd-list">
+  <li class="wmd-list-item">[[email protected]](mailto:[email protected])</li>
+  <li class="wmd-list-item">+1 (555) 123-4567</li>
+  <li class="wmd-list-item">San Francisco, CA</li>
+</ul>
+  <h2 class="wmd-h2"></h2>
+  <p class="wmd-paragraph">© 2025 Jane Doe. All rights reserved.</p>
+</div>
+<hr class="wmd-separator" />
+<p class="wmd-paragraph"><strong>Style Variations:</strong></p>
+<ul class="wmd-list">
+  <li class="wmd-list-item">sketch - Casual, creative portfolio feel</li>
+  <li class="wmd-list-item">clean - Minimalist, professional presentation</li>
+  <li class="wmd-list-item">wireframe - Focus on content hierarchy</li>
+  <li class="wmd-list-item">tailwind - Modern, colorful personal brand</li>
+  <li class="wmd-list-item">material - Polished, layered design</li>
+  <li class="wmd-list-item">brutal - Bold, artistic statement</li>
+  <li class="wmd-list-item">none - Clean markup for custom styling</li>
+</ul>
+<p class="wmd-paragraph"><strong>Generate this example:</strong></p>
+<pre class="wmd-code-block"><code data-lang="bash">wiremd portfolio.md --style sketch
+wiremd portfolio.md --style clean -o portfolio-clean.html
+wiremd portfolio.md --style brutal -o portfolio-brutal.html</code></pre>
+</body>
+</html>

@@ -1,0 +1,1137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>wiremd Mockup</title>
+  <style>
+
+/* wiremd Wireframe Style - Traditional grayscale wireframes */
+* {
+  box-sizing: border-box;
+}
+
+body.wmd-root {
+  font-family: Arial, Helvetica, sans-serif;
+  background: #f0f0f0;
+  color: #000;
+  padding: 30px;
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* Headings */
+.wmd-h1, .wmd-h2, .wmd-h3, .wmd-h4, .wmd-h5, .wmd-h6 {
+  font-weight: bold;
+  margin: 1.2em 0 0.6em;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.wmd-h1 { font-size: 2em; }
+.wmd-h2 { font-size: 1.75em; }
+.wmd-h3 { font-size: 1.5em; }
+.wmd-h4 { font-size: 1.25em; }
+.wmd-h5 { font-size: 1.1em; }
+.wmd-h6 { font-size: 1em; }
+
+/* Paragraph */
+.wmd-paragraph {
+  margin: 0.6em 0;
+}
+
+/* Buttons */
+.wmd-button {
+  display: inline-block;
+  padding: 8px 16px;
+  margin: 4px;
+  background: repeating-linear-gradient(
+    45deg,
+    #ddd,
+    #ddd 10px,
+    #ccc 10px,
+    #ccc 20px
+  );
+  border: 2px solid #000;
+  border-radius: 0;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: bold;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.wmd-button-primary, .wmd-button.wmd-primary {
+  background: repeating-linear-gradient(
+    45deg,
+    #888,
+    #888 10px,
+    #777 10px,
+    #777 20px
+  );
+  color: #fff;
+}
+
+.wmd-button-secondary, .wmd-button.wmd-secondary {
+  background: #fff;
+}
+
+.wmd-button-danger, .wmd-button.wmd-danger {
+  background: repeating-linear-gradient(
+    45deg,
+    #666,
+    #666 10px,
+    #555 10px,
+    #555 20px
+  );
+  color: #fff;
+}
+
+.wmd-button[disabled] {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* Inputs */
+.wmd-input, .wmd-textarea, .wmd-select {
+  display: block;
+  width: 100%;
+  max-width: 400px;
+  padding: 6px 10px;
+  margin: 4px 0;
+  font-family: inherit;
+  font-size: 13px;
+  background: #fff;
+  border: 2px solid #000;
+  border-radius: 0;
+}
+
+.wmd-input::placeholder, .wmd-textarea::placeholder {
+  color: #999;
+  font-style: italic;
+}
+
+.wmd-input[disabled], .wmd-input.wmd-state-disabled,
+.wmd-textarea[disabled], .wmd-textarea.wmd-state-disabled,
+.wmd-select[disabled], .wmd-select.wmd-state-disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background: #f0f0f0;
+}
+
+.wmd-textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+/* Checkboxes and Radios */
+.wmd-checkbox, .wmd-radio {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 6px 0;
+  cursor: pointer;
+}
+
+.wmd-checkbox input[type="checkbox"],
+.wmd-radio input[type="radio"] {
+  width: 18px;
+  height: 18px;
+  border: 2px solid #000;
+  cursor: pointer;
+}
+
+/* Icons */
+.wmd-icon {
+  display: inline-block;
+  font-size: 1em;
+  line-height: 1;
+  margin: 0 4px;
+  vertical-align: middle;
+}
+
+/* Containers */
+.wmd-container-hero, .wmd-container-card, .wmd-container-modal {
+  background: #fff;
+  border: 3px solid #000;
+  padding: 24px;
+  margin: 16px 0;
+}
+
+.wmd-container-hero {
+  background: repeating-linear-gradient(
+    0deg,
+    #fafafa,
+    #fafafa 2px,
+    #fff 2px,
+    #fff 4px
+  );
+  text-align: center;
+  padding: 48px 24px;
+}
+
+.wmd-container-card {
+  max-width: 400px;
+}
+
+.wmd-container-modal {
+  max-width: 500px;
+  margin: 32px auto;
+  border-width: 4px;
+}
+
+/* Navigation */
+.wmd-nav {
+  background: repeating-linear-gradient(
+    90deg,
+    #e0e0e0,
+    #e0e0e0 2px,
+    #d0d0d0 2px,
+    #d0d0d0 4px
+  );
+  border: 2px solid #000;
+  padding: 12px 16px;
+  margin: 16px 0;
+}
+
+.wmd-nav-content {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.wmd-brand {
+  font-weight: bold;
+  font-size: 1.1em;
+  text-transform: uppercase;
+  margin-right: auto;
+}
+
+.wmd-nav-item {
+  color: #000;
+  text-decoration: underline;
+  font-weight: normal;
+}
+
+/* Grid */
+.wmd-grid {
+  display: grid;
+  grid-template-columns: repeat(var(--grid-columns, 3), 1fr);
+  gap: 20px;
+  margin: 20px 0;
+}
+
+.wmd-grid-item {
+  background: #fff;
+  border: 2px solid #000;
+  padding: 16px;
+}
+
+/* Lists */
+.wmd-list {
+  margin: 12px 0;
+  padding-left: 24px;
+}
+
+.wmd-list-item {
+  margin: 4px 0;
+}
+
+/* Blockquote */
+.wmd-blockquote {
+  border-left: 4px solid #000;
+  padding-left: 16px;
+  margin: 16px 0;
+  background: #f5f5f5;
+  padding: 12px 16px;
+}
+
+/* Code */
+.wmd-code-inline {
+  background: #e0e0e0;
+  border: 1px solid #000;
+  padding: 2px 6px;
+  font-family: 'Courier New', monospace;
+  font-size: 0.9em;
+}
+
+.wmd-code-block {
+  background: #f0f0f0;
+  border: 2px solid #000;
+  padding: 12px;
+  margin: 12px 0;
+  overflow-x: auto;
+}
+
+.wmd-code-block code {
+  font-family: 'Courier New', monospace;
+  font-size: 0.9em;
+}
+
+/* Separator */
+.wmd-separator {
+  border: none;
+  border-top: 2px solid #000;
+  margin: 24px 0;
+}
+
+/* State Containers */
+.wmd-container-loading-state {
+  background: repeating-linear-gradient(
+    0deg,
+    #fff,
+    #fff 2px,
+    #f5f5f5 2px,
+    #f5f5f5 4px
+  );
+  border: 2px solid #000;
+  padding: 40px;
+  margin: 16px 0;
+  text-align: center;
+  position: relative;
+}
+
+.wmd-container-loading-state::before {
+  content: '⟳';
+  display: block;
+  font-size: 48px;
+  font-weight: bold;
+  margin-bottom: 16px;
+  animation: spin 2s linear infinite;
+}
+
+.wmd-container-empty-state {
+  background: #fff;
+  border: 2px dashed #666;
+  padding: 60px 40px;
+  margin: 16px 0;
+  text-align: center;
+  color: #666;
+}
+
+.wmd-container-empty-state::before {
+  content: '[EMPTY]';
+  display: block;
+  font-size: 24px;
+  font-weight: bold;
+  letter-spacing: 0.2em;
+  margin-bottom: 16px;
+  color: #999;
+}
+
+.wmd-container-error-state {
+  background: repeating-linear-gradient(
+    45deg,
+    #fff,
+    #fff 10px,
+    #f0f0f0 10px,
+    #f0f0f0 20px
+  );
+  border: 3px solid #000;
+  padding: 40px;
+  margin: 16px 0;
+  text-align: center;
+}
+
+.wmd-container-error-state::before {
+  content: '⚠';
+  display: block;
+  font-size: 56px;
+  font-weight: bold;
+  margin-bottom: 16px;
+  color: #000;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .wmd-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+  </style>
+</head>
+<body class="wmd-root wmd-wireframe">
+  <h1 class="wmd-h1">E-Commerce Dashboard</h1>
+<blockquote class="wmd-blockquote">
+  <p class="wmd-paragraph"><strong>Use Case:</strong> Online store management dashboard for tracking sales, inventory, and customer data.</p>
+  <p class="wmd-paragraph"><strong>Key Features:</strong> Sales metrics, product inventory, order management, customer insights</p>
+</blockquote>
+<nav class="wmd-nav">
+  <div class="wmd-nav-content">
+    <div class="wmd-brand"><span class="wmd-icon" data-icon="logo" aria-label="logo">◈</span>ShopDash</div>
+    <a href="#" class="wmd-nav-item"></a>
+    <a href="#" class="wmd-nav-item">Products</a>
+    <a href="#" class="wmd-nav-item">Orders</a>
+    <a href="#" class="wmd-nav-item">Customers</a>
+    <a href="#" class="wmd-nav-item">Marketing</a>
+    <a href="#" class="wmd-nav-item">Reports</a>
+    <a href="#" class="wmd-nav-item">Settings</a>
+    <a href="#" class="wmd-nav-item"><span class="wmd-icon" data-icon="bell" aria-label="bell">🔔</span>(5)</a>
+    <a href="#" class="wmd-nav-item"><span class="wmd-icon" data-icon="user" aria-label="user">👤</span>Store Owner</a>
+  </div>
+</nav>
+<hr class="wmd-separator" />
+<h2 class="wmd-h2">Store Performance</h2>
+<nav class="wmd-nav">
+  <div class="wmd-nav-content">
+    <a href="#" class="wmd-nav-item">Dashboard &gt; Store Overview</a>
+  </div>
+</nav>
+<div class="wmd-container-form-group">
+  <strong>Date Range:</strong> 
+  <button class="wmd-button">Last 30 days...v</button>
+   
+  <button class="wmd-button">Compare to: Previous period...v</button>
+   
+  <button class="wmd-button">Export Report</button>
+</div>
+<hr class="wmd-separator" />
+<div class="wmd-grid wmd-grid-4 wmd-grid-4" style="--grid-columns: 4">
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Total Revenue</h3>
+    <div class="wmd-container-form-group">
+  <strong>$124,567</strong>
+
+  <span class="wmd-icon" data-icon="chart" aria-label="chart">📊</span>
+   +18.5% vs last period
+</div>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Orders</h3>
+    <div class="wmd-container-form-group">
+  <strong>2,456</strong>
+
+  <span class="wmd-icon" data-icon="chart" aria-label="chart">📊</span>
+   +12.3% vs last period
+</div>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Avg Order Value</h3>
+    <div class="wmd-container-form-group">
+  <strong>$50.72</strong>
+
+  <span class="wmd-icon" data-icon="chart" aria-label="chart">📊</span>
+   +5.2% vs last period
+</div>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Conversion Rate</h3>
+    <div class="wmd-container-form-group">
+  <strong>3.2%</strong>
+
+  <span class="wmd-icon" data-icon="chart" aria-label="chart">📊</span>
+   +0.8% vs last period
+</div>
+  </div>
+</div>
+<h2 class="wmd-h2"></h2>
+<hr class="wmd-separator" />
+<div class="wmd-grid wmd-grid-2 wmd-grid-2" style="--grid-columns: 2">
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Revenue Chart (30 Days)</h3>
+    <div class="wmd-container-form-group">
+  <img src="https://via.placeholder.com/600x300" alt="Line Chart" class="wmd-image" />
+</div>
+    <p class="wmd-paragraph"><strong>Trends:</strong></p>
+    <ul class="wmd-list">
+  <li class="wmd-list-item">Highest: $8,234 (Mar 15 - Weekend sale)</li>
+  <li class="wmd-list-item">Lowest: $2,456 (Mar 1)</li>
+  <li class="wmd-list-item">Average: $4,152/day</li>
+</ul>
+    <button class="wmd-button">View Detailed Analytics →</button>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Sales by Category</h3>
+    <div class="wmd-container-form-group">
+  <img src="https://via.placeholder.com/600x300" alt="Pie Chart" class="wmd-image" />
+</div>
+    <table class="wmd-table">
+  <thead>
+    <tr>
+      <th class="wmd-table-cell wmd-align-left">Category</th>
+    <th class="wmd-table-cell wmd-align-left">Revenue</th>
+    <th class="wmd-table-cell wmd-align-left">Orders</th>
+    <th class="wmd-table-cell wmd-align-left">%</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">Electronics</td>
+    <td class="wmd-table-cell wmd-align-left">$45,678</td>
+    <td class="wmd-table-cell wmd-align-left">892</td>
+    <td class="wmd-table-cell wmd-align-left">37%</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">Clothing</td>
+    <td class="wmd-table-cell wmd-align-left">$34,567</td>
+    <td class="wmd-table-cell wmd-align-left">1,234</td>
+    <td class="wmd-table-cell wmd-align-left">28%</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">Home &amp; Garden</td>
+    <td class="wmd-table-cell wmd-align-left">$23,456</td>
+    <td class="wmd-table-cell wmd-align-left">456</td>
+    <td class="wmd-table-cell wmd-align-left">19%</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">Sports</td>
+    <td class="wmd-table-cell wmd-align-left">$12,890</td>
+    <td class="wmd-table-cell wmd-align-left">234</td>
+    <td class="wmd-table-cell wmd-align-left">10%</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">Other</td>
+    <td class="wmd-table-cell wmd-align-left">$7,976</td>
+    <td class="wmd-table-cell wmd-align-left">140</td>
+    <td class="wmd-table-cell wmd-align-left">6%</td>
+  </tr>
+  </tbody>
+</table>
+  </div>
+</div>
+<h2 class="wmd-h2"></h2>
+<hr class="wmd-separator" />
+<h2 class="wmd-h2">Recent Orders</h2>
+<div class="wmd-container-card">
+  <h3 class="wmd-h3">Latest Transactions</h3>
+  <p class="wmd-paragraph">Filter: [All Statuses...v] | Search: [Order # or customer...___________]</p>
+  <table class="wmd-table">
+  <thead>
+    <tr>
+      <th class="wmd-table-cell wmd-align-left">Order #</th>
+    <th class="wmd-table-cell wmd-align-left">Customer</th>
+    <th class="wmd-table-cell wmd-align-left">Products</th>
+    <th class="wmd-table-cell wmd-align-left">Total</th>
+    <th class="wmd-table-cell wmd-align-left">Status</th>
+    <th class="wmd-table-cell wmd-align-left">Date</th>
+    <th class="wmd-table-cell wmd-align-left">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">#12456</td>
+    <td class="wmd-table-cell wmd-align-left">John Doe</td>
+    <td class="wmd-table-cell wmd-align-left">3 items</td>
+    <td class="wmd-table-cell wmd-align-left">$129.99</td>
+    <td class="wmd-table-cell wmd-align-left">🟢 Shipped</td>
+    <td class="wmd-table-cell wmd-align-left">10m ago</td>
+    <td class="wmd-table-cell wmd-align-left">[View] [Print]</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">#12455</td>
+    <td class="wmd-table-cell wmd-align-left">Jane Smith</td>
+    <td class="wmd-table-cell wmd-align-left">1 item</td>
+    <td class="wmd-table-cell wmd-align-left">$89.50</td>
+    <td class="wmd-table-cell wmd-align-left">🟡 Processing</td>
+    <td class="wmd-table-cell wmd-align-left">1h ago</td>
+    <td class="wmd-table-cell wmd-align-left">[View] [Process]</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">#12454</td>
+    <td class="wmd-table-cell wmd-align-left">Bob Wilson</td>
+    <td class="wmd-table-cell wmd-align-left">5 items</td>
+    <td class="wmd-table-cell wmd-align-left">$234.99</td>
+    <td class="wmd-table-cell wmd-align-left">🟢 Shipped</td>
+    <td class="wmd-table-cell wmd-align-left">2h ago</td>
+    <td class="wmd-table-cell wmd-align-left">[View] [Track]</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">#12453</td>
+    <td class="wmd-table-cell wmd-align-left">Alice Brown</td>
+    <td class="wmd-table-cell wmd-align-left">2 items</td>
+    <td class="wmd-table-cell wmd-align-left">$45.00</td>
+    <td class="wmd-table-cell wmd-align-left">🔴 Pending</td>
+    <td class="wmd-table-cell wmd-align-left">3h ago</td>
+    <td class="wmd-table-cell wmd-align-left">[View] [Confirm]</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">#12452</td>
+    <td class="wmd-table-cell wmd-align-left">Charlie Kim</td>
+    <td class="wmd-table-cell wmd-align-left">4 items</td>
+    <td class="wmd-table-cell wmd-align-left">$178.50</td>
+    <td class="wmd-table-cell wmd-align-left">🟢 Delivered</td>
+    <td class="wmd-table-cell wmd-align-left">5h ago</td>
+    <td class="wmd-table-cell wmd-align-left">[View] [Invoice]</td>
+  </tr>
+  </tbody>
+</table>
+  <div class="wmd-container-button-group">
+  <button class="wmd-button">View All Orders →</button>
+  <button class="wmd-button">Export to CSV</button>
+</div>
+</div>
+<hr class="wmd-separator" />
+<div class="wmd-grid wmd-grid-2 wmd-grid-2" style="--grid-columns: 2">
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Low Stock Alerts</h3>
+    <div class="wmd-container-alert warning">
+  <p class="wmd-paragraph">⚠️<strong>15 products</strong>are running low on stock</p>
+</div>
+    <table class="wmd-table">
+  <thead>
+    <tr>
+      <th class="wmd-table-cell wmd-align-left">Product</th>
+    <th class="wmd-table-cell wmd-align-left">SKU</th>
+    <th class="wmd-table-cell wmd-align-left">Current</th>
+    <th class="wmd-table-cell wmd-align-left">Min</th>
+    <th class="wmd-table-cell wmd-align-left">Status</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">Wireless Headphones</td>
+    <td class="wmd-table-cell wmd-align-left">WH-001</td>
+    <td class="wmd-table-cell wmd-align-left">5</td>
+    <td class="wmd-table-cell wmd-align-left">20</td>
+    <td class="wmd-table-cell wmd-align-left">🔴 Critical</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">Smart Watch</td>
+    <td class="wmd-table-cell wmd-align-left">SW-002</td>
+    <td class="wmd-table-cell wmd-align-left">12</td>
+    <td class="wmd-table-cell wmd-align-left">25</td>
+    <td class="wmd-table-cell wmd-align-left">🟡 Low</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">USB-C Cable</td>
+    <td class="wmd-table-cell wmd-align-left">CB-003</td>
+    <td class="wmd-table-cell wmd-align-left">18</td>
+    <td class="wmd-table-cell wmd-align-left">50</td>
+    <td class="wmd-table-cell wmd-align-left">🟡 Low</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">Phone Case</td>
+    <td class="wmd-table-cell wmd-align-left">PC-004</td>
+    <td class="wmd-table-cell wmd-align-left">8</td>
+    <td class="wmd-table-cell wmd-align-left">30</td>
+    <td class="wmd-table-cell wmd-align-left">🔴 Critical</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">Power Bank</td>
+    <td class="wmd-table-cell wmd-align-left">PB-005</td>
+    <td class="wmd-table-cell wmd-align-left">15</td>
+    <td class="wmd-table-cell wmd-align-left">40</td>
+    <td class="wmd-table-cell wmd-align-left">🟡 Low</td>
+  </tr>
+  </tbody>
+</table>
+    <div class="wmd-container-button-group">
+  <button class="wmd-button">Restock Now →</button>
+  <button class="wmd-button">View Full Inventory →</button>
+</div>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Top Selling Products</h3>
+    <table class="wmd-table">
+  <thead>
+    <tr>
+      <th class="wmd-table-cell wmd-align-left">Product</th>
+    <th class="wmd-table-cell wmd-align-left">Sales</th>
+    <th class="wmd-table-cell wmd-align-left">Revenue</th>
+    <th class="wmd-table-cell wmd-align-left">Stock</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">![IMG] Premium Headphones</td>
+    <td class="wmd-table-cell wmd-align-left">234</td>
+    <td class="wmd-table-cell wmd-align-left">$29,250</td>
+    <td class="wmd-table-cell wmd-align-left">145</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">![IMG] Smart Watch Pro</td>
+    <td class="wmd-table-cell wmd-align-left">189</td>
+    <td class="wmd-table-cell wmd-align-left">$56,700</td>
+    <td class="wmd-table-cell wmd-align-left">67</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">![IMG] Bluetooth Speaker</td>
+    <td class="wmd-table-cell wmd-align-left">156</td>
+    <td class="wmd-table-cell wmd-align-left">$12,480</td>
+    <td class="wmd-table-cell wmd-align-left">234</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">![IMG] Fitness Tracker</td>
+    <td class="wmd-table-cell wmd-align-left">134</td>
+    <td class="wmd-table-cell wmd-align-left">$13,400</td>
+    <td class="wmd-table-cell wmd-align-left">89</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">![IMG] Wireless Earbuds</td>
+    <td class="wmd-table-cell wmd-align-left">128</td>
+    <td class="wmd-table-cell wmd-align-left">$10,240</td>
+    <td class="wmd-table-cell wmd-align-left">178</td>
+  </tr>
+  </tbody>
+</table>
+    <button class="wmd-button">View All Products →</button>
+  </div>
+</div>
+<h2 class="wmd-h2"></h2>
+<hr class="wmd-separator" />
+<div class="wmd-grid wmd-grid-3 wmd-grid-3" style="--grid-columns: 3">
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Total Customers</h3>
+    <p class="wmd-paragraph"><strong>8,234</strong>
++456 new this month</p>
+    <p class="wmd-paragraph"><strong>Breakdown:</strong></p>
+    <ul class="wmd-list">
+  <li class="wmd-list-item">New: 2,345 (28%)</li>
+  <li class="wmd-list-item">Returning: 5,889 (72%)</li>
+  <li class="wmd-list-item">VIP: 234 (3%)</li>
+</ul>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Lifetime Value</h3>
+    <p class="wmd-paragraph"><strong>$487.23</strong>
+Average per customer</p>
+    <p class="wmd-paragraph"><strong>Top Spenders:</strong></p>
+    <ul class="wmd-list">
+  <li class="wmd-list-item">VIP: $2,345 avg</li>
+  <li class="wmd-list-item">Returning: $598 avg</li>
+  <li class="wmd-list-item">New: $142 avg</li>
+</ul>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Customer Satisfaction</h3>
+    <p class="wmd-paragraph"><strong>4.8</strong> / 5.0
+Based on 1,234 reviews</p>
+    <p class="wmd-paragraph"><strong>Rating Distribution:</strong></p>
+    <ul class="wmd-list">
+  <li class="wmd-list-item">⭐⭐⭐⭐⭐ 85%</li>
+  <li class="wmd-list-item">⭐⭐⭐⭐ 10%</li>
+  <li class="wmd-list-item">⭐⭐⭐ 3%</li>
+  <li class="wmd-list-item">⭐⭐ 1%</li>
+  <li class="wmd-list-item">⭐ 1%</li>
+</ul>
+  </div>
+</div>
+<h2 class="wmd-h2"></h2>
+<hr class="wmd-separator" />
+<h2 class="wmd-h2">Order Status Overview</h2>
+<div class="wmd-grid wmd-grid-5 wmd-grid-5" style="--grid-columns: 5">
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Pending</h3>
+    <p class="wmd-paragraph"><strong>45</strong> orders</p>
+    <button class="wmd-button">View →</button>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Processing</h3>
+    <p class="wmd-paragraph"><strong>123</strong> orders</p>
+    <button class="wmd-button">View →</button>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Shipped</h3>
+    <p class="wmd-paragraph"><strong>234</strong> orders</p>
+    <button class="wmd-button">Track →</button>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Delivered</h3>
+    <p class="wmd-paragraph"><strong>1,789</strong> orders</p>
+    <button class="wmd-button">Archive →</button>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Cancelled/Returned</h3>
+    <p class="wmd-paragraph"><strong>23</strong> orders</p>
+    <button class="wmd-button">Review →</button>
+  </div>
+</div>
+<h2 class="wmd-h2"></h2>
+<hr class="wmd-separator" />
+<h2 class="wmd-h2">Sales by Channel</h2>
+<div class="wmd-container-card">
+  <h3 class="wmd-h3">Multi-Channel Performance</h3>
+  <table class="wmd-table">
+  <thead>
+    <tr>
+      <th class="wmd-table-cell wmd-align-left">Channel</th>
+    <th class="wmd-table-cell wmd-align-left">Orders</th>
+    <th class="wmd-table-cell wmd-align-left">Revenue</th>
+    <th class="wmd-table-cell wmd-align-left">Conversion</th>
+    <th class="wmd-table-cell wmd-align-left">Growth</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">Website</td>
+    <td class="wmd-table-cell wmd-align-left">1,234</td>
+    <td class="wmd-table-cell wmd-align-left">$62,456</td>
+    <td class="wmd-table-cell wmd-align-left">3.2%</td>
+    <td class="wmd-table-cell wmd-align-left">+15% ⬆️</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">Mobile App</td>
+    <td class="wmd-table-cell wmd-align-left">789</td>
+    <td class="wmd-table-cell wmd-align-left">$39,890</td>
+    <td class="wmd-table-cell wmd-align-left">4.1%</td>
+    <td class="wmd-table-cell wmd-align-left">+23% ⬆️</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">Amazon</td>
+    <td class="wmd-table-cell wmd-align-left">234</td>
+    <td class="wmd-table-cell wmd-align-left">$12,345</td>
+    <td class="wmd-table-cell wmd-align-left">2.8%</td>
+    <td class="wmd-table-cell wmd-align-left">+8% ⬆️</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">eBay</td>
+    <td class="wmd-table-cell wmd-align-left">123</td>
+    <td class="wmd-table-cell wmd-align-left">$6,789</td>
+    <td class="wmd-table-cell wmd-align-left">2.1%</td>
+    <td class="wmd-table-cell wmd-align-left">-5% ⬇️</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">Social Media</td>
+    <td class="wmd-table-cell wmd-align-left">76</td>
+    <td class="wmd-table-cell wmd-align-left">$3,087</td>
+    <td class="wmd-table-cell wmd-align-left">1.9%</td>
+    <td class="wmd-table-cell wmd-align-left">+45% ⬆️</td>
+  </tr>
+  </tbody>
+</table>
+  <div class="wmd-container-form-group">
+  <img src="https://via.placeholder.com/700x200" alt="Channel Chart" class="wmd-image" />
+</div>
+</div>
+<hr class="wmd-separator" />
+<div class="wmd-grid wmd-grid-2 wmd-grid-2" style="--grid-columns: 2">
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Active Campaigns</h3>
+    <p class="wmd-paragraph"><strong>Email Campaign: Spring Sale</strong></p>
+    <ul class="wmd-list">
+  <li class="wmd-list-item">Sent: 10,000</li>
+  <li class="wmd-list-item">Opened: 3,456 (34.6%)</li>
+  <li class="wmd-list-item">Clicked: 1,234 (12.3%)</li>
+  <li class="wmd-list-item">Converted: 234 (2.3%)</li>
+  <li class="wmd-list-item">Revenue: $11,789</li>
+</ul>
+    <button class="wmd-button">View Campaign →</button>
+    <p class="wmd-paragraph"><strong>Social Ad: New Arrivals</strong></p>
+    <ul class="wmd-list">
+  <li class="wmd-list-item">Impressions: 50,000</li>
+  <li class="wmd-list-item">Clicks: 2,500 (5% CTR)</li>
+  <li class="wmd-list-item">Conversions: 125 (5% CR)</li>
+  <li class="wmd-list-item">Spend: $1,250</li>
+  <li class="wmd-list-item">Revenue: $6,250</li>
+  <li class="wmd-list-item">ROAS: 5.0x</li>
+</ul>
+    <button class="wmd-button">Manage Ads →</button>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Discount Codes</h3>
+    <table class="wmd-table">
+  <thead>
+    <tr>
+      <th class="wmd-table-cell wmd-align-left">Code</th>
+    <th class="wmd-table-cell wmd-align-left">Uses</th>
+    <th class="wmd-table-cell wmd-align-left">Revenue</th>
+    <th class="wmd-table-cell wmd-align-left">Active</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">SPRING20</td>
+    <td class="wmd-table-cell wmd-align-left">234</td>
+    <td class="wmd-table-cell wmd-align-left">$11,234</td>
+    <td class="wmd-table-cell wmd-align-left">✅ Yes</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">FIRST10</td>
+    <td class="wmd-table-cell wmd-align-left">456</td>
+    <td class="wmd-table-cell wmd-align-left">$4,560</td>
+    <td class="wmd-table-cell wmd-align-left">✅ Yes</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">VIP25</td>
+    <td class="wmd-table-cell wmd-align-left">89</td>
+    <td class="wmd-table-cell wmd-align-left">$8,901</td>
+    <td class="wmd-table-cell wmd-align-left">✅ Yes</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">FREESHIP</td>
+    <td class="wmd-table-cell wmd-align-left">678</td>
+    <td class="wmd-table-cell wmd-align-left">$0</td>
+    <td class="wmd-table-cell wmd-align-left">✅ Yes</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">EXPIRED</td>
+    <td class="wmd-table-cell wmd-align-left">0</td>
+    <td class="wmd-table-cell wmd-align-left">$0</td>
+    <td class="wmd-table-cell wmd-align-left">❌ No</td>
+  </tr>
+  </tbody>
+</table>
+    <button class="wmd-button">Create New Code →</button>
+  </div>
+</div>
+<h2 class="wmd-h2"></h2>
+<hr class="wmd-separator" />
+<h2 class="wmd-h2">Product Management</h2>
+<div class="wmd-container-card">
+  <h3 class="wmd-h3">Quick Actions</h3>
+  <div class="wmd-container-button-group">
+  <button class="wmd-button wmd-button-primary">+ Add Product</button>
+  <button class="wmd-button">Import Products</button>
+  <button class="wmd-button">Export Catalog</button>
+  <button class="wmd-button">Bulk Edit</button>
+</div>
+  <p class="wmd-paragraph"><strong>Catalog Stats:</strong></p>
+  <ul class="wmd-list">
+  <li class="wmd-list-item">Total Products: 789</li>
+  <li class="wmd-list-item">Published: 756 (96%)</li>
+  <li class="wmd-list-item">Draft: 23 (3%)</li>
+  <li class="wmd-list-item">Out of Stock: 10 (1%)</li>
+</ul>
+  <hr class="wmd-separator" />
+  <h3 class="wmd-h3">Product Categories</h3>
+  <table class="wmd-table">
+  <thead>
+    <tr>
+      <th class="wmd-table-cell wmd-align-left">Category</th>
+    <th class="wmd-table-cell wmd-align-left">Products</th>
+    <th class="wmd-table-cell wmd-align-left">Sales</th>
+    <th class="wmd-table-cell wmd-align-left">Revenue</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">Electronics</td>
+    <td class="wmd-table-cell wmd-align-left">234</td>
+    <td class="wmd-table-cell wmd-align-left">2,345</td>
+    <td class="wmd-table-cell wmd-align-left">$234,567</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">Clothing</td>
+    <td class="wmd-table-cell wmd-align-left">345</td>
+    <td class="wmd-table-cell wmd-align-left">5,678</td>
+    <td class="wmd-table-cell wmd-align-left">$123,456</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">Home &amp; Garden</td>
+    <td class="wmd-table-cell wmd-align-left">123</td>
+    <td class="wmd-table-cell wmd-align-left">1,234</td>
+    <td class="wmd-table-cell wmd-align-left">$67,890</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">Sports</td>
+    <td class="wmd-table-cell wmd-align-left">87</td>
+    <td class="wmd-table-cell wmd-align-left">567</td>
+    <td class="wmd-table-cell wmd-align-left">$34,567</td>
+  </tr>
+  </tbody>
+</table>
+  <button class="wmd-button">Manage Categories →</button>
+</div>
+<hr class="wmd-separator" />
+<div class="wmd-grid wmd-grid-2 wmd-grid-2" style="--grid-columns: 2">
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Shipping Methods</h3>
+    <table class="wmd-table">
+  <thead>
+    <tr>
+      <th class="wmd-table-cell wmd-align-left">Method</th>
+    <th class="wmd-table-cell wmd-align-left">Orders</th>
+    <th class="wmd-table-cell wmd-align-left">Avg Cost</th>
+    <th class="wmd-table-cell wmd-align-left">Delivery</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">Standard</td>
+    <td class="wmd-table-cell wmd-align-left">1,234</td>
+    <td class="wmd-table-cell wmd-align-left">$5.99</td>
+    <td class="wmd-table-cell wmd-align-left">5-7 days</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">Express</td>
+    <td class="wmd-table-cell wmd-align-left">456</td>
+    <td class="wmd-table-cell wmd-align-left">$12.99</td>
+    <td class="wmd-table-cell wmd-align-left">2-3 days</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">Overnight</td>
+    <td class="wmd-table-cell wmd-align-left">89</td>
+    <td class="wmd-table-cell wmd-align-left">$24.99</td>
+    <td class="wmd-table-cell wmd-align-left">Next day</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">Free Shipping</td>
+    <td class="wmd-table-cell wmd-align-left">677</td>
+    <td class="wmd-table-cell wmd-align-left">$0.00</td>
+    <td class="wmd-table-cell wmd-align-left">5-7 days</td>
+  </tr>
+  </tbody>
+</table>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Fulfillment Stats</h3>
+    <p class="wmd-paragraph"><strong>Orders to Ship:</strong> 123
+<strong>Average Processing Time:</strong> 1.2 days
+<strong>On-Time Delivery Rate:</strong> 96.8%
+<strong>Return Rate:</strong> 2.3%</p>
+    <button class="wmd-button">Manage Shipping →</button>
+  </div>
+</div>
+<h2 class="wmd-h2"></h2>
+<hr class="wmd-separator" />
+<h2 class="wmd-h2">Financial Summary</h2>
+<div class="wmd-container-card">
+  <h3 class="wmd-h3">Revenue Breakdown (Last 30 Days)</h3>
+  <p class="wmd-paragraph"><strong>Gross Revenue:</strong> $124,567
+<strong>Discounts:</strong> -$6,234 (5%)
+<strong>Refunds:</strong> -$2,456 (2%)
+<strong>Net Revenue:</strong> $115,877</p>
+  <p class="wmd-paragraph"><strong>Costs:</strong></p>
+  <ul class="wmd-list">
+  <li class="wmd-list-item">Product Costs: $62,345 (54%)</li>
+  <li class="wmd-list-item">Shipping: $8,901 (8%)</li>
+  <li class="wmd-list-item">Marketing: $5,678 (5%)</li>
+  <li class="wmd-list-item">Platform Fees: $3,456 (3%)</li>
+  <li class="wmd-list-item">Other: $2,345 (2%)</li>
+</ul>
+  <p class="wmd-paragraph"><strong>Net Profit:</strong> $33,152 (29% margin)</p>
+  <div class="wmd-container-form-group">
+  <img src="https://via.placeholder.com/700x200" alt="Profit Chart" class="wmd-image" />
+</div>
+  <button class="wmd-button">View Financial Reports →</button>
+</div>
+<hr class="wmd-separator" />
+<h2 class="wmd-h2">Customer Support</h2>
+<div class="wmd-grid wmd-grid-4 wmd-grid-4" style="--grid-columns: 4">
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Open Tickets</h3>
+    <p class="wmd-paragraph"><strong>23</strong>
+🔴 5 urgent</p>
+    <button class="wmd-button">View →</button>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Avg Response</h3>
+    <p class="wmd-paragraph"><strong>2.5 hrs</strong>
+Target: 4hrs</p>
+    <button class="wmd-button">Improve →</button>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Resolution Rate</h3>
+    <p class="wmd-paragraph"><strong>94.5%</strong>
+First contact</p>
+    <button class="wmd-button">Details →</button>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Satisfaction</h3>
+    <p class="wmd-paragraph"><strong>4.7</strong> / 5.0
+1,234 ratings</p>
+    <button class="wmd-button">Reviews →</button>
+  </div>
+</div>
+<h2 class="wmd-h2"></h2>
+<hr class="wmd-separator" />
+<h2 class="wmd-h2">Recent Reviews</h2>
+<table class="wmd-table">
+  <thead>
+    <tr>
+      <th class="wmd-table-cell wmd-align-left">Product</th>
+    <th class="wmd-table-cell wmd-align-left">Customer</th>
+    <th class="wmd-table-cell wmd-align-left">Rating</th>
+    <th class="wmd-table-cell wmd-align-left">Review</th>
+    <th class="wmd-table-cell wmd-align-left">Date</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">Wireless Headphones</td>
+    <td class="wmd-table-cell wmd-align-left">John D.</td>
+    <td class="wmd-table-cell wmd-align-left">⭐⭐⭐⭐⭐</td>
+    <td class="wmd-table-cell wmd-align-left">&quot;Amazing sound quality!&quot;</td>
+    <td class="wmd-table-cell wmd-align-left">1h ago</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">Smart Watch</td>
+    <td class="wmd-table-cell wmd-align-left">Sarah L.</td>
+    <td class="wmd-table-cell wmd-align-left">⭐⭐⭐⭐</td>
+    <td class="wmd-table-cell wmd-align-left">&quot;Great features, battery could be better&quot;</td>
+    <td class="wmd-table-cell wmd-align-left">3h ago</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">Bluetooth Speaker</td>
+    <td class="wmd-table-cell wmd-align-left">Mike C.</td>
+    <td class="wmd-table-cell wmd-align-left">⭐⭐⭐⭐⭐</td>
+    <td class="wmd-table-cell wmd-align-left">&quot;Perfect for outdoor use&quot;</td>
+    <td class="wmd-table-cell wmd-align-left">5h ago</td>
+  </tr>
+  </tbody>
+</table>
+<div class="wmd-container-button-group">
+  <button class="wmd-button">Moderate Reviews →</button>
+  <button class="wmd-button">Reply to Customers →</button>
+</div>
+<hr class="wmd-separator" />
+<h2 class="wmd-h2">Tasks &amp; Reminders</h2>
+<div class="wmd-container-card">
+  <h3 class="wmd-h3">Today&#039;s Tasks</h3>
+  <ul class="wmd-list">
+  <label class="wmd-checkbox">
+    <input type="checkbox" checked />
+    <span>Process pending orders (12/12 complete)</span>
+  </label>
+  <label class="wmd-checkbox">
+    <input type="checkbox" checked />
+    <span>Respond to customer inquiries (5/5 complete)</span>
+  </label>
+  <label class="wmd-checkbox">
+    <input type="checkbox" />
+    <span>Restock low inventory items (0/15 complete)</span>
+  </label>
+  <label class="wmd-checkbox">
+    <input type="checkbox" />
+    <span>Review marketing campaign performance</span>
+  </label>
+  <label class="wmd-checkbox">
+    <input type="checkbox" />
+    <span>Update product descriptions</span>
+  </label>
+</ul>
+  <p class="wmd-paragraph"><strong>Upcoming:</strong></p>
+  <ul class="wmd-list">
+  <li class="wmd-list-item">Weekly inventory audit (Tomorrow)</li>
+  <li class="wmd-list-item">Monthly sales report (3 days)</li>
+  <li class="wmd-list-item">Supplier payment due (5 days)</li>
+</ul>
+  <button class="wmd-button">Manage Tasks →</button>
+</div>
+<hr class="wmd-separator" />
+<div class="wmd-container-footer">
+  <div class="wmd-container-form-group">
+  <strong>Last Updated:</strong>2 minutes ago • 
+  <button class="wmd-button">Refresh Data</button>
+   • 
+  <button class="wmd-button">Download Report</button>
+   • 
+  <button class="wmd-button">Help Center</button>
+   • 
+  <button class="wmd-button">Contact Support</button>
+</div>
+</div>
+<hr class="wmd-separator" />
+<p class="wmd-paragraph"><strong>Style Variations:</strong></p>
+<ul class="wmd-list">
+  <li class="wmd-list-item">sketch - Quick e-commerce prototype</li>
+  <li class="wmd-list-item">clean - Professional shop dashboard</li>
+  <li class="wmd-list-item">wireframe - Data structure focus</li>
+  <li class="wmd-list-item">tailwind - Modern retail interface</li>
+  <li class="wmd-list-item">material - Google Merchant style</li>
+  <li class="wmd-list-item">brutal - Bold commerce UI</li>
+  <li class="wmd-list-item">none - Semantic HTML for custom styling</li>
+</ul>
+<p class="wmd-paragraph"><strong>Generate this example:</strong></p>
+<pre class="wmd-code-block"><code data-lang="bash">wiremd ecommerce-dashboard.md --style sketch
+wiremd ecommerce-dashboard.md --style clean -o ecommerce-clean.html
+wiremd ecommerce-dashboard.md --style tailwind -o ecommerce-tailwind.html</code></pre>
+</body>
+</html>

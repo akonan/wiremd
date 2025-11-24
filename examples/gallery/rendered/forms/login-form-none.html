@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>wiremd Mockup</title>
+  <style>
+
+/* wiremd None Style - Minimal semantic styling */
+* {
+  box-sizing: border-box;
+}
+
+body.wmd-root {
+  font-family: system-ui, -apple-system, sans-serif;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 20px;
+  line-height: 1.6;
+}
+
+.wmd-button {
+  padding: 8px 16px;
+  margin: 4px;
+}
+
+.wmd-input, .wmd-textarea, .wmd-select {
+  display: block;
+  width: 100%;
+  max-width: 400px;
+  padding: 8px;
+  margin: 4px 0;
+}
+
+.wmd-grid {
+  display: grid;
+  grid-template-columns: repeat(var(--grid-columns, 3), 1fr);
+  gap: 20px;
+  margin: 20px 0;
+}
+
+.wmd-nav-content {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.wmd-brand {
+  margin-right: auto;
+  font-weight: bold;
+}
+
+/* State Containers */
+.wmd-container-loading-state,
+.wmd-container-empty-state,
+.wmd-container-error-state {
+  padding: 40px;
+  margin: 20px 0;
+  text-align: center;
+}
+
+@media (max-width: 768px) {
+  .wmd-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+  </style>
+</head>
+<body class="wmd-root wmd-none">
+  <h1 class="wmd-h1">Login Form</h1>
+<blockquote class="wmd-blockquote">
+  <p class="wmd-paragraph"><strong>Use Case:</strong> User authentication page for web applications, admin panels, or member areas.</p>
+  <p class="wmd-paragraph"><strong>Key Features:</strong> Password field, remember me checkbox, links, social login buttons, responsive layout</p>
+</blockquote>
+<nav class="wmd-nav">
+  <div class="wmd-nav-content">
+    <div class="wmd-brand"><span class="wmd-icon" data-icon="logo" aria-label="logo">◈</span>MyApp</div>
+    <a href="#" class="wmd-nav-item">Home</a>
+    <a href="#" class="wmd-nav-item">Features</a>
+    <a href="#" class="wmd-nav-item">Pricing</a>
+  </div>
+</nav>
+<hr class="wmd-separator" />
+<div class="wmd-container-hero">
+  <h1 class="wmd-h1">Welcome Back</h1>
+  <p class="wmd-paragraph">Sign in to your account to continue</p>
+</div>
+<div class="wmd-container-card">
+  <h3 class="wmd-h3">Sign In</h3>
+  <div class="wmd-container-form-group">
+  Email or Username
+  <input type="email" class="wmd-input" required style="width: 29ch; max-width: 29ch;" />
+</div>
+  <div class="wmd-container-form-group">
+  Password
+  <input type="password" class="wmd-input" required style="width: 8ch; max-width: 8ch;" />
+</div>
+  <ul class="wmd-list">
+  <label class="wmd-checkbox">
+    <input type="checkbox" checked />
+    <span>Remember me for 30 days</span>
+  </label>
+</ul>
+  <button class="wmd-button wmd-button-primary">Sign In</button>
+  <p class="wmd-paragraph"><a href="https://example.com/reset">Forgot password?</a></p>
+  <hr class="wmd-separator" />
+  <h3 class="wmd-h3">Or continue with</h3>
+  <nav class="wmd-nav">
+  <div class="wmd-nav-content">
+    <a href="#" class="wmd-nav-item"><span class="wmd-icon" data-icon="github" aria-label="github" style="font-family: monospace; font-weight: bold; font-style: normal;">⊙</span>GitHub</a>
+    <a href="#" class="wmd-nav-item"><span class="wmd-icon" data-icon="google" aria-label="google">●</span>Google</a>
+    <a href="#" class="wmd-nav-item"><span class="wmd-icon" data-icon="apple" aria-label="apple">●</span>Apple</a>
+  </div>
+</nav>
+  <hr class="wmd-separator" />
+  <p class="wmd-paragraph">Don't have an account? <a href="https://example.com/signup">Create one here</a></p>
+</div>
+<div class="wmd-container-footer">
+  <div class="wmd-container-section">
+  <nav class="wmd-nav">
+  <div class="wmd-nav-content">
+    <a href="#" class="wmd-nav-item">Privacy Policy</a>
+    <a href="#" class="wmd-nav-item">Terms of Service</a>
+    <a href="#" class="wmd-nav-item">Contact Support</a>
+  </div>
+</nav>
+  <p class="wmd-paragraph">© 2025 MyApp Inc.</p>
+</div>
+</div>
+<hr class="wmd-separator" />
+<p class="wmd-paragraph"><strong>Style Variations:</strong></p>
+<ul class="wmd-list">
+  <li class="wmd-list-item">sketch - Friendly, approachable login screen</li>
+  <li class="wmd-list-item">clean - Professional, modern authentication</li>
+  <li class="wmd-list-item">wireframe - Minimal distraction focus on fields</li>
+  <li class="wmd-list-item">tailwind - Vibrant purple accents</li>
+  <li class="wmd-list-item">material - Elevated card with shadows</li>
+  <li class="wmd-list-item">brutal - Bold, confident design</li>
+  <li class="wmd-list-item">none - Unstyled for custom branding</li>
+</ul>
+<p class="wmd-paragraph"><strong>Generate this example:</strong></p>
+<pre class="wmd-code-block"><code data-lang="bash">wiremd login-form.md --style sketch
+wiremd login-form.md --style tailwind -o login-tailwind.html</code></pre>
+</body>
+</html>

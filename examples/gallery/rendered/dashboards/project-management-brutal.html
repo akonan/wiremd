@@ -1,0 +1,1300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>wiremd Mockup</title>
+  <style>
+
+/* Neo-Brutalism Style */
+body {
+  font-family: "Space Grotesk", "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+  background: #fffcf2;
+  color: #000000;
+  line-height: 1.4;
+  margin: 0;
+  padding: 20px;
+}
+
+/* Typography - Bold and Aggressive */
+.wmd-h1 {
+  font-size: 3rem;
+  font-weight: 900;
+  color: #000000;
+  margin: 0 0 1rem 0;
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+  text-shadow: 3px 3px 0 #ffd93d;
+}
+
+.wmd-h2 {
+  font-size: 2.25rem;
+  font-weight: 900;
+  color: #000000;
+  margin: 1.5rem 0 1rem 0;
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+}
+
+.wmd-h3 {
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: #000000;
+  margin: 1.25rem 0 0.75rem 0;
+  text-transform: uppercase;
+}
+
+.wmd-h4 {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: #000000;
+  margin: 1rem 0 0.5rem 0;
+  text-transform: uppercase;
+}
+
+.wmd-paragraph {
+  color: #000000;
+  margin: 0.75rem 0;
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+/* Brutal Buttons */
+.wmd-button {
+  padding: 12px 24px;
+  border: 3px solid #000000;
+  border-radius: 0;
+  font-weight: 900;
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  transition: all 0.1s ease;
+  cursor: pointer;
+  display: inline-block;
+  text-decoration: none;
+  background: #ffffff;
+  color: #000000;
+  box-shadow: 4px 4px 0 #000000;
+  position: relative;
+}
+
+.wmd-button:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0 #000000;
+}
+
+.wmd-button:active {
+  transform: translate(2px, 2px);
+  box-shadow: 2px 2px 0 #000000;
+}
+
+.wmd-button-primary, .wmd-button.wmd-button-primary {
+  background: #ffd93d;
+  color: #000000;
+}
+
+.wmd-button-primary:hover, .wmd-button.wmd-button-primary:hover {
+  background: #ffcc00;
+}
+
+.wmd-button:disabled, .wmd-button[disabled] {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none !important;
+  box-shadow: 4px 4px 0 #000000 !important;
+}
+
+/* Button States */
+.wmd-state-loading {
+  background: #bcf0da !important;
+  color: #000000 !important;
+  animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.02); }
+}
+
+.wmd-state-error {
+  background: #ff6b6b !important;
+  color: #000000 !important;
+}
+
+.wmd-state-success {
+  background: #6bcf7f !important;
+  color: #000000 !important;
+}
+
+/* Brutal Forms */
+.wmd-input, .wmd-textarea, .wmd-select {
+  width: 100%;
+  padding: 12px;
+  border: 3px solid #000000;
+  border-radius: 0;
+  font-size: 1rem;
+  font-weight: 600;
+  background: #ffffff;
+  color: #000000;
+  box-shadow: 4px 4px 0 #000000;
+  transition: all 0.1s ease;
+}
+
+.wmd-input:focus, .wmd-textarea:focus, .wmd-select:focus {
+  outline: none;
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0 #000000;
+  background: #ffd93d;
+}
+
+.wmd-input::placeholder, .wmd-textarea::placeholder {
+  color: #666666;
+  font-weight: 600;
+}
+
+.wmd-input[disabled], .wmd-input.wmd-state-disabled,
+.wmd-textarea[disabled], .wmd-textarea.wmd-state-disabled,
+.wmd-select[disabled], .wmd-select.wmd-state-disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background: #e0e0e0;
+  box-shadow: none;
+  transform: none !important;
+}
+
+.wmd-textarea {
+  resize: vertical;
+  min-height: 6rem;
+  font-family: inherit;
+}
+
+.wmd-select {
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='3' stroke-linecap='square'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 20px;
+  padding-right: 40px;
+}
+
+/* Brutal Checkboxes and Radios */
+.wmd-checkbox, .wmd-radio {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 8px 0;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.wmd-checkbox input[type="checkbox"],
+.wmd-radio input[type="radio"] {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  border: 3px solid #000000;
+  accent-color: #ffd93d;
+}
+
+/* Brutal Cards and Containers */
+.wmd-container-card {
+  background: #ffffff;
+  border: 3px solid #000000;
+  border-radius: 0;
+  box-shadow: 8px 8px 0 #000000;
+  padding: 24px;
+  margin: 24px 0;
+  transition: all 0.1s ease;
+}
+
+.wmd-container-card:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 10px 10px 0 #000000;
+}
+
+.wmd-container-hero {
+  background: linear-gradient(135deg, #ff6b6b 0%, #ffd93d 100%);
+  color: #000000;
+  border: 3px solid #000000;
+  border-radius: 0;
+  padding: 48px 32px;
+  margin: 32px 0;
+  text-align: center;
+  box-shadow: 12px 12px 0 #000000;
+  position: relative;
+  overflow: hidden;
+}
+
+.wmd-container-hero::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -50%;
+  width: 200%;
+  height: 200%;
+  background: repeating-linear-gradient(
+    45deg,
+    transparent,
+    transparent 10px,
+    rgba(0, 0, 0, 0.05) 10px,
+    rgba(0, 0, 0, 0.05) 20px
+  );
+  pointer-events: none;
+}
+
+.wmd-container-hero .wmd-h1,
+.wmd-container-hero .wmd-h2,
+.wmd-container-hero .wmd-h3,
+.wmd-container-hero .wmd-paragraph {
+  color: #000000;
+  position: relative;
+}
+
+.wmd-container-modal {
+  background: #ffffff;
+  border: 3px solid #000000;
+  border-radius: 0;
+  box-shadow: 12px 12px 0 #000000;
+  padding: 32px;
+  margin: 32px auto;
+  max-width: 600px;
+  position: relative;
+}
+
+.wmd-container-footer {
+  background: #000000;
+  color: #ffffff;
+  padding: 32px;
+  margin-top: 48px;
+  border: 3px solid #000000;
+  box-shadow: 8px 8px 0 #ffd93d;
+}
+
+.wmd-container-footer .wmd-paragraph,
+.wmd-container-footer .wmd-nav-item {
+  color: #ffffff;
+  font-weight: 600;
+}
+
+.wmd-container-section {
+  padding: 24px 0;
+  border-bottom: 3px solid #000000;
+}
+
+.wmd-container-section:last-child {
+  border-bottom: none;
+}
+
+/* Brutal Alerts */
+.wmd-container-alert {
+  padding: 16px 20px;
+  border: 3px solid #000000;
+  border-radius: 0;
+  margin: 20px 0;
+  box-shadow: 6px 6px 0 #000000;
+  font-weight: 600;
+}
+
+.wmd-container-alert.wmd-warning {
+  background: #ffeb3b;
+  color: #000000;
+}
+
+.wmd-container-alert.wmd-state-error {
+  background: #ff6b6b;
+  color: #000000;
+}
+
+.wmd-container-alert.wmd-state-success {
+  background: #6bcf7f;
+  color: #000000;
+}
+
+/* Brutal Navigation */
+.wmd-nav {
+  background: #ffd93d;
+  border: 3px solid #000000;
+  padding: 16px 20px;
+  box-shadow: 6px 6px 0 #000000;
+  margin-bottom: 32px;
+}
+
+.wmd-nav-content {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.wmd-nav-item {
+  color: #000000;
+  text-decoration: none;
+  padding: 8px 16px;
+  border: 2px solid transparent;
+  transition: all 0.1s ease;
+  font-size: 0.875rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.wmd-nav-item:hover {
+  background: #000000;
+  color: #ffd93d;
+  border: 2px solid #000000;
+  transform: translate(-2px, -2px);
+  box-shadow: 2px 2px 0 #000000;
+}
+
+.wmd-brand {
+  font-weight: 900;
+  font-size: 1.5rem;
+  color: #000000;
+  margin-right: auto;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+}
+
+/* Brutal Lists */
+.wmd-list {
+  margin: 20px 0;
+  padding: 0;
+  list-style: none;
+  border: 3px solid #000000;
+  background: #ffffff;
+  box-shadow: 6px 6px 0 #000000;
+}
+
+.wmd-list-item {
+  padding: 16px 20px;
+  border-bottom: 3px solid #000000;
+  color: #000000;
+  font-weight: 600;
+  transition: all 0.1s ease;
+}
+
+.wmd-list-item:hover {
+  background: #ffd93d;
+  padding-left: 28px;
+}
+
+.wmd-list-item:last-child {
+  border-bottom: none;
+}
+
+/* Brutal Grid */
+.wmd-grid {
+  display: grid;
+  gap: 24px;
+  margin: 32px 0;
+}
+
+.wmd-grid-2 {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.wmd-grid-3 {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.wmd-grid-4 {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.wmd-grid > * {
+  border: 3px solid #000000;
+  background: #ffffff;
+  padding: 20px;
+  box-shadow: 6px 6px 0 #000000;
+}
+
+/* Brutal Tables */
+.wmd-table {
+  width: 100%;
+  background: #ffffff;
+  border: 3px solid #000000;
+  border-collapse: separate;
+  border-spacing: 0;
+  box-shadow: 8px 8px 0 #000000;
+  margin: 20px 0;
+}
+
+.wmd-table th {
+  background: #ffd93d;
+  padding: 16px;
+  text-align: left;
+  font-weight: 900;
+  font-size: 0.875rem;
+  color: #000000;
+  border-bottom: 3px solid #000000;
+  border-right: 3px solid #000000;
+  text-transform: uppercase;
+}
+
+.wmd-table th:last-child {
+  border-right: none;
+}
+
+.wmd-table td {
+  padding: 16px;
+  border-bottom: 3px solid #000000;
+  border-right: 3px solid #000000;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #000000;
+}
+
+.wmd-table td:last-child {
+  border-right: none;
+}
+
+.wmd-table tr:last-child td {
+  border-bottom: none;
+}
+
+.wmd-table tr:hover td {
+  background: #bcf0da;
+}
+
+/* Table cell alignment - more specific to override th/td defaults */
+.wmd-table .wmd-align-left {
+  text-align: left !important;
+}
+
+.wmd-table .wmd-align-center {
+  text-align: center !important;
+}
+
+.wmd-table .wmd-align-right {
+  text-align: right !important;
+}
+
+/* Brutal Icons */
+.wmd-icon {
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+  vertical-align: middle;
+  font-weight: 900;
+}
+
+/* Utility classes */
+.wmd-separator {
+  border: none;
+  border-top: 3px solid #000000;
+  margin: 32px 0;
+}
+
+.wmd-image {
+  max-width: 100%;
+  height: auto;
+  border: 3px solid #000000;
+  box-shadow: 6px 6px 0 #000000;
+}
+
+.wmd-code {
+  background: #ffd93d;
+  padding: 4px 8px;
+  border: 2px solid #000000;
+  font-family: "JetBrains Mono", "Courier New", monospace;
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: #000000;
+}
+
+.wmd-blockquote {
+  border-left: 6px solid #000000;
+  padding-left: 20px;
+  margin: 20px 0;
+  color: #000000;
+  font-weight: 600;
+  font-style: normal;
+  background: linear-gradient(to right, rgba(255, 217, 61, 0.2), transparent);
+}
+
+/* Button group */
+.wmd-container-button-group {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin: 20px 0;
+}
+
+/* Form group */
+.wmd-container-form-group {
+  margin: 20px 0;
+}
+
+.wmd-container-form-group .wmd-input:not(:last-child),
+.wmd-container-form-group .wmd-textarea:not(:last-child),
+.wmd-container-form-group .wmd-select:not(:last-child) {
+  margin-bottom: 16px;
+}
+
+/* State Containers */
+.wmd-container-loading-state {
+  background: #ffffff;
+  border: 3px solid #000000;
+  padding: 56px 40px;
+  margin: 32px 0;
+  text-align: center;
+  box-shadow: 8px 8px 0 #000000;
+  position: relative;
+}
+
+.wmd-container-loading-state::before {
+  content: '⟳';
+  display: block;
+  font-size: 64px;
+  font-weight: 900;
+  margin-bottom: 24px;
+  animation: spin 1.5s ease-in-out infinite;
+  color: #ffd93d;
+  text-shadow: 3px 3px 0 #000000;
+}
+
+.wmd-container-empty-state {
+  background: #f5f5f5;
+  border: 3px dashed #000000;
+  padding: 72px 40px;
+  margin: 32px 0;
+  text-align: center;
+  color: #666666;
+  font-weight: 600;
+}
+
+.wmd-container-empty-state::before {
+  content: '[EMPTY]';
+  display: block;
+  font-size: 32px;
+  font-weight: 900;
+  letter-spacing: 0.3em;
+  margin-bottom: 24px;
+  color: #999999;
+  text-transform: uppercase;
+}
+
+.wmd-container-error-state {
+  background: #ff6b6b;
+  border: 3px solid #000000;
+  padding: 56px 40px;
+  margin: 32px 0;
+  text-align: center;
+  box-shadow: 8px 8px 0 #000000;
+  color: #000000;
+  font-weight: 600;
+}
+
+.wmd-container-error-state::before {
+  content: '⚠';
+  display: block;
+  font-size: 72px;
+  font-weight: 900;
+  margin-bottom: 24px;
+  text-shadow: 3px 3px 0 rgba(0, 0, 0, 0.2);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .wmd-h1 {
+    font-size: 2rem;
+  }
+
+  .wmd-h2 {
+    font-size: 1.75rem;
+  }
+
+  .wmd-grid-2,
+  .wmd-grid-3,
+  .wmd-grid-4 {
+    grid-template-columns: 1fr;
+  }
+
+  .wmd-nav-content {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .wmd-brand {
+    margin-right: 0;
+    margin-bottom: 12px;
+    font-size: 1.25rem;
+  }
+
+  .wmd-container-card,
+  .wmd-container-modal {
+    box-shadow: 6px 6px 0 #000000;
+  }
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+  </style>
+</head>
+<body class="wmd-root wmd-brutal">
+  <h1 class="wmd-h1">Project Management Dashboard</h1>
+<blockquote class="wmd-blockquote">
+  <p class="wmd-paragraph"><strong>Use Case:</strong> Team collaboration and project tracking dashboard similar to Jira, Asana, or Trello.</p>
+  <p class="wmd-paragraph"><strong>Key Features:</strong> Task boards, sprint tracking, team activity, timeline views, file management</p>
+</blockquote>
+<nav class="wmd-nav">
+  <div class="wmd-nav-content">
+    <div class="wmd-brand"><span class="wmd-icon" data-icon="logo" aria-label="logo">◈</span>TaskFlow</div>
+    <a href="#" class="wmd-nav-item"></a>
+    <a href="#" class="wmd-nav-item">Tasks</a>
+    <a href="#" class="wmd-nav-item">Team</a>
+    <a href="#" class="wmd-nav-item">Calendar</a>
+    <a href="#" class="wmd-nav-item">Reports</a>
+    <span class="wmd-icon" data-icon="search" aria-label="search">🔍</span>
+    <a href="#" class="wmd-nav-item"><span class="wmd-icon" data-icon="bell" aria-label="bell">🔔</span>(12)</a>
+    <a href="#" class="wmd-nav-item"><span class="wmd-icon" data-icon="user" aria-label="user">👤</span>Jane Doe</a>
+  </div>
+</nav>
+<hr class="wmd-separator" />
+<div class="wmd-container-sidebar">
+  <h3 class="wmd-h3">Workspaces</h3>
+  <ul class="wmd-list">
+  <li class="wmd-list-item">⭐ My Tasks</li>
+  <li class="wmd-list-item">🏢 Company Projects</li>
+  <li class="wmd-list-item">👥 Team Alpha</li>
+  <li class="wmd-list-item">📱 Mobile App v2.0</li>
+  <li class="wmd-list-item">🌐 Website Redesign</li>
+</ul>
+  <h3 class="wmd-h3">Quick Filters</h3>
+  <ul class="wmd-list">
+  <label class="wmd-checkbox">
+    <input type="checkbox" checked />
+    <span>Assigned to me</span>
+  </label>
+  <label class="wmd-checkbox">
+    <input type="checkbox" checked />
+    <span>Due this week</span>
+  </label>
+  <label class="wmd-checkbox">
+    <input type="checkbox" />
+    <span>High priority</span>
+  </label>
+  <label class="wmd-checkbox">
+    <input type="checkbox" />
+    <span>Overdue</span>
+  </label>
+</ul>
+  <button class="wmd-button wmd-button-primary">+ New Project</button>
+  <h3 class="wmd-h3">Tags</h3>
+  <ul class="wmd-list">
+  <li class="wmd-list-item">#frontend (45)</li>
+  <li class="wmd-list-item">#backend (32)</li>
+  <li class="wmd-list-item">#design (23)</li>
+  <li class="wmd-list-item">#bug (12)</li>
+  <li class="wmd-list-item">#feature (67)</li>
+</ul>
+  <button class="wmd-button">Manage Tags →</button>
+</div>
+<hr class="wmd-separator" />
+<h2 class="wmd-h2">Project Dashboard</h2>
+<nav class="wmd-nav">
+  <div class="wmd-nav-content">
+    <a href="#" class="wmd-nav-item">Projects &gt; Mobile App v2.0 &gt; Sprint 12</a>
+  </div>
+</nav>
+<hr class="wmd-separator" />
+<div class="wmd-container-alert info">
+  <div class="wmd-container-form-group">
+  ℹ️<strong>Sprint 12</strong>ends in 3 days • 
+  <button class="wmd-button">View Sprint Report →</button>
+</div>
+</div>
+<hr class="wmd-separator" />
+<div class="wmd-grid wmd-grid-4 wmd-grid-4" style="--grid-columns: 4">
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Total Tasks</h3>
+    <p class="wmd-paragraph"><strong>48</strong> tasks</p>
+    <p class="wmd-paragraph">Sprint 12</p>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Completed</h3>
+    <div class="wmd-container-form-group">
+  <strong>32</strong> tasks
+
+  <button class="wmd-button">###############___</button>
+   67%
+</div>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">In Progress</h3>
+    <p class="wmd-paragraph"><strong>12</strong> tasks</p>
+    <p class="wmd-paragraph">4 team members</p>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Blocked</h3>
+    <p class="wmd-paragraph"><strong>4</strong> tasks</p>
+    <p class="wmd-paragraph">Needs attention</p>
+  </div>
+</div>
+<h2 class="wmd-h2"></h2>
+<hr class="wmd-separator" />
+<h2 class="wmd-h2">Sprint Burndown</h2>
+<div class="wmd-container-card">
+  <div class="wmd-container-form-group">
+  <img src="https://via.placeholder.com/700x300" alt="Burndown Chart" class="wmd-image" />
+</div>
+  <p class="wmd-paragraph"><strong>Sprint 12 Burndown (14 days)</strong></p>
+  <ul class="wmd-list">
+  <li class="wmd-list-item">Planned: 48 tasks</li>
+  <li class="wmd-list-item">Completed: 32 tasks</li>
+  <li class="wmd-list-item">Remaining: 16 tasks</li>
+  <li class="wmd-list-item">Trend: On track ✅</li>
+</ul>
+  <button class="wmd-button">View Detailed Analytics →</button>
+</div>
+<hr class="wmd-separator" />
+<h2 class="wmd-h2">Task Board</h2>
+<h2 class="wmd-h2">Kanban Board</h2>
+<h3 class="wmd-h3">Backlog (24)</h3>
+<p class="wmd-paragraph"><strong>Priority tasks for upcoming sprints</strong></p>
+<div class="wmd-container-card">
+  <ul class="wmd-list">
+  <li class="wmd-list-item">Assigned: @john</li>
+  <li class="wmd-list-item">Priority: High</li>
+  <li class="wmd-list-item">Est: 8h</li>
+</ul>
+  <button class="wmd-button">View Details →</button>
+</div>
+<div class="wmd-container-card">
+  <ul class="wmd-list">
+  <li class="wmd-list-item">Assigned: @sarah</li>
+  <li class="wmd-list-item">Priority: Medium</li>
+  <li class="wmd-list-item">Est: 5h</li>
+</ul>
+  <button class="wmd-button">View Details →</button>
+</div>
+<div class="wmd-container-button-group">
+  <button class="wmd-button">+ Add Task</button>
+  <button class="wmd-button">View All 24 →</button>
+</div>
+<hr class="wmd-separator" />
+<h3 class="wmd-h3">To Do (12)</h3>
+<p class="wmd-paragraph"><strong>Ready to start</strong></p>
+<div class="wmd-container-card">
+  <ul class="wmd-list">
+  <li class="wmd-list-item">Assigned: @mike</li>
+  <li class="wmd-list-item">Priority: High</li>
+  <li class="wmd-list-item">Est: 6h</li>
+  <li class="wmd-list-item">Due: Today</li>
+</ul>
+  <button class="wmd-button">Start Task →</button>
+</div>
+<div class="wmd-container-card">
+  <ul class="wmd-list">
+  <li class="wmd-list-item">Assigned: @emma</li>
+  <li class="wmd-list-item">Priority: Critical</li>
+  <li class="wmd-list-item">Est: 3h</li>
+  <li class="wmd-list-item">Due: Tomorrow</li>
+</ul>
+  <button class="wmd-button">Start Task →</button>
+</div>
+<button class="wmd-button">+ Add Task</button>
+<hr class="wmd-separator" />
+<h3 class="wmd-h3">In Progress (8)</h3>
+<p class="wmd-paragraph"><strong>Currently being worked on</strong></p>
+<div class="wmd-container-card">
+  <ul class="wmd-list">
+  <li class="wmd-list-item">Assigned: @alex</li>
+  <li class="wmd-list-item">Priority: High</li>
+  <li class="wmd-list-item">Est: 10h | Spent: 6h</li>
+  <li class="wmd-list-item">Due: 2 days</li>
+</ul>
+  <p class="wmd-paragraph"><span class="wmd-icon" data-icon="timer" aria-label="timer">●</span>Timer running: 2h 15m</p>
+  <button class="wmd-button">View Progress →</button>
+</div>
+<div class="wmd-container-card">
+  <ul class="wmd-list">
+  <li class="wmd-list-item">Assigned: @lisa</li>
+  <li class="wmd-list-item">Priority: Medium</li>
+  <li class="wmd-list-item">Est: 8h | Spent: 4h</li>
+  <li class="wmd-list-item">Due: 3 days</li>
+</ul>
+  <button class="wmd-button">Update Status →</button>
+</div>
+<hr class="wmd-separator" />
+<h3 class="wmd-h3">In Review (5)</h3>
+<p class="wmd-paragraph"><strong>Awaiting review</strong></p>
+<div class="wmd-container-card">
+  <ul class="wmd-list">
+  <li class="wmd-list-item">Assigned: @tom</li>
+  <li class="wmd-list-item">Priority: Medium</li>
+  <li class="wmd-list-item">Reviewers: @sarah, @mike</li>
+  <li class="wmd-list-item">Due: Today</li>
+</ul>
+  <div class="wmd-container-button-group">
+  <button class="wmd-button">Review →</button>
+  <button class="wmd-button">Approve →</button>
+</div>
+</div>
+<button class="wmd-button">Show All 5 →</button>
+<hr class="wmd-separator" />
+<h3 class="wmd-h3">Done (32)</h3>
+<p class="wmd-paragraph"><strong>Completed this sprint</strong></p>
+<div class="wmd-container-card">
+  <ul class="wmd-list">
+  <li class="wmd-list-item">Completed: 2h ago</li>
+  <li class="wmd-list-item">By: @sarah</li>
+  <li class="wmd-list-item">Approved by: @jane</li>
+</ul>
+  <button class="wmd-button">View →</button>
+</div>
+<button class="wmd-button">View All 32 →</button>
+<hr class="wmd-separator" />
+<h2 class="wmd-h2">Team Activity</h2>
+<div class="wmd-container-card">
+  <h3 class="wmd-h3">Recent Updates (Last Hour)</h3>
+  <table class="wmd-table">
+  <thead>
+    <tr>
+      <th class="wmd-table-cell wmd-align-left">Time</th>
+    <th class="wmd-table-cell wmd-align-left">Member</th>
+    <th class="wmd-table-cell wmd-align-left">Activity</th>
+    <th class="wmd-table-cell wmd-align-left">Task</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">2m ago</td>
+    <td class="wmd-table-cell wmd-align-left">@alex</td>
+    <td class="wmd-table-cell wmd-align-left">Commented on</td>
+    <td class="wmd-table-cell wmd-align-left">[TASK-149] Performance optimization</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">5m ago</td>
+    <td class="wmd-table-cell wmd-align-left">@sarah</td>
+    <td class="wmd-table-cell wmd-align-left">Completed</td>
+    <td class="wmd-table-cell wmd-align-left">[TASK-152] Login page redesign</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">12m ago</td>
+    <td class="wmd-table-cell wmd-align-left">@mike</td>
+    <td class="wmd-table-cell wmd-align-left">Started</td>
+    <td class="wmd-table-cell wmd-align-left">[TASK-147] API endpoint</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">18m ago</td>
+    <td class="wmd-table-cell wmd-align-left">@emma</td>
+    <td class="wmd-table-cell wmd-align-left">Blocked</td>
+    <td class="wmd-table-cell wmd-align-left">[TASK-148] Need database access</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">25m ago</td>
+    <td class="wmd-table-cell wmd-align-left">@lisa</td>
+    <td class="wmd-table-cell wmd-align-left">Updated</td>
+    <td class="wmd-table-cell wmd-align-left">[TASK-150] Added screenshots</td>
+  </tr>
+  </tbody>
+</table>
+  <button class="wmd-button">View All Activity →</button>
+</div>
+<hr class="wmd-separator" />
+<div class="wmd-grid wmd-grid-3 wmd-grid-3" style="--grid-columns: 3">
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Task Completion</h3>
+    <p class="wmd-paragraph"><strong>This Sprint:</strong></p>
+    <ul class="wmd-list">
+  <li class="wmd-list-item">@alex: 8 tasks</li>
+  <li class="wmd-list-item">@sarah: 7 tasks</li>
+  <li class="wmd-list-item">@mike: 6 tasks</li>
+  <li class="wmd-list-item">@emma: 5 tasks</li>
+  <li class="wmd-list-item">@lisa: 6 tasks</li>
+</ul>
+    <div class="wmd-container-form-group">
+  <img src="https://via.placeholder.com/350x200" alt="Bar Chart" class="wmd-image" />
+</div>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Time Tracking</h3>
+    <p class="wmd-paragraph"><strong>Hours This Week:</strong></p>
+    <ul class="wmd-list">
+  <li class="wmd-list-item">@alex: 32h</li>
+  <li class="wmd-list-item">@sarah: 28h</li>
+  <li class="wmd-list-item">@mike: 35h</li>
+  <li class="wmd-list-item">@emma: 30h</li>
+  <li class="wmd-list-item">@lisa: 25h</li>
+</ul>
+    <p class="wmd-paragraph"><strong>Avg: 30h/week</strong></p>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Velocity Trend</h3>
+    <p class="wmd-paragraph"><strong>Last 5 Sprints:</strong></p>
+    <ul class="wmd-list">
+  <li class="wmd-list-item">Sprint 8: 42 pts</li>
+  <li class="wmd-list-item">Sprint 9: 45 pts</li>
+  <li class="wmd-list-item">Sprint 10: 48 pts</li>
+  <li class="wmd-list-item">Sprint 11: 44 pts</li>
+  <li class="wmd-list-item">Sprint 12: 46 pts (projected)</li>
+</ul>
+    <p class="wmd-paragraph"><strong>Trend:</strong> Improving ⬆️</p>
+  </div>
+</div>
+<h2 class="wmd-h2"></h2>
+<hr class="wmd-separator" />
+<h2 class="wmd-h2">Task Details</h2>
+<div class="wmd-container-card">
+  <h3 class="wmd-h3">[TASK-149] Dashboard Performance Optimization</h3>
+  <p class="wmd-paragraph"><strong>Status:</strong> In Progress
+<strong>Priority:</strong> 🔴 High
+<strong>Sprint:</strong> Sprint 12</p>
+  <hr class="wmd-separator" />
+  <p class="wmd-paragraph"><strong>Assigned to:</strong> @alex
+<strong>Reviewer:</strong> @jane
+<strong>Created:</strong> Mar 10, 2025
+<strong>Due Date:</strong> Mar 20, 2025</p>
+  <p class="wmd-paragraph"><strong>Estimated:</strong> 10h
+<strong>Time Spent:</strong> 6h 15m
+<strong>Remaining:</strong> 3h 45m</p>
+  <hr class="wmd-separator" />
+  <p class="wmd-paragraph"><strong>Description:</strong>
+Optimize dashboard loading time and reduce API calls. Target: <2s initial load, <500ms for subsequent navigation.</p>
+  <p class="wmd-paragraph"><strong>Acceptance Criteria:</strong></p>
+  <ul class="wmd-list">
+  <label class="wmd-checkbox">
+    <input type="checkbox" checked />
+    <span>Analyze current performance bottlenecks</span>
+  </label>
+  <label class="wmd-checkbox">
+    <input type="checkbox" checked />
+    <span>Implement lazy loading for charts</span>
+  </label>
+  <label class="wmd-checkbox">
+    <input type="checkbox" />
+    <span>Add data caching layer</span>
+  </label>
+  <label class="wmd-checkbox">
+    <input type="checkbox" />
+    <span>Reduce bundle size by 30%</span>
+  </label>
+  <label class="wmd-checkbox">
+    <input type="checkbox" />
+    <span>Write performance tests</span>
+  </label>
+</ul>
+  <p class="wmd-paragraph"><strong>Tags:</strong> #performance #frontend #optimization</p>
+  <hr class="wmd-separator" />
+  <p class="wmd-paragraph"><strong>Subtasks:</strong></p>
+  <ul class="wmd-list">
+  <label class="wmd-checkbox">
+    <input type="checkbox" checked />
+    <span>Profile current performance (2h)</span>
+  </label>
+  <label class="wmd-checkbox">
+    <input type="checkbox" checked />
+    <span>Implement code splitting (3h)</span>
+  </label>
+  <label class="wmd-checkbox">
+    <input type="checkbox" />
+    <span>Add Redis caching (4h)</span>
+  </label>
+  <label class="wmd-checkbox">
+    <input type="checkbox" />
+    <span>Performance testing (1h)</span>
+  </label>
+</ul>
+  <hr class="wmd-separator" />
+  <p class="wmd-paragraph"><strong>Comments (3):</strong></p>
+  <p class="wmd-paragraph"><strong>@alex</strong> • 2m ago
+Working on the caching layer. Should be done by EOD.</p>
+  <p class="wmd-paragraph"><strong>@jane</strong> • 1h ago
+Great progress! Let me know when ready for review.</p>
+  <p class="wmd-paragraph"><strong>@mike</strong> • 3h ago
+I can help with the Redis setup if needed.</p>
+  <div class="wmd-container-button-group">
+  <button class="wmd-button">Add Comment...___________</button>
+  <button class="wmd-button">Post</button>
+</div>
+  <hr class="wmd-separator" />
+  <p class="wmd-paragraph"><strong>Attachments:</strong></p>
+  <ul class="wmd-list">
+  <li class="wmd-list-item">📊 performance-report.pdf (245 KB)</li>
+  <li class="wmd-list-item">📸 before-after-comparison.png (1.2 MB)</li>
+  <li class="wmd-list-item">📝 optimization-plan.md (12 KB)</li>
+</ul>
+  <button class="wmd-button">Upload File</button>
+  <hr class="wmd-separator" />
+  <div class="wmd-container-button-group">
+  <button class="wmd-button">Edit Task</button>
+  <button class="wmd-button">Clone Task</button>
+  <button class="wmd-button">Delete Task</button>
+  <button class="wmd-button">Move to Sprint ▼</button>
+</div>
+</div>
+<hr class="wmd-separator" />
+<h2 class="wmd-h2">Milestones &amp; Deadlines</h2>
+<div class="wmd-grid wmd-grid-3 wmd-grid-3" style="--grid-columns: 3">
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Milestone 1: Alpha Release ✅</h3>
+    <p class="wmd-paragraph"><strong>Completed:</strong> Mar 1, 2025</p>
+    <ul class="wmd-list">
+  <li class="wmd-list-item">User authentication</li>
+  <li class="wmd-list-item">Basic dashboard</li>
+  <li class="wmd-list-item">Profile management</li>
+</ul>
+    <button class="wmd-button">View Details →</button>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Milestone 2: Beta Release 🔄</h3>
+    <p class="wmd-paragraph"><strong>Due:</strong> Mar 25, 2025 (8 days)</p>
+    <ul class="wmd-list">
+  <li class="wmd-list-item">Advanced features</li>
+  <li class="wmd-list-item">Performance optimization</li>
+  <li class="wmd-list-item">Mobile responsive</li>
+</ul>
+    <div class="wmd-container-form-group">
+  <strong>Progress:</strong> 
+  <button class="wmd-button">###########___</button>
+   67%
+</div>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Milestone 3: Production Release</h3>
+    <p class="wmd-paragraph"><strong>Due:</strong> Apr 15, 2025 (29 days)</p>
+    <ul class="wmd-list">
+  <li class="wmd-list-item">Final testing</li>
+  <li class="wmd-list-item">Documentation</li>
+  <li class="wmd-list-item">Deployment</li>
+</ul>
+    <div class="wmd-container-form-group">
+  <strong>Progress:</strong> 
+  <button class="wmd-button">####__________</button>
+   25%
+</div>
+  </div>
+</div>
+<h2 class="wmd-h2"></h2>
+<hr class="wmd-separator" />
+<h2 class="wmd-h2">Files &amp; Documents</h2>
+<div class="wmd-container-card">
+  <h3 class="wmd-h3">Project Files</h3>
+  <p class="wmd-paragraph"><strong>Recent Uploads:</strong></p>
+  <table class="wmd-table">
+  <thead>
+    <tr>
+      <th class="wmd-table-cell wmd-align-left">File</th>
+    <th class="wmd-table-cell wmd-align-left">Type</th>
+    <th class="wmd-table-cell wmd-align-left">Uploaded By</th>
+    <th class="wmd-table-cell wmd-align-left">Date</th>
+    <th class="wmd-table-cell wmd-align-left">Size</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">📊 Sprint-12-Report.pdf</td>
+    <td class="wmd-table-cell wmd-align-left">PDF</td>
+    <td class="wmd-table-cell wmd-align-left">@jane</td>
+    <td class="wmd-table-cell wmd-align-left">2h ago</td>
+    <td class="wmd-table-cell wmd-align-left">856 KB</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">📸 wireframes-v3.fig</td>
+    <td class="wmd-table-cell wmd-align-left">Figma</td>
+    <td class="wmd-table-cell wmd-align-left">@sarah</td>
+    <td class="wmd-table-cell wmd-align-left">5h ago</td>
+    <td class="wmd-table-cell wmd-align-left">2.4 MB</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">📝 API-Documentation.md</td>
+    <td class="wmd-table-cell wmd-align-left">Markdown</td>
+    <td class="wmd-table-cell wmd-align-left">@mike</td>
+    <td class="wmd-table-cell wmd-align-left">1d ago</td>
+    <td class="wmd-table-cell wmd-align-left">45 KB</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">🎨 design-system.sketch</td>
+    <td class="wmd-table-cell wmd-align-left">Sketch</td>
+    <td class="wmd-table-cell wmd-align-left">@lisa</td>
+    <td class="wmd-table-cell wmd-align-left">2d ago</td>
+    <td class="wmd-table-cell wmd-align-left">12 MB</td>
+  </tr>
+  </tbody>
+</table>
+  <div class="wmd-container-button-group">
+  <button class="wmd-button">Upload File</button>
+  <button class="wmd-button">View All Files →</button>
+</div>
+  <hr class="wmd-separator" />
+  <h3 class="wmd-h3">Quick Links</h3>
+  <ul class="wmd-list">
+  <li class="wmd-list-item">Project Wiki</li>
+  <li class="wmd-list-item">API Documentation</li>
+  <li class="wmd-list-item">Design Files (Figma)</li>
+  <li class="wmd-list-item">Repository (GitHub)</li>
+  <li class="wmd-list-item">Deployment Dashboard</li>
+</ul>
+</div>
+<hr class="wmd-separator" />
+<h2 class="wmd-h2">Calendar View</h2>
+<div class="wmd-container-card">
+  <h3 class="wmd-h3">This Week&#039;s Schedule</h3>
+  <p class="wmd-paragraph"><strong>Monday, Mar 17</strong></p>
+  <ul class="wmd-list">
+  <li class="wmd-list-item">9:00 AM - Daily Standup</li>
+  <li class="wmd-list-item">2:00 PM - Sprint Planning</li>
+</ul>
+  <p class="wmd-paragraph"><strong>Tuesday, Mar 18</strong></p>
+  <ul class="wmd-list">
+  <li class="wmd-list-item">9:00 AM - Daily Standup</li>
+  <li class="wmd-list-item">3:00 PM - Design Review</li>
+</ul>
+  <p class="wmd-paragraph"><strong>Wednesday, Mar 19</strong></p>
+  <ul class="wmd-list">
+  <li class="wmd-list-item">9:00 AM - Daily Standup</li>
+  <li class="wmd-list-item">11:00 AM - Client Demo</li>
+</ul>
+  <p class="wmd-paragraph"><strong>Thursday, Mar 20</strong></p>
+  <ul class="wmd-list">
+  <li class="wmd-list-item">9:00 AM - Daily Standup</li>
+  <li class="wmd-list-item">4:00 PM - Sprint Retrospective</li>
+</ul>
+  <p class="wmd-paragraph"><strong>Friday, Mar 21</strong></p>
+  <ul class="wmd-list">
+  <li class="wmd-list-item">9:00 AM - Daily Standup</li>
+  <li class="wmd-list-item">2:00 PM - Team Social</li>
+</ul>
+  <button class="wmd-button">View Full Calendar →</button>
+</div>
+<hr class="wmd-separator" />
+<h2 class="wmd-h2">Team Members</h2>
+<div class="wmd-grid wmd-grid-5 wmd-grid-5" style="--grid-columns: 5">
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Jane Doe</h3>
+    <div class="wmd-container-form-group">
+  <img src="https://via.placeholder.com/100" alt="Avatar" class="wmd-image" />
+</div>
+    <p class="wmd-paragraph"><strong>Product Owner</strong>
+8 tasks active</p>
+    <div class="wmd-container-button-group">
+  <button class="wmd-button"><span class="wmd-icon" data-icon="email" aria-label="email">●</span></button>
+  <button class="wmd-button"><span class="wmd-icon" data-icon="chat" aria-label="chat">💬</span></button>
+</div>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Alex Chen</h3>
+    <div class="wmd-container-form-group">
+  <img src="https://via.placeholder.com/100" alt="Avatar" class="wmd-image" />
+</div>
+    <p class="wmd-paragraph"><strong>Tech Lead</strong>
+6 tasks active</p>
+    <div class="wmd-container-button-group">
+  <button class="wmd-button"><span class="wmd-icon" data-icon="email" aria-label="email">●</span></button>
+  <button class="wmd-button"><span class="wmd-icon" data-icon="chat" aria-label="chat">💬</span></button>
+</div>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Sarah Kim</h3>
+    <div class="wmd-container-form-group">
+  <img src="https://via.placeholder.com/100" alt="Avatar" class="wmd-image" />
+</div>
+    <p class="wmd-paragraph"><strong>UI/UX Designer</strong>
+5 tasks active</p>
+    <div class="wmd-container-button-group">
+  <button class="wmd-button"><span class="wmd-icon" data-icon="email" aria-label="email">●</span></button>
+  <button class="wmd-button"><span class="wmd-icon" data-icon="chat" aria-label="chat">💬</span></button>
+</div>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Mike Wilson</h3>
+    <div class="wmd-container-form-group">
+  <img src="https://via.placeholder.com/100" alt="Avatar" class="wmd-image" />
+</div>
+    <p class="wmd-paragraph"><strong>Backend Dev</strong>
+7 tasks active</p>
+    <div class="wmd-container-button-group">
+  <button class="wmd-button"><span class="wmd-icon" data-icon="email" aria-label="email">●</span></button>
+  <button class="wmd-button"><span class="wmd-icon" data-icon="chat" aria-label="chat">💬</span></button>
+</div>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Emma Davis</h3>
+    <div class="wmd-container-form-group">
+  <img src="https://via.placeholder.com/100" alt="Avatar" class="wmd-image" />
+</div>
+    <p class="wmd-paragraph"><strong>QA Engineer</strong>
+4 tasks active</p>
+    <div class="wmd-container-button-group">
+  <button class="wmd-button"><span class="wmd-icon" data-icon="email" aria-label="email">●</span></button>
+  <button class="wmd-button"><span class="wmd-icon" data-icon="chat" aria-label="chat">💬</span></button>
+</div>
+  </div>
+</div>
+<h2 class="wmd-h2"></h2>
+<hr class="wmd-separator" />
+<h2 class="wmd-h2">Reports &amp; Analytics</h2>
+<div class="wmd-grid wmd-grid-4 wmd-grid-4" style="--grid-columns: 4">
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Completed Story Points</h3>
+    <p class="wmd-paragraph"><strong>46</strong> / 50 points</p>
+    <p class="wmd-paragraph">92% complete</p>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Avg Cycle Time</h3>
+    <p class="wmd-paragraph"><strong>3.2</strong> days</p>
+    <p class="wmd-paragraph">Target: 4 days</p>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Code Review Time</h3>
+    <p class="wmd-paragraph"><strong>4.5</strong> hours</p>
+    <p class="wmd-paragraph">Target: 8 hours</p>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Bug Fix Rate</h3>
+    <p class="wmd-paragraph"><strong>95%</strong></p>
+    <p class="wmd-paragraph">Same sprint resolution</p>
+  </div>
+</div>
+<h2 class="wmd-h2"></h2>
+<hr class="wmd-separator" />
+<h2 class="wmd-h2">Quick Actions</h2>
+<div class="wmd-container-card">
+  <div class="wmd-container-button-group">
+  <button class="wmd-button wmd-button-primary">+ Create Task</button>
+  <button class="wmd-button">+ Create Sprint</button>
+  <button class="wmd-button">Schedule Meeting</button>
+  <button class="wmd-button">Generate Report</button>
+</div>
+  <div class="wmd-container-button-group">
+  <button class="wmd-button">Import from Jira</button>
+  <button class="wmd-button">Export to CSV</button>
+  <button class="wmd-button">Clone Project</button>
+  <button class="wmd-button">Archive Completed</button>
+</div>
+</div>
+<hr class="wmd-separator" />
+<div class="wmd-container-footer">
+  <div class="wmd-container-form-group">
+  <strong>Project:</strong> Mobile App v2.0 • <strong>Sprint 12</strong>• Last updated: 2 minutes ago • 
+  <button class="wmd-button">Help</button>
+   • 
+  <button class="wmd-button">Keyboard Shortcuts</button>
+   • 
+  <button class="wmd-button">Settings</button>
+</div>
+</div>
+<hr class="wmd-separator" />
+<p class="wmd-paragraph"><strong>Style Variations:</strong></p>
+<ul class="wmd-list">
+  <li class="wmd-list-item">sketch - Quick project board prototype</li>
+  <li class="wmd-list-item">clean - Professional PM interface</li>
+  <li class="wmd-list-item">wireframe - Task structure focus</li>
+  <li class="wmd-list-item">tailwind - Modern collaboration tool</li>
+  <li class="wmd-list-item">material - Google Tasks aesthetic</li>
+  <li class="wmd-list-item">brutal - Bold project dashboard</li>
+  <li class="wmd-list-item">none - Semantic HTML for frameworks</li>
+</ul>
+<p class="wmd-paragraph"><strong>Generate this example:</strong></p>
+<pre class="wmd-code-block"><code data-lang="bash">wiremd project-management.md --style sketch
+wiremd project-management.md --style clean -o project-clean.html
+wiremd project-management.md --style material -o project-material.html</code></pre>
+</body>
+</html>

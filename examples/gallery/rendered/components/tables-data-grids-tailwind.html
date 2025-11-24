@@ -1,0 +1,1487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>wiremd Mockup</title>
+  <style>
+
+/* Tailwind-Inspired Style */
+body {
+  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: #f9fafb;
+  color: #111827;
+  line-height: 1.5;
+  margin: 0;
+  padding: 20px;
+}
+
+/* Typography */
+.wmd-h1 {
+  font-size: 2.25rem;
+  font-weight: 800;
+  color: #111827;
+  margin: 0 0 1rem 0;
+  letter-spacing: -0.025em;
+}
+
+.wmd-h2 {
+  font-size: 1.875rem;
+  font-weight: 700;
+  color: #1f2937;
+  margin: 1.5rem 0 1rem 0;
+  letter-spacing: -0.025em;
+}
+
+.wmd-h3 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #374151;
+  margin: 1.25rem 0 0.75rem 0;
+}
+
+.wmd-h4 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #4b5563;
+  margin: 1rem 0 0.5rem 0;
+}
+
+.wmd-paragraph {
+  color: #6b7280;
+  margin: 0.75rem 0;
+  font-size: 1rem;
+}
+
+/* Buttons */
+.wmd-button {
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  font-weight: 500;
+  font-size: 0.875rem;
+  transition: all 0.15s ease;
+  border: none;
+  cursor: pointer;
+  display: inline-block;
+  text-decoration: none;
+  background: #e5e7eb;
+  color: #374151;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+}
+
+.wmd-button:hover {
+  background: #d1d5db;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.wmd-button-primary, .wmd-button.wmd-button-primary {
+  background: #6366f1;
+  color: white;
+}
+
+.wmd-button-primary:hover, .wmd-button.wmd-button-primary:hover {
+  background: #4f46e5;
+}
+
+.wmd-button:disabled, .wmd-button[disabled] {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Button States */
+.wmd-state-loading {
+  background: #e0e7ff !important;
+  color: #6366f1 !important;
+  position: relative;
+  padding-left: 2.5rem;
+}
+
+.wmd-state-loading::before {
+  content: '';
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 1rem;
+  height: 1rem;
+  border: 2px solid #6366f1;
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+}
+
+.wmd-state-error {
+  background: #fef2f2 !important;
+  color: #ef4444 !important;
+  border: 1px solid #fca5a5;
+}
+
+.wmd-state-success {
+  background: #f0fdf4 !important;
+  color: #22c55e !important;
+  border: 1px solid #86efac;
+}
+
+@keyframes spin {
+  to { transform: translateY(-50%) rotate(360deg); }
+}
+
+/* Forms */
+.wmd-input, .wmd-textarea, .wmd-select {
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  background: white;
+  transition: all 0.15s ease;
+  color: #111827;
+}
+
+.wmd-input:focus, .wmd-textarea:focus, .wmd-select:focus {
+  outline: none;
+  border-color: #6366f1;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+}
+
+.wmd-input::placeholder, .wmd-textarea::placeholder {
+  color: #9ca3af;
+}
+
+.wmd-input[disabled], .wmd-input.wmd-state-disabled,
+.wmd-textarea[disabled], .wmd-textarea.wmd-state-disabled,
+.wmd-select[disabled], .wmd-select.wmd-state-disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  background: #f9fafb;
+  border-color: #e5e7eb;
+}
+
+.wmd-textarea {
+  resize: vertical;
+  min-height: 6rem;
+  font-family: inherit;
+}
+
+.wmd-select {
+  cursor: pointer;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 0.5rem center;
+  background-size: 1.5rem;
+  padding-right: 2.5rem;
+}
+
+/* Checkboxes and Radios */
+.wmd-checkbox, .wmd-radio {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0.5rem 0;
+  cursor: pointer;
+}
+
+.wmd-checkbox input[type="checkbox"],
+.wmd-radio input[type="radio"] {
+  width: 1rem;
+  height: 1rem;
+  cursor: pointer;
+  accent-color: #6366f1;
+}
+
+/* Cards and Containers */
+.wmd-container-card {
+  background: white;
+  border-radius: 0.75rem;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  padding: 1.5rem;
+  margin: 1rem 0;
+}
+
+.wmd-container-hero {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border-radius: 1rem;
+  padding: 3rem 2rem;
+  margin: 2rem 0;
+  text-align: center;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+.wmd-container-hero .wmd-h1,
+.wmd-container-hero .wmd-h2,
+.wmd-container-hero .wmd-h3,
+.wmd-container-hero .wmd-paragraph {
+  color: white;
+}
+
+.wmd-container-modal {
+  background: white;
+  border-radius: 1rem;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  padding: 2rem;
+  margin: 2rem auto;
+  max-width: 600px;
+  position: relative;
+}
+
+.wmd-container-footer {
+  background: #1f2937;
+  color: #e5e7eb;
+  padding: 2rem;
+  margin-top: 3rem;
+  border-radius: 0.75rem;
+}
+
+.wmd-container-footer .wmd-paragraph,
+.wmd-container-footer .wmd-nav-item {
+  color: #e5e7eb;
+}
+
+.wmd-container-section {
+  padding: 1.5rem 0;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.wmd-container-section:last-child {
+  border-bottom: none;
+}
+
+/* Alerts */
+.wmd-container-alert {
+  padding: 1rem 1.25rem;
+  border-radius: 0.5rem;
+  margin: 1rem 0;
+  border-left: 4px solid;
+}
+
+.wmd-container-alert.wmd-warning {
+  background: #fef3c7;
+  border-left-color: #f59e0b;
+  color: #92400e;
+}
+
+.wmd-container-alert.wmd-state-error {
+  background: #fee2e2;
+  border-left-color: #ef4444;
+  color: #991b1b;
+}
+
+.wmd-container-alert.wmd-state-success {
+  background: #d1fae5;
+  border-left-color: #10b981;
+  color: #065f46;
+}
+
+/* Navigation */
+.wmd-nav {
+  background: white;
+  padding: 1rem 1.5rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  margin-bottom: 2rem;
+}
+
+.wmd-nav-content {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.wmd-nav-item {
+  color: #4b5563;
+  text-decoration: none;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.375rem;
+  transition: all 0.15s ease;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.wmd-nav-item:hover {
+  background: #f3f4f6;
+  color: #111827;
+}
+
+.wmd-brand {
+  font-weight: 700;
+  font-size: 1.125rem;
+  color: #111827;
+  margin-right: auto;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Lists */
+.wmd-list {
+  margin: 1rem 0;
+  padding: 0;
+  list-style: none;
+}
+
+.wmd-list-item {
+  padding: 0.75rem 0;
+  border-bottom: 1px solid #f3f4f6;
+  color: #4b5563;
+}
+
+.wmd-list-item:last-child {
+  border-bottom: none;
+}
+
+/* Grid */
+.wmd-grid {
+  display: grid;
+  gap: 1rem;
+  margin: 1.5rem 0;
+}
+
+.wmd-grid-2 {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.wmd-grid-3 {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.wmd-grid-4 {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+/* Tables */
+.wmd-table {
+  width: 100%;
+  background: white;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  margin: 1rem 0;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.wmd-table th {
+  background: #f9fafb;
+  padding: 0.75rem 1rem;
+  text-align: left;
+  font-weight: 600;
+  font-size: 0.875rem;
+  color: #111827;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.wmd-table td {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid #f3f4f6;
+  font-size: 0.875rem;
+  color: #4b5563;
+}
+
+.wmd-table tr:last-child td {
+  border-bottom: none;
+}
+
+/* Table cell alignment - more specific to override th/td defaults */
+.wmd-table .wmd-align-left {
+  text-align: left !important;
+}
+
+.wmd-table .wmd-align-center {
+  text-align: center !important;
+}
+
+.wmd-table .wmd-align-right {
+  text-align: right !important;
+}
+
+/* Icons */
+.wmd-icon {
+  display: inline-block;
+  width: 1.25rem;
+  height: 1.25rem;
+  vertical-align: middle;
+}
+
+
+/* Utility classes */
+.wmd-separator {
+  border: none;
+  border-top: 1px solid #e5e7eb;
+  margin: 2rem 0;
+}
+
+.wmd-image {
+  max-width: 100%;
+  height: auto;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.wmd-code {
+  background: #f3f4f6;
+  padding: 0.125rem 0.375rem;
+  border-radius: 0.25rem;
+  font-family: ui-monospace, SFMono-Regular, "SF Mono", Consolas, monospace;
+  font-size: 0.875rem;
+  color: #6366f1;
+}
+
+.wmd-blockquote {
+  border-left: 4px solid #6366f1;
+  padding-left: 1rem;
+  margin: 1.5rem 0;
+  color: #4b5563;
+  font-style: italic;
+}
+
+/* Button group */
+.wmd-container-button-group {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin: 1rem 0;
+}
+
+/* Form group */
+.wmd-container-form-group {
+  margin: 1rem 0;
+}
+
+/* State Containers */
+.wmd-container-loading-state {
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.75rem;
+  padding: 3rem 2rem;
+  margin: 2rem 0;
+  text-align: center;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+}
+
+.wmd-container-loading-state::before {
+  content: '';
+  display: block;
+  width: 48px;
+  height: 48px;
+  margin: 0 auto 1.5rem;
+  border: 4px solid #e5e7eb;
+  border-top-color: #6366f1;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+.wmd-container-empty-state {
+  background: #f9fafb;
+  border: 2px dashed #d1d5db;
+  border-radius: 0.75rem;
+  padding: 4rem 2rem;
+  margin: 2rem 0;
+  text-align: center;
+  color: #6b7280;
+}
+
+.wmd-container-empty-state::before {
+  content: '📭';
+  display: block;
+  font-size: 4rem;
+  margin-bottom: 1.5rem;
+  opacity: 0.5;
+}
+
+.wmd-container-error-state {
+  background: #fef2f2;
+  border: 1px solid #fca5a5;
+  border-radius: 0.75rem;
+  padding: 3rem 2rem;
+  margin: 2rem 0;
+  text-align: center;
+  color: #991b1b;
+}
+
+.wmd-container-error-state::before {
+  content: '⚠️';
+  display: block;
+  font-size: 3rem;
+  margin-bottom: 1.5rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .wmd-grid-2,
+  .wmd-grid-3,
+  .wmd-grid-4 {
+    grid-template-columns: 1fr;
+  }
+
+  .wmd-nav-content {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .wmd-brand {
+    margin-right: 0;
+    margin-bottom: 0.5rem;
+  }
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+  </style>
+</head>
+<body class="wmd-root wmd-tailwind">
+  <h1 class="wmd-h1">Tables and Data Grids</h1>
+<blockquote class="wmd-blockquote">
+  <p class="wmd-paragraph"><strong>Use Case:</strong> Comprehensive showcase of table layouts for displaying structured data.</p>
+  <p class="wmd-paragraph"><strong>Key Features:</strong> Basic tables, sortable columns, filterable data, pagination, responsive tables, data grids</p>
+</blockquote>
+<h2 class="wmd-h2">Table Component Showcase</h2>
+<p class="wmd-paragraph">Examples of tables and data grids for various use cases.</p>
+<hr class="wmd-separator" />
+<h2 class="wmd-h2">1. Basic Tables</h2>
+<h3 class="wmd-h3">Simple Table</h3>
+<pre class="wmd-code-block"><code data-lang="markdown">| Name | Email | Role |
+|------|-------|------|
+| John Doe | [email protected] | Admin |
+| Jane Smith | [email protected] | Editor |
+| Bob Wilson | [email protected] | User |</code></pre>
+<p class="wmd-paragraph"><strong>Rendered:</strong></p>
+<table class="wmd-table">
+  <thead>
+    <tr>
+      <th class="wmd-table-cell wmd-align-left">Name</th>
+    <th class="wmd-table-cell wmd-align-left">Email</th>
+    <th class="wmd-table-cell wmd-align-left">Role</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">John Doe</td>
+    <td class="wmd-table-cell wmd-align-left">[email protected]</td>
+    <td class="wmd-table-cell wmd-align-left">Admin</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">Jane Smith</td>
+    <td class="wmd-table-cell wmd-align-left">[email protected]</td>
+    <td class="wmd-table-cell wmd-align-left">Editor</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">Bob Wilson</td>
+    <td class="wmd-table-cell wmd-align-left">[email protected]</td>
+    <td class="wmd-table-cell wmd-align-left">User</td>
+  </tr>
+  </tbody>
+</table>
+<hr class="wmd-separator" />
+<h3 class="wmd-h3">Table with Alignment</h3>
+<pre class="wmd-code-block"><code data-lang="markdown">| Product | Price | Quantity | Total |
+|:--------|------:|---------:|------:|
+| Widget A | $10.00 | 5 | $50.00 |
+| Widget B | $25.50 | 2 | $51.00 |
+| Widget C | $100.00 | 1 | $100.00 |</code></pre>
+<p class="wmd-paragraph"><strong>Rendered:</strong></p>
+<table class="wmd-table">
+  <thead>
+    <tr>
+      <th class="wmd-table-cell wmd-align-left">Product</th>
+    <th class="wmd-table-cell wmd-align-right">Price</th>
+    <th class="wmd-table-cell wmd-align-right">Quantity</th>
+    <th class="wmd-table-cell wmd-align-right">Total</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">Widget A</td>
+    <td class="wmd-table-cell wmd-align-right">$10.00</td>
+    <td class="wmd-table-cell wmd-align-right">5</td>
+    <td class="wmd-table-cell wmd-align-right">$50.00</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">Widget B</td>
+    <td class="wmd-table-cell wmd-align-right">$25.50</td>
+    <td class="wmd-table-cell wmd-align-right">2</td>
+    <td class="wmd-table-cell wmd-align-right">$51.00</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">Widget C</td>
+    <td class="wmd-table-cell wmd-align-right">$100.00</td>
+    <td class="wmd-table-cell wmd-align-right">1</td>
+    <td class="wmd-table-cell wmd-align-right">$100.00</td>
+  </tr>
+  </tbody>
+</table>
+<hr class="wmd-separator" />
+<h2 class="wmd-h2">2. User Management Table</h2>
+<h3 class="wmd-h3">User List with Actions</h3>
+<pre class="wmd-code-block"><code data-lang="markdown">| Select | User | Email | Role | Status | Last Login | Actions |
+|--------|------|-------|------|--------|------------|---------|
+| [ ] | ![👤] John Smith | [email protected] | Admin | Active | 2h ago | [Edit] [Delete] [•••] |
+| [ ] | ![👤] Sarah Lee | [email protected] | Editor | Active | 5h ago | [Edit] [Delete] [•••] |
+| [ ] | ![👤] Mike Chen | [email protected] | User | Pending | Never | [Edit] [Delete] [•••] |
+| [ ] | ![👤] Emma Davis | [email protected] | User | Active | 1d ago | [Edit] [Delete] [•••] |
+| [x] | ![👤] Alex Johnson | [email protected] | Moderator | Active | 2d ago | [Edit] [Delete] [•••] |</code></pre>
+<p class="wmd-paragraph"><strong>Rendered:</strong></p>
+<table class="wmd-table">
+  <thead>
+    <tr>
+      <th class="wmd-table-cell wmd-align-left">Select</th>
+    <th class="wmd-table-cell wmd-align-left">User</th>
+    <th class="wmd-table-cell wmd-align-left">Email</th>
+    <th class="wmd-table-cell wmd-align-left">Role</th>
+    <th class="wmd-table-cell wmd-align-left">Status</th>
+    <th class="wmd-table-cell wmd-align-left">Last Login</th>
+    <th class="wmd-table-cell wmd-align-left">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">[ ]</td>
+    <td class="wmd-table-cell wmd-align-left">![👤] John Smith</td>
+    <td class="wmd-table-cell wmd-align-left">[email protected]</td>
+    <td class="wmd-table-cell wmd-align-left">Admin</td>
+    <td class="wmd-table-cell wmd-align-left">Active</td>
+    <td class="wmd-table-cell wmd-align-left">2h ago</td>
+    <td class="wmd-table-cell wmd-align-left">[Edit] [Delete] [•••]</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">[ ]</td>
+    <td class="wmd-table-cell wmd-align-left">![👤] Sarah Lee</td>
+    <td class="wmd-table-cell wmd-align-left">[email protected]</td>
+    <td class="wmd-table-cell wmd-align-left">Editor</td>
+    <td class="wmd-table-cell wmd-align-left">Active</td>
+    <td class="wmd-table-cell wmd-align-left">5h ago</td>
+    <td class="wmd-table-cell wmd-align-left">[Edit] [Delete] [•••]</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">[ ]</td>
+    <td class="wmd-table-cell wmd-align-left">![👤] Mike Chen</td>
+    <td class="wmd-table-cell wmd-align-left">[email protected]</td>
+    <td class="wmd-table-cell wmd-align-left">User</td>
+    <td class="wmd-table-cell wmd-align-left">Pending</td>
+    <td class="wmd-table-cell wmd-align-left">Never</td>
+    <td class="wmd-table-cell wmd-align-left">[Edit] [Delete] [•••]</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">[ ]</td>
+    <td class="wmd-table-cell wmd-align-left">![👤] Emma Davis</td>
+    <td class="wmd-table-cell wmd-align-left">[email protected]</td>
+    <td class="wmd-table-cell wmd-align-left">User</td>
+    <td class="wmd-table-cell wmd-align-left">Active</td>
+    <td class="wmd-table-cell wmd-align-left">1d ago</td>
+    <td class="wmd-table-cell wmd-align-left">[Edit] [Delete] [•••]</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">[x]</td>
+    <td class="wmd-table-cell wmd-align-left">![👤] Alex Johnson</td>
+    <td class="wmd-table-cell wmd-align-left">[email protected]</td>
+    <td class="wmd-table-cell wmd-align-left">Moderator</td>
+    <td class="wmd-table-cell wmd-align-left">Active</td>
+    <td class="wmd-table-cell wmd-align-left">2d ago</td>
+    <td class="wmd-table-cell wmd-align-left">[Edit] [Delete] [•••]</td>
+  </tr>
+  </tbody>
+</table>
+<hr class="wmd-separator" />
+<h2 class="wmd-h2">3. E-Commerce Orders Table</h2>
+<h3 class="wmd-h3">Order Management</h3>
+<pre class="wmd-code-block"><code data-lang="markdown">| Order # | Customer | Products | Total | Status | Date | Actions |
+|---------|----------|----------|-------|--------|------|---------|
+| #12456 | John Doe | 3 items | $129.99 | 🟢 Shipped | 10m ago | [View] [Invoice] |
+| #12455 | Jane Smith | 1 item | $89.50 | 🟡 Processing | 1h ago | [View] [Process] |
+| #12454 | Bob Wilson | 5 items | $234.99 | 🟢 Shipped | 2h ago | [View] [Track] |
+| #12453 | Alice Brown | 2 items | $45.00 | 🔴 Pending | 3h ago | [View] [Confirm] |
+| #12452 | Charlie Kim | 4 items | $178.50 | ✅ Delivered | 5h ago | [View] [Archive] |</code></pre>
+<p class="wmd-paragraph"><strong>Rendered:</strong></p>
+<table class="wmd-table">
+  <thead>
+    <tr>
+      <th class="wmd-table-cell wmd-align-left">Order #</th>
+    <th class="wmd-table-cell wmd-align-left">Customer</th>
+    <th class="wmd-table-cell wmd-align-left">Products</th>
+    <th class="wmd-table-cell wmd-align-left">Total</th>
+    <th class="wmd-table-cell wmd-align-left">Status</th>
+    <th class="wmd-table-cell wmd-align-left">Date</th>
+    <th class="wmd-table-cell wmd-align-left">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">#12456</td>
+    <td class="wmd-table-cell wmd-align-left">John Doe</td>
+    <td class="wmd-table-cell wmd-align-left">3 items</td>
+    <td class="wmd-table-cell wmd-align-left">$129.99</td>
+    <td class="wmd-table-cell wmd-align-left">🟢 Shipped</td>
+    <td class="wmd-table-cell wmd-align-left">10m ago</td>
+    <td class="wmd-table-cell wmd-align-left">[View] [Invoice]</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">#12455</td>
+    <td class="wmd-table-cell wmd-align-left">Jane Smith</td>
+    <td class="wmd-table-cell wmd-align-left">1 item</td>
+    <td class="wmd-table-cell wmd-align-left">$89.50</td>
+    <td class="wmd-table-cell wmd-align-left">🟡 Processing</td>
+    <td class="wmd-table-cell wmd-align-left">1h ago</td>
+    <td class="wmd-table-cell wmd-align-left">[View] [Process]</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">#12454</td>
+    <td class="wmd-table-cell wmd-align-left">Bob Wilson</td>
+    <td class="wmd-table-cell wmd-align-left">5 items</td>
+    <td class="wmd-table-cell wmd-align-left">$234.99</td>
+    <td class="wmd-table-cell wmd-align-left">🟢 Shipped</td>
+    <td class="wmd-table-cell wmd-align-left">2h ago</td>
+    <td class="wmd-table-cell wmd-align-left">[View] [Track]</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">#12453</td>
+    <td class="wmd-table-cell wmd-align-left">Alice Brown</td>
+    <td class="wmd-table-cell wmd-align-left">2 items</td>
+    <td class="wmd-table-cell wmd-align-left">$45.00</td>
+    <td class="wmd-table-cell wmd-align-left">🔴 Pending</td>
+    <td class="wmd-table-cell wmd-align-left">3h ago</td>
+    <td class="wmd-table-cell wmd-align-left">[View] [Confirm]</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">#12452</td>
+    <td class="wmd-table-cell wmd-align-left">Charlie Kim</td>
+    <td class="wmd-table-cell wmd-align-left">4 items</td>
+    <td class="wmd-table-cell wmd-align-left">$178.50</td>
+    <td class="wmd-table-cell wmd-align-left">✅ Delivered</td>
+    <td class="wmd-table-cell wmd-align-left">5h ago</td>
+    <td class="wmd-table-cell wmd-align-left">[View] [Archive]</td>
+  </tr>
+  </tbody>
+</table>
+<hr class="wmd-separator" />
+<h2 class="wmd-h2">4. Analytics Data Table</h2>
+<h3 class="wmd-h3">Performance Metrics</h3>
+<pre class="wmd-code-block"><code data-lang="markdown">| Page | Views | Unique | Avg Time | Bounce Rate | Conversions |
+|------|-------|--------|----------|-------------|-------------|
+| /home | 45,678 | 34,567 | 2m 15s | 42% | 234 |
+| /products | 38,901 | 29,234 | 3m 45s | 28% | 456 |
+| /pricing | 34,567 | 28,901 | 2m 12s | 45% | 189 |
+| /blog | 28,234 | 21,456 | 5m 34s | 25% | 89 |
+| /contact | 12,345 | 11,234 | 1m 23s | 52% | 45 |</code></pre>
+<p class="wmd-paragraph"><strong>Rendered:</strong></p>
+<table class="wmd-table">
+  <thead>
+    <tr>
+      <th class="wmd-table-cell wmd-align-left">Page</th>
+    <th class="wmd-table-cell wmd-align-left">Views</th>
+    <th class="wmd-table-cell wmd-align-left">Unique</th>
+    <th class="wmd-table-cell wmd-align-left">Avg Time</th>
+    <th class="wmd-table-cell wmd-align-left">Bounce Rate</th>
+    <th class="wmd-table-cell wmd-align-left">Conversions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">/home</td>
+    <td class="wmd-table-cell wmd-align-left">45,678</td>
+    <td class="wmd-table-cell wmd-align-left">34,567</td>
+    <td class="wmd-table-cell wmd-align-left">2m 15s</td>
+    <td class="wmd-table-cell wmd-align-left">42%</td>
+    <td class="wmd-table-cell wmd-align-left">234</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">/products</td>
+    <td class="wmd-table-cell wmd-align-left">38,901</td>
+    <td class="wmd-table-cell wmd-align-left">29,234</td>
+    <td class="wmd-table-cell wmd-align-left">3m 45s</td>
+    <td class="wmd-table-cell wmd-align-left">28%</td>
+    <td class="wmd-table-cell wmd-align-left">456</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">/pricing</td>
+    <td class="wmd-table-cell wmd-align-left">34,567</td>
+    <td class="wmd-table-cell wmd-align-left">28,901</td>
+    <td class="wmd-table-cell wmd-align-left">2m 12s</td>
+    <td class="wmd-table-cell wmd-align-left">45%</td>
+    <td class="wmd-table-cell wmd-align-left">189</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">/blog</td>
+    <td class="wmd-table-cell wmd-align-left">28,234</td>
+    <td class="wmd-table-cell wmd-align-left">21,456</td>
+    <td class="wmd-table-cell wmd-align-left">5m 34s</td>
+    <td class="wmd-table-cell wmd-align-left">25%</td>
+    <td class="wmd-table-cell wmd-align-left">89</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">/contact</td>
+    <td class="wmd-table-cell wmd-align-left">12,345</td>
+    <td class="wmd-table-cell wmd-align-left">11,234</td>
+    <td class="wmd-table-cell wmd-align-left">1m 23s</td>
+    <td class="wmd-table-cell wmd-align-left">52%</td>
+    <td class="wmd-table-cell wmd-align-left">45</td>
+  </tr>
+  </tbody>
+</table>
+<hr class="wmd-separator" />
+<h2 class="wmd-h2">5. Product Inventory Table</h2>
+<h3 class="wmd-h3">Stock Management</h3>
+<pre class="wmd-code-block"><code data-lang="markdown">| SKU | Product | Category | Price | Stock | Min Stock | Status |
+|-----|---------|----------|-------|-------|-----------|--------|
+| WH-001 | Wireless Headphones | Electronics | $129.99 | 5 | 20 | 🔴 Critical |
+| SW-002 | Smart Watch | Wearables | $299.99 | 12 | 25 | 🟡 Low |
+| BS-003 | Bluetooth Speaker | Audio | $79.99 | 145 | 30 | 🟢 Good |
+| FT-004 | Fitness Tracker | Wearables | $149.99 | 8 | 30 | 🔴 Critical |
+| EC-005 | USB-C Cable | Accessories | $19.99 | 234 | 50 | 🟢 Good |</code></pre>
+<p class="wmd-paragraph"><strong>Rendered:</strong></p>
+<table class="wmd-table">
+  <thead>
+    <tr>
+      <th class="wmd-table-cell wmd-align-left">SKU</th>
+    <th class="wmd-table-cell wmd-align-left">Product</th>
+    <th class="wmd-table-cell wmd-align-left">Category</th>
+    <th class="wmd-table-cell wmd-align-left">Price</th>
+    <th class="wmd-table-cell wmd-align-left">Stock</th>
+    <th class="wmd-table-cell wmd-align-left">Min Stock</th>
+    <th class="wmd-table-cell wmd-align-left">Status</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">WH-001</td>
+    <td class="wmd-table-cell wmd-align-left">Wireless Headphones</td>
+    <td class="wmd-table-cell wmd-align-left">Electronics</td>
+    <td class="wmd-table-cell wmd-align-left">$129.99</td>
+    <td class="wmd-table-cell wmd-align-left">5</td>
+    <td class="wmd-table-cell wmd-align-left">20</td>
+    <td class="wmd-table-cell wmd-align-left">🔴 Critical</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">SW-002</td>
+    <td class="wmd-table-cell wmd-align-left">Smart Watch</td>
+    <td class="wmd-table-cell wmd-align-left">Wearables</td>
+    <td class="wmd-table-cell wmd-align-left">$299.99</td>
+    <td class="wmd-table-cell wmd-align-left">12</td>
+    <td class="wmd-table-cell wmd-align-left">25</td>
+    <td class="wmd-table-cell wmd-align-left">🟡 Low</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">BS-003</td>
+    <td class="wmd-table-cell wmd-align-left">Bluetooth Speaker</td>
+    <td class="wmd-table-cell wmd-align-left">Audio</td>
+    <td class="wmd-table-cell wmd-align-left">$79.99</td>
+    <td class="wmd-table-cell wmd-align-left">145</td>
+    <td class="wmd-table-cell wmd-align-left">30</td>
+    <td class="wmd-table-cell wmd-align-left">🟢 Good</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">FT-004</td>
+    <td class="wmd-table-cell wmd-align-left">Fitness Tracker</td>
+    <td class="wmd-table-cell wmd-align-left">Wearables</td>
+    <td class="wmd-table-cell wmd-align-left">$149.99</td>
+    <td class="wmd-table-cell wmd-align-left">8</td>
+    <td class="wmd-table-cell wmd-align-left">30</td>
+    <td class="wmd-table-cell wmd-align-left">🔴 Critical</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">EC-005</td>
+    <td class="wmd-table-cell wmd-align-left">USB-C Cable</td>
+    <td class="wmd-table-cell wmd-align-left">Accessories</td>
+    <td class="wmd-table-cell wmd-align-left">$19.99</td>
+    <td class="wmd-table-cell wmd-align-left">234</td>
+    <td class="wmd-table-cell wmd-align-left">50</td>
+    <td class="wmd-table-cell wmd-align-left">🟢 Good</td>
+  </tr>
+  </tbody>
+</table>
+<hr class="wmd-separator" />
+<h2 class="wmd-h2">6. Financial Data Table</h2>
+<h3 class="wmd-h3">Transaction History</h3>
+<pre class="wmd-code-block"><code data-lang="markdown">| Date | Description | Category | Amount | Balance | Status |
+|------|-------------|----------|--------|---------|--------|
+| Mar 17 | Client Payment #1234 | Income | +$5,000.00 | $12,345.67 | ✅ Cleared |
+| Mar 16 | Office Supplies | Expense | -$245.50 | $7,345.67 | ✅ Cleared |
+| Mar 15 | Subscription Fee | Recurring | -$99.00 | $7,591.17 | ✅ Cleared |
+| Mar 14 | Freelance Project | Income | +$2,500.00 | $7,690.17 | 🟡 Pending |
+| Mar 13 | Marketing Ad Spend | Marketing | -$1,250.00 | $5,190.17 | ✅ Cleared |</code></pre>
+<p class="wmd-paragraph"><strong>Rendered:</strong></p>
+<table class="wmd-table">
+  <thead>
+    <tr>
+      <th class="wmd-table-cell wmd-align-left">Date</th>
+    <th class="wmd-table-cell wmd-align-left">Description</th>
+    <th class="wmd-table-cell wmd-align-left">Category</th>
+    <th class="wmd-table-cell wmd-align-left">Amount</th>
+    <th class="wmd-table-cell wmd-align-left">Balance</th>
+    <th class="wmd-table-cell wmd-align-left">Status</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">Mar 17</td>
+    <td class="wmd-table-cell wmd-align-left">Client Payment #1234</td>
+    <td class="wmd-table-cell wmd-align-left">Income</td>
+    <td class="wmd-table-cell wmd-align-left">+$5,000.00</td>
+    <td class="wmd-table-cell wmd-align-left">$12,345.67</td>
+    <td class="wmd-table-cell wmd-align-left">✅ Cleared</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">Mar 16</td>
+    <td class="wmd-table-cell wmd-align-left">Office Supplies</td>
+    <td class="wmd-table-cell wmd-align-left">Expense</td>
+    <td class="wmd-table-cell wmd-align-left">-$245.50</td>
+    <td class="wmd-table-cell wmd-align-left">$7,345.67</td>
+    <td class="wmd-table-cell wmd-align-left">✅ Cleared</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">Mar 15</td>
+    <td class="wmd-table-cell wmd-align-left">Subscription Fee</td>
+    <td class="wmd-table-cell wmd-align-left">Recurring</td>
+    <td class="wmd-table-cell wmd-align-left">-$99.00</td>
+    <td class="wmd-table-cell wmd-align-left">$7,591.17</td>
+    <td class="wmd-table-cell wmd-align-left">✅ Cleared</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">Mar 14</td>
+    <td class="wmd-table-cell wmd-align-left">Freelance Project</td>
+    <td class="wmd-table-cell wmd-align-left">Income</td>
+    <td class="wmd-table-cell wmd-align-left">+$2,500.00</td>
+    <td class="wmd-table-cell wmd-align-left">$7,690.17</td>
+    <td class="wmd-table-cell wmd-align-left">🟡 Pending</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">Mar 13</td>
+    <td class="wmd-table-cell wmd-align-left">Marketing Ad Spend</td>
+    <td class="wmd-table-cell wmd-align-left">Marketing</td>
+    <td class="wmd-table-cell wmd-align-left">-$1,250.00</td>
+    <td class="wmd-table-cell wmd-align-left">$5,190.17</td>
+    <td class="wmd-table-cell wmd-align-left">✅ Cleared</td>
+  </tr>
+  </tbody>
+</table>
+<hr class="wmd-separator" />
+<h2 class="wmd-h2">7. Task/Project Table</h2>
+<h3 class="wmd-h3">Task List</h3>
+<pre class="wmd-code-block"><code data-lang="markdown">| Task ID | Task Name | Assigned | Priority | Status | Due Date | Progress |
+|---------|-----------|----------|----------|--------|----------|----------|
+| TASK-145 | Design login page | @sarah | 🔴 High | In Progress | Mar 20 | [#######___] 70% |
+| TASK-146 | API integration | @mike | 🔴 High | To Do | Mar 22 | [__________] 0% |
+| TASK-147 | Write documentation | @emma | 🟡 Medium | In Progress | Mar 25 | [####______] 40% |
+| TASK-148 | Code review | @alex | 🟢 Low | Done | Mar 17 | [##########] 100% |
+| TASK-149 | Performance testing | @lisa | 🔴 High | Blocked | Mar 23 | [#_________] 10% |</code></pre>
+<p class="wmd-paragraph"><strong>Rendered:</strong></p>
+<table class="wmd-table">
+  <thead>
+    <tr>
+      <th class="wmd-table-cell wmd-align-left">Task ID</th>
+    <th class="wmd-table-cell wmd-align-left">Task Name</th>
+    <th class="wmd-table-cell wmd-align-left">Assigned</th>
+    <th class="wmd-table-cell wmd-align-left">Priority</th>
+    <th class="wmd-table-cell wmd-align-left">Status</th>
+    <th class="wmd-table-cell wmd-align-left">Due Date</th>
+    <th class="wmd-table-cell wmd-align-left">Progress</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">TASK-145</td>
+    <td class="wmd-table-cell wmd-align-left">Design login page</td>
+    <td class="wmd-table-cell wmd-align-left">@sarah</td>
+    <td class="wmd-table-cell wmd-align-left">🔴 High</td>
+    <td class="wmd-table-cell wmd-align-left">In Progress</td>
+    <td class="wmd-table-cell wmd-align-left">Mar 20</td>
+    <td class="wmd-table-cell wmd-align-left">[#######___] 70%</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">TASK-146</td>
+    <td class="wmd-table-cell wmd-align-left">API integration</td>
+    <td class="wmd-table-cell wmd-align-left">@mike</td>
+    <td class="wmd-table-cell wmd-align-left">🔴 High</td>
+    <td class="wmd-table-cell wmd-align-left">To Do</td>
+    <td class="wmd-table-cell wmd-align-left">Mar 22</td>
+    <td class="wmd-table-cell wmd-align-left">[__________] 0%</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">TASK-147</td>
+    <td class="wmd-table-cell wmd-align-left">Write documentation</td>
+    <td class="wmd-table-cell wmd-align-left">@emma</td>
+    <td class="wmd-table-cell wmd-align-left">🟡 Medium</td>
+    <td class="wmd-table-cell wmd-align-left">In Progress</td>
+    <td class="wmd-table-cell wmd-align-left">Mar 25</td>
+    <td class="wmd-table-cell wmd-align-left">[####______] 40%</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">TASK-148</td>
+    <td class="wmd-table-cell wmd-align-left">Code review</td>
+    <td class="wmd-table-cell wmd-align-left">@alex</td>
+    <td class="wmd-table-cell wmd-align-left">🟢 Low</td>
+    <td class="wmd-table-cell wmd-align-left">Done</td>
+    <td class="wmd-table-cell wmd-align-left">Mar 17</td>
+    <td class="wmd-table-cell wmd-align-left">[##########] 100%</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">TASK-149</td>
+    <td class="wmd-table-cell wmd-align-left">Performance testing</td>
+    <td class="wmd-table-cell wmd-align-left">@lisa</td>
+    <td class="wmd-table-cell wmd-align-left">🔴 High</td>
+    <td class="wmd-table-cell wmd-align-left">Blocked</td>
+    <td class="wmd-table-cell wmd-align-left">Mar 23</td>
+    <td class="wmd-table-cell wmd-align-left">[#_________] 10%</td>
+  </tr>
+  </tbody>
+</table>
+<hr class="wmd-separator" />
+<h2 class="wmd-h2">8. Comparison Table</h2>
+<h3 class="wmd-h3">Product Comparison</h3>
+<pre class="wmd-code-block"><code data-lang="markdown">| Feature | Basic | Pro | Enterprise |
+|---------|-------|-----|------------|
+| **Price** | Free | $29/mo | Custom |
+| **Users** | 1 | 10 | Unlimited |
+| **Storage** | 5 GB | 100 GB | Unlimited |
+| **Projects** | 3 | Unlimited | Unlimited |
+| **Support** | Email | Priority | Dedicated |
+| **API Access** | ❌ | ✅ | ✅ |
+| **Custom Domain** | ❌ | ✅ | ✅ |
+| **Analytics** | Basic | Advanced | Enterprise |
+| **SLA** | ❌ | ❌ | ✅ |</code></pre>
+<p class="wmd-paragraph"><strong>Rendered:</strong></p>
+<table class="wmd-table">
+  <thead>
+    <tr>
+      <th class="wmd-table-cell wmd-align-left">Feature</th>
+    <th class="wmd-table-cell wmd-align-left">Basic</th>
+    <th class="wmd-table-cell wmd-align-left">Pro</th>
+    <th class="wmd-table-cell wmd-align-left">Enterprise</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left"><strong>Price</strong></td>
+    <td class="wmd-table-cell wmd-align-left">Free</td>
+    <td class="wmd-table-cell wmd-align-left">$29/mo</td>
+    <td class="wmd-table-cell wmd-align-left">Custom</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left"><strong>Users</strong></td>
+    <td class="wmd-table-cell wmd-align-left">1</td>
+    <td class="wmd-table-cell wmd-align-left">10</td>
+    <td class="wmd-table-cell wmd-align-left">Unlimited</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left"><strong>Storage</strong></td>
+    <td class="wmd-table-cell wmd-align-left">5 GB</td>
+    <td class="wmd-table-cell wmd-align-left">100 GB</td>
+    <td class="wmd-table-cell wmd-align-left">Unlimited</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left"><strong>Projects</strong></td>
+    <td class="wmd-table-cell wmd-align-left">3</td>
+    <td class="wmd-table-cell wmd-align-left">Unlimited</td>
+    <td class="wmd-table-cell wmd-align-left">Unlimited</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left"><strong>Support</strong></td>
+    <td class="wmd-table-cell wmd-align-left">Email</td>
+    <td class="wmd-table-cell wmd-align-left">Priority</td>
+    <td class="wmd-table-cell wmd-align-left">Dedicated</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left"><strong>API Access</strong></td>
+    <td class="wmd-table-cell wmd-align-left">❌</td>
+    <td class="wmd-table-cell wmd-align-left">✅</td>
+    <td class="wmd-table-cell wmd-align-left">✅</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left"><strong>Custom Domain</strong></td>
+    <td class="wmd-table-cell wmd-align-left">❌</td>
+    <td class="wmd-table-cell wmd-align-left">✅</td>
+    <td class="wmd-table-cell wmd-align-left">✅</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left"><strong>Analytics</strong></td>
+    <td class="wmd-table-cell wmd-align-left">Basic</td>
+    <td class="wmd-table-cell wmd-align-left">Advanced</td>
+    <td class="wmd-table-cell wmd-align-left">Enterprise</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left"><strong>SLA</strong></td>
+    <td class="wmd-table-cell wmd-align-left">❌</td>
+    <td class="wmd-table-cell wmd-align-left">❌</td>
+    <td class="wmd-table-cell wmd-align-left">✅</td>
+  </tr>
+  </tbody>
+</table>
+<hr class="wmd-separator" />
+<h2 class="wmd-h2">9. Data Table with Filters</h2>
+<h3 class="wmd-h3">Filterable Table Interface</h3>
+<pre class="wmd-code-block"><code data-lang="markdown">::: card
+
+### Employee Directory
+
+**Filters:**
+Department: [All Departments...v] | Role: [All Roles...v] | Status: [All...v]
+
+[Search employees...___________] {type:search} [Search]
+
+---
+
+| Employee | Department | Role | Email | Phone | Hire Date |
+|----------|------------|------|-------|-------|-----------|
+| ![👤] John Smith | Engineering | Senior Dev | [email protected] | (555) 123-4567 | Jan 2020 |
+| ![👤] Sarah Lee | Design | Lead Designer | [email protected] | (555) 234-5678 | Mar 2021 |
+| ![👤] Mike Chen | Marketing | Manager | [email protected] | (555) 345-6789 | Jul 2019 |
+| ![👤] Emma Davis | Sales | Account Exec | [email protected] | (555) 456-7890 | Sep 2022 |
+
+**Showing 1-4 of 156 employees**
+
+[← Previous] [1] [2] [3] ... [39] [Next →]
+
+:::</code></pre>
+<p class="wmd-paragraph"><strong>Rendered:</strong></p>
+<div class="wmd-container-card">
+  <h3 class="wmd-h3">Employee Directory</h3>
+  <div class="wmd-container-form-group">
+  <strong>Filters:</strong>
+Department: 
+  <button class="wmd-button">All Departments...v</button>
+   | Role: 
+  <button class="wmd-button">All Roles...v</button>
+   | Status: 
+  <button class="wmd-button">All...v</button>
+</div>
+  <div class="wmd-container-button-group">
+  <button class="wmd-button">Search employees...___________</button>
+  <button class="wmd-button">Search</button>
+</div>
+  <hr class="wmd-separator" />
+  <table class="wmd-table">
+  <thead>
+    <tr>
+      <th class="wmd-table-cell wmd-align-left">Employee</th>
+    <th class="wmd-table-cell wmd-align-left">Department</th>
+    <th class="wmd-table-cell wmd-align-left">Role</th>
+    <th class="wmd-table-cell wmd-align-left">Email</th>
+    <th class="wmd-table-cell wmd-align-left">Phone</th>
+    <th class="wmd-table-cell wmd-align-left">Hire Date</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">![👤] John Smith</td>
+    <td class="wmd-table-cell wmd-align-left">Engineering</td>
+    <td class="wmd-table-cell wmd-align-left">Senior Dev</td>
+    <td class="wmd-table-cell wmd-align-left">[email protected]</td>
+    <td class="wmd-table-cell wmd-align-left">(555) 123-4567</td>
+    <td class="wmd-table-cell wmd-align-left">Jan 2020</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">![👤] Sarah Lee</td>
+    <td class="wmd-table-cell wmd-align-left">Design</td>
+    <td class="wmd-table-cell wmd-align-left">Lead Designer</td>
+    <td class="wmd-table-cell wmd-align-left">[email protected]</td>
+    <td class="wmd-table-cell wmd-align-left">(555) 234-5678</td>
+    <td class="wmd-table-cell wmd-align-left">Mar 2021</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">![👤] Mike Chen</td>
+    <td class="wmd-table-cell wmd-align-left">Marketing</td>
+    <td class="wmd-table-cell wmd-align-left">Manager</td>
+    <td class="wmd-table-cell wmd-align-left">[email protected]</td>
+    <td class="wmd-table-cell wmd-align-left">(555) 345-6789</td>
+    <td class="wmd-table-cell wmd-align-left">Jul 2019</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">![👤] Emma Davis</td>
+    <td class="wmd-table-cell wmd-align-left">Sales</td>
+    <td class="wmd-table-cell wmd-align-left">Account Exec</td>
+    <td class="wmd-table-cell wmd-align-left">[email protected]</td>
+    <td class="wmd-table-cell wmd-align-left">(555) 456-7890</td>
+    <td class="wmd-table-cell wmd-align-left">Sep 2022</td>
+  </tr>
+  </tbody>
+</table>
+  <p class="wmd-paragraph"><strong>Showing 1-4 of 156 employees</strong></p>
+  <p class="wmd-paragraph">[← Previous] [1] [2] [3] ... [39] [Next →]</p>
+</div>
+<hr class="wmd-separator" />
+<h2 class="wmd-h2">10. Sortable Table Header</h2>
+<h3 class="wmd-h3">Table with Sort Controls</h3>
+<pre class="wmd-code-block"><code data-lang="markdown">::: card
+
+| Name ↕ | Email ↕ | Role ↕ | Status ↕ | Joined ↓ |
+|--------|---------|--------|----------|----------|
+| Alice Brown | [email protected] | Admin | Active | Mar 17, 2025 |
+| Bob Wilson | [email protected] | Editor | Active | Mar 15, 2025 |
+| Charlie Davis | [email protected] | User | Inactive | Mar 10, 2025 |
+| Diana Evans | [email protected] | User | Active | Mar 5, 2025 |
+
+*Sorted by: Joined Date (Descending)*
+
+:::</code></pre>
+<p class="wmd-paragraph"><strong>Rendered:</strong></p>
+<div class="wmd-container-card">
+  <table class="wmd-table">
+  <thead>
+    <tr>
+      <th class="wmd-table-cell wmd-align-left">Name ↕</th>
+    <th class="wmd-table-cell wmd-align-left">Email ↕</th>
+    <th class="wmd-table-cell wmd-align-left">Role ↕</th>
+    <th class="wmd-table-cell wmd-align-left">Status ↕</th>
+    <th class="wmd-table-cell wmd-align-left">Joined ↓</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">Alice Brown</td>
+    <td class="wmd-table-cell wmd-align-left">[email protected]</td>
+    <td class="wmd-table-cell wmd-align-left">Admin</td>
+    <td class="wmd-table-cell wmd-align-left">Active</td>
+    <td class="wmd-table-cell wmd-align-left">Mar 17, 2025</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">Bob Wilson</td>
+    <td class="wmd-table-cell wmd-align-left">[email protected]</td>
+    <td class="wmd-table-cell wmd-align-left">Editor</td>
+    <td class="wmd-table-cell wmd-align-left">Active</td>
+    <td class="wmd-table-cell wmd-align-left">Mar 15, 2025</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">Charlie Davis</td>
+    <td class="wmd-table-cell wmd-align-left">[email protected]</td>
+    <td class="wmd-table-cell wmd-align-left">User</td>
+    <td class="wmd-table-cell wmd-align-left">Inactive</td>
+    <td class="wmd-table-cell wmd-align-left">Mar 10, 2025</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">Diana Evans</td>
+    <td class="wmd-table-cell wmd-align-left">[email protected]</td>
+    <td class="wmd-table-cell wmd-align-left">User</td>
+    <td class="wmd-table-cell wmd-align-left">Active</td>
+    <td class="wmd-table-cell wmd-align-left">Mar 5, 2025</td>
+  </tr>
+  </tbody>
+</table>
+  <p class="wmd-paragraph"><em>Sorted by: Joined Date (Descending)</em></p>
+</div>
+<hr class="wmd-separator" />
+<h2 class="wmd-h2">11. Nested/Expandable Rows</h2>
+<h3 class="wmd-h3">Hierarchical Data Table</h3>
+<pre class="wmd-code-block"><code data-lang="markdown">| Category | Products | Revenue | Status |
+|----------|----------|---------|--------|
+| **Electronics** | 234 | $234,567 | 🟢 |
+| → Headphones | 89 | $89,234 | 🟢 |
+| → Speakers | 67 | $67,890 | 🟢 |
+| → Cables | 78 | $77,443 | 🟢 |
+| **Clothing** | 456 | $123,456 | 🟡 |
+| → Shirts | 234 | $78,901 | 🟢 |
+| → Pants | 156 | $34,567 | 🟡 |
+| → Accessories | 66 | $9,988 | 🔴 |</code></pre>
+<p class="wmd-paragraph"><strong>Rendered:</strong></p>
+<table class="wmd-table">
+  <thead>
+    <tr>
+      <th class="wmd-table-cell wmd-align-left">Category</th>
+    <th class="wmd-table-cell wmd-align-left">Products</th>
+    <th class="wmd-table-cell wmd-align-left">Revenue</th>
+    <th class="wmd-table-cell wmd-align-left">Status</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left"><strong>Electronics</strong></td>
+    <td class="wmd-table-cell wmd-align-left">234</td>
+    <td class="wmd-table-cell wmd-align-left">$234,567</td>
+    <td class="wmd-table-cell wmd-align-left">🟢</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">→ Headphones</td>
+    <td class="wmd-table-cell wmd-align-left">89</td>
+    <td class="wmd-table-cell wmd-align-left">$89,234</td>
+    <td class="wmd-table-cell wmd-align-left">🟢</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">→ Speakers</td>
+    <td class="wmd-table-cell wmd-align-left">67</td>
+    <td class="wmd-table-cell wmd-align-left">$67,890</td>
+    <td class="wmd-table-cell wmd-align-left">🟢</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">→ Cables</td>
+    <td class="wmd-table-cell wmd-align-left">78</td>
+    <td class="wmd-table-cell wmd-align-left">$77,443</td>
+    <td class="wmd-table-cell wmd-align-left">🟢</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left"><strong>Clothing</strong></td>
+    <td class="wmd-table-cell wmd-align-left">456</td>
+    <td class="wmd-table-cell wmd-align-left">$123,456</td>
+    <td class="wmd-table-cell wmd-align-left">🟡</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">→ Shirts</td>
+    <td class="wmd-table-cell wmd-align-left">234</td>
+    <td class="wmd-table-cell wmd-align-left">$78,901</td>
+    <td class="wmd-table-cell wmd-align-left">🟢</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">→ Pants</td>
+    <td class="wmd-table-cell wmd-align-left">156</td>
+    <td class="wmd-table-cell wmd-align-left">$34,567</td>
+    <td class="wmd-table-cell wmd-align-left">🟡</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">→ Accessories</td>
+    <td class="wmd-table-cell wmd-align-left">66</td>
+    <td class="wmd-table-cell wmd-align-left">$9,988</td>
+    <td class="wmd-table-cell wmd-align-left">🔴</td>
+  </tr>
+  </tbody>
+</table>
+<hr class="wmd-separator" />
+<h2 class="wmd-h2">12. Bulk Actions Table</h2>
+<h3 class="wmd-h3">Table with Bulk Operations</h3>
+<pre class="wmd-code-block"><code data-lang="markdown">::: card
+
+**Bulk Actions:** [Select action...v] [Apply to Selected]
+
+- [x] Select All (50 items on this page)
+
+| Select | Product | SKU | Price | Stock | Actions |
+|--------|---------|-----|-------|-------|---------|
+| [x] | Wireless Mouse | MS-001 | $29.99 | 145 | [Edit] [Delete] |
+| [x] | Keyboard | KB-002 | $79.99 | 67 | [Edit] [Delete] |
+| [ ] | Monitor Stand | ST-003 | $49.99 | 89 | [Edit] [Delete] |
+| [ ] | USB Hub | HB-004 | $34.99 | 234 | [Edit] [Delete] |
+
+**2 items selected**
+
+[Delete Selected] [Export Selected] [Update Stock]
+
+:::</code></pre>
+<p class="wmd-paragraph"><strong>Rendered:</strong></p>
+<div class="wmd-container-card">
+  <div class="wmd-container-form-group">
+  <strong>Bulk Actions:</strong> 
+  <button class="wmd-button">Select action...v</button>
+   
+  <button class="wmd-button">Apply to Selected</button>
+</div>
+  <ul class="wmd-list">
+  <label class="wmd-checkbox">
+    <input type="checkbox" checked />
+    <span>Select All (50 items on this page)</span>
+  </label>
+</ul>
+  <table class="wmd-table">
+  <thead>
+    <tr>
+      <th class="wmd-table-cell wmd-align-left">Select</th>
+    <th class="wmd-table-cell wmd-align-left">Product</th>
+    <th class="wmd-table-cell wmd-align-left">SKU</th>
+    <th class="wmd-table-cell wmd-align-left">Price</th>
+    <th class="wmd-table-cell wmd-align-left">Stock</th>
+    <th class="wmd-table-cell wmd-align-left">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">[x]</td>
+    <td class="wmd-table-cell wmd-align-left">Wireless Mouse</td>
+    <td class="wmd-table-cell wmd-align-left">MS-001</td>
+    <td class="wmd-table-cell wmd-align-left">$29.99</td>
+    <td class="wmd-table-cell wmd-align-left">145</td>
+    <td class="wmd-table-cell wmd-align-left">[Edit] [Delete]</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">[x]</td>
+    <td class="wmd-table-cell wmd-align-left">Keyboard</td>
+    <td class="wmd-table-cell wmd-align-left">KB-002</td>
+    <td class="wmd-table-cell wmd-align-left">$79.99</td>
+    <td class="wmd-table-cell wmd-align-left">67</td>
+    <td class="wmd-table-cell wmd-align-left">[Edit] [Delete]</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">[ ]</td>
+    <td class="wmd-table-cell wmd-align-left">Monitor Stand</td>
+    <td class="wmd-table-cell wmd-align-left">ST-003</td>
+    <td class="wmd-table-cell wmd-align-left">$49.99</td>
+    <td class="wmd-table-cell wmd-align-left">89</td>
+    <td class="wmd-table-cell wmd-align-left">[Edit] [Delete]</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">[ ]</td>
+    <td class="wmd-table-cell wmd-align-left">USB Hub</td>
+    <td class="wmd-table-cell wmd-align-left">HB-004</td>
+    <td class="wmd-table-cell wmd-align-left">$34.99</td>
+    <td class="wmd-table-cell wmd-align-left">234</td>
+    <td class="wmd-table-cell wmd-align-left">[Edit] [Delete]</td>
+  </tr>
+  </tbody>
+</table>
+  <p class="wmd-paragraph"><strong>2 items selected</strong></p>
+  <div class="wmd-container-button-group">
+  <button class="wmd-button">Delete Selected</button>
+  <button class="wmd-button">Export Selected</button>
+  <button class="wmd-button">Update Stock</button>
+</div>
+</div>
+<hr class="wmd-separator" />
+<h2 class="wmd-h2">Best Practices</h2>
+<div class="wmd-container-card">
+  <h3 class="wmd-h3">Table Design Guidelines</h3>
+  <ol class="wmd-list">
+  <li class="wmd-list-item">Clarity &amp; Readability<ul class="wmd-list">
+  <li class="wmd-list-item">Use clear column headers</li>
+  <li class="wmd-list-item">Align numbers to the right</li>
+  <li class="wmd-list-item">Align text to the left</li>
+  <li class="wmd-list-item">Use consistent formatting</li>
+</ul></li>
+  <li class="wmd-list-item">Sorting &amp; Filtering<ul class="wmd-list">
+  <li class="wmd-list-item">Indicate sortable columns</li>
+  <li class="wmd-list-item">Show current sort state</li>
+  <li class="wmd-list-item">Provide filter controls</li>
+  <li class="wmd-list-item">Enable search functionality</li>
+</ul></li>
+  <li class="wmd-list-item">Actions &amp; Interactions<ul class="wmd-list">
+  <li class="wmd-list-item">Place actions in rightmost column</li>
+  <li class="wmd-list-item">Use consistent action buttons</li>
+  <li class="wmd-list-item">Support keyboard navigation</li>
+  <li class="wmd-list-item">Enable bulk operations</li>
+</ul></li>
+  <li class="wmd-list-item">Performance<ul class="wmd-list">
+  <li class="wmd-list-item">Implement pagination for large datasets</li>
+  <li class="wmd-list-item">Show row count</li>
+  <li class="wmd-list-item">Lazy load when appropriate</li>
+  <li class="wmd-list-item">Optimize for mobile</li>
+</ul></li>
+  <li class="wmd-list-item">Visual Design<ul class="wmd-list">
+  <li class="wmd-list-item">Use zebra striping for readability</li>
+  <li class="wmd-list-item">Highlight on hover</li>
+  <li class="wmd-list-item">Use status colors consistently</li>
+  <li class="wmd-list-item">Maintain adequate spacing</li>
+</ul></li>
+  <li class="wmd-list-item">Responsive Design<ul class="wmd-list">
+  <li class="wmd-list-item">Consider mobile layouts</li>
+  <li class="wmd-list-item">Hide less important columns on small screens</li>
+  <li class="wmd-list-item">Use horizontal scrolling when needed</li>
+  <li class="wmd-list-item">Provide compact view options</li>
+</ul></li>
+</ol>
+</div>
+<hr class="wmd-separator" />
+<p class="wmd-paragraph"><strong>Style Variations:</strong></p>
+<ul class="wmd-list">
+  <li class="wmd-list-item">sketch - Hand-drawn table wireframes</li>
+  <li class="wmd-list-item">clean - Modern minimal tables</li>
+  <li class="wmd-list-item">wireframe - Structure-focused grids</li>
+  <li class="wmd-list-item">tailwind - Contemporary data tables</li>
+  <li class="wmd-list-item">material - Google-style data grids</li>
+  <li class="wmd-list-item">brutal - Bold table design</li>
+  <li class="wmd-list-item">none - Semantic HTML for custom styling</li>
+</ul>
+<p class="wmd-paragraph"><strong>Generate this example:</strong></p>
+<pre class="wmd-code-block"><code data-lang="bash">wiremd tables-data-grids.md --style sketch
+wiremd tables-data-grids.md --style clean -o tables-clean.html
+wiremd tables-data-grids.md --style material -o tables-material.html</code></pre>
+</body>
+</html>

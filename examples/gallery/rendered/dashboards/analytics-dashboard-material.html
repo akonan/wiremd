@@ -1,0 +1,1225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>wiremd Mockup</title>
+  <style>
+
+/* Material Design Inspired Style */
+body {
+  font-family: Roboto, -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  background: #fafafa;
+  color: rgba(0, 0, 0, 0.87);
+  line-height: 1.5;
+  margin: 0;
+  padding: 20px;
+}
+
+/* Typography - Material Design Type Scale */
+.wmd-h1 {
+  font-size: 2.125rem;
+  font-weight: 400;
+  color: rgba(0, 0, 0, 0.87);
+  margin: 0 0 1rem 0;
+  letter-spacing: 0;
+}
+
+.wmd-h2 {
+  font-size: 1.5rem;
+  font-weight: 500;
+  color: rgba(0, 0, 0, 0.87);
+  margin: 1.5rem 0 1rem 0;
+  letter-spacing: 0.0075em;
+}
+
+.wmd-h3 {
+  font-size: 1.25rem;
+  font-weight: 500;
+  color: rgba(0, 0, 0, 0.87);
+  margin: 1.25rem 0 0.75rem 0;
+  letter-spacing: 0.0125em;
+}
+
+.wmd-h4 {
+  font-size: 1rem;
+  font-weight: 500;
+  color: rgba(0, 0, 0, 0.87);
+  margin: 1rem 0 0.5rem 0;
+  letter-spacing: 0.015em;
+}
+
+.wmd-paragraph {
+  color: rgba(0, 0, 0, 0.6);
+  margin: 0.75rem 0;
+  font-size: 1rem;
+  letter-spacing: 0.00938em;
+}
+
+/* Material Buttons */
+.wmd-button {
+  padding: 6px 16px;
+  border-radius: 4px;
+  font-weight: 500;
+  font-size: 0.875rem;
+  letter-spacing: 0.02857em;
+  text-transform: uppercase;
+  transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,
+              box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,
+              border-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+  border: none;
+  cursor: pointer;
+  display: inline-block;
+  text-decoration: none;
+  background: transparent;
+  color: #6200ee;
+  position: relative;
+  overflow: hidden;
+}
+
+.wmd-button::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(98, 0, 238, 0.2);
+  transform: translate(-50%, -50%);
+  transition: width 0.6s, height 0.6s;
+}
+
+.wmd-button:hover::before {
+  width: 300px;
+  height: 300px;
+}
+
+.wmd-button:hover {
+  background: rgba(98, 0, 238, 0.04);
+}
+
+.wmd-button-primary, .wmd-button.wmd-button-primary {
+  background: #6200ee;
+  color: white;
+  box-shadow: 0px 3px 1px -2px rgba(0,0,0,0.2),
+              0px 2px 2px 0px rgba(0,0,0,0.14),
+              0px 1px 5px 0px rgba(0,0,0,0.12);
+}
+
+.wmd-button-primary::before {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.wmd-button-primary:hover, .wmd-button.wmd-button-primary:hover {
+  background: #6200ee;
+  box-shadow: 0px 2px 4px -1px rgba(0,0,0,0.2),
+              0px 4px 5px 0px rgba(0,0,0,0.14),
+              0px 1px 10px 0px rgba(0,0,0,0.12);
+}
+
+.wmd-button:disabled, .wmd-button[disabled] {
+  color: rgba(0, 0, 0, 0.26);
+  background: rgba(0, 0, 0, 0.12);
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+/* Button States */
+.wmd-state-loading {
+  background: #e8eaf6 !important;
+  color: #6200ee !important;
+  position: relative;
+  padding-left: 2.5rem;
+}
+
+.wmd-state-loading::after {
+  content: '';
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 1rem;
+  height: 1rem;
+  border: 2px solid #6200ee;
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+.wmd-state-error {
+  background: #b00020 !important;
+  color: white !important;
+}
+
+.wmd-state-success {
+  background: #00c853 !important;
+  color: white !important;
+}
+
+@keyframes spin {
+  to { transform: translateY(-50%) rotate(360deg); }
+}
+
+/* Material Form Inputs */
+.wmd-input, .wmd-textarea, .wmd-select {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.42);
+  font-size: 1rem;
+  background: transparent;
+  transition: border-color 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+  color: rgba(0, 0, 0, 0.87);
+}
+
+.wmd-input:focus, .wmd-textarea:focus, .wmd-select:focus {
+  outline: none;
+  border-bottom: 2px solid #6200ee;
+  margin-bottom: -1px;
+}
+
+.wmd-input::placeholder, .wmd-textarea::placeholder {
+  color: rgba(0, 0, 0, 0.42);
+}
+
+.wmd-input[disabled], .wmd-input.wmd-state-disabled,
+.wmd-textarea[disabled], .wmd-textarea.wmd-state-disabled,
+.wmd-select[disabled], .wmd-select.wmd-state-disabled {
+  color: rgba(0, 0, 0, 0.38);
+  cursor: not-allowed;
+  background: rgba(0, 0, 0, 0.02);
+  border-bottom-color: rgba(0, 0, 0, 0.26);
+}
+
+.wmd-textarea {
+  resize: vertical;
+  min-height: 6rem;
+  font-family: inherit;
+  border: 1px solid rgba(0, 0, 0, 0.42);
+  border-radius: 4px;
+  padding: 12px;
+}
+
+.wmd-textarea:focus {
+  border: 2px solid #6200ee;
+  margin: -1px;
+}
+
+.wmd-select {
+  cursor: pointer;
+}
+
+/* Checkboxes and Radios - Material Style */
+.wmd-checkbox, .wmd-radio {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0.5rem 0;
+  cursor: pointer;
+}
+
+.wmd-checkbox input[type="checkbox"],
+.wmd-radio input[type="radio"] {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+  accent-color: #6200ee;
+}
+
+/* Material Cards - Elevation System */
+.wmd-container-card {
+  background: white;
+  border-radius: 4px;
+  box-shadow: 0px 2px 1px -1px rgba(0,0,0,0.2),
+              0px 1px 1px 0px rgba(0,0,0,0.14),
+              0px 1px 3px 0px rgba(0,0,0,0.12);
+  padding: 16px;
+  margin: 16px 0;
+  transition: box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+}
+
+.wmd-container-card:hover {
+  box-shadow: 0px 3px 3px -2px rgba(0,0,0,0.2),
+              0px 3px 4px 0px rgba(0,0,0,0.14),
+              0px 1px 8px 0px rgba(0,0,0,0.12);
+}
+
+.wmd-container-hero {
+  background: linear-gradient(135deg, #6200ee 0%, #3700b3 100%);
+  color: white;
+  border-radius: 4px;
+  padding: 48px 24px;
+  margin: 24px 0;
+  text-align: center;
+  box-shadow: 0px 3px 5px -1px rgba(0,0,0,0.2),
+              0px 6px 10px 0px rgba(0,0,0,0.14),
+              0px 1px 18px 0px rgba(0,0,0,0.12);
+}
+
+.wmd-container-hero .wmd-h1,
+.wmd-container-hero .wmd-h2,
+.wmd-container-hero .wmd-h3,
+.wmd-container-hero .wmd-paragraph {
+  color: white;
+}
+
+.wmd-container-modal {
+  background: white;
+  border-radius: 4px;
+  box-shadow: 0px 11px 15px -7px rgba(0,0,0,0.2),
+              0px 24px 38px 3px rgba(0,0,0,0.14),
+              0px 9px 46px 8px rgba(0,0,0,0.12);
+  padding: 24px;
+  margin: 24px auto;
+  max-width: 600px;
+  position: relative;
+}
+
+.wmd-container-footer {
+  background: #212121;
+  color: rgba(255, 255, 255, 0.87);
+  padding: 24px;
+  margin-top: 48px;
+  border-radius: 4px;
+}
+
+.wmd-container-footer .wmd-paragraph,
+.wmd-container-footer .wmd-nav-item {
+  color: rgba(255, 255, 255, 0.87);
+}
+
+.wmd-container-section {
+  padding: 24px 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+}
+
+.wmd-container-section:last-child {
+  border-bottom: none;
+}
+
+/* Material Alerts */
+.wmd-container-alert {
+  padding: 12px 16px;
+  border-radius: 4px;
+  margin: 16px 0;
+  display: flex;
+  align-items: center;
+}
+
+.wmd-container-alert.wmd-warning {
+  background: #fff3e0;
+  color: #e65100;
+}
+
+.wmd-container-alert.wmd-state-error {
+  background: #ffebee;
+  color: #c62828;
+}
+
+.wmd-container-alert.wmd-state-success {
+  background: #e8f5e9;
+  color: #2e7d32;
+}
+
+/* Material Navigation - App Bar Style */
+.wmd-nav {
+  background: #6200ee;
+  color: white;
+  padding: 0 16px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  box-shadow: 0px 2px 4px -1px rgba(0,0,0,0.2),
+              0px 4px 5px 0px rgba(0,0,0,0.14),
+              0px 1px 10px 0px rgba(0,0,0,0.12);
+  margin-bottom: 24px;
+  border-radius: 4px;
+}
+
+.wmd-nav-content {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.wmd-nav-item {
+  color: rgba(255, 255, 255, 0.87);
+  text-decoration: none;
+  padding: 8px 12px;
+  border-radius: 4px;
+  transition: background-color 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.wmd-nav-item:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.wmd-brand {
+  font-weight: 500;
+  font-size: 1.25rem;
+  color: white;
+  margin-right: auto;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Material Lists */
+.wmd-list {
+  margin: 16px 0;
+  padding: 0;
+  list-style: none;
+  background: white;
+  border-radius: 4px;
+  box-shadow: 0px 1px 3px 0px rgba(0,0,0,0.2),
+              0px 1px 1px 0px rgba(0,0,0,0.14),
+              0px 2px 1px -1px rgba(0,0,0,0.12);
+}
+
+.wmd-list-item {
+  padding: 12px 16px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+  color: rgba(0, 0, 0, 0.87);
+  transition: background-color 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+}
+
+.wmd-list-item:hover {
+  background: rgba(0, 0, 0, 0.04);
+}
+
+.wmd-list-item:last-child {
+  border-bottom: none;
+}
+
+/* Material Grid */
+.wmd-grid {
+  display: grid;
+  gap: 16px;
+  margin: 24px 0;
+}
+
+.wmd-grid-2 {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.wmd-grid-3 {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.wmd-grid-4 {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+/* Material Tables */
+.wmd-table {
+  width: 100%;
+  background: white;
+  border-radius: 4px;
+  overflow: hidden;
+  box-shadow: 0px 1px 3px 0px rgba(0,0,0,0.2),
+              0px 1px 1px 0px rgba(0,0,0,0.14),
+              0px 2px 1px -1px rgba(0,0,0,0.12);
+  margin: 16px 0;
+}
+
+.wmd-table th {
+  background: #fafafa;
+  padding: 16px;
+  text-align: left;
+  font-weight: 500;
+  font-size: 0.875rem;
+  color: rgba(0, 0, 0, 0.87);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+}
+
+.wmd-table td {
+  padding: 16px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+  font-size: 0.875rem;
+  color: rgba(0, 0, 0, 0.87);
+}
+
+.wmd-table tr:last-child td {
+  border-bottom: none;
+}
+
+.wmd-table tr:hover {
+  background: rgba(0, 0, 0, 0.04);
+}
+
+/* Table cell alignment - more specific to override th/td defaults */
+.wmd-table .wmd-align-left {
+  text-align: left !important;
+}
+
+.wmd-table .wmd-align-center {
+  text-align: center !important;
+}
+
+.wmd-table .wmd-align-right {
+  text-align: right !important;
+}
+
+/* Material Icons */
+.wmd-icon {
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+  vertical-align: middle;
+}
+
+/* Utility classes */
+.wmd-separator {
+  border: none;
+  border-top: 1px solid rgba(0, 0, 0, 0.12);
+  margin: 24px 0;
+}
+
+.wmd-image {
+  max-width: 100%;
+  height: auto;
+  border-radius: 4px;
+  box-shadow: 0px 1px 3px 0px rgba(0,0,0,0.2),
+              0px 1px 1px 0px rgba(0,0,0,0.14),
+              0px 2px 1px -1px rgba(0,0,0,0.12);
+}
+
+.wmd-code {
+  background: rgba(98, 0, 238, 0.12);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-family: "Roboto Mono", monospace;
+  font-size: 0.875rem;
+  color: #6200ee;
+}
+
+.wmd-blockquote {
+  border-left: 4px solid #6200ee;
+  padding-left: 16px;
+  margin: 16px 0;
+  color: rgba(0, 0, 0, 0.6);
+  font-style: italic;
+}
+
+/* Button group */
+.wmd-container-button-group {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin: 16px 0;
+}
+
+/* Form group */
+.wmd-container-form-group {
+  margin: 16px 0;
+}
+
+/* State Containers */
+.wmd-container-loading-state {
+  background: white;
+  border-radius: 4px;
+  padding: 48px 32px;
+  margin: 24px 0;
+  text-align: center;
+  box-shadow: 0px 2px 4px -1px rgba(0,0,0,0.2),
+              0px 4px 5px 0px rgba(0,0,0,0.14),
+              0px 1px 10px 0px rgba(0,0,0,0.12);
+}
+
+.wmd-container-loading-state::before {
+  content: '';
+  display: block;
+  width: 48px;
+  height: 48px;
+  margin: 0 auto 24px;
+  border: 3px solid rgba(98, 0, 238, 0.2);
+  border-top-color: #6200ee;
+  border-radius: 50%;
+  animation: spin 1s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+.wmd-container-empty-state {
+  background: #fafafa;
+  border: 1px dashed rgba(0, 0, 0, 0.12);
+  border-radius: 4px;
+  padding: 64px 32px;
+  margin: 24px 0;
+  text-align: center;
+  color: rgba(0, 0, 0, 0.38);
+}
+
+.wmd-container-empty-state::before {
+  content: '📭';
+  display: block;
+  font-size: 64px;
+  margin-bottom: 24px;
+  opacity: 0.3;
+}
+
+.wmd-container-error-state {
+  background: #ffebee;
+  border-radius: 4px;
+  padding: 48px 32px;
+  margin: 24px 0;
+  text-align: center;
+  color: #c62828;
+  box-shadow: 0px 1px 3px 0px rgba(198, 40, 40, 0.2);
+}
+
+.wmd-container-error-state::before {
+  content: '⚠️';
+  display: block;
+  font-size: 48px;
+  margin-bottom: 24px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .wmd-grid-2,
+  .wmd-grid-3,
+  .wmd-grid-4 {
+    grid-template-columns: 1fr;
+  }
+
+  .wmd-nav-content {
+    flex-direction: column;
+    align-items: flex-start;
+    height: auto;
+    padding: 12px 0;
+  }
+
+  .wmd-nav {
+    height: auto;
+  }
+
+  .wmd-brand {
+    margin-right: 0;
+    margin-bottom: 8px;
+  }
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+  </style>
+</head>
+<body class="wmd-root wmd-material">
+  <h1 class="wmd-h1">Analytics Dashboard</h1>
+<blockquote class="wmd-blockquote">
+  <p class="wmd-paragraph"><strong>Use Case:</strong> Web analytics platform for tracking website traffic, user behavior, and conversions.</p>
+  <p class="wmd-paragraph"><strong>Key Features:</strong> KPI cards, charts/graphs, data tables, date filters, real-time stats</p>
+</blockquote>
+<nav class="wmd-nav">
+  <div class="wmd-nav-content">
+    <div class="wmd-brand"><span class="wmd-icon" data-icon="logo" aria-label="logo">◈</span>Analytics Pro</div>
+    <a href="#" class="wmd-nav-item"></a>
+    <a href="#" class="wmd-nav-item">Reports</a>
+    <a href="#" class="wmd-nav-item">Audiences</a>
+    <a href="#" class="wmd-nav-item">Campaigns</a>
+    <a href="#" class="wmd-nav-item">Settings</a>
+    <a href="#" class="wmd-nav-item"><span class="wmd-icon" data-icon="user" aria-label="user">👤</span>Admin</a>
+    <button class="wmd-button">Export Data</button>
+  </div>
+</nav>
+<nav class="wmd-nav">
+  <div class="wmd-nav-content">
+    <a href="#" class="wmd-nav-item">Dashboard &gt; Analytics &gt; Overview</a>
+  </div>
+</nav>
+<hr class="wmd-separator" />
+<h2 class="wmd-h2">Overview</h2>
+<p class="wmd-paragraph">Date Range: [Last 30 days...v] [Custom Date Range] [Refresh]</p>
+<hr class="wmd-separator" />
+<div class="wmd-grid wmd-grid-4 wmd-grid-4" style="--grid-columns: 4">
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Total Visitors</h3>
+    <div class="wmd-container-form-group">
+  <strong>458,234</strong>
+
+  <span class="wmd-icon" data-icon="chart" aria-label="chart">📊</span>
+   +12.5% vs last period
+</div>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Page Views</h3>
+    <div class="wmd-container-form-group">
+  <strong>1,234,567</strong>
+
+  <span class="wmd-icon" data-icon="chart" aria-label="chart">📊</span>
+   +8.3% vs last period
+</div>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Bounce Rate</h3>
+    <div class="wmd-container-form-group">
+  <strong>42.3%</strong>
+
+  <span class="wmd-icon" data-icon="chart" aria-label="chart">📊</span>
+   -3.2% vs last period
+</div>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Avg. Session</h3>
+    <div class="wmd-container-form-group">
+  <strong>3m 24s</strong>
+
+  <span class="wmd-icon" data-icon="chart" aria-label="chart">📊</span>
+   +15.7% vs last period
+</div>
+  </div>
+</div>
+<h2 class="wmd-h2"></h2>
+<hr class="wmd-separator" />
+<div class="wmd-grid wmd-grid-2 wmd-grid-2" style="--grid-columns: 2">
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Visitors Over Time</h3>
+    <div class="wmd-container-form-group">
+  <img src="https://via.placeholder.com/600x300" alt="Line Chart" class="wmd-image" />
+</div>
+    <p class="wmd-paragraph"><strong>Daily Visitors - Last 30 Days</strong></p>
+    <ul class="wmd-list">
+  <li class="wmd-list-item">Highest: 18,234 (Mar 15)</li>
+  <li class="wmd-list-item">Lowest: 12,456 (Mar 1)</li>
+  <li class="wmd-list-item">Average: 15,274</li>
+</ul>
+    <button class="wmd-button">View Detailed Report →</button>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Traffic Sources</h3>
+    <div class="wmd-container-form-group">
+  <img src="https://via.placeholder.com/600x300" alt="Pie Chart" class="wmd-image" />
+</div>
+    <table class="wmd-table">
+  <thead>
+    <tr>
+      <th class="wmd-table-cell wmd-align-left">Source</th>
+    <th class="wmd-table-cell wmd-align-left">Visitors</th>
+    <th class="wmd-table-cell wmd-align-left">Percentage</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">Organic Search</td>
+    <td class="wmd-table-cell wmd-align-left">234,567</td>
+    <td class="wmd-table-cell wmd-align-left">51%</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">Direct</td>
+    <td class="wmd-table-cell wmd-align-left">98,234</td>
+    <td class="wmd-table-cell wmd-align-left">21%</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">Social Media</td>
+    <td class="wmd-table-cell wmd-align-left">67,890</td>
+    <td class="wmd-table-cell wmd-align-left">15%</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">Referral</td>
+    <td class="wmd-table-cell wmd-align-left">45,678</td>
+    <td class="wmd-table-cell wmd-align-left">10%</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">Email</td>
+    <td class="wmd-table-cell wmd-align-left">11,865</td>
+    <td class="wmd-table-cell wmd-align-left">3%</td>
+  </tr>
+  </tbody>
+</table>
+  </div>
+</div>
+<h2 class="wmd-h2"></h2>
+<hr class="wmd-separator" />
+<h2 class="wmd-h2">Real-Time Activity</h2>
+<div class="wmd-container-card">
+  <h3 class="wmd-h3">Live Visitors: 1,234 👁️</h3>
+  <p class="wmd-paragraph"><strong>Top Pages Right Now:</strong></p>
+  <table class="wmd-table">
+  <thead>
+    <tr>
+      <th class="wmd-table-cell wmd-align-left">Page</th>
+    <th class="wmd-table-cell wmd-align-left">Active Users</th>
+    <th class="wmd-table-cell wmd-align-left">Avg. Time</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">/products</td>
+    <td class="wmd-table-cell wmd-align-left">234</td>
+    <td class="wmd-table-cell wmd-align-left">2m 34s</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">/blog/article-1</td>
+    <td class="wmd-table-cell wmd-align-left">189</td>
+    <td class="wmd-table-cell wmd-align-left">4m 12s</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">/pricing</td>
+    <td class="wmd-table-cell wmd-align-left">156</td>
+    <td class="wmd-table-cell wmd-align-left">1m 45s</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">/home</td>
+    <td class="wmd-table-cell wmd-align-left">145</td>
+    <td class="wmd-table-cell wmd-align-left">0m 58s</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">/about</td>
+    <td class="wmd-table-cell wmd-align-left">89</td>
+    <td class="wmd-table-cell wmd-align-left">2m 05s</td>
+  </tr>
+  </tbody>
+</table>
+  <p class="wmd-paragraph"><strong>Live Events:</strong></p>
+  <ul class="wmd-list">
+  <li class="wmd-list-item">🛒 New purchase: $129.99 (2s ago)</li>
+  <li class="wmd-list-item">👤 User signed up (5s ago)</li>
+  <li class="wmd-list-item">📧 Newsletter subscription (8s ago)</li>
+  <li class="wmd-list-item">🔔 Form submitted (12s ago)</li>
+</ul>
+  <button class="wmd-button">View Real-Time Dashboard →</button>
+</div>
+<hr class="wmd-separator" />
+<div class="wmd-grid wmd-grid-2 wmd-grid-2" style="--grid-columns: 2">
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Top Countries</h3>
+    <table class="wmd-table">
+  <thead>
+    <tr>
+      <th class="wmd-table-cell wmd-align-left">Country</th>
+    <th class="wmd-table-cell wmd-align-left">Visitors</th>
+    <th class="wmd-table-cell wmd-align-left">Sessions</th>
+    <th class="wmd-table-cell wmd-align-left">Conversion</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">🇺🇸 United States</td>
+    <td class="wmd-table-cell wmd-align-left">189,234</td>
+    <td class="wmd-table-cell wmd-align-left">345,678</td>
+    <td class="wmd-table-cell wmd-align-left">3.2%</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">🇬🇧 United Kingdom</td>
+    <td class="wmd-table-cell wmd-align-left">67,890</td>
+    <td class="wmd-table-cell wmd-align-left">123,456</td>
+    <td class="wmd-table-cell wmd-align-left">2.8%</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">🇨🇦 Canada</td>
+    <td class="wmd-table-cell wmd-align-left">45,678</td>
+    <td class="wmd-table-cell wmd-align-left">89,012</td>
+    <td class="wmd-table-cell wmd-align-left">2.5%</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">🇦🇺 Australia</td>
+    <td class="wmd-table-cell wmd-align-left">34,567</td>
+    <td class="wmd-table-cell wmd-align-left">67,890</td>
+    <td class="wmd-table-cell wmd-align-left">3.0%</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">🇩🇪 Germany</td>
+    <td class="wmd-table-cell wmd-align-left">28,901</td>
+    <td class="wmd-table-cell wmd-align-left">54,321</td>
+    <td class="wmd-table-cell wmd-align-left">2.3%</td>
+  </tr>
+  </tbody>
+</table>
+    <button class="wmd-button">View Full Report →</button>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Top Cities</h3>
+    <table class="wmd-table">
+  <thead>
+    <tr>
+      <th class="wmd-table-cell wmd-align-left">City</th>
+    <th class="wmd-table-cell wmd-align-left">Visitors</th>
+    <th class="wmd-table-cell wmd-align-left">Revenue</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">New York</td>
+    <td class="wmd-table-cell wmd-align-left">45,678</td>
+    <td class="wmd-table-cell wmd-align-left">$89,234</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">London</td>
+    <td class="wmd-table-cell wmd-align-left">34,567</td>
+    <td class="wmd-table-cell wmd-align-left">$67,890</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">Toronto</td>
+    <td class="wmd-table-cell wmd-align-left">23,456</td>
+    <td class="wmd-table-cell wmd-align-left">$45,678</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">Sydney</td>
+    <td class="wmd-table-cell wmd-align-left">19,234</td>
+    <td class="wmd-table-cell wmd-align-left">$38,901</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">Berlin</td>
+    <td class="wmd-table-cell wmd-align-left">15,678</td>
+    <td class="wmd-table-cell wmd-align-left">$29,456</td>
+  </tr>
+  </tbody>
+</table>
+  </div>
+</div>
+<h2 class="wmd-h2"></h2>
+<hr class="wmd-separator" />
+<div class="wmd-grid wmd-grid-2 wmd-grid-2" style="--grid-columns: 2">
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Device Types</h3>
+    <div class="wmd-container-form-group">
+  <img src="https://via.placeholder.com/500x250" alt="Bar Chart" class="wmd-image" />
+</div>
+    <ul class="wmd-list">
+  <li class="wmd-list-item">📱 Mobile: 52% (238,282 visitors)</li>
+  <li class="wmd-list-item">💻 Desktop: 38% (174,129 visitors)</li>
+  <li class="wmd-list-item">📱 Tablet: 10% (45,823 visitors)</li>
+</ul>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Browser Distribution</h3>
+    <table class="wmd-table">
+  <thead>
+    <tr>
+      <th class="wmd-table-cell wmd-align-left">Browser</th>
+    <th class="wmd-table-cell wmd-align-left">Users</th>
+    <th class="wmd-table-cell wmd-align-left">Percentage</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">Chrome</td>
+    <td class="wmd-table-cell wmd-align-left">234,567</td>
+    <td class="wmd-table-cell wmd-align-left">51%</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">Safari</td>
+    <td class="wmd-table-cell wmd-align-left">123,456</td>
+    <td class="wmd-table-cell wmd-align-left">27%</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">Firefox</td>
+    <td class="wmd-table-cell wmd-align-left">67,890</td>
+    <td class="wmd-table-cell wmd-align-left">15%</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">Edge</td>
+    <td class="wmd-table-cell wmd-align-left">23,456</td>
+    <td class="wmd-table-cell wmd-align-left">5%</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">Other</td>
+    <td class="wmd-table-cell wmd-align-left">8,865</td>
+    <td class="wmd-table-cell wmd-align-left">2%</td>
+  </tr>
+  </tbody>
+</table>
+  </div>
+</div>
+<h2 class="wmd-h2"></h2>
+<hr class="wmd-separator" />
+<h2 class="wmd-h2">Content Performance</h2>
+<div class="wmd-container-card">
+  <h3 class="wmd-h3">Top Performing Pages</h3>
+  <table class="wmd-table">
+  <thead>
+    <tr>
+      <th class="wmd-table-cell wmd-align-left">Page</th>
+    <th class="wmd-table-cell wmd-align-left">Views</th>
+    <th class="wmd-table-cell wmd-align-left">Unique</th>
+    <th class="wmd-table-cell wmd-align-left">Avg. Time</th>
+    <th class="wmd-table-cell wmd-align-left">Bounce</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">/blog/how-to-guide</td>
+    <td class="wmd-table-cell wmd-align-left">45,678</td>
+    <td class="wmd-table-cell wmd-align-left">34,567</td>
+    <td class="wmd-table-cell wmd-align-left">5m 23s</td>
+    <td class="wmd-table-cell wmd-align-left">32%</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">/products/featured</td>
+    <td class="wmd-table-cell wmd-align-left">38,901</td>
+    <td class="wmd-table-cell wmd-align-left">29,234</td>
+    <td class="wmd-table-cell wmd-align-left">3m 45s</td>
+    <td class="wmd-table-cell wmd-align-left">28%</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">/pricing</td>
+    <td class="wmd-table-cell wmd-align-left">34,567</td>
+    <td class="wmd-table-cell wmd-align-left">28,901</td>
+    <td class="wmd-table-cell wmd-align-left">2m 12s</td>
+    <td class="wmd-table-cell wmd-align-left">45%</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">/case-studies</td>
+    <td class="wmd-table-cell wmd-align-left">28,234</td>
+    <td class="wmd-table-cell wmd-align-left">21,456</td>
+    <td class="wmd-table-cell wmd-align-left">6m 34s</td>
+    <td class="wmd-table-cell wmd-align-left">25%</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">/home</td>
+    <td class="wmd-table-cell wmd-align-left">198,456</td>
+    <td class="wmd-table-cell wmd-align-left">145,678</td>
+    <td class="wmd-table-cell wmd-align-left">1m 23s</td>
+    <td class="wmd-table-cell wmd-align-left">52%</td>
+  </tr>
+  </tbody>
+</table>
+  <button class="wmd-button">Analyze Content →</button>
+</div>
+<hr class="wmd-separator" />
+<div class="wmd-grid wmd-grid-3 wmd-grid-3" style="--grid-columns: 3">
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Step 1: Landing</h3>
+    <p class="wmd-paragraph"><strong>100,000</strong> visitors
+100%</p>
+    <button class="wmd-button">↓ 75%</button>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Step 2: Engaged</h3>
+    <p class="wmd-paragraph"><strong>75,000</strong> visitors
+75%</p>
+    <button class="wmd-button">↓ 40%</button>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Step 3: Converted</h3>
+    <p class="wmd-paragraph"><strong>30,000</strong> visitors
+30%</p>
+  </div>
+</div>
+<h2 class="wmd-h2"></h2>
+<p class="wmd-paragraph"><strong>Conversion Rate:</strong> 30% | <strong>Drop-off:</strong> 70%</p>
+<button class="wmd-button">Optimize Funnel →</button>
+<hr class="wmd-separator" />
+<h2 class="wmd-h2">Goals &amp; Events</h2>
+<div class="wmd-grid wmd-grid-4 wmd-grid-4" style="--grid-columns: 4">
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Newsletter Signups</h3>
+    <div class="wmd-container-form-group">
+  <strong>8,234</strong>
+Target: 10,000
+
+  <button class="wmd-button">######____</button>
+   82%
+</div>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Product Purchases</h3>
+    <div class="wmd-container-form-group">
+  <strong>2,456</strong>
+Target: 3,000
+
+  <button class="wmd-button">######____</button>
+   82%
+</div>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Free Trial Starts</h3>
+    <div class="wmd-container-form-group">
+  <strong>5,678</strong>
+Target: 5,000
+
+  <button class="wmd-button">##########</button>
+   114%
+</div>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Contact Forms</h3>
+    <div class="wmd-container-form-group">
+  <strong>1,234</strong>
+Target: 2,000
+
+  <button class="wmd-button">#####_____</button>
+   62%
+</div>
+  </div>
+</div>
+<h2 class="wmd-h2"></h2>
+<hr class="wmd-separator" />
+<h2 class="wmd-h2">User Engagement</h2>
+<div class="wmd-container-card">
+  <h3 class="wmd-h3">Session Statistics</h3>
+  <table class="wmd-table">
+  <thead>
+    <tr>
+      <th class="wmd-table-cell wmd-align-left">Metric</th>
+    <th class="wmd-table-cell wmd-align-left">Value</th>
+    <th class="wmd-table-cell wmd-align-left">Change</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">Pages per Session</td>
+    <td class="wmd-table-cell wmd-align-left">4.2</td>
+    <td class="wmd-table-cell wmd-align-left">+8% ⬆️</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">Average Session Duration</td>
+    <td class="wmd-table-cell wmd-align-left">3m 24s</td>
+    <td class="wmd-table-cell wmd-align-left">+12% ⬆️</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">New vs Returning</td>
+    <td class="wmd-table-cell wmd-align-left">45% / 55%</td>
+    <td class="wmd-table-cell wmd-align-left">-</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">Sessions with Conversion</td>
+    <td class="wmd-table-cell wmd-align-left">3.2%</td>
+    <td class="wmd-table-cell wmd-align-left">+15% ⬆️</td>
+  </tr>
+  </tbody>
+</table>
+  <h3 class="wmd-h3">Engagement by Hour</h3>
+  <div class="wmd-container-form-group">
+  <img src="https://via.placeholder.com/700x200" alt="Heatmap" class="wmd-image" />
+</div>
+  <p class="wmd-paragraph"><strong>Peak Hours:</strong> 2pm - 4pm EST
+<strong>Lowest Activity:</strong> 3am - 5am EST</p>
+</div>
+<hr class="wmd-separator" />
+<h2 class="wmd-h2">Recent Activity Log</h2>
+<table class="wmd-table">
+  <thead>
+    <tr>
+      <th class="wmd-table-cell wmd-align-left">Time</th>
+    <th class="wmd-table-cell wmd-align-left">Event</th>
+    <th class="wmd-table-cell wmd-align-left">User</th>
+    <th class="wmd-table-cell wmd-align-left">Details</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">2m ago</td>
+    <td class="wmd-table-cell wmd-align-left">Purchase</td>
+    <td class="wmd-table-cell wmd-align-left">user_45678</td>
+    <td class="wmd-table-cell wmd-align-left">$129.99 • Product A</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">5m ago</td>
+    <td class="wmd-table-cell wmd-align-left">Signup</td>
+    <td class="wmd-table-cell wmd-align-left">user_45679</td>
+    <td class="wmd-table-cell wmd-align-left">Free trial started</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">8m ago</td>
+    <td class="wmd-table-cell wmd-align-left">Page View</td>
+    <td class="wmd-table-cell wmd-align-left">user_45680</td>
+    <td class="wmd-table-cell wmd-align-left">/pricing</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">12m ago</td>
+    <td class="wmd-table-cell wmd-align-left">Form Submit</td>
+    <td class="wmd-table-cell wmd-align-left">user_45681</td>
+    <td class="wmd-table-cell wmd-align-left">Contact form</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">15m ago</td>
+    <td class="wmd-table-cell wmd-align-left">Download</td>
+    <td class="wmd-table-cell wmd-align-left">user_45682</td>
+    <td class="wmd-table-cell wmd-align-left">Whitepaper.pdf</td>
+  </tr>
+  </tbody>
+</table>
+<button class="wmd-button">View All Activity →</button>
+<hr class="wmd-separator" />
+<h2 class="wmd-h2">Filters &amp; Segments</h2>
+<div class="wmd-container-card">
+  <h3 class="wmd-h3">Advanced Filters</h3>
+  <p class="wmd-paragraph">Date Range
+From: [<em>] {type:date}
+To: [</em>] {type:date}</p>
+  <p class="wmd-paragraph">Traffic Source</p>
+  <ul class="wmd-list">
+  <label class="wmd-checkbox">
+    <input type="checkbox" checked />
+    <span>Organic</span>
+  </label>
+  <label class="wmd-checkbox">
+    <input type="checkbox" checked />
+    <span>Direct</span>
+  </label>
+  <label class="wmd-checkbox">
+    <input type="checkbox" checked />
+    <span>Social</span>
+  </label>
+  <label class="wmd-checkbox">
+    <input type="checkbox" />
+    <span>Paid</span>
+  </label>
+  <label class="wmd-checkbox">
+    <input type="checkbox" />
+    <span>Email</span>
+  </label>
+</ul>
+  <p class="wmd-paragraph">Device Type</p>
+  <ul class="wmd-list">
+  <label class="wmd-checkbox">
+    <input type="checkbox" checked />
+    <span>Desktop</span>
+  </label>
+  <label class="wmd-checkbox">
+    <input type="checkbox" checked />
+    <span>Mobile</span>
+  </label>
+  <label class="wmd-checkbox">
+    <input type="checkbox" checked />
+    <span>Tablet</span>
+  </label>
+</ul>
+  <div class="wmd-container-form-group">
+  Country
+  <select class="wmd-select">
+    <option value="" disabled selected>Select countries...</option>
+    
+  </select>
+</div>
+  <div class="wmd-container-form-group">
+  Custom Segment
+  <select class="wmd-select">
+    <option value="" disabled selected>Select or create...</option>
+    
+  </select>
+</div>
+  <div class="wmd-container-button-group">
+  <button class="wmd-button wmd-button-primary">Apply Filters</button>
+  <button class="wmd-button">Reset</button>
+  <button class="wmd-button">Save Segment</button>
+</div>
+</div>
+<hr class="wmd-separator" />
+<div class="wmd-container-footer">
+  <p class="wmd-paragraph">Last updated: 2 minutes ago • [Export Report] • [Schedule Email] • [Share Dashboard]</p>
+</div>
+<hr class="wmd-separator" />
+<p class="wmd-paragraph"><strong>Style Variations:</strong></p>
+<ul class="wmd-list">
+  <li class="wmd-list-item">sketch - Quick dashboard prototype</li>
+  <li class="wmd-list-item">clean - Modern analytics interface</li>
+  <li class="wmd-list-item">wireframe - Data structure focus</li>
+  <li class="wmd-list-item">tailwind - Contemporary SaaS dashboard</li>
+  <li class="wmd-list-item">material - Google Analytics aesthetic</li>
+  <li class="wmd-list-item">brutal - Bold data visualization</li>
+  <li class="wmd-list-item">none - Semantic HTML for charting libs</li>
+</ul>
+<p class="wmd-paragraph"><strong>Generate this example:</strong></p>
+<pre class="wmd-code-block"><code data-lang="bash">wiremd analytics-dashboard.md --style sketch
+wiremd analytics-dashboard.md --style material -o analytics-material.html
+wiremd analytics-dashboard.md --style clean -o analytics-clean.html</code></pre>
+</body>
+</html>

@@ -1,0 +1,1055 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>wiremd Mockup</title>
+  <style>
+
+/* wiremd Wireframe Style - Traditional grayscale wireframes */
+* {
+  box-sizing: border-box;
+}
+
+body.wmd-root {
+  font-family: Arial, Helvetica, sans-serif;
+  background: #f0f0f0;
+  color: #000;
+  padding: 30px;
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* Headings */
+.wmd-h1, .wmd-h2, .wmd-h3, .wmd-h4, .wmd-h5, .wmd-h6 {
+  font-weight: bold;
+  margin: 1.2em 0 0.6em;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.wmd-h1 { font-size: 2em; }
+.wmd-h2 { font-size: 1.75em; }
+.wmd-h3 { font-size: 1.5em; }
+.wmd-h4 { font-size: 1.25em; }
+.wmd-h5 { font-size: 1.1em; }
+.wmd-h6 { font-size: 1em; }
+
+/* Paragraph */
+.wmd-paragraph {
+  margin: 0.6em 0;
+}
+
+/* Buttons */
+.wmd-button {
+  display: inline-block;
+  padding: 8px 16px;
+  margin: 4px;
+  background: repeating-linear-gradient(
+    45deg,
+    #ddd,
+    #ddd 10px,
+    #ccc 10px,
+    #ccc 20px
+  );
+  border: 2px solid #000;
+  border-radius: 0;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: bold;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.wmd-button-primary, .wmd-button.wmd-primary {
+  background: repeating-linear-gradient(
+    45deg,
+    #888,
+    #888 10px,
+    #777 10px,
+    #777 20px
+  );
+  color: #fff;
+}
+
+.wmd-button-secondary, .wmd-button.wmd-secondary {
+  background: #fff;
+}
+
+.wmd-button-danger, .wmd-button.wmd-danger {
+  background: repeating-linear-gradient(
+    45deg,
+    #666,
+    #666 10px,
+    #555 10px,
+    #555 20px
+  );
+  color: #fff;
+}
+
+.wmd-button[disabled] {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* Inputs */
+.wmd-input, .wmd-textarea, .wmd-select {
+  display: block;
+  width: 100%;
+  max-width: 400px;
+  padding: 6px 10px;
+  margin: 4px 0;
+  font-family: inherit;
+  font-size: 13px;
+  background: #fff;
+  border: 2px solid #000;
+  border-radius: 0;
+}
+
+.wmd-input::placeholder, .wmd-textarea::placeholder {
+  color: #999;
+  font-style: italic;
+}
+
+.wmd-input[disabled], .wmd-input.wmd-state-disabled,
+.wmd-textarea[disabled], .wmd-textarea.wmd-state-disabled,
+.wmd-select[disabled], .wmd-select.wmd-state-disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background: #f0f0f0;
+}
+
+.wmd-textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+/* Checkboxes and Radios */
+.wmd-checkbox, .wmd-radio {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 6px 0;
+  cursor: pointer;
+}
+
+.wmd-checkbox input[type="checkbox"],
+.wmd-radio input[type="radio"] {
+  width: 18px;
+  height: 18px;
+  border: 2px solid #000;
+  cursor: pointer;
+}
+
+/* Icons */
+.wmd-icon {
+  display: inline-block;
+  font-size: 1em;
+  line-height: 1;
+  margin: 0 4px;
+  vertical-align: middle;
+}
+
+/* Containers */
+.wmd-container-hero, .wmd-container-card, .wmd-container-modal {
+  background: #fff;
+  border: 3px solid #000;
+  padding: 24px;
+  margin: 16px 0;
+}
+
+.wmd-container-hero {
+  background: repeating-linear-gradient(
+    0deg,
+    #fafafa,
+    #fafafa 2px,
+    #fff 2px,
+    #fff 4px
+  );
+  text-align: center;
+  padding: 48px 24px;
+}
+
+.wmd-container-card {
+  max-width: 400px;
+}
+
+.wmd-container-modal {
+  max-width: 500px;
+  margin: 32px auto;
+  border-width: 4px;
+}
+
+/* Navigation */
+.wmd-nav {
+  background: repeating-linear-gradient(
+    90deg,
+    #e0e0e0,
+    #e0e0e0 2px,
+    #d0d0d0 2px,
+    #d0d0d0 4px
+  );
+  border: 2px solid #000;
+  padding: 12px 16px;
+  margin: 16px 0;
+}
+
+.wmd-nav-content {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.wmd-brand {
+  font-weight: bold;
+  font-size: 1.1em;
+  text-transform: uppercase;
+  margin-right: auto;
+}
+
+.wmd-nav-item {
+  color: #000;
+  text-decoration: underline;
+  font-weight: normal;
+}
+
+/* Grid */
+.wmd-grid {
+  display: grid;
+  grid-template-columns: repeat(var(--grid-columns, 3), 1fr);
+  gap: 20px;
+  margin: 20px 0;
+}
+
+.wmd-grid-item {
+  background: #fff;
+  border: 2px solid #000;
+  padding: 16px;
+}
+
+/* Lists */
+.wmd-list {
+  margin: 12px 0;
+  padding-left: 24px;
+}
+
+.wmd-list-item {
+  margin: 4px 0;
+}
+
+/* Blockquote */
+.wmd-blockquote {
+  border-left: 4px solid #000;
+  padding-left: 16px;
+  margin: 16px 0;
+  background: #f5f5f5;
+  padding: 12px 16px;
+}
+
+/* Code */
+.wmd-code-inline {
+  background: #e0e0e0;
+  border: 1px solid #000;
+  padding: 2px 6px;
+  font-family: 'Courier New', monospace;
+  font-size: 0.9em;
+}
+
+.wmd-code-block {
+  background: #f0f0f0;
+  border: 2px solid #000;
+  padding: 12px;
+  margin: 12px 0;
+  overflow-x: auto;
+}
+
+.wmd-code-block code {
+  font-family: 'Courier New', monospace;
+  font-size: 0.9em;
+}
+
+/* Separator */
+.wmd-separator {
+  border: none;
+  border-top: 2px solid #000;
+  margin: 24px 0;
+}
+
+/* State Containers */
+.wmd-container-loading-state {
+  background: repeating-linear-gradient(
+    0deg,
+    #fff,
+    #fff 2px,
+    #f5f5f5 2px,
+    #f5f5f5 4px
+  );
+  border: 2px solid #000;
+  padding: 40px;
+  margin: 16px 0;
+  text-align: center;
+  position: relative;
+}
+
+.wmd-container-loading-state::before {
+  content: '⟳';
+  display: block;
+  font-size: 48px;
+  font-weight: bold;
+  margin-bottom: 16px;
+  animation: spin 2s linear infinite;
+}
+
+.wmd-container-empty-state {
+  background: #fff;
+  border: 2px dashed #666;
+  padding: 60px 40px;
+  margin: 16px 0;
+  text-align: center;
+  color: #666;
+}
+
+.wmd-container-empty-state::before {
+  content: '[EMPTY]';
+  display: block;
+  font-size: 24px;
+  font-weight: bold;
+  letter-spacing: 0.2em;
+  margin-bottom: 16px;
+  color: #999;
+}
+
+.wmd-container-error-state {
+  background: repeating-linear-gradient(
+    45deg,
+    #fff,
+    #fff 10px,
+    #f0f0f0 10px,
+    #f0f0f0 20px
+  );
+  border: 3px solid #000;
+  padding: 40px;
+  margin: 16px 0;
+  text-align: center;
+}
+
+.wmd-container-error-state::before {
+  content: '⚠';
+  display: block;
+  font-size: 56px;
+  font-weight: bold;
+  margin-bottom: 16px;
+  color: #000;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .wmd-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+  </style>
+</head>
+<body class="wmd-root wmd-wireframe">
+  <h1 class="wmd-h1">Admin Panel</h1>
+<blockquote class="wmd-blockquote">
+  <p class="wmd-paragraph"><strong>Use Case:</strong> Application administration dashboard for managing users, content, and system settings.</p>
+  <p class="wmd-paragraph"><strong>Key Features:</strong> User management, CRUD operations, permissions, system stats, activity logs</p>
+</blockquote>
+<nav class="wmd-nav">
+  <div class="wmd-nav-content">
+    <div class="wmd-brand"><span class="wmd-icon" data-icon="logo" aria-label="logo">◈</span>AdminHub</div>
+    <a href="#" class="wmd-nav-item"></a>
+    <a href="#" class="wmd-nav-item">Users</a>
+    <a href="#" class="wmd-nav-item">Content</a>
+    <a href="#" class="wmd-nav-item">Settings</a>
+    <a href="#" class="wmd-nav-item"><span class="wmd-icon" data-icon="bell" aria-label="bell">🔔</span>(3)</a>
+    <a href="#" class="wmd-nav-item"><span class="wmd-icon" data-icon="user" aria-label="user">👤</span>John Doe</a>
+  </div>
+</nav>
+<div class="wmd-container-sidebar">
+  <h3 class="wmd-h3">Main Menu</h3>
+  <ul class="wmd-list">
+  <li class="wmd-list-item"><span class="wmd-icon" data-icon="home" aria-label="home">🏠</span> Dashboard</li>
+  <li class="wmd-list-item"><span class="wmd-icon" data-icon="users" aria-label="users">●</span> Users</li>
+  <li class="wmd-list-item"><span class="wmd-icon" data-icon="content" aria-label="content">●</span> Content</li>
+  <li class="wmd-list-item"><span class="wmd-icon" data-icon="shopping" aria-label="shopping">●</span> Orders</li>
+  <li class="wmd-list-item"><span class="wmd-icon" data-icon="chart" aria-label="chart">📊</span> Analytics</li>
+  <li class="wmd-list-item"><span class="wmd-icon" data-icon="settings" aria-label="settings">⚙️</span> Settings</li>
+  <li class="wmd-list-item"><span class="wmd-icon" data-icon="help" aria-label="help">●</span> Help &amp; Support</li>
+</ul>
+  <h3 class="wmd-h3">Quick Actions</h3>
+  <div class="wmd-container-button-group">
+  <button class="wmd-button">+ New User</button>
+  <button class="wmd-button">+ New Post</button>
+  <button class="wmd-button">+ New Order</button>
+</div>
+  <h3 class="wmd-h3">System Status</h3>
+  <ul class="wmd-list">
+  <li class="wmd-list-item">✅ All systems operational</li>
+  <li class="wmd-list-item">🟢 API: Healthy</li>
+  <li class="wmd-list-item">🟢 Database: Healthy</li>
+  <li class="wmd-list-item">🟢 Storage: 67% used</li>
+</ul>
+</div>
+<hr class="wmd-separator" />
+<h2 class="wmd-h2">Dashboard Overview</h2>
+<nav class="wmd-nav">
+  <div class="wmd-nav-content">
+    <a href="#" class="wmd-nav-item">Dashboard &gt; Admin Panel</a>
+  </div>
+</nav>
+<hr class="wmd-separator" />
+<div class="wmd-container-alert warning">
+  <div class="wmd-container-form-group">
+  ⚠️<strong>Scheduled Maintenance:</strong>System will be down for 30 minutes on Sunday 3am EST. 
+  <button class="wmd-button">View Details →</button>
+</div>
+</div>
+<hr class="wmd-separator" />
+<div class="wmd-grid wmd-grid-5 wmd-grid-5" style="--grid-columns: 5">
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Total Users</h3>
+    <p class="wmd-paragraph"><strong>24,567</strong>
++234 this week</p>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Active Sessions</h3>
+    <p class="wmd-paragraph"><strong>1,234</strong>
+Current online</p>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Total Revenue</h3>
+    <p class="wmd-paragraph"><strong>$458,234</strong>
++12% this month</p>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Support Tickets</h3>
+    <p class="wmd-paragraph"><strong>89</strong>
+23 pending</p>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Server Load</h3>
+    <p class="wmd-paragraph"><strong>67%</strong>
+Normal</p>
+  </div>
+</div>
+<h2 class="wmd-h2"></h2>
+<hr class="wmd-separator" />
+<div class="wmd-grid wmd-grid-2 wmd-grid-2" style="--grid-columns: 2">
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Latest Users</h3>
+    <table class="wmd-table">
+  <thead>
+    <tr>
+      <th class="wmd-table-cell wmd-align-left">User</th>
+    <th class="wmd-table-cell wmd-align-left">Email</th>
+    <th class="wmd-table-cell wmd-align-left">Role</th>
+    <th class="wmd-table-cell wmd-align-left">Status</th>
+    <th class="wmd-table-cell wmd-align-left">Joined</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">![👤] John Smith</td>
+    <td class="wmd-table-cell wmd-align-left">[email protected]</td>
+    <td class="wmd-table-cell wmd-align-left">Admin</td>
+    <td class="wmd-table-cell wmd-align-left">Active</td>
+    <td class="wmd-table-cell wmd-align-left">2h ago</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">![👤] Sarah Lee</td>
+    <td class="wmd-table-cell wmd-align-left">[email protected]</td>
+    <td class="wmd-table-cell wmd-align-left">Editor</td>
+    <td class="wmd-table-cell wmd-align-left">Active</td>
+    <td class="wmd-table-cell wmd-align-left">5h ago</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">![👤] Mike Chen</td>
+    <td class="wmd-table-cell wmd-align-left">[email protected]</td>
+    <td class="wmd-table-cell wmd-align-left">User</td>
+    <td class="wmd-table-cell wmd-align-left">Pending</td>
+    <td class="wmd-table-cell wmd-align-left">1d ago</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">![👤] Emma Davis</td>
+    <td class="wmd-table-cell wmd-align-left">[email protected]</td>
+    <td class="wmd-table-cell wmd-align-left">User</td>
+    <td class="wmd-table-cell wmd-align-left">Active</td>
+    <td class="wmd-table-cell wmd-align-left">2d ago</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">![👤] Alex Johnson</td>
+    <td class="wmd-table-cell wmd-align-left">[email protected]</td>
+    <td class="wmd-table-cell wmd-align-left">Moderator</td>
+    <td class="wmd-table-cell wmd-align-left">Active</td>
+    <td class="wmd-table-cell wmd-align-left">3d ago</td>
+  </tr>
+  </tbody>
+</table>
+    <button class="wmd-button">Manage Users →</button>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Recent Orders</h3>
+    <table class="wmd-table">
+  <thead>
+    <tr>
+      <th class="wmd-table-cell wmd-align-left">Order</th>
+    <th class="wmd-table-cell wmd-align-left">Customer</th>
+    <th class="wmd-table-cell wmd-align-left">Amount</th>
+    <th class="wmd-table-cell wmd-align-left">Status</th>
+    <th class="wmd-table-cell wmd-align-left">Date</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">#12345</td>
+    <td class="wmd-table-cell wmd-align-left">John Doe</td>
+    <td class="wmd-table-cell wmd-align-left">$129.99</td>
+    <td class="wmd-table-cell wmd-align-left">Completed</td>
+    <td class="wmd-table-cell wmd-align-left">10m ago</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">#12344</td>
+    <td class="wmd-table-cell wmd-align-left">Jane Smith</td>
+    <td class="wmd-table-cell wmd-align-left">$89.50</td>
+    <td class="wmd-table-cell wmd-align-left">Processing</td>
+    <td class="wmd-table-cell wmd-align-left">1h ago</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">#12343</td>
+    <td class="wmd-table-cell wmd-align-left">Bob Wilson</td>
+    <td class="wmd-table-cell wmd-align-left">$234.99</td>
+    <td class="wmd-table-cell wmd-align-left">Shipped</td>
+    <td class="wmd-table-cell wmd-align-left">3h ago</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">#12342</td>
+    <td class="wmd-table-cell wmd-align-left">Alice Brown</td>
+    <td class="wmd-table-cell wmd-align-left">$45.00</td>
+    <td class="wmd-table-cell wmd-align-left">Pending</td>
+    <td class="wmd-table-cell wmd-align-left">5h ago</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">#12341</td>
+    <td class="wmd-table-cell wmd-align-left">Charlie Kim</td>
+    <td class="wmd-table-cell wmd-align-left">$178.50</td>
+    <td class="wmd-table-cell wmd-align-left">Completed</td>
+    <td class="wmd-table-cell wmd-align-left">8h ago</td>
+  </tr>
+  </tbody>
+</table>
+    <button class="wmd-button">View All Orders →</button>
+  </div>
+</div>
+<h2 class="wmd-h2"></h2>
+<hr class="wmd-separator" />
+<h2 class="wmd-h2">User Management</h2>
+<div class="wmd-container-card">
+  <h3 class="wmd-h3">User Actions</h3>
+  <div class="wmd-container-form-group">
+  Search Users
+  <input type="search" class="wmd-input" placeholder="Search by name, email, or ID..." style="width: 37ch; max-width: 37ch;" />
+</div>
+  <div class="wmd-container-button-group">
+  <button class="wmd-button">Search</button>
+  <button class="wmd-button">Advanced Filters ▼</button>
+</div>
+  <div class="wmd-container-form-group">
+  <strong>Bulk Actions:</strong>
+
+  <button class="wmd-button">Select action...v</button>
+   
+  <button class="wmd-button">Apply to Selected</button>
+</div>
+  <ul class="wmd-list">
+  <label class="wmd-checkbox">
+    <input type="checkbox" />
+    <span>Select All (50 users on this page)</span>
+  </label>
+</ul>
+  <div class="wmd-container-form-group">
+  <strong>Filters:</strong>
+Role: 
+  <button class="wmd-button">All Roles...v</button>
+   | Status: 
+  <button class="wmd-button">All...v</button>
+   | Date: 
+  <button class="wmd-button">Last 30 days...v</button>
+</div>
+</div>
+<hr class="wmd-separator" />
+<h2 class="wmd-h2">User List</h2>
+<table class="wmd-table">
+  <thead>
+    <tr>
+      <th class="wmd-table-cell wmd-align-left">Select</th>
+    <th class="wmd-table-cell wmd-align-left">User</th>
+    <th class="wmd-table-cell wmd-align-left">Email</th>
+    <th class="wmd-table-cell wmd-align-left">Role</th>
+    <th class="wmd-table-cell wmd-align-left">Status</th>
+    <th class="wmd-table-cell wmd-align-left">Last Login</th>
+    <th class="wmd-table-cell wmd-align-left">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">[ ]</td>
+    <td class="wmd-table-cell wmd-align-left">![👤] John Smith</td>
+    <td class="wmd-table-cell wmd-align-left">[email protected]</td>
+    <td class="wmd-table-cell wmd-align-left">Admin</td>
+    <td class="wmd-table-cell wmd-align-left">Active</td>
+    <td class="wmd-table-cell wmd-align-left">2h ago</td>
+    <td class="wmd-table-cell wmd-align-left">[Edit] [Delete] [•••]</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">[ ]</td>
+    <td class="wmd-table-cell wmd-align-left">![👤] Sarah Lee</td>
+    <td class="wmd-table-cell wmd-align-left">[email protected]</td>
+    <td class="wmd-table-cell wmd-align-left">Editor</td>
+    <td class="wmd-table-cell wmd-align-left">Active</td>
+    <td class="wmd-table-cell wmd-align-left">5h ago</td>
+    <td class="wmd-table-cell wmd-align-left">[Edit] [Delete] [•••]</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">[ ]</td>
+    <td class="wmd-table-cell wmd-align-left">![👤] Mike Chen</td>
+    <td class="wmd-table-cell wmd-align-left">[email protected]</td>
+    <td class="wmd-table-cell wmd-align-left">User</td>
+    <td class="wmd-table-cell wmd-align-left">Pending</td>
+    <td class="wmd-table-cell wmd-align-left">Never</td>
+    <td class="wmd-table-cell wmd-align-left">[Edit] [Delete] [•••]</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">[ ]</td>
+    <td class="wmd-table-cell wmd-align-left">![👤] Emma Davis</td>
+    <td class="wmd-table-cell wmd-align-left">[email protected]</td>
+    <td class="wmd-table-cell wmd-align-left">User</td>
+    <td class="wmd-table-cell wmd-align-left">Active</td>
+    <td class="wmd-table-cell wmd-align-left">1d ago</td>
+    <td class="wmd-table-cell wmd-align-left">[Edit] [Delete] [•••]</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">[ ]</td>
+    <td class="wmd-table-cell wmd-align-left">![👤] Alex Johnson</td>
+    <td class="wmd-table-cell wmd-align-left">[email protected]</td>
+    <td class="wmd-table-cell wmd-align-left">Moderator</td>
+    <td class="wmd-table-cell wmd-align-left">Active</td>
+    <td class="wmd-table-cell wmd-align-left">2d ago</td>
+    <td class="wmd-table-cell wmd-align-left">[Edit] [Delete] [•••]</td>
+  </tr>
+  </tbody>
+</table>
+<p class="wmd-paragraph">Showing 1-5 of 24,567 users</p>
+<p class="wmd-paragraph">[← Previous] [1] [2] [3] ... [4913] [Next →]</p>
+<hr class="wmd-separator" />
+<div class="wmd-grid wmd-grid-2 wmd-grid-2" style="--grid-columns: 2">
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Published Content</h3>
+    <table class="wmd-table">
+  <thead>
+    <tr>
+      <th class="wmd-table-cell wmd-align-left">Type</th>
+    <th class="wmd-table-cell wmd-align-left">Count</th>
+    <th class="wmd-table-cell wmd-align-left">This Week</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">Blog Posts</td>
+    <td class="wmd-table-cell wmd-align-left">1,234</td>
+    <td class="wmd-table-cell wmd-align-left">+23</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">Pages</td>
+    <td class="wmd-table-cell wmd-align-left">456</td>
+    <td class="wmd-table-cell wmd-align-left">+5</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">Products</td>
+    <td class="wmd-table-cell wmd-align-left">789</td>
+    <td class="wmd-table-cell wmd-align-left">+12</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">Media Files</td>
+    <td class="wmd-table-cell wmd-align-left">5,678</td>
+    <td class="wmd-table-cell wmd-align-left">+156</td>
+  </tr>
+  </tbody>
+</table>
+    <button class="wmd-button">Manage Content →</button>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Draft Content</h3>
+    <p class="wmd-paragraph"><strong>Pending Review:</strong> 45
+<strong>Scheduled:</strong> 12
+<strong>Auto-saved:</strong> 8</p>
+    <button class="wmd-button">Review Drafts →</button>
+  </div>
+</div>
+<h2 class="wmd-h2"></h2>
+<hr class="wmd-separator" />
+<h2 class="wmd-h2">System Settings</h2>
+<div class="wmd-container-card">
+  <h3 class="wmd-h3">General Settings</h3>
+  <div class="wmd-container-form-group">
+  Site Name
+  <input type="text" class="wmd-input" placeholder="AdminHub" style="width: 14ch; max-width: 14ch;" />
+</div>
+  <div class="wmd-container-form-group">
+  Site URL
+  <input type="url" class="wmd-input" placeholder="https://adminhub.com" style="width: 26ch; max-width: 26ch;" />
+</div>
+  <div class="wmd-container-form-group">
+  Admin Email
+  <button class="wmd-button">[email protected</button>
+</div>
+  <div class="wmd-container-form-group">
+  Timezone
+  <select class="wmd-select">
+    <option value="" disabled selected>UTC-8 Pacific Time...</option>
+    
+  </select>
+</div>
+  <div class="wmd-container-form-group">
+  Language
+  <select class="wmd-select">
+    <option value="" disabled selected>English...</option>
+    <option value="English">English</option>
+    <option value="Spanish">Spanish</option>
+    <option value="French">French</option>
+    <option value="German">German</option>
+  </select>
+</div>
+  <ul class="wmd-list">
+  <li class="wmd-list-item">English</li>
+  <li class="wmd-list-item">Spanish</li>
+  <li class="wmd-list-item">French</li>
+  <li class="wmd-list-item">German</li>
+</ul>
+  <p class="wmd-paragraph">Date Format</p>
+  <ul class="wmd-list">
+  <label class="wmd-radio">
+    <input type="radio" checked />
+    <span>MM/DD/YYYY</span>
+  </label>
+  <label class="wmd-radio">
+    <input type="radio" />
+    <span>DD/MM/YYYY</span>
+  </label>
+  <label class="wmd-radio">
+    <input type="radio" />
+    <span>YYYY-MM-DD</span>
+  </label>
+</ul>
+  <hr class="wmd-separator" />
+  <h3 class="wmd-h3">Security Settings</h3>
+  <p class="wmd-paragraph">Two-Factor Authentication</p>
+  <ul class="wmd-list">
+  <label class="wmd-checkbox">
+    <input type="checkbox" checked />
+    <span>Enable 2FA for all admins</span>
+  </label>
+  <label class="wmd-checkbox">
+    <input type="checkbox" />
+    <span>Require 2FA for all users</span>
+  </label>
+</ul>
+  <div class="wmd-container-form-group">
+  Session Timeout
+  <button class="wmd-button">30___</button>
+</div>
+  <p class="wmd-paragraph">Password Policy</p>
+  <ul class="wmd-list">
+  <label class="wmd-checkbox">
+    <input type="checkbox" checked />
+    <span>Minimum 8 characters</span>
+  </label>
+  <label class="wmd-checkbox">
+    <input type="checkbox" checked />
+    <span>Require uppercase letter</span>
+  </label>
+  <label class="wmd-checkbox">
+    <input type="checkbox" checked />
+    <span>Require number</span>
+  </label>
+  <label class="wmd-checkbox">
+    <input type="checkbox" checked />
+    <span>Require special character</span>
+  </label>
+</ul>
+  <div class="wmd-container-form-group">
+  Failed Login Attempts
+  <button class="wmd-button">5___</button>
+</div>
+  <hr class="wmd-separator" />
+  <h3 class="wmd-h3">Email Settings</h3>
+  <div class="wmd-container-form-group">
+  SMTP Host
+  <input type="text" class="wmd-input" placeholder="smtp.example.com" style="width: 22ch; max-width: 22ch;" />
+</div>
+  <div class="wmd-container-form-group">
+  SMTP Port
+  <input type="number" class="wmd-input" placeholder="587" style="width: 9ch; max-width: 9ch;" />
+</div>
+  <p class="wmd-paragraph">Encryption</p>
+  <ul class="wmd-list">
+  <label class="wmd-radio">
+    <input type="radio" checked />
+    <span>TLS</span>
+  </label>
+  <label class="wmd-radio">
+    <input type="radio" />
+    <span>SSL</span>
+  </label>
+  <label class="wmd-radio">
+    <input type="radio" />
+    <span>None</span>
+  </label>
+</ul>
+  <div class="wmd-container-form-group">
+  From Name
+  <input type="text" class="wmd-input" placeholder="AdminHub" style="width: 14ch; max-width: 14ch;" />
+</div>
+  <div class="wmd-container-form-group">
+  From Email
+  <button class="wmd-button">[email protected</button>
+</div>
+  <div class="wmd-container-button-group">
+  <button class="wmd-button">Test Connection</button>
+  <button class="wmd-button wmd-button-primary">Save Settings</button>
+</div>
+</div>
+<hr class="wmd-separator" />
+<h2 class="wmd-h2">Activity Log</h2>
+<div class="wmd-container-card">
+  <h3 class="wmd-h3">Recent System Events</h3>
+  <div class="wmd-container-form-group">
+  Filter by:
+  <button class="wmd-button">All Events...v</button>
+  <button class="wmd-button">All Users...v</button>
+  <button class="wmd-button">Today...v</button>
+</div>
+  <table class="wmd-table">
+  <thead>
+    <tr>
+      <th class="wmd-table-cell wmd-align-left">Time</th>
+    <th class="wmd-table-cell wmd-align-left">Event</th>
+    <th class="wmd-table-cell wmd-align-left">User</th>
+    <th class="wmd-table-cell wmd-align-left">IP Address</th>
+    <th class="wmd-table-cell wmd-align-left">Details</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">2m ago</td>
+    <td class="wmd-table-cell wmd-align-left">User Login</td>
+    <td class="wmd-table-cell wmd-align-left"><a href="mailto:john@example.com" class="wmd-link">john@example.com</a></td>
+    <td class="wmd-table-cell wmd-align-left">192.168.1.1</td>
+    <td class="wmd-table-cell wmd-align-left">Successful</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">5m ago</td>
+    <td class="wmd-table-cell wmd-align-left">Content Published</td>
+    <td class="wmd-table-cell wmd-align-left"><a href="mailto:sarah@example.com" class="wmd-link">sarah@example.com</a></td>
+    <td class="wmd-table-cell wmd-align-left">192.168.1.2</td>
+    <td class="wmd-table-cell wmd-align-left">Blog Post #1234</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">12m ago</td>
+    <td class="wmd-table-cell wmd-align-left">User Created</td>
+    <td class="wmd-table-cell wmd-align-left"><a href="mailto:admin@example.com" class="wmd-link">admin@example.com</a></td>
+    <td class="wmd-table-cell wmd-align-left">192.168.1.3</td>
+    <td class="wmd-table-cell wmd-align-left">New user: <a href="mailto:mike@example.com" class="wmd-link">mike@example.com</a></td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">18m ago</td>
+    <td class="wmd-table-cell wmd-align-left">Settings Changed</td>
+    <td class="wmd-table-cell wmd-align-left"><a href="mailto:admin@example.com" class="wmd-link">admin@example.com</a></td>
+    <td class="wmd-table-cell wmd-align-left">192.168.1.3</td>
+    <td class="wmd-table-cell wmd-align-left">Updated SMTP settings</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">25m ago</td>
+    <td class="wmd-table-cell wmd-align-left">Order Completed</td>
+    <td class="wmd-table-cell wmd-align-left">system</td>
+    <td class="wmd-table-cell wmd-align-left">-</td>
+    <td class="wmd-table-cell wmd-align-left">Order #12345</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">30m ago</td>
+    <td class="wmd-table-cell wmd-align-left">Failed Login</td>
+    <td class="wmd-table-cell wmd-align-left">unknown</td>
+    <td class="wmd-table-cell wmd-align-left">192.168.1.100</td>
+    <td class="wmd-table-cell wmd-align-left">Invalid credentials</td>
+  </tr>
+  </tbody>
+</table>
+  <div class="wmd-container-button-group">
+  <button class="wmd-button">Export Log</button>
+  <button class="wmd-button">Clear Old Logs</button>
+</div>
+</div>
+<hr class="wmd-separator" />
+<div class="wmd-grid wmd-grid-2 wmd-grid-2" style="--grid-columns: 2">
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Database Stats</h3>
+    <p class="wmd-paragraph"><strong>Total Records:</strong> 1,234,567
+<strong>Size:</strong> 2.4 GB
+<strong>Last Backup:</strong> 2 hours ago</p>
+    <p class="wmd-paragraph"><strong>Tables:</strong></p>
+    <ul class="wmd-list">
+  <li class="wmd-list-item">Users: 24,567 rows</li>
+  <li class="wmd-list-item">Orders: 189,234 rows</li>
+  <li class="wmd-list-item">Products: 789 rows</li>
+  <li class="wmd-list-item">Content: 1,234 rows</li>
+</ul>
+    <div class="wmd-container-button-group">
+  <button class="wmd-button">Backup Now</button>
+  <button class="wmd-button">Optimize Database</button>
+</div>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Storage Usage</h3>
+    <p class="wmd-paragraph"><strong>Total Storage:</strong> 100 GB
+<strong>Used:</strong> 67 GB (67%)
+<strong>Available:</strong> 33 GB</p>
+    <p class="wmd-paragraph">[###########################_____] 67%</p>
+    <p class="wmd-paragraph"><strong>Breakdown:</strong></p>
+    <ul class="wmd-list">
+  <li class="wmd-list-item">Media Files: 45 GB (67%)</li>
+  <li class="wmd-list-item">Backups: 15 GB (22%)</li>
+  <li class="wmd-list-item">Logs: 5 GB (7%)</li>
+  <li class="wmd-list-item">Other: 2 GB (3%)</li>
+</ul>
+    <button class="wmd-button">Cleanup Storage</button>
+  </div>
+</div>
+<h2 class="wmd-h2"></h2>
+<hr class="wmd-separator" />
+<div class="wmd-grid wmd-grid-3 wmd-grid-3" style="--grid-columns: 3">
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Open Tickets</h3>
+    <p class="wmd-paragraph"><strong>23</strong> new</p>
+    <p class="wmd-paragraph">Priority breakdown:</p>
+    <ul class="wmd-list">
+  <li class="wmd-list-item">🔴 High: 5</li>
+  <li class="wmd-list-item">🟡 Medium: 12</li>
+  <li class="wmd-list-item">🟢 Low: 6</li>
+</ul>
+    <button class="wmd-button">View Tickets →</button>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">In Progress</h3>
+    <p class="wmd-paragraph"><strong>45</strong> active</p>
+    <p class="wmd-paragraph">Average response time:
+<strong>2.5 hours</strong></p>
+    <button class="wmd-button">Assign Tickets →</button>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Resolved Today</h3>
+    <p class="wmd-paragraph"><strong>89</strong> closed</p>
+    <p class="wmd-paragraph">Customer satisfaction:
+<strong>4.8</strong> / 5.0</p>
+    <button class="wmd-button">View Reports →</button>
+  </div>
+</div>
+<h2 class="wmd-h2"></h2>
+<hr class="wmd-separator" />
+<h2 class="wmd-h2">Quick Actions</h2>
+<div class="wmd-grid wmd-grid-4 wmd-grid-4" style="--grid-columns: 4">
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3"><span class="wmd-icon" data-icon="user" aria-label="user">👤</span> Create User</h3>
+    <p class="wmd-paragraph">Add new user account</p>
+    <button class="wmd-button wmd-button-primary">+ New User</button>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3"><span class="wmd-icon" data-icon="content" aria-label="content">●</span> Add Content</h3>
+    <p class="wmd-paragraph">Create new post/page</p>
+    <button class="wmd-button wmd-button-primary">+ New Content</button>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3"><span class="wmd-icon" data-icon="mail" aria-label="mail">✉️</span> Send Email</h3>
+    <p class="wmd-paragraph">Broadcast to users</p>
+    <button class="wmd-button wmd-button-primary">Compose</button>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3"><span class="wmd-icon" data-icon="download" aria-label="download">⬇️</span> Export Data</h3>
+    <p class="wmd-paragraph">Download reports</p>
+    <button class="wmd-button wmd-button-primary">Export</button>
+  </div>
+</div>
+<h2 class="wmd-h2"></h2>
+<hr class="wmd-separator" />
+<h2 class="wmd-h2">Performance Metrics</h2>
+<div class="wmd-container-card">
+  <h3 class="wmd-h3">Server Performance (Last Hour)</h3>
+  <div class="wmd-container-form-group">
+  <strong>CPU Usage</strong>
+
+  <button class="wmd-button">#########_________</button>
+   45%
+</div>
+  <div class="wmd-container-form-group">
+  <strong>Memory Usage</strong>
+
+  <button class="wmd-button">##############____</button>
+   67%
+</div>
+  <div class="wmd-container-form-group">
+  <strong>Disk I/O</strong>
+
+  <button class="wmd-button">######____________</button>
+   32%
+</div>
+  <div class="wmd-container-form-group">
+  <strong>Network Bandwidth</strong>
+
+  <button class="wmd-button">###########_______</button>
+   58%
+</div>
+  <hr class="wmd-separator" />
+  <h3 class="wmd-h3">API Requests</h3>
+  <p class="wmd-paragraph"><strong>Total Requests:</strong> 1,234,567 (last 24h)
+<strong>Average Response Time:</strong> 145ms
+<strong>Error Rate:</strong> 0.02%</p>
+  <div class="wmd-container-form-group">
+  <img src="https://via.placeholder.com/600x200" alt="API Chart" class="wmd-image" />
+</div>
+  <button class="wmd-button">View API Dashboard →</button>
+</div>
+<hr class="wmd-separator" />
+<div class="wmd-container-footer">
+  <div class="wmd-container-form-group">
+  <strong>System Version:</strong> 2.5.0 • <strong>Uptime:</strong> 45 days • <strong>Last Deploy:</strong>3 days ago • 
+  <button class="wmd-button">Documentation</button>
+   • 
+  <button class="wmd-button">Support</button>
+   • 
+  <button class="wmd-button">Changelog</button>
+</div>
+</div>
+<hr class="wmd-separator" />
+<p class="wmd-paragraph"><strong>Style Variations:</strong></p>
+<ul class="wmd-list">
+  <li class="wmd-list-item">sketch - Quick admin panel wireframe</li>
+  <li class="wmd-list-item">clean - Professional admin interface</li>
+  <li class="wmd-list-item">wireframe - Focus on data structure</li>
+  <li class="wmd-list-item">tailwind - Modern dashboard aesthetic</li>
+  <li class="wmd-list-item">material - Google Admin style</li>
+  <li class="wmd-list-item">brutal - Bold, high-contrast UI</li>
+  <li class="wmd-list-item">none - Semantic markup for frameworks</li>
+</ul>
+<p class="wmd-paragraph"><strong>Generate this example:</strong></p>
+<pre class="wmd-code-block"><code data-lang="bash">wiremd admin-panel.md --style sketch
+wiremd admin-panel.md --style clean -o admin-clean.html
+wiremd admin-panel.md --style material -o admin-material.html</code></pre>
+</body>
+</html>

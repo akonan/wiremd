@@ -1,0 +1,216 @@
+name: Deploy Docs to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'docs/**'
+      - 'examples/**'
+      - '.github/workflows/docs.yml'
+  workflow_dispatch:
+
+# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Allow only one concurrent deployment
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # For lastUpdated feature
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build VitePress site
+        run: npm run docs:build
+
+      - name: Copy showcase files to build
+        run: |
+          # Create showcases directory in the build output
+          mkdir -p docs/.vitepress/dist/showcases
+
+          # Copy all HTML showcase files
+          cp examples/*.html docs/.vitepress/dist/showcases/ 2>/dev/null || true
+
+          # Copy gallery examples
+          if [ -d "examples/gallery" ]; then
+            mkdir -p docs/.vitepress/dist/showcases/gallery
+            find examples/gallery -name "*.html" -exec cp {} docs/.vitepress/dist/showcases/gallery/ \; 2>/dev/null || true
+          fi
+
+          # Create an index page for showcases
+          cat > docs/.vitepress/dist/showcases/index.html << 'EOF'
+          <!DOCTYPE html>
+          <html lang="en">
+          <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>wiremd Showcases</title>
+            <style>
+              body {
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+                max-width: 1200px;
+                margin: 0 auto;
+                padding: 2rem;
+                background: #f5f5f5;
+              }
+              h1 { color: #333; }
+              .showcase-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+                gap: 1.5rem;
+                margin-top: 2rem;
+              }
+              .showcase-card {
+                background: white;
+                border-radius: 8px;
+                padding: 1.5rem;
+                box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+                transition: transform 0.2s;
+              }
+              .showcase-card:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+              }
+              .showcase-card h3 {
+                margin: 0 0 0.5rem 0;
+                color: #5b21b6;
+              }
+              .showcase-card a {
+                color: #5b21b6;
+                text-decoration: none;
+                font-weight: 500;
+              }
+              .showcase-card a:hover {
+                text-decoration: underline;
+              }
+              /* Style badge buttons - increased specificity to override .showcase-card a */
+              .showcase-card a.style-badge {
+                display: inline-block;
+                padding: 0.5rem 1rem;
+                background: #5b21b6;
+                color: white !important;
+                border-radius: 6px;
+                font-size: 0.875rem;
+                margin: 0.25rem;
+                text-decoration: none;
+                font-weight: 500;
+                transition: all 0.2s;
+                cursor: pointer;
+              }
+              .showcase-card a.style-badge:hover {
+                background: #4c1d95;
+                transform: translateY(-2px);
+                box-shadow: 0 4px 12px rgba(91, 33, 182, 0.3);
+                text-decoration: none;
+              }
+              .back-link {
+                display: inline-block;
+                margin-bottom: 1rem;
+                color: #5b21b6;
+                text-decoration: none;
+              }
+              .back-link:hover { text-decoration: underline; }
+            </style>
+          </head>
+          <body>
+            <a href="../" class="back-link">← Back to Documentation</a>
+            <h1>🎨 wiremd Showcases</h1>
+            <p>Live examples of wiremd wireframes in different visual styles.</p>
+
+            <div class="showcase-grid">
+              <div class="showcase-card">
+                <h3>Main Showcase</h3>
+                <p>Comprehensive syntax guide showing all components</p>
+                <div>
+                  <a href="showcase-sketch.html" class="style-badge">View Sketch Style</a>
+                  <a href="showcase-clean.html" class="style-badge">View Clean Style</a>
+                  <a href="showcase-wireframe.html" class="style-badge">View Wireframe Style</a>
+                  <a href="showcase-tailwind.html" class="style-badge">View Tailwind Style</a>
+                  <a href="showcase-material.html" class="style-badge">View Material Style</a>
+                  <a href="showcase-brutal.html" class="style-badge">View Brutal Style</a>
+                  <a href="showcase-none.html" class="style-badge">View None Style</a>
+                </div>
+              </div>
+
+              <div class="showcase-card">
+                <h3>Form Examples</h3>
+                <p>Various form controls and layouts</p>
+                <div>
+                  <a href="form-test-clean.html" class="style-badge">View Form Example</a>
+                </div>
+              </div>
+
+              <div class="showcase-card">
+                <h3>Icons Demo</h3>
+                <p>Icon syntax examples</p>
+                <div>
+                  <a href="icons-test-sketch.html" class="style-badge">Sketch Style</a>
+                  <a href="icons-test-clean.html" class="style-badge">Clean Style</a>
+                  <a href="icons-test-wireframe.html" class="style-badge">Wireframe Style</a>
+                  <a href="icons-test-tailwind.html" class="style-badge">Tailwind Style</a>
+                  <a href="icons-test-material.html" class="style-badge">Material Style</a>
+                  <a href="icons-test-brutal.html" class="style-badge">Brutal Style</a>
+                </div>
+              </div>
+
+              <div class="showcase-card">
+                <h3>Radio Buttons</h3>
+                <p>Radio button examples</p>
+                <div>
+                  <a href="radio-test-sketch.html" class="style-badge">Sketch Style</a>
+                  <a href="radio-test-clean.html" class="style-badge">Clean Style</a>
+                  <a href="radio-test-wireframe.html" class="style-badge">Wireframe Style</a>
+                  <a href="radio-test-tailwind.html" class="style-badge">Tailwind Style</a>
+                  <a href="radio-test-material.html" class="style-badge">Material Style</a>
+                  <a href="radio-test-brutal.html" class="style-badge">Brutal Style</a>
+                </div>
+              </div>
+            </div>
+
+            <p style="margin-top: 2rem; color: #666;">
+              <a href="https://github.com/akonan/wiremd" style="color: #5b21b6;">View on GitHub</a>
+            </p>
+          </body>
+          </html>
+          EOF
+
+          echo "✅ Copied showcase files to build output"
+          ls -lh docs/.vitepress/dist/showcases/
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: docs/.vitepress/dist
+
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

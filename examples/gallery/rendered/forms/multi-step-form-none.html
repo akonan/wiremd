@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>wiremd Mockup</title>
+  <style>
+
+/* wiremd None Style - Minimal semantic styling */
+* {
+  box-sizing: border-box;
+}
+
+body.wmd-root {
+  font-family: system-ui, -apple-system, sans-serif;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 20px;
+  line-height: 1.6;
+}
+
+.wmd-button {
+  padding: 8px 16px;
+  margin: 4px;
+}
+
+.wmd-input, .wmd-textarea, .wmd-select {
+  display: block;
+  width: 100%;
+  max-width: 400px;
+  padding: 8px;
+  margin: 4px 0;
+}
+
+.wmd-grid {
+  display: grid;
+  grid-template-columns: repeat(var(--grid-columns, 3), 1fr);
+  gap: 20px;
+  margin: 20px 0;
+}
+
+.wmd-nav-content {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.wmd-brand {
+  margin-right: auto;
+  font-weight: bold;
+}
+
+/* State Containers */
+.wmd-container-loading-state,
+.wmd-container-empty-state,
+.wmd-container-error-state {
+  padding: 40px;
+  margin: 20px 0;
+  text-align: center;
+}
+
+@media (max-width: 768px) {
+  .wmd-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+  </style>
+</head>
+<body class="wmd-root wmd-none">
+  <h1 class="wmd-h1">Multi-Step Form</h1>
+<blockquote class="wmd-blockquote">
+  <p class="wmd-paragraph"><strong>Use Case:</strong> Complex onboarding flows, checkout processes, surveys, or application forms.</p>
+  <p class="wmd-paragraph"><strong>Key Features:</strong> Progress indicator, step navigation, form validation, data persistence, review step</p>
+</blockquote>
+<nav class="wmd-nav">
+  <div class="wmd-nav-content">
+    <div class="wmd-brand"><span class="wmd-icon" data-icon="logo" aria-label="logo">◈</span>OnboardFlow</div>
+    <a href="#" class="wmd-nav-item">Dashboard</a>
+    <button class="wmd-button">Sign Out</button>
+  </div>
+</nav>
+<hr class="wmd-separator" />
+<h1 class="wmd-h1">Account Setup Wizard</h1>
+<p class="wmd-paragraph">Complete your profile in 4 easy steps</p>
+<hr class="wmd-separator" />
+<h2 class="wmd-h2">Progress</h2>
+<p class="wmd-paragraph">[########__________] Step 2 of 4</p>
+<nav class="wmd-nav">
+  <div class="wmd-nav-content">
+    <a href="#" class="wmd-nav-item"><span class="wmd-icon" data-icon="check" aria-label="check">✓</span>Step 1</a>
+    <a href="#" class="wmd-nav-item"></a>
+    <a href="#" class="wmd-nav-item">Step 3</a>
+    <a href="#" class="wmd-nav-item">Step 4</a>
+  </div>
+</nav>
+<hr class="wmd-separator" />
+<h2 class="wmd-h2">Step 2: Personal Information</h2>
+<div class="wmd-container-card">
+  <h3 class="wmd-h3">Tell Us About Yourself</h3>
+  <div class="wmd-container-form-group">
+  Profile Picture
+
+  <button class="wmd-button">Choose File</button>
+   <em>profile-photo.jpg</em>
+</div>
+  <div class="wmd-container-form-group">
+  First Name
+  <input type="text" class="wmd-input" required style="width: 29ch; max-width: 29ch;" />
+</div>
+  <div class="wmd-container-form-group">
+  Middle Name (Optional)
+  <input type="text" class="wmd-input" style="width: 29ch; max-width: 29ch;" />
+</div>
+  <div class="wmd-container-form-group">
+  Last Name
+  <input type="text" class="wmd-input" required style="width: 29ch; max-width: 29ch;" />
+</div>
+  <div class="wmd-container-form-group">
+  Date of Birth
+  <input type="date" class="wmd-input" required style="width: 29ch; max-width: 29ch;" />
+</div>
+  <p class="wmd-paragraph">Gender</p>
+  <ul class="wmd-list">
+  <label class="wmd-radio">
+    <input type="radio" checked />
+    <span>Prefer not to say</span>
+  </label>
+  <label class="wmd-radio">
+    <input type="radio" />
+    <span>Male</span>
+  </label>
+  <label class="wmd-radio">
+    <input type="radio" />
+    <span>Female</span>
+  </label>
+  <label class="wmd-radio">
+    <input type="radio" />
+    <span>Non-binary</span>
+  </label>
+  <label class="wmd-radio">
+    <input type="radio" />
+    <span>Other</span>
+  </label>
+</ul>
+  <hr class="wmd-separator" />
+  <h3 class="wmd-h3">Contact Information</h3>
+  <p class="wmd-paragraph">Primary Email
+[_____________________________] {type:email required:true state:disabled}
+<em>Verified ✓</em></p>
+  <div class="wmd-container-form-group">
+  Secondary Email (Optional)
+  <input type="email" class="wmd-input" style="width: 29ch; max-width: 29ch;" />
+</div>
+  <div class="wmd-container-form-group">
+  Mobile Phone
+  <input type="tel" class="wmd-input" required style="width: 29ch; max-width: 29ch;" />
+</div>
+  <div class="wmd-container-form-group">
+  Landline (Optional)
+  <input type="tel" class="wmd-input" style="width: 29ch; max-width: 29ch;" />
+</div>
+  <p class="wmd-paragraph">Preferred Contact</p>
+  <ul class="wmd-list">
+  <label class="wmd-radio">
+    <input type="radio" checked />
+    <span>Email</span>
+  </label>
+  <label class="wmd-radio">
+    <input type="radio" />
+    <span>Phone</span>
+  </label>
+  <label class="wmd-radio">
+    <input type="radio" />
+    <span>SMS</span>
+  </label>
+</ul>
+</div>
+<hr class="wmd-separator" />
+<div class="wmd-grid wmd-grid-2 wmd-grid-2" style="--grid-columns: 2">
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Home Address</h3>
+    <div class="wmd-container-form-group">
+  Street Address
+  <input type="text" class="wmd-input" required style="width: 29ch; max-width: 29ch;" />
+</div>
+    <div class="wmd-container-form-group">
+  Apartment, Suite, etc.
+  <input type="text" class="wmd-input" style="width: 29ch; max-width: 29ch;" />
+</div>
+    <div class="wmd-container-form-group">
+  City
+  <input type="text" class="wmd-input" required style="width: 29ch; max-width: 29ch;" />
+</div>
+    <div class="wmd-container-form-group">
+  State/Province
+  <select class="wmd-select">
+    <option value="" disabled selected>Select state...</option>
+    <option value="California">California</option>
+    <option value="New York">New York</option>
+    <option value="Texas">Texas</option>
+    <option value="Florida">Florida</option>
+    <option value="Other">Other</option>
+  </select>
+</div>
+    <ul class="wmd-list">
+  <li class="wmd-list-item">California</li>
+  <li class="wmd-list-item">New York</li>
+  <li class="wmd-list-item">Texas</li>
+  <li class="wmd-list-item">Florida</li>
+  <li class="wmd-list-item">Other</li>
+</ul>
+    <div class="wmd-container-form-group">
+  Zip/Postal Code
+  <input type="text" class="wmd-input" required style="width: 5ch; max-width: 5ch;" />
+</div>
+    <div class="wmd-container-form-group">
+  Country
+  <select class="wmd-select">
+    <option value="" disabled selected>United States...</option>
+    
+  </select>
+</div>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Billing Address</h3>
+    <ul class="wmd-list">
+  <label class="wmd-checkbox">
+    <input type="checkbox" />
+    <span>Same as home address</span>
+  </label>
+</ul>
+    <div class="wmd-container-form-group">
+  Street Address
+  <input type="text" class="wmd-input" style="width: 29ch; max-width: 29ch;" />
+</div>
+    <div class="wmd-container-form-group">
+  City
+  <input type="text" class="wmd-input" style="width: 29ch; max-width: 29ch;" />
+</div>
+    <div class="wmd-container-form-group">
+  State/Province
+  <select class="wmd-select">
+    <option value="" disabled selected>Select state...</option>
+    
+  </select>
+</div>
+    <div class="wmd-container-form-group">
+  Zip/Postal Code
+  <input type="text" class="wmd-input" style="width: 5ch; max-width: 5ch;" />
+</div>
+  </div>
+</div>
+<h2 class="wmd-h2"></h2>
+<hr class="wmd-separator" />
+<div class="wmd-container-card">
+  <h3 class="wmd-h3">Preferences</h3>
+  <div class="wmd-container-form-group">
+  Language
+  <select class="wmd-select">
+    <option value="" disabled selected>Select language...</option>
+    <option value="English">English</option>
+    <option value="Spanish">Spanish</option>
+    <option value="French">French</option>
+    <option value="German">German</option>
+    <option value="Chinese">Chinese</option>
+    <option value="Japanese">Japanese</option>
+  </select>
+</div>
+  <ul class="wmd-list">
+  <li class="wmd-list-item">English</li>
+  <li class="wmd-list-item">Spanish</li>
+  <li class="wmd-list-item">French</li>
+  <li class="wmd-list-item">German</li>
+  <li class="wmd-list-item">Chinese</li>
+  <li class="wmd-list-item">Japanese</li>
+</ul>
+  <div class="wmd-container-form-group">
+  Timezone
+  <select class="wmd-select">
+    <option value="" disabled selected>Select timezone...</option>
+    <option value="(GMT-8) Pacific Time">(GMT-8) Pacific Time</option>
+    <option value="(GMT-5) Eastern Time">(GMT-5) Eastern Time</option>
+    <option value="(GMT) London">(GMT) London</option>
+    <option value="(GMT+1) Paris">(GMT+1) Paris</option>
+  </select>
+</div>
+  <ul class="wmd-list">
+  <li class="wmd-list-item">(GMT-8) Pacific Time</li>
+  <li class="wmd-list-item">(GMT-5) Eastern Time</li>
+  <li class="wmd-list-item">(GMT) London</li>
+  <li class="wmd-list-item">(GMT+1) Paris</li>
+</ul>
+  <p class="wmd-paragraph">Communication Preferences</p>
+  <ul class="wmd-list">
+  <label class="wmd-checkbox">
+    <input type="checkbox" checked />
+    <span>Email notifications</span>
+  </label>
+  <label class="wmd-checkbox">
+    <input type="checkbox" checked />
+    <span>SMS alerts</span>
+  </label>
+  <label class="wmd-checkbox">
+    <input type="checkbox" />
+    <span>Push notifications</span>
+  </label>
+  <label class="wmd-checkbox">
+    <input type="checkbox" />
+    <span>Phone calls</span>
+  </label>
+</ul>
+  <p class="wmd-paragraph">Newsletter Topics</p>
+  <ul class="wmd-list">
+  <label class="wmd-checkbox">
+    <input type="checkbox" checked />
+    <span>Product Updates</span>
+  </label>
+  <label class="wmd-checkbox">
+    <input type="checkbox" checked />
+    <span>Industry News</span>
+  </label>
+  <label class="wmd-checkbox">
+    <input type="checkbox" />
+    <span>Special Offers</span>
+  </label>
+  <label class="wmd-checkbox">
+    <input type="checkbox" />
+    <span>Events &amp; Webinars</span>
+  </label>
+</ul>
+</div>
+<hr class="wmd-separator" />
+<h2 class="wmd-h2">Navigation</h2>
+<div class="wmd-container-button-group">
+  <button class="wmd-button">← Previous Step</button>
+  <button class="wmd-button">Save Draft</button>
+  <button class="wmd-button wmd-button-primary">Next Step →</button>
+  <button class="wmd-button">Cancel</button>
+</div>
+<div class="wmd-container-alert info">
+  <p class="wmd-paragraph">ℹ️ Your progress is automatically saved. You can return to this form anytime.</p>
+</div>
+<hr class="wmd-separator" />
+<h2 class="wmd-h2">All Steps Overview</h2>
+<div class="wmd-container-card wmd-minimal">
+  <h3 class="wmd-h3">Wizard Steps</h3>
+  <ol class="wmd-list">
+  <li class="wmd-list-item">Account Basics ✓ Completed<ul class="wmd-list">
+  <li class="wmd-list-item">Username, password, email verification</li>
+</ul></li>
+  <li class="wmd-list-item">Personal Information In Progress<ul class="wmd-list">
+  <li class="wmd-list-item">Profile details, contact info, address</li>
+</ul></li>
+  <li class="wmd-list-item">Professional Details Pending<ul class="wmd-list">
+  <li class="wmd-list-item">Job title, company, industry, experience</li>
+</ul></li>
+  <li class="wmd-list-item">Review &amp; Submit Pending<ul class="wmd-list">
+  <li class="wmd-list-item">Confirm all information and activate account</li>
+</ul></li>
+</ol>
+</div>
+<hr class="wmd-separator" />
+<div class="wmd-container-footer">
+  <div class="wmd-container-form-group">
+  Need help?<a href="https://example.com/support">Contact Support</a>| 
+  <button class="wmd-button">Save &amp; Exit</button>
+</div>
+</div>
+<hr class="wmd-separator" />
+<p class="wmd-paragraph"><strong>Style Variations:</strong></p>
+<ul class="wmd-list">
+  <li class="wmd-list-item">sketch - Low-fidelity wireframe for UX testing</li>
+  <li class="wmd-list-item">clean - Polished multi-step experience</li>
+  <li class="wmd-list-item">wireframe - Focus on form flow structure</li>
+  <li class="wmd-list-item">tailwind - Modern step indicator design</li>
+  <li class="wmd-list-item">material - Elevated cards with transitions</li>
+  <li class="wmd-list-item">brutal - Bold step navigation</li>
+  <li class="wmd-list-item">none - Semantic markup for frameworks</li>
+</ul>
+<p class="wmd-paragraph"><strong>Generate this example:</strong></p>
+<pre class="wmd-code-block"><code data-lang="bash">wiremd multi-step-form.md --style sketch
+wiremd multi-step-form.md --style tailwind -o multi-step-tailwind.html</code></pre>
+</body>
+</html>

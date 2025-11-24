@@ -1,0 +1,1343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>wiremd Mockup</title>
+  <style>
+
+/* Tailwind-Inspired Style */
+body {
+  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: #f9fafb;
+  color: #111827;
+  line-height: 1.5;
+  margin: 0;
+  padding: 20px;
+}
+
+/* Typography */
+.wmd-h1 {
+  font-size: 2.25rem;
+  font-weight: 800;
+  color: #111827;
+  margin: 0 0 1rem 0;
+  letter-spacing: -0.025em;
+}
+
+.wmd-h2 {
+  font-size: 1.875rem;
+  font-weight: 700;
+  color: #1f2937;
+  margin: 1.5rem 0 1rem 0;
+  letter-spacing: -0.025em;
+}
+
+.wmd-h3 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #374151;
+  margin: 1.25rem 0 0.75rem 0;
+}
+
+.wmd-h4 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #4b5563;
+  margin: 1rem 0 0.5rem 0;
+}
+
+.wmd-paragraph {
+  color: #6b7280;
+  margin: 0.75rem 0;
+  font-size: 1rem;
+}
+
+/* Buttons */
+.wmd-button {
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  font-weight: 500;
+  font-size: 0.875rem;
+  transition: all 0.15s ease;
+  border: none;
+  cursor: pointer;
+  display: inline-block;
+  text-decoration: none;
+  background: #e5e7eb;
+  color: #374151;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+}
+
+.wmd-button:hover {
+  background: #d1d5db;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.wmd-button-primary, .wmd-button.wmd-button-primary {
+  background: #6366f1;
+  color: white;
+}
+
+.wmd-button-primary:hover, .wmd-button.wmd-button-primary:hover {
+  background: #4f46e5;
+}
+
+.wmd-button:disabled, .wmd-button[disabled] {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Button States */
+.wmd-state-loading {
+  background: #e0e7ff !important;
+  color: #6366f1 !important;
+  position: relative;
+  padding-left: 2.5rem;
+}
+
+.wmd-state-loading::before {
+  content: '';
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 1rem;
+  height: 1rem;
+  border: 2px solid #6366f1;
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+}
+
+.wmd-state-error {
+  background: #fef2f2 !important;
+  color: #ef4444 !important;
+  border: 1px solid #fca5a5;
+}
+
+.wmd-state-success {
+  background: #f0fdf4 !important;
+  color: #22c55e !important;
+  border: 1px solid #86efac;
+}
+
+@keyframes spin {
+  to { transform: translateY(-50%) rotate(360deg); }
+}
+
+/* Forms */
+.wmd-input, .wmd-textarea, .wmd-select {
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  background: white;
+  transition: all 0.15s ease;
+  color: #111827;
+}
+
+.wmd-input:focus, .wmd-textarea:focus, .wmd-select:focus {
+  outline: none;
+  border-color: #6366f1;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+}
+
+.wmd-input::placeholder, .wmd-textarea::placeholder {
+  color: #9ca3af;
+}
+
+.wmd-input[disabled], .wmd-input.wmd-state-disabled,
+.wmd-textarea[disabled], .wmd-textarea.wmd-state-disabled,
+.wmd-select[disabled], .wmd-select.wmd-state-disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  background: #f9fafb;
+  border-color: #e5e7eb;
+}
+
+.wmd-textarea {
+  resize: vertical;
+  min-height: 6rem;
+  font-family: inherit;
+}
+
+.wmd-select {
+  cursor: pointer;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 0.5rem center;
+  background-size: 1.5rem;
+  padding-right: 2.5rem;
+}
+
+/* Checkboxes and Radios */
+.wmd-checkbox, .wmd-radio {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0.5rem 0;
+  cursor: pointer;
+}
+
+.wmd-checkbox input[type="checkbox"],
+.wmd-radio input[type="radio"] {
+  width: 1rem;
+  height: 1rem;
+  cursor: pointer;
+  accent-color: #6366f1;
+}
+
+/* Cards and Containers */
+.wmd-container-card {
+  background: white;
+  border-radius: 0.75rem;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  padding: 1.5rem;
+  margin: 1rem 0;
+}
+
+.wmd-container-hero {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border-radius: 1rem;
+  padding: 3rem 2rem;
+  margin: 2rem 0;
+  text-align: center;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+.wmd-container-hero .wmd-h1,
+.wmd-container-hero .wmd-h2,
+.wmd-container-hero .wmd-h3,
+.wmd-container-hero .wmd-paragraph {
+  color: white;
+}
+
+.wmd-container-modal {
+  background: white;
+  border-radius: 1rem;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  padding: 2rem;
+  margin: 2rem auto;
+  max-width: 600px;
+  position: relative;
+}
+
+.wmd-container-footer {
+  background: #1f2937;
+  color: #e5e7eb;
+  padding: 2rem;
+  margin-top: 3rem;
+  border-radius: 0.75rem;
+}
+
+.wmd-container-footer .wmd-paragraph,
+.wmd-container-footer .wmd-nav-item {
+  color: #e5e7eb;
+}
+
+.wmd-container-section {
+  padding: 1.5rem 0;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.wmd-container-section:last-child {
+  border-bottom: none;
+}
+
+/* Alerts */
+.wmd-container-alert {
+  padding: 1rem 1.25rem;
+  border-radius: 0.5rem;
+  margin: 1rem 0;
+  border-left: 4px solid;
+}
+
+.wmd-container-alert.wmd-warning {
+  background: #fef3c7;
+  border-left-color: #f59e0b;
+  color: #92400e;
+}
+
+.wmd-container-alert.wmd-state-error {
+  background: #fee2e2;
+  border-left-color: #ef4444;
+  color: #991b1b;
+}
+
+.wmd-container-alert.wmd-state-success {
+  background: #d1fae5;
+  border-left-color: #10b981;
+  color: #065f46;
+}
+
+/* Navigation */
+.wmd-nav {
+  background: white;
+  padding: 1rem 1.5rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  margin-bottom: 2rem;
+}
+
+.wmd-nav-content {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.wmd-nav-item {
+  color: #4b5563;
+  text-decoration: none;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.375rem;
+  transition: all 0.15s ease;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.wmd-nav-item:hover {
+  background: #f3f4f6;
+  color: #111827;
+}
+
+.wmd-brand {
+  font-weight: 700;
+  font-size: 1.125rem;
+  color: #111827;
+  margin-right: auto;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Lists */
+.wmd-list {
+  margin: 1rem 0;
+  padding: 0;
+  list-style: none;
+}
+
+.wmd-list-item {
+  padding: 0.75rem 0;
+  border-bottom: 1px solid #f3f4f6;
+  color: #4b5563;
+}
+
+.wmd-list-item:last-child {
+  border-bottom: none;
+}
+
+/* Grid */
+.wmd-grid {
+  display: grid;
+  gap: 1rem;
+  margin: 1.5rem 0;
+}
+
+.wmd-grid-2 {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.wmd-grid-3 {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.wmd-grid-4 {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+/* Tables */
+.wmd-table {
+  width: 100%;
+  background: white;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  margin: 1rem 0;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.wmd-table th {
+  background: #f9fafb;
+  padding: 0.75rem 1rem;
+  text-align: left;
+  font-weight: 600;
+  font-size: 0.875rem;
+  color: #111827;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.wmd-table td {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid #f3f4f6;
+  font-size: 0.875rem;
+  color: #4b5563;
+}
+
+.wmd-table tr:last-child td {
+  border-bottom: none;
+}
+
+/* Table cell alignment - more specific to override th/td defaults */
+.wmd-table .wmd-align-left {
+  text-align: left !important;
+}
+
+.wmd-table .wmd-align-center {
+  text-align: center !important;
+}
+
+.wmd-table .wmd-align-right {
+  text-align: right !important;
+}
+
+/* Icons */
+.wmd-icon {
+  display: inline-block;
+  width: 1.25rem;
+  height: 1.25rem;
+  vertical-align: middle;
+}
+
+
+/* Utility classes */
+.wmd-separator {
+  border: none;
+  border-top: 1px solid #e5e7eb;
+  margin: 2rem 0;
+}
+
+.wmd-image {
+  max-width: 100%;
+  height: auto;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.wmd-code {
+  background: #f3f4f6;
+  padding: 0.125rem 0.375rem;
+  border-radius: 0.25rem;
+  font-family: ui-monospace, SFMono-Regular, "SF Mono", Consolas, monospace;
+  font-size: 0.875rem;
+  color: #6366f1;
+}
+
+.wmd-blockquote {
+  border-left: 4px solid #6366f1;
+  padding-left: 1rem;
+  margin: 1.5rem 0;
+  color: #4b5563;
+  font-style: italic;
+}
+
+/* Button group */
+.wmd-container-button-group {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin: 1rem 0;
+}
+
+/* Form group */
+.wmd-container-form-group {
+  margin: 1rem 0;
+}
+
+/* State Containers */
+.wmd-container-loading-state {
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.75rem;
+  padding: 3rem 2rem;
+  margin: 2rem 0;
+  text-align: center;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+}
+
+.wmd-container-loading-state::before {
+  content: '';
+  display: block;
+  width: 48px;
+  height: 48px;
+  margin: 0 auto 1.5rem;
+  border: 4px solid #e5e7eb;
+  border-top-color: #6366f1;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+.wmd-container-empty-state {
+  background: #f9fafb;
+  border: 2px dashed #d1d5db;
+  border-radius: 0.75rem;
+  padding: 4rem 2rem;
+  margin: 2rem 0;
+  text-align: center;
+  color: #6b7280;
+}
+
+.wmd-container-empty-state::before {
+  content: '📭';
+  display: block;
+  font-size: 4rem;
+  margin-bottom: 1.5rem;
+  opacity: 0.5;
+}
+
+.wmd-container-error-state {
+  background: #fef2f2;
+  border: 1px solid #fca5a5;
+  border-radius: 0.75rem;
+  padding: 3rem 2rem;
+  margin: 2rem 0;
+  text-align: center;
+  color: #991b1b;
+}
+
+.wmd-container-error-state::before {
+  content: '⚠️';
+  display: block;
+  font-size: 3rem;
+  margin-bottom: 1.5rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .wmd-grid-2,
+  .wmd-grid-3,
+  .wmd-grid-4 {
+    grid-template-columns: 1fr;
+  }
+
+  .wmd-nav-content {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .wmd-brand {
+    margin-right: 0;
+    margin-bottom: 0.5rem;
+  }
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+  </style>
+</head>
+<body class="wmd-root wmd-tailwind">
+  <h1 class="wmd-h1">Form Controls Showcase</h1>
+<blockquote class="wmd-blockquote">
+  <p class="wmd-paragraph"><strong>Use Case:</strong> Comprehensive demonstration of all form input types and controls.</p>
+  <p class="wmd-paragraph"><strong>Key Features:</strong> Text inputs, selections, checkboxes, radios, buttons, validation states, layouts</p>
+</blockquote>
+<h2 class="wmd-h2">Form Controls Component Showcase</h2>
+<p class="wmd-paragraph">Complete reference for all form control types supported by wiremd.</p>
+<hr class="wmd-separator" />
+<h2 class="wmd-h2">1. Text Inputs</h2>
+<h3 class="wmd-h3">Basic Text Inputs</h3>
+<pre class="wmd-code-block"><code data-lang="markdown">Username
+[_____________________________]
+
+Email
+[_____________________________] {type:email}
+
+Password
+[********] {type:password}
+
+Confirm Password
+[********] {type:password}</code></pre>
+<p class="wmd-paragraph"><strong>Rendered:</strong></p>
+<div class="wmd-container-form-group">
+  Username
+  <input type="text" class="wmd-input" style="width: 29ch; max-width: 29ch;" />
+</div>
+<div class="wmd-container-form-group">
+  Email
+  <input type="email" class="wmd-input" style="width: 29ch; max-width: 29ch;" />
+</div>
+<div class="wmd-container-form-group">
+  Password
+  <input type="password" class="wmd-input" style="width: 8ch; max-width: 8ch;" />
+</div>
+<div class="wmd-container-form-group">
+  Confirm Password
+  <input type="password" class="wmd-input" style="width: 8ch; max-width: 8ch;" />
+</div>
+<hr class="wmd-separator" />
+<h3 class="wmd-h3">Input Width Variations</h3>
+<pre class="wmd-code-block"><code data-lang="markdown">Zip Code
+[_____]
+
+Phone Number
+[_______________]
+
+Full Name
+[_____________________________]</code></pre>
+<p class="wmd-paragraph"><strong>Rendered:</strong></p>
+<div class="wmd-container-form-group">
+  Zip Code
+  <input type="text" class="wmd-input" style="width: 5ch; max-width: 5ch;" />
+</div>
+<div class="wmd-container-form-group">
+  Phone Number
+  <input type="text" class="wmd-input" style="width: 15ch; max-width: 15ch;" />
+</div>
+<div class="wmd-container-form-group">
+  Full Name
+  <input type="text" class="wmd-input" style="width: 29ch; max-width: 29ch;" />
+</div>
+<hr class="wmd-separator" />
+<h3 class="wmd-h3">Specialized Input Types</h3>
+<pre class="wmd-code-block"><code data-lang="markdown">Website URL
+[https://___________] {type:url}
+
+Phone Number
+[_____________________________] {type:tel}
+
+Date of Birth
+[_____________________________] {type:date}
+
+Time
+[_____________________________] {type:time}
+
+Number
+[1___] {type:number min:1 max:100}
+
+Search
+[Search...___________] {type:search}
+
+Color
+[#______] {type:color}</code></pre>
+<p class="wmd-paragraph"><strong>Rendered:</strong></p>
+<div class="wmd-container-form-group">
+  Website URL
+  <input type="url" class="wmd-input" placeholder="https://" style="width: 14ch; max-width: 14ch;" />
+</div>
+<div class="wmd-container-form-group">
+  Phone Number
+  <input type="tel" class="wmd-input" style="width: 29ch; max-width: 29ch;" />
+</div>
+<div class="wmd-container-form-group">
+  Date of Birth
+  <input type="date" class="wmd-input" style="width: 29ch; max-width: 29ch;" />
+</div>
+<div class="wmd-container-form-group">
+  Time
+  <input type="time" class="wmd-input" style="width: 29ch; max-width: 29ch;" />
+</div>
+<div class="wmd-container-form-group">
+  Number
+  <input type="number" class="wmd-input" placeholder="1" style="width: 7ch; max-width: 7ch;" />
+</div>
+<div class="wmd-container-form-group">
+  Search
+  <input type="search" class="wmd-input" placeholder="Search..." style="width: 15ch; max-width: 15ch;" />
+</div>
+<div class="wmd-container-form-group">
+  Color
+  <input type="color" class="wmd-input" placeholder="#" style="width: 7ch; max-width: 7ch;" />
+</div>
+<hr class="wmd-separator" />
+<h2 class="wmd-h2">2. Textarea</h2>
+<h3 class="wmd-h3">Multi-line Text Areas</h3>
+<pre class="wmd-code-block"><code data-lang="markdown">Short Comment
+[Enter your comment...] {rows:3}
+
+Long Description
+[Write detailed description...] {rows:6}
+
+Code Snippet
+[Paste code here...] {rows:8 cols:60}</code></pre>
+<p class="wmd-paragraph"><strong>Rendered:</strong></p>
+<div class="wmd-container-form-group">
+  Short Comment
+  <textarea class="wmd-textarea" rows="3" placeholder="Enter your comment..."></textarea>
+</div>
+<div class="wmd-container-form-group">
+  Long Description
+  <textarea class="wmd-textarea" rows="6" placeholder="Write detailed description..."></textarea>
+</div>
+<div class="wmd-container-form-group">
+  Code Snippet
+  <textarea class="wmd-textarea" rows="8" placeholder="Paste code here..."></textarea>
+</div>
+<hr class="wmd-separator" />
+<h2 class="wmd-h2">3. Checkboxes</h2>
+<h3 class="wmd-h3">Single Checkbox</h3>
+<pre class="wmd-code-block"><code data-lang="markdown">- [x] I agree to the Terms of Service
+- [ ] Subscribe to newsletter</code></pre>
+<p class="wmd-paragraph"><strong>Rendered:</strong></p>
+<ul class="wmd-list">
+  <label class="wmd-checkbox">
+    <input type="checkbox" checked />
+    <span>I agree to the Terms of Service</span>
+  </label>
+  <label class="wmd-checkbox">
+    <input type="checkbox" />
+    <span>Subscribe to newsletter</span>
+  </label>
+</ul>
+<hr class="wmd-separator" />
+<h3 class="wmd-h3">Checkbox Groups</h3>
+<pre class="wmd-code-block"><code data-lang="markdown">Select your interests:
+- [x] Web Development
+- [x] Mobile Development
+- [ ] Data Science
+- [ ] Machine Learning
+- [ ] DevOps
+- [ ] UI/UX Design</code></pre>
+<p class="wmd-paragraph"><strong>Rendered:</strong></p>
+<p class="wmd-paragraph">Select your interests:</p>
+<ul class="wmd-list">
+  <label class="wmd-checkbox">
+    <input type="checkbox" checked />
+    <span>Web Development</span>
+  </label>
+  <label class="wmd-checkbox">
+    <input type="checkbox" checked />
+    <span>Mobile Development</span>
+  </label>
+  <label class="wmd-checkbox">
+    <input type="checkbox" />
+    <span>Data Science</span>
+  </label>
+  <label class="wmd-checkbox">
+    <input type="checkbox" />
+    <span>Machine Learning</span>
+  </label>
+  <label class="wmd-checkbox">
+    <input type="checkbox" />
+    <span>DevOps</span>
+  </label>
+  <label class="wmd-checkbox">
+    <input type="checkbox" />
+    <span>UI/UX Design</span>
+  </label>
+</ul>
+<hr class="wmd-separator" />
+<h2 class="wmd-h2">4. Radio Buttons</h2>
+<h3 class="wmd-h3">Basic Radio Group</h3>
+<pre class="wmd-code-block"><code data-lang="markdown">Account Type:
+- (*) Personal
+- ( ) Business
+- ( ) Enterprise</code></pre>
+<p class="wmd-paragraph"><strong>Rendered:</strong></p>
+<p class="wmd-paragraph">Account Type:</p>
+<ul class="wmd-list">
+  <label class="wmd-radio">
+    <input type="radio" checked />
+    <span>Personal</span>
+  </label>
+  <label class="wmd-radio">
+    <input type="radio" />
+    <span>Business</span>
+  </label>
+  <label class="wmd-radio">
+    <input type="radio" />
+    <span>Enterprise</span>
+  </label>
+</ul>
+<hr class="wmd-separator" />
+<h3 class="wmd-h3">Radio with Descriptions</h3>
+<pre class="wmd-code-block"><code data-lang="markdown">Subscription Plan:
+- (*) Free - Basic features for individuals
+- ( ) Pro ($29/mo) - Advanced features for professionals
+- ( ) Team ($99/mo) - Collaboration tools for teams
+- ( ) Enterprise (Custom) - Full-featured for organizations</code></pre>
+<p class="wmd-paragraph"><strong>Rendered:</strong></p>
+<p class="wmd-paragraph">Subscription Plan:</p>
+<ul class="wmd-list">
+  <label class="wmd-radio">
+    <input type="radio" checked />
+    <span>Free - Basic features for individuals</span>
+  </label>
+  <label class="wmd-radio">
+    <input type="radio" />
+    <span>Pro ($29/mo) - Advanced features for professionals</span>
+  </label>
+  <label class="wmd-radio">
+    <input type="radio" />
+    <span>Team ($99/mo) - Collaboration tools for teams</span>
+  </label>
+  <label class="wmd-radio">
+    <input type="radio" />
+    <span>Enterprise (Custom) - Full-featured for organizations</span>
+  </label>
+</ul>
+<hr class="wmd-separator" />
+<h2 class="wmd-h2">5. Select Dropdowns</h2>
+<h3 class="wmd-h3">Basic Select</h3>
+<pre class="wmd-code-block"><code data-lang="markdown">Country
+[Select country...v]
+- United States
+- Canada
+- United Kingdom
+- Australia
+- Other</code></pre>
+<p class="wmd-paragraph"><strong>Rendered:</strong></p>
+<div class="wmd-container-form-group">
+  Country
+  <select class="wmd-select">
+    <option value="" disabled selected>Select country...</option>
+    
+  </select>
+</div>
+<hr class="wmd-separator" />
+<h3 class="wmd-h3">Multiple Selects</h3>
+<pre class="wmd-code-block"><code data-lang="markdown">Skills (Select multiple)
+[Choose skills...v]
+- JavaScript
+- Python
+- Java
+- C++
+- Ruby
+- Go
+
+Time Zone
+[Select timezone...v]
+- (GMT-8) Pacific Time
+- (GMT-5) Eastern Time
+- (GMT) London
+- (GMT+1) Paris</code></pre>
+<p class="wmd-paragraph"><strong>Rendered:</strong></p>
+<div class="wmd-container-form-group">
+  Skills (Select multiple)
+  <select class="wmd-select">
+    <option value="" disabled selected>Choose skills...</option>
+    
+  </select>
+</div>
+<div class="wmd-container-form-group">
+  Time Zone
+  <select class="wmd-select">
+    <option value="" disabled selected>Select timezone...</option>
+    
+  </select>
+</div>
+<hr class="wmd-separator" />
+<h2 class="wmd-h2">6. Buttons</h2>
+<h3 class="wmd-h3">Button Types</h3>
+<pre class="wmd-code-block"><code data-lang="markdown">[Default Button]
+
+[Primary Button]*
+
+[Secondary Button]{.outline}</code></pre>
+<p class="wmd-paragraph"><strong>Rendered:</strong></p>
+<button class="wmd-button">Default Button</button>
+<button class="wmd-button wmd-button-primary">Primary Button</button>
+<button class="wmd-button wmd-outline">Secondary Button</button>
+<hr class="wmd-separator" />
+<h3 class="wmd-h3">Button States</h3>
+<pre class="wmd-code-block"><code data-lang="markdown">[Normal]
+
+[Disabled]{state:disabled}
+
+[Loading...]{state:loading}
+
+[Active]{state:active}
+
+[Success]{state:success}</code></pre>
+<p class="wmd-paragraph"><strong>Rendered:</strong></p>
+<button class="wmd-button">Normal</button>
+<button class="wmd-button wmd-state-disabled" disabled>Disabled</button>
+<button class="wmd-button wmd-state-loading wmd-loading">Loading...</button>
+<button class="wmd-button wmd-state-active">Active</button>
+<button class="wmd-button wmd-state-success">Success</button>
+<hr class="wmd-separator" />
+<h3 class="wmd-h3">Button Variants</h3>
+<pre class="wmd-code-block"><code data-lang="markdown">[Primary Action]{variant:primary}
+
+[Success]{variant:success}
+
+[Warning]{variant:warning}
+
+[Danger Action]{variant:danger}
+
+[Info]{variant:info}</code></pre>
+<p class="wmd-paragraph"><strong>Rendered:</strong></p>
+<button class="wmd-button wmd-button-primary">Primary Action</button>
+<button class="wmd-button wmd-button-success">Success</button>
+<button class="wmd-button wmd-button-warning">Warning</button>
+<button class="wmd-button wmd-button-danger">Danger Action</button>
+<button class="wmd-button wmd-button-info">Info</button>
+<hr class="wmd-separator" />
+<h3 class="wmd-h3">Button Groups</h3>
+<pre class="wmd-code-block"><code data-lang="markdown">[Save] [Cancel] [Reset]
+
+[Cut] [Copy] [Paste]
+
+[Bold] [Italic] [Underline]</code></pre>
+<p class="wmd-paragraph"><strong>Rendered:</strong></p>
+<div class="wmd-container-button-group">
+  <button class="wmd-button">Save</button>
+  <button class="wmd-button">Cancel</button>
+  <button class="wmd-button">Reset</button>
+</div>
+<div class="wmd-container-button-group">
+  <button class="wmd-button">Cut</button>
+  <button class="wmd-button">Copy</button>
+  <button class="wmd-button">Paste</button>
+</div>
+<div class="wmd-container-button-group">
+  <button class="wmd-button">Bold</button>
+  <button class="wmd-button">Italic</button>
+  <button class="wmd-button">Underline</button>
+</div>
+<hr class="wmd-separator" />
+<h2 class="wmd-h2">7. Input States</h2>
+<h3 class="wmd-h3">Required Fields</h3>
+<pre class="wmd-code-block"><code data-lang="markdown">Full Name (Required)
+[_____________________________] {required:true}
+
+Email (Required)
+[_____________________________] {type:email required:true}</code></pre>
+<p class="wmd-paragraph"><strong>Rendered:</strong></p>
+<div class="wmd-container-form-group">
+  Full Name (Required)
+  <input type="text" class="wmd-input" required style="width: 29ch; max-width: 29ch;" />
+</div>
+<div class="wmd-container-form-group">
+  Email (Required)
+  <input type="email" class="wmd-input" required style="width: 29ch; max-width: 29ch;" />
+</div>
+<hr class="wmd-separator" />
+<h3 class="wmd-h3">Disabled Fields</h3>
+<pre class="wmd-code-block"><code data-lang="markdown">Username (Cannot be changed)
+[johndoe___________] {state:disabled}
+
+Email (Verified)
+[[email protected]___________] {type:email state:disabled}</code></pre>
+<p class="wmd-paragraph"><strong>Rendered:</strong></p>
+<div class="wmd-container-form-group">
+  Username (Cannot be changed)
+  <input type="text" class="wmd-input wmd-state-disabled" placeholder="johndoe" style="width: 13ch; max-width: 13ch;" />
+</div>
+<div class="wmd-container-form-group">
+  Email (Verified)
+  <button class="wmd-button">[email protected</button>
+</div>
+<hr class="wmd-separator" />
+<h3 class="wmd-h3">Error States</h3>
+<pre class="wmd-code-block"><code data-lang="markdown">Invalid Email
+[not-an-email___________] {state:error}
+⚠️ Please enter a valid email address
+
+Password Too Short
+[123___] {type:password state:error}
+⚠️ Password must be at least 8 characters</code></pre>
+<p class="wmd-paragraph"><strong>Rendered:</strong></p>
+<p class="wmd-paragraph">Invalid Email
+[not-an-email___________] {state:error}
+⚠️ Please enter a valid email address</p>
+<p class="wmd-paragraph">Password Too Short
+[123___] {type:password state:error}
+⚠️ Password must be at least 8 characters</p>
+<hr class="wmd-separator" />
+<h2 class="wmd-h2">8. Form Layouts</h2>
+<h3 class="wmd-h3">Vertical Form (Default)</h3>
+<pre class="wmd-code-block"><code data-lang="markdown">::: card
+### Contact Form
+
+Full Name
+[_____________________________] {required:true}
+
+Email
+[_____________________________] {type:email required:true}
+
+Phone
+[_____________________________] {type:tel}
+
+Message
+[Your message...] {rows:5 required:true}
+
+[Submit]* [Clear]
+:::</code></pre>
+<p class="wmd-paragraph"><strong>Rendered:</strong></p>
+<div class="wmd-container-card">
+  <h3 class="wmd-h3">Contact Form</h3>
+  <div class="wmd-container-form-group">
+  Full Name
+  <input type="text" class="wmd-input" required style="width: 29ch; max-width: 29ch;" />
+</div>
+  <div class="wmd-container-form-group">
+  Email
+  <input type="email" class="wmd-input" required style="width: 29ch; max-width: 29ch;" />
+</div>
+  <div class="wmd-container-form-group">
+  Phone
+  <input type="tel" class="wmd-input" style="width: 29ch; max-width: 29ch;" />
+</div>
+  <div class="wmd-container-form-group">
+  Message
+  <textarea class="wmd-textarea" rows="5" placeholder="Your message..." required></textarea>
+</div>
+  <div class="wmd-container-button-group">
+  <button class="wmd-button wmd-button-primary">Submit</button>
+  <button class="wmd-button">Clear</button>
+</div>
+</div>
+<hr class="wmd-separator" />
+<h3 class="wmd-h3">Two-Column Form Layout</h3>
+<pre class="wmd-code-block"><code data-lang="markdown">## Personal Information {.grid-2}
+
+### Left Column
+
+First Name
+[_____________________________] {required:true}
+
+Email
+[_____________________________] {type:email required:true}
+
+Phone
+[_____________________________] {type:tel}
+
+### Right Column
+
+Last Name
+[_____________________________] {required:true}
+
+Date of Birth
+[_____________________________] {type:date}
+
+Country
+[Select country...v]
+
+##</code></pre>
+<p class="wmd-paragraph"><strong>Rendered:</strong></p>
+<div class="wmd-grid wmd-grid-2 wmd-grid-2" style="--grid-columns: 2">
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Left Column</h3>
+    <div class="wmd-container-form-group">
+  First Name
+  <input type="text" class="wmd-input" required style="width: 29ch; max-width: 29ch;" />
+</div>
+    <div class="wmd-container-form-group">
+  Email
+  <input type="email" class="wmd-input" required style="width: 29ch; max-width: 29ch;" />
+</div>
+    <div class="wmd-container-form-group">
+  Phone
+  <input type="tel" class="wmd-input" style="width: 29ch; max-width: 29ch;" />
+</div>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Right Column</h3>
+    <div class="wmd-container-form-group">
+  Last Name
+  <input type="text" class="wmd-input" required style="width: 29ch; max-width: 29ch;" />
+</div>
+    <div class="wmd-container-form-group">
+  Date of Birth
+  <input type="date" class="wmd-input" style="width: 29ch; max-width: 29ch;" />
+</div>
+    <div class="wmd-container-form-group">
+  Country
+  <select class="wmd-select">
+    <option value="" disabled selected>Select country...</option>
+    
+  </select>
+</div>
+  </div>
+</div>
+<h2 class="wmd-h2"></h2>
+<hr class="wmd-separator" />
+<h2 class="wmd-h2">9. Complex Form Example</h2>
+<h3 class="wmd-h3">Complete Registration Form</h3>
+<pre class="wmd-code-block"><code data-lang="markdown">::: card
+### Create Account
+
+## Account Details {.grid-2}
+
+### Login Information
+
+Email Address
+[_____________________________] {type:email required:true}
+
+Username
+[_____________________________] {required:true}
+
+Password
+[********] {type:password required:true}
+*Minimum 8 characters*
+
+Confirm Password
+[********] {type:password required:true}
+
+### Personal Information
+
+First Name
+[_____________________________] {required:true}
+
+Last Name
+[_____________________________] {required:true}
+
+Phone Number
+[_____________________________] {type:tel}
+
+Date of Birth
+[_____________________________] {type:date}
+
+##
+
+---
+
+**Address**
+
+Street Address
+[_____________________________]
+
+City
+[_____________________________]
+
+State/Province
+[Select state...v]
+
+Zip/Postal Code
+[_____]
+
+Country
+[United States...v]
+
+---
+
+**Account Preferences**
+
+Account Type
+- (*) Personal
+- ( ) Business
+- ( ) Student
+
+Newsletter Preferences
+- [x] Weekly newsletter
+- [x] Product updates
+- [ ] Special offers
+- [ ] Event notifications
+
+---
+
+**Terms &amp; Privacy**
+
+- [x] I agree to the [Terms of Service](https://example.com/terms)
+- [x] I agree to the [Privacy Policy](https://example.com/privacy)
+- [ ] I want to receive marketing emails
+
+[Create Account]* [Cancel]
+
+:::</code></pre>
+<p class="wmd-paragraph"><strong>Rendered:</strong></p>
+<div class="wmd-container-card">
+  <h3 class="wmd-h3">Create Account</h3>
+  <h2 class="wmd-h2 wmd-grid-2">Account Details</h2>
+  <h3 class="wmd-h3">Login Information</h3>
+  <div class="wmd-container-form-group">
+  Email Address
+  <input type="email" class="wmd-input" required style="width: 29ch; max-width: 29ch;" />
+</div>
+  <div class="wmd-container-form-group">
+  Username
+  <input type="text" class="wmd-input" required style="width: 29ch; max-width: 29ch;" />
+</div>
+  <p class="wmd-paragraph">Password
+[********] {type:password required:true}
+<em>Minimum 8 characters</em></p>
+  <div class="wmd-container-form-group">
+  Confirm Password
+  <input type="password" class="wmd-input" required style="width: 8ch; max-width: 8ch;" />
+</div>
+  <h3 class="wmd-h3">Personal Information</h3>
+  <div class="wmd-container-form-group">
+  First Name
+  <input type="text" class="wmd-input" required style="width: 29ch; max-width: 29ch;" />
+</div>
+  <div class="wmd-container-form-group">
+  Last Name
+  <input type="text" class="wmd-input" required style="width: 29ch; max-width: 29ch;" />
+</div>
+  <div class="wmd-container-form-group">
+  Phone Number
+  <input type="tel" class="wmd-input" style="width: 29ch; max-width: 29ch;" />
+</div>
+  <div class="wmd-container-form-group">
+  Date of Birth
+  <input type="date" class="wmd-input" style="width: 29ch; max-width: 29ch;" />
+</div>
+  <h2 class="wmd-h2"></h2>
+  <hr class="wmd-separator" />
+  <p class="wmd-paragraph"><strong>Address</strong></p>
+  <div class="wmd-container-form-group">
+  Street Address
+  <input type="text" class="wmd-input" style="width: 29ch; max-width: 29ch;" />
+</div>
+  <div class="wmd-container-form-group">
+  City
+  <input type="text" class="wmd-input" style="width: 29ch; max-width: 29ch;" />
+</div>
+  <div class="wmd-container-form-group">
+  State/Province
+  <select class="wmd-select">
+    <option value="" disabled selected>Select state...</option>
+    
+  </select>
+</div>
+  <div class="wmd-container-form-group">
+  Zip/Postal Code
+  <input type="text" class="wmd-input" style="width: 5ch; max-width: 5ch;" />
+</div>
+  <div class="wmd-container-form-group">
+  Country
+  <select class="wmd-select">
+    <option value="" disabled selected>United States...</option>
+    
+  </select>
+</div>
+  <hr class="wmd-separator" />
+  <p class="wmd-paragraph"><strong>Account Preferences</strong></p>
+  <p class="wmd-paragraph">Account Type</p>
+  <ul class="wmd-list">
+  <label class="wmd-radio">
+    <input type="radio" checked />
+    <span>Personal</span>
+  </label>
+  <label class="wmd-radio">
+    <input type="radio" />
+    <span>Business</span>
+  </label>
+  <label class="wmd-radio">
+    <input type="radio" />
+    <span>Student</span>
+  </label>
+</ul>
+  <p class="wmd-paragraph">Newsletter Preferences</p>
+  <ul class="wmd-list">
+  <label class="wmd-checkbox">
+    <input type="checkbox" checked />
+    <span>Weekly newsletter</span>
+  </label>
+  <label class="wmd-checkbox">
+    <input type="checkbox" checked />
+    <span>Product updates</span>
+  </label>
+  <label class="wmd-checkbox">
+    <input type="checkbox" />
+    <span>Special offers</span>
+  </label>
+  <label class="wmd-checkbox">
+    <input type="checkbox" />
+    <span>Event notifications</span>
+  </label>
+</ul>
+  <hr class="wmd-separator" />
+  <p class="wmd-paragraph"><strong>Terms & Privacy</strong></p>
+  <ul class="wmd-list">
+  <label class="wmd-checkbox">
+    <input type="checkbox" checked />
+    <span>I agree to the Terms of Service</span>
+  </label>
+  <label class="wmd-checkbox">
+    <input type="checkbox" checked />
+    <span>I agree to the Privacy Policy</span>
+  </label>
+  <label class="wmd-checkbox">
+    <input type="checkbox" />
+    <span>I want to receive marketing emails</span>
+  </label>
+</ul>
+  <div class="wmd-container-button-group">
+  <button class="wmd-button wmd-button-primary">Create Account</button>
+  <button class="wmd-button">Cancel</button>
+</div>
+</div>
+<hr class="wmd-separator" />
+<h2 class="wmd-h2">10. Form Validation &amp; Help Text</h2>
+<h3 class="wmd-h3">Input with Helper Text</h3>
+<pre class="wmd-code-block"><code data-lang="markdown">Email Address
+[_____________________________] {type:email required:true}
+*We&#039;ll never share your email with anyone else*
+
+Password
+[********] {type:password required:true}
+*Must be at least 8 characters with uppercase, number, and special character*</code></pre>
+<p class="wmd-paragraph"><strong>Rendered:</strong></p>
+<p class="wmd-paragraph">Email Address
+[_____________________________] {type:email required:true}
+<em>We'll never share your email with anyone else</em></p>
+<p class="wmd-paragraph">Password
+[********] {type:password required:true}
+<em>Must be at least 8 characters with uppercase, number, and special character</em></p>
+<hr class="wmd-separator" />
+<h2 class="wmd-h2">Best Practices</h2>
+<div class="wmd-container-card">
+  <h3 class="wmd-h3">Form Control Design Guidelines</h3>
+  <ol class="wmd-list">
+  <li class="wmd-list-item">Labels &amp; Instructions<ul class="wmd-list">
+  <li class="wmd-list-item">Always provide clear labels</li>
+  <li class="wmd-list-item">Label must directly precede input (no blank line)</li>
+  <li class="wmd-list-item">Use helper text for additional guidance</li>
+  <li class="wmd-list-item">Mark required fields clearly</li>
+</ul></li>
+  <li class="wmd-list-item">Input Types<ul class="wmd-list">
+  <li class="wmd-list-item">Use appropriate input types (email, tel, date, etc.)</li>
+  <li class="wmd-list-item">Consider mobile keyboard optimization</li>
+  <li class="wmd-list-item">Provide sensible defaults</li>
+  <li class="wmd-list-item">Use placeholders sparingly</li>
+</ul></li>
+  <li class="wmd-list-item">Validation<ul class="wmd-list">
+  <li class="wmd-list-item">Validate on submit, not on blur</li>
+  <li class="wmd-list-item">Show clear error messages</li>
+  <li class="wmd-list-item">Indicate which fields have errors</li>
+  <li class="wmd-list-item">Provide actionable feedback</li>
+</ul></li>
+  <li class="wmd-list-item">Grouping &amp; Organization<ul class="wmd-list">
+  <li class="wmd-list-item">Group related fields</li>
+  <li class="wmd-list-item">Use fieldsets for logical sections</li>
+  <li class="wmd-list-item">Consider multi-column layouts for long forms</li>
+  <li class="wmd-list-item">Break long forms into steps</li>
+</ul></li>
+  <li class="wmd-list-item">Buttons &amp; Actions<ul class="wmd-list">
+  <li class="wmd-list-item">Primary action should be prominent</li>
+  <li class="wmd-list-item">Provide cancel/back options</li>
+  <li class="wmd-list-item">Use action-oriented button labels</li>
+  <li class="wmd-list-item">Position buttons consistently</li>
+</ul></li>
+  <li class="wmd-list-item">Accessibility<ul class="wmd-list">
+  <li class="wmd-list-item">Ensure proper label association</li>
+  <li class="wmd-list-item">Support keyboard navigation</li>
+  <li class="wmd-list-item">Provide adequate contrast</li>
+  <li class="wmd-list-item">Use ARIA attributes when needed</li>
+</ul></li>
+  <li class="wmd-list-item">Mobile Considerations<ul class="wmd-list">
+  <li class="wmd-list-item">Ensure touch targets are large enough (44px minimum)</li>
+  <li class="wmd-list-item">Use appropriate input types for mobile keyboards</li>
+  <li class="wmd-list-item">Consider single-column layouts</li>
+  <li class="wmd-list-item">Test on actual devices</li>
+</ul></li>
+</ol>
+</div>
+<hr class="wmd-separator" />
+<p class="wmd-paragraph"><strong>Style Variations:</strong></p>
+<ul class="wmd-list">
+  <li class="wmd-list-item">sketch - Hand-drawn form wireframes</li>
+  <li class="wmd-list-item">clean - Modern minimal forms</li>
+  <li class="wmd-list-item">wireframe - Structure-focused inputs</li>
+  <li class="wmd-list-item">tailwind - Contemporary form design</li>
+  <li class="wmd-list-item">material - Google-style form controls</li>
+  <li class="wmd-list-item">brutal - Bold form layouts</li>
+  <li class="wmd-list-item">none - Semantic HTML for custom styling</li>
+</ul>
+<p class="wmd-paragraph"><strong>Generate this example:</strong></p>
+<pre class="wmd-code-block"><code data-lang="bash">wiremd form-controls.md --style sketch
+wiremd form-controls.md --style clean -o forms-clean.html
+wiremd form-controls.md --style material -o forms-material.html</code></pre>
+</body>
+</html>

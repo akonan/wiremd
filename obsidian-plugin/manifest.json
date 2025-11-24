@@ -1,0 +1,10 @@
+{
+	"id": "wiremd-preview",
+	"name": "Wiremd Preview",
+	"version": "0.1.0",
+	"minAppVersion": "0.15.0",
+	"description": "Live preview wiremd mockup files with multiple visual styles",
+	"author": "Your Name",
+	"authorUrl": "https://github.com/yourusername/wiremd-obsidian",
+	"isDesktopOnly": false
+}

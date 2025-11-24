@@ -1,0 +1,1374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WireMD - Mockups at the Speed of Markdown</title>
+    <meta name="description" content="Design UI mockups with markdown syntax. No drag and drop. Just code.">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <style>
+        /* Variables */
+        :root {
+            --bg-primary: #0a0a0a;
+            --bg-secondary: #111111;
+            --bg-tertiary: #1a1a1a;
+            --bg-code: #0d1117;
+            
+            --text-primary: #ffffff;
+            --text-secondary: #a8a8a8;
+            --text-tertiary: #666666;
+            
+            --accent-primary: #7c3aed;
+            --accent-secondary: #a78bfa;
+            --accent-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            
+            --border-color: rgba(255, 255, 255, 0.08);
+            --border-hover: rgba(255, 255, 255, 0.16);
+            
+            --success: #10b981;
+            --warning: #f59e0b;
+            --error: #ef4444;
+            
+            --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            --font-mono: 'JetBrains Mono', 'SF Mono', Consolas, monospace;
+            
+            --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-slow: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+            height: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-secondary);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--accent-primary);
+            border-radius: 5px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--accent-secondary);
+        }
+
+        /* Grid Background */
+        .grid-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            opacity: 0.03;
+            background-image: 
+                linear-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+            z-index: 1;
+        }
+
+        /* Animated Gradient Orb */
+        .gradient-orb {
+            position: fixed;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, var(--accent-primary) 0%, transparent 70%);
+            filter: blur(100px);
+            opacity: 0.2;
+            animation: float 20s ease-in-out infinite;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .gradient-orb:nth-child(2) {
+            left: 60%;
+            top: 60%;
+            animation-delay: -10s;
+            background: radial-gradient(circle, var(--accent-secondary) 0%, transparent 70%);
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translate(-50%, -50%) scale(1);
+            }
+            33% {
+                transform: translate(-30%, -60%) scale(1.1);
+            }
+            66% {
+                transform: translate(-70%, -40%) scale(0.9);
+            }
+        }
+
+        /* Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(10, 10, 10, 0.8);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border-color);
+            z-index: 1000;
+            transition: var(--transition);
+        }
+
+        nav.scrolled {
+            background: rgba(10, 10, 10, 0.95);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            color: var(--text-primary);
+        }
+
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+            background: var(--accent-gradient);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 40px;
+            list-style: none;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            color: var(--text-primary);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--accent-gradient);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .github-stars {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 14px;
+            transition: var(--transition);
+        }
+
+        .github-stars:hover {
+            border-color: var(--accent-primary);
+            color: var(--text-primary);
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 120px 0 80px;
+            position: relative;
+        }
+
+        .hero-content {
+            text-align: center;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 16px;
+            background: rgba(124, 58, 237, 0.1);
+            border: 1px solid rgba(124, 58, 237, 0.3);
+            border-radius: 100px;
+            font-size: 14px;
+            color: var(--accent-secondary);
+            margin-bottom: 24px;
+            animation: slideDown 0.6s ease-out;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero h1 {
+            font-size: clamp(48px, 8vw, 80px);
+            font-weight: 900;
+            line-height: 1.1;
+            margin-bottom: 24px;
+            animation: slideUp 0.6s ease-out 0.1s both;
+        }
+
+        .hero h1 .gradient-text {
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero-description {
+            font-size: 20px;
+            color: var(--text-secondary);
+            margin-bottom: 40px;
+            line-height: 1.6;
+            animation: slideUp 0.6s ease-out 0.2s both;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            animation: slideUp 0.6s ease-out 0.3s both;
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: var(--transition);
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            border: none;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary {
+            background: var(--accent-gradient);
+            color: white;
+            position: relative;
+        }
+
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateX(-100%);
+            transition: transform 0.3s ease;
+        }
+
+        .btn-primary:hover::before {
+            transform: translateX(0);
+        }
+
+        .btn-secondary {
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 20px rgba(124, 58, 237, 0.3);
+        }
+
+        /* Terminal Demo */
+        .terminal-section {
+            padding: 80px 0;
+            position: relative;
+        }
+
+        .terminal {
+            background: var(--bg-code);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            animation: slideUp 0.8s ease-out;
+        }
+
+        .terminal-header {
+            background: var(--bg-tertiary);
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .terminal-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--error);
+        }
+
+        .terminal-dot:nth-child(2) {
+            background: var(--warning);
+        }
+
+        .terminal-dot:nth-child(3) {
+            background: var(--success);
+        }
+
+        .terminal-title {
+            margin-left: auto;
+            margin-right: auto;
+            font-size: 13px;
+            color: var(--text-tertiary);
+            font-family: var(--font-mono);
+        }
+
+        .terminal-body {
+            padding: 24px;
+            font-family: var(--font-mono);
+            font-size: 14px;
+            line-height: 1.6;
+            position: relative;
+            min-height: 400px;
+        }
+
+        .code-line {
+            margin: 8px 0;
+            opacity: 0;
+            animation: typeIn 0.1s ease-out forwards;
+        }
+
+        @keyframes typeIn {
+            to {
+                opacity: 1;
+            }
+        }
+
+        .code-comment {
+            color: #6a737d;
+        }
+
+        .code-keyword {
+            color: #f97583;
+        }
+
+        .code-string {
+            color: #9ecbff;
+        }
+
+        .code-function {
+            color: #b392f0;
+        }
+
+        .code-tag {
+            color: #7ee83f;
+        }
+
+        /* Live Editor */
+        .editor-section {
+            padding: 80px 0;
+        }
+
+        .editor-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            margin-top: 40px;
+        }
+
+        .editor-pane {
+            background: var(--bg-code);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .editor-header {
+            background: var(--bg-tertiary);
+            padding: 12px 20px;
+            border-bottom: 1px solid var(--border-color);
+            font-family: var(--font-mono);
+            font-size: 13px;
+            color: var(--text-secondary);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .editor-content {
+            padding: 20px;
+            font-family: var(--font-mono);
+            font-size: 14px;
+            line-height: 1.8;
+            min-height: 400px;
+        }
+
+        .editor-input {
+            background: transparent;
+            border: none;
+            color: var(--text-primary);
+            font-family: var(--font-mono);
+            font-size: 14px;
+            line-height: 1.8;
+            width: 100%;
+            min-height: 400px;
+            resize: none;
+            outline: none;
+        }
+
+        .preview-content {
+            padding: 20px;
+            min-height: 400px;
+        }
+
+        .preview-mockup {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            color: black;
+            font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        /* Features Grid */
+        .features {
+            padding: 80px 0;
+            background: var(--bg-secondary);
+            border-top: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 32px;
+            margin-top: 48px;
+        }
+
+        .feature-card {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 32px;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--accent-gradient);
+            transform: translateX(-100%);
+            transition: transform 0.3s ease;
+        }
+
+        .feature-card:hover::before {
+            transform: translateX(0);
+        }
+
+        .feature-card:hover {
+            border-color: var(--border-hover);
+            transform: translateY(-4px);
+        }
+
+        .feature-icon {
+            width: 48px;
+            height: 48px;
+            background: rgba(124, 58, 237, 0.1);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            margin-bottom: 16px;
+        }
+
+        .feature-title {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .feature-description {
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        .feature-code {
+            margin-top: 16px;
+            padding: 12px;
+            background: var(--bg-primary);
+            border-radius: 6px;
+            font-family: var(--font-mono);
+            font-size: 12px;
+            color: var(--text-tertiary);
+            overflow-x: auto;
+        }
+
+        /* Installation */
+        .installation {
+            padding: 80px 0;
+        }
+
+        .install-tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 24px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .install-tab {
+            padding: 12px 24px;
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .install-tab.active {
+            color: var(--text-primary);
+        }
+
+        .install-tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--accent-primary);
+        }
+
+        .install-content {
+            background: var(--bg-code);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 24px;
+            position: relative;
+        }
+
+        .install-command {
+            font-family: var(--font-mono);
+            font-size: 16px;
+            color: var(--text-primary);
+        }
+
+        .copy-btn {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            padding: 8px 12px;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            color: var(--text-secondary);
+            font-size: 12px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .copy-btn:hover {
+            background: var(--accent-primary);
+            color: white;
+            border-color: var(--accent-primary);
+        }
+
+        /* Comparison Table */
+        .comparison {
+            padding: 80px 0;
+            background: var(--bg-secondary);
+        }
+
+        .comparison-table {
+            margin-top: 48px;
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 16px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        th {
+            background: var(--bg-tertiary);
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        td {
+            color: var(--text-secondary);
+        }
+
+        tr:hover {
+            background: rgba(124, 58, 237, 0.05);
+        }
+
+        .check {
+            color: var(--success);
+        }
+
+        .cross {
+            color: var(--error);
+        }
+
+        /* CTA Section */
+        .cta {
+            padding: 120px 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(124, 58, 237, 0.1) 0%, transparent 70%);
+            animation: rotate 20s linear infinite;
+        }
+
+        @keyframes rotate {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .cta-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .cta h2 {
+            font-size: 48px;
+            font-weight: 800;
+            margin-bottom: 16px;
+        }
+
+        .cta-description {
+            font-size: 20px;
+            color: var(--text-secondary);
+            margin-bottom: 32px;
+        }
+
+        .email-form {
+            display: flex;
+            gap: 12px;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        .email-input {
+            flex: 1;
+            padding: 12px 20px;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-size: 16px;
+            transition: var(--transition);
+        }
+
+        .email-input:focus {
+            outline: none;
+            border-color: var(--accent-primary);
+        }
+
+        .email-input::placeholder {
+            color: var(--text-tertiary);
+        }
+
+        /* Footer */
+        footer {
+            padding: 40px 0;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 32px;
+        }
+
+        .footer-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 14px;
+            transition: var(--transition);
+        }
+
+        .footer-links a:hover {
+            color: var(--text-primary);
+        }
+
+        /* Section Headers */
+        .section-header {
+            text-align: center;
+            margin-bottom: 48px;
+        }
+
+        .section-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            background: rgba(124, 58, 237, 0.1);
+            border-radius: 100px;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--accent-secondary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 16px;
+        }
+
+        .section-title {
+            font-size: 40px;
+            font-weight: 800;
+            margin-bottom: 16px;
+        }
+
+        .section-description {
+            font-size: 18px;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .hero h1 {
+                font-size: 48px;
+            }
+
+            .hero-description {
+                font-size: 18px;
+            }
+
+            .hero-buttons {
+                flex-direction: column;
+                width: 100%;
+                max-width: 300px;
+                margin: 0 auto;
+            }
+
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .editor-container {
+                grid-template-columns: 1fr;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .email-form {
+                flex-direction: column;
+            }
+
+            .footer-content {
+                flex-direction: column;
+                gap: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Background Elements -->
+    <div class="grid-bg"></div>
+    <div class="gradient-orb" style="top: 20%; left: 10%;"></div>
+    <div class="gradient-orb"></div>
+
+    <!-- Navigation -->
+    <nav id="navbar">
+        <div class="nav-container">
+            <a href="#" class="logo">
+                <div class="logo-icon">W</div>
+                WireMD
+            </a>
+            <ul class="nav-links">
+                <li><a href="#features">Features</a></li>
+                <li><a href="#demo">Demo</a></li>
+                <li><a href="#docs">Docs</a></li>
+                <li><a href="#pricing">Pricing</a></li>
+                <li>
+                    <a href="https://github.com/wiremd/wiremd" class="github-stars">
+                        <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                        </svg>
+                        <span>Star</span>
+                        <span style="padding-left: 8px; border-left: 1px solid var(--border-color); margin-left: 8px;">2.3k</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-badge">
+                    <span>🚀</span>
+                    <span>Now with Obsidian support</span>
+                </div>
+                <h1>
+                    Mockups at the<br>
+                    <span class="gradient-text">Speed of Markdown</span>
+                </h1>
+                <p class="hero-description">
+                    Stop dragging rectangles. Start typing interfaces.<br>
+                    WireMD transforms markdown into mockups instantly.
+                </p>
+                <div class="hero-buttons">
+                    <a href="#demo" class="btn btn-primary">
+                        Try Live Demo
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                            <polyline points="12 5 19 12 12 19"></polyline>
+                        </svg>
+                    </a>
+                    <a href="#installation" class="btn btn-secondary">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                            <polyline points="7 10 12 15 17 10"></polyline>
+                            <line x1="12" y1="15" x2="12" y2="3"></line>
+                        </svg>
+                        Install CLI
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Terminal Demo -->
+    <section class="terminal-section" id="demo">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-badge">Demo</div>
+                <h2 class="section-title">See it in action</h2>
+                <p class="section-description">From markdown to mockup in milliseconds</p>
+            </div>
+
+            <div class="terminal">
+                <div class="terminal-header">
+                    <div class="terminal-dot"></div>
+                    <div class="terminal-dot"></div>
+                    <div class="terminal-dot"></div>
+                    <div class="terminal-title">~/projects/my-app</div>
+                </div>
+                <div class="terminal-body">
+                    <div class="code-line" style="animation-delay: 0.1s">
+                        <span class="code-comment"># Create a simple dashboard mockup</span>
+                    </div>
+                    <div class="code-line" style="animation-delay: 0.3s">
+                        $ <span class="code-function">cat</span> dashboard.wiremd
+                    </div>
+                    <div class="code-line" style="animation-delay: 0.5s">
+                        <span class="code-tag">[[ logo | Dashboard | user-menu ]]</span>
+                    </div>
+                    <div class="code-line" style="animation-delay: 0.7s">
+                        <span class="code-keyword">## Welcome back, Sarah!</span>
+                    </div>
+                    <div class="code-line" style="animation-delay: 0.9s">
+                        <span class="code-tag">[stats-grid]</span>
+                    </div>
+                    <div class="code-line" style="animation-delay: 1.1s">
+                        &nbsp;&nbsp;<span class="code-tag">- Revenue: $12,345</span>
+                    </div>
+                    <div class="code-line" style="animation-delay: 1.3s">
+                        &nbsp;&nbsp;<span class="code-tag">- Users: 1,234</span>
+                    </div>
+                    <div class="code-line" style="animation-delay: 1.5s">
+                        &nbsp;&nbsp;<span class="code-tag">- Growth: +23%</span>
+                    </div>
+                    <div class="code-line" style="animation-delay: 1.7s">
+                        <span class="code-tag">[/stats-grid]</span>
+                    </div>
+                    <div class="code-line" style="animation-delay: 1.9s">
+                        <span class="code-tag">[View Details] [Export Report]</span>
+                    </div>
+                    <div class="code-line" style="animation-delay: 2.3s">
+                        <br>$ <span class="code-function">wiremd</span> dashboard.wiremd <span class="code-keyword">--style</span> modern
+                    </div>
+                    <div class="code-line" style="animation-delay: 2.7s">
+                        <span class="code-string">✓ Generated dashboard.html</span>
+                    </div>
+                    <div class="code-line" style="animation-delay: 3.1s">
+                        <span class="code-string">✓ Preview running at http://localhost:3000</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Live Editor -->
+    <section class="editor-section">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-badge">Playground</div>
+                <h2 class="section-title">Try it yourself</h2>
+                <p class="section-description">Edit the markdown and watch the mockup update in real-time</p>
+            </div>
+
+            <div class="editor-container">
+                <div class="editor-pane">
+                    <div class="editor-header">
+                        <span>input.wiremd</span>
+                        <span style="color: var(--success);">● Live</span>
+                    </div>
+                    <div class="editor-content">
+                        <textarea class="editor-input" id="markdown-input"># Login Page
+[[ logo | Company Name ]]
+
+## Welcome Back
+Please sign in to continue
+
+[Email___________]
+[Password________] {type:password}
+[x] Remember me
+
+[Sign In] [Forgot Password?]
+
+---
+Don't have an account? [Sign Up]</textarea>
+                    </div>
+                </div>
+
+                <div class="editor-pane">
+                    <div class="editor-header">
+                        <span>Preview</span>
+                        <select style="background: transparent; border: 1px solid var(--border-color); color: var(--text-secondary); padding: 4px 8px; border-radius: 4px;">
+                            <option>Sketch Style</option>
+                            <option>Modern Style</option>
+                            <option>Clean Style</option>
+                        </select>
+                    </div>
+                    <div class="preview-content">
+                        <div class="preview-mockup" id="preview-output">
+                            <!-- Preview will be rendered here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features -->
+    <section class="features" id="features">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-badge">Features</div>
+                <h2 class="section-title">Built for developers</h2>
+                <p class="section-description">Everything you need to prototype faster</p>
+            </div>
+
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">⚡</div>
+                    <h3 class="feature-title">Lightning Fast</h3>
+                    <p class="feature-description">
+                        No more clicking through UI tools. Type your mockup as fast as you can think.
+                    </p>
+                    <div class="feature-code">
+                        wiremd sketch.md --watch
+                    </div>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">🎨</div>
+                    <h3 class="feature-title">Multiple Styles</h3>
+                    <p class="feature-description">
+                        From hand-drawn sketches to polished interfaces. Switch styles with a flag.
+                    </p>
+                    <div class="feature-code">
+                        --style sketch | modern | clean
+                    </div>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">🔧</div>
+                    <h3 class="feature-title">Framework Export</h3>
+                    <p class="feature-description">
+                        Export to React, Vue, or vanilla HTML. Your mockups become real components.
+                    </p>
+                    <div class="feature-code">
+                        --export react | vue | html
+                    </div>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">📦</div>
+                    <h3 class="feature-title">Component Library</h3>
+                    <p class="feature-description">
+                        Create reusable components. Build your design system in markdown.
+                    </p>
+                    <div class="feature-code">
+                        {{button}} {{navbar}} {{card}}
+                    </div>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">🔌</div>
+                    <h3 class="feature-title">Obsidian Plugin</h3>
+                    <p class="feature-description">
+                        Design directly in your notes. Live preview, components, and annotations.
+                    </p>
+                    <div class="feature-code">
+                        Available in Community Plugins
+                    </div>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">🚀</div>
+                    <h3 class="feature-title">CI/CD Ready</h3>
+                    <p class="feature-description">
+                        Generate mockups in your build pipeline. Version control your designs.
+                    </p>
+                    <div class="feature-code">
+                        npm run build:mockups
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Installation -->
+    <section class="installation" id="installation">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-badge">Get Started</div>
+                <h2 class="section-title">Installation</h2>
+                <p class="section-description">Up and running in seconds</p>
+            </div>
+
+            <div class="install-tabs">
+                <button class="install-tab active" data-tab="npm">npm</button>
+                <button class="install-tab" data-tab="yarn">yarn</button>
+                <button class="install-tab" data-tab="pnpm">pnpm</button>
+                <button class="install-tab" data-tab="brew">brew</button>
+            </div>
+
+            <div class="install-content">
+                <code class="install-command" id="install-command">npm install -g wiremd</code>
+                <button class="copy-btn" onclick="copyCommand()">Copy</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Comparison -->
+    <section class="comparison">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-badge">Comparison</div>
+                <h2 class="section-title">Why WireMD?</h2>
+                <p class="section-description">See how we stack up against the alternatives</p>
+            </div>
+
+            <div class="comparison-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Feature</th>
+                            <th>WireMD</th>
+                            <th>Figma</th>
+                            <th>Balsamiq</th>
+                            <th>Draw.io</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Text-based input</td>
+                            <td><span class="check">✓</span></td>
+                            <td><span class="cross">✗</span></td>
+                            <td><span class="cross">✗</span></td>
+                            <td><span class="cross">✗</span></td>
+                        </tr>
+                        <tr>
+                            <td>Version control friendly</td>
+                            <td><span class="check">✓</span></td>
+                            <td><span class="cross">✗</span></td>
+                            <td><span class="cross">✗</span></td>
+                            <td><span class="cross">✗</span></td>
+                        </tr>
+                        <tr>
+                            <td>CLI tool</td>
+                            <td><span class="check">✓</span></td>
+                            <td><span class="cross">✗</span></td>
+                            <td><span class="cross">✗</span></td>
+                            <td><span class="cross">✗</span></td>
+                        </tr>
+                        <tr>
+                            <td>Free & open source</td>
+                            <td><span class="check">✓</span></td>
+                            <td><span class="cross">✗</span></td>
+                            <td><span class="cross">✗</span></td>
+                            <td><span class="check">✓</span></td>
+                        </tr>
+                        <tr>
+                            <td>Export to code</td>
+                            <td><span class="check">✓</span></td>
+                            <td>Limited</td>
+                            <td><span class="cross">✗</span></td>
+                            <td><span class="cross">✗</span></td>
+                        </tr>
+                        <tr>
+                            <td>Learning curve</td>
+                            <td>5 minutes</td>
+                            <td>Days</td>
+                            <td>Hours</td>
+                            <td>Hours</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta">
+        <div class="container">
+            <div class="cta-content">
+                <h2>Ready to ship faster?</h2>
+                <p class="cta-description">
+                    Join 2,000+ developers who've ditched the drag-and-drop
+                </p>
+                <form class="email-form" onsubmit="handleSubmit(event)">
+                    <input type="email" class="email-input" placeholder="you@example.com" required>
+                    <button type="submit" class="btn btn-primary">Get Early Access</button>
+                </form>
+                <p style="margin-top: 16px; font-size: 14px; color: var(--text-tertiary);">
+                    No spam. Unsubscribe anytime.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="logo">
+                    <div class="logo-icon">W</div>
+                    WireMD
+                </div>
+                <div class="footer-links">
+                    <a href="https://github.com/wiremd/wiremd">GitHub</a>
+                    <a href="/docs">Documentation</a>
+                    <a href="/blog">Blog</a>
+                    <a href="/discord">Discord</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Navbar scroll effect
+        window.addEventListener('scroll', () => {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // Live editor preview
+        const input = document.getElementById('markdown-input');
+        const preview = document.getElementById('preview-output');
+
+        function updatePreview() {
+            const markdown = input.value;
+            // Simple markdown to HTML conversion (very basic for demo)
+            let html = markdown
+                .replace(/^# (.+)$/gm, '<h1>$1</h1>')
+                .replace(/^## (.+)$/gm, '<h2 style="margin: 20px 0 10px;">$1</h2>')
+                .replace(/\[\[(.+?)\]\]/g, '<div style="display: flex; justify-content: space-between; padding: 10px; background: #f5f5f5; border-radius: 4px; margin-bottom: 20px;">$1</div>')
+                .replace(/\[(.+?)___+\]/g, '<input type="text" placeholder="$1" style="width: 100%; padding: 8px; margin: 5px 0; border: 1px solid #ddd; border-radius: 4px;">')
+                .replace(/\[x\] (.+)/g, '<label style="display: flex; align-items: center; margin: 10px 0;"><input type="checkbox" checked style="margin-right: 8px;"> $1</label>')
+                .replace(/\[(.+?)\]/g, '<button style="padding: 8px 16px; margin: 5px; background: #7c3aed; color: white; border: none; border-radius: 4px; cursor: pointer;">$1</button>')
+                .replace(/---/g, '<hr style="margin: 20px 0; border: none; border-top: 1px solid #ddd;">');
+            
+            preview.innerHTML = html;
+        }
+
+        input.addEventListener('input', updatePreview);
+        updatePreview();
+
+        // Install tabs
+        document.querySelectorAll('.install-tab').forEach(tab => {
+            tab.addEventListener('click', (e) => {
+                document.querySelectorAll('.install-tab').forEach(t => t.classList.remove('active'));
+                e.target.classList.add('active');
+                
+                const commands = {
+                    npm: 'npm install -g wiremd',
+                    yarn: 'yarn global add wiremd',
+                    pnpm: 'pnpm add -g wiremd',
+                    brew: 'brew install wiremd'
+                };
+                
+                document.getElementById('install-command').textContent = commands[e.target.dataset.tab];
+            });
+        });
+
+        // Copy command
+        function copyCommand() {
+            const command = document.getElementById('install-command').textContent;
+            navigator.clipboard.writeText(command);
+            const btn = document.querySelector('.copy-btn');
+            btn.textContent = 'Copied!';
+            setTimeout(() => {
+                btn.textContent = 'Copy';
+            }, 2000);
+        }
+
+        // Email form
+        function handleSubmit(e) {
+            e.preventDefault();
+            const email = e.target.querySelector('input[type="email"]').value;
+            console.log('Email submitted:', email);
+            // Add your email service integration here
+            alert('Thanks for signing up! Check your email for early access.');
+            e.target.reset();
+        }
+
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

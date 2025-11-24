@@ -1,0 +1,949 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>wiremd Mockup</title>
+  <style>
+
+/* Neo-Brutalism Style */
+body {
+  font-family: "Space Grotesk", "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+  background: #fffcf2;
+  color: #000000;
+  line-height: 1.4;
+  margin: 0;
+  padding: 20px;
+}
+
+/* Typography - Bold and Aggressive */
+.wmd-h1 {
+  font-size: 3rem;
+  font-weight: 900;
+  color: #000000;
+  margin: 0 0 1rem 0;
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+  text-shadow: 3px 3px 0 #ffd93d;
+}
+
+.wmd-h2 {
+  font-size: 2.25rem;
+  font-weight: 900;
+  color: #000000;
+  margin: 1.5rem 0 1rem 0;
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+}
+
+.wmd-h3 {
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: #000000;
+  margin: 1.25rem 0 0.75rem 0;
+  text-transform: uppercase;
+}
+
+.wmd-h4 {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: #000000;
+  margin: 1rem 0 0.5rem 0;
+  text-transform: uppercase;
+}
+
+.wmd-paragraph {
+  color: #000000;
+  margin: 0.75rem 0;
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+/* Brutal Buttons */
+.wmd-button {
+  padding: 12px 24px;
+  border: 3px solid #000000;
+  border-radius: 0;
+  font-weight: 900;
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  transition: all 0.1s ease;
+  cursor: pointer;
+  display: inline-block;
+  text-decoration: none;
+  background: #ffffff;
+  color: #000000;
+  box-shadow: 4px 4px 0 #000000;
+  position: relative;
+}
+
+.wmd-button:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0 #000000;
+}
+
+.wmd-button:active {
+  transform: translate(2px, 2px);
+  box-shadow: 2px 2px 0 #000000;
+}
+
+.wmd-button-primary, .wmd-button.wmd-button-primary {
+  background: #ffd93d;
+  color: #000000;
+}
+
+.wmd-button-primary:hover, .wmd-button.wmd-button-primary:hover {
+  background: #ffcc00;
+}
+
+.wmd-button:disabled, .wmd-button[disabled] {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none !important;
+  box-shadow: 4px 4px 0 #000000 !important;
+}
+
+/* Button States */
+.wmd-state-loading {
+  background: #bcf0da !important;
+  color: #000000 !important;
+  animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.02); }
+}
+
+.wmd-state-error {
+  background: #ff6b6b !important;
+  color: #000000 !important;
+}
+
+.wmd-state-success {
+  background: #6bcf7f !important;
+  color: #000000 !important;
+}
+
+/* Brutal Forms */
+.wmd-input, .wmd-textarea, .wmd-select {
+  width: 100%;
+  padding: 12px;
+  border: 3px solid #000000;
+  border-radius: 0;
+  font-size: 1rem;
+  font-weight: 600;
+  background: #ffffff;
+  color: #000000;
+  box-shadow: 4px 4px 0 #000000;
+  transition: all 0.1s ease;
+}
+
+.wmd-input:focus, .wmd-textarea:focus, .wmd-select:focus {
+  outline: none;
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0 #000000;
+  background: #ffd93d;
+}
+
+.wmd-input::placeholder, .wmd-textarea::placeholder {
+  color: #666666;
+  font-weight: 600;
+}
+
+.wmd-input[disabled], .wmd-input.wmd-state-disabled,
+.wmd-textarea[disabled], .wmd-textarea.wmd-state-disabled,
+.wmd-select[disabled], .wmd-select.wmd-state-disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background: #e0e0e0;
+  box-shadow: none;
+  transform: none !important;
+}
+
+.wmd-textarea {
+  resize: vertical;
+  min-height: 6rem;
+  font-family: inherit;
+}
+
+.wmd-select {
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='3' stroke-linecap='square'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 20px;
+  padding-right: 40px;
+}
+
+/* Brutal Checkboxes and Radios */
+.wmd-checkbox, .wmd-radio {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 8px 0;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.wmd-checkbox input[type="checkbox"],
+.wmd-radio input[type="radio"] {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  border: 3px solid #000000;
+  accent-color: #ffd93d;
+}
+
+/* Brutal Cards and Containers */
+.wmd-container-card {
+  background: #ffffff;
+  border: 3px solid #000000;
+  border-radius: 0;
+  box-shadow: 8px 8px 0 #000000;
+  padding: 24px;
+  margin: 24px 0;
+  transition: all 0.1s ease;
+}
+
+.wmd-container-card:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 10px 10px 0 #000000;
+}
+
+.wmd-container-hero {
+  background: linear-gradient(135deg, #ff6b6b 0%, #ffd93d 100%);
+  color: #000000;
+  border: 3px solid #000000;
+  border-radius: 0;
+  padding: 48px 32px;
+  margin: 32px 0;
+  text-align: center;
+  box-shadow: 12px 12px 0 #000000;
+  position: relative;
+  overflow: hidden;
+}
+
+.wmd-container-hero::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -50%;
+  width: 200%;
+  height: 200%;
+  background: repeating-linear-gradient(
+    45deg,
+    transparent,
+    transparent 10px,
+    rgba(0, 0, 0, 0.05) 10px,
+    rgba(0, 0, 0, 0.05) 20px
+  );
+  pointer-events: none;
+}
+
+.wmd-container-hero .wmd-h1,
+.wmd-container-hero .wmd-h2,
+.wmd-container-hero .wmd-h3,
+.wmd-container-hero .wmd-paragraph {
+  color: #000000;
+  position: relative;
+}
+
+.wmd-container-modal {
+  background: #ffffff;
+  border: 3px solid #000000;
+  border-radius: 0;
+  box-shadow: 12px 12px 0 #000000;
+  padding: 32px;
+  margin: 32px auto;
+  max-width: 600px;
+  position: relative;
+}
+
+.wmd-container-footer {
+  background: #000000;
+  color: #ffffff;
+  padding: 32px;
+  margin-top: 48px;
+  border: 3px solid #000000;
+  box-shadow: 8px 8px 0 #ffd93d;
+}
+
+.wmd-container-footer .wmd-paragraph,
+.wmd-container-footer .wmd-nav-item {
+  color: #ffffff;
+  font-weight: 600;
+}
+
+.wmd-container-section {
+  padding: 24px 0;
+  border-bottom: 3px solid #000000;
+}
+
+.wmd-container-section:last-child {
+  border-bottom: none;
+}
+
+/* Brutal Alerts */
+.wmd-container-alert {
+  padding: 16px 20px;
+  border: 3px solid #000000;
+  border-radius: 0;
+  margin: 20px 0;
+  box-shadow: 6px 6px 0 #000000;
+  font-weight: 600;
+}
+
+.wmd-container-alert.wmd-warning {
+  background: #ffeb3b;
+  color: #000000;
+}
+
+.wmd-container-alert.wmd-state-error {
+  background: #ff6b6b;
+  color: #000000;
+}
+
+.wmd-container-alert.wmd-state-success {
+  background: #6bcf7f;
+  color: #000000;
+}
+
+/* Brutal Navigation */
+.wmd-nav {
+  background: #ffd93d;
+  border: 3px solid #000000;
+  padding: 16px 20px;
+  box-shadow: 6px 6px 0 #000000;
+  margin-bottom: 32px;
+}
+
+.wmd-nav-content {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.wmd-nav-item {
+  color: #000000;
+  text-decoration: none;
+  padding: 8px 16px;
+  border: 2px solid transparent;
+  transition: all 0.1s ease;
+  font-size: 0.875rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.wmd-nav-item:hover {
+  background: #000000;
+  color: #ffd93d;
+  border: 2px solid #000000;
+  transform: translate(-2px, -2px);
+  box-shadow: 2px 2px 0 #000000;
+}
+
+.wmd-brand {
+  font-weight: 900;
+  font-size: 1.5rem;
+  color: #000000;
+  margin-right: auto;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+}
+
+/* Brutal Lists */
+.wmd-list {
+  margin: 20px 0;
+  padding: 0;
+  list-style: none;
+  border: 3px solid #000000;
+  background: #ffffff;
+  box-shadow: 6px 6px 0 #000000;
+}
+
+.wmd-list-item {
+  padding: 16px 20px;
+  border-bottom: 3px solid #000000;
+  color: #000000;
+  font-weight: 600;
+  transition: all 0.1s ease;
+}
+
+.wmd-list-item:hover {
+  background: #ffd93d;
+  padding-left: 28px;
+}
+
+.wmd-list-item:last-child {
+  border-bottom: none;
+}
+
+/* Brutal Grid */
+.wmd-grid {
+  display: grid;
+  gap: 24px;
+  margin: 32px 0;
+}
+
+.wmd-grid-2 {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.wmd-grid-3 {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.wmd-grid-4 {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.wmd-grid > * {
+  border: 3px solid #000000;
+  background: #ffffff;
+  padding: 20px;
+  box-shadow: 6px 6px 0 #000000;
+}
+
+/* Brutal Tables */
+.wmd-table {
+  width: 100%;
+  background: #ffffff;
+  border: 3px solid #000000;
+  border-collapse: separate;
+  border-spacing: 0;
+  box-shadow: 8px 8px 0 #000000;
+  margin: 20px 0;
+}
+
+.wmd-table th {
+  background: #ffd93d;
+  padding: 16px;
+  text-align: left;
+  font-weight: 900;
+  font-size: 0.875rem;
+  color: #000000;
+  border-bottom: 3px solid #000000;
+  border-right: 3px solid #000000;
+  text-transform: uppercase;
+}
+
+.wmd-table th:last-child {
+  border-right: none;
+}
+
+.wmd-table td {
+  padding: 16px;
+  border-bottom: 3px solid #000000;
+  border-right: 3px solid #000000;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #000000;
+}
+
+.wmd-table td:last-child {
+  border-right: none;
+}
+
+.wmd-table tr:last-child td {
+  border-bottom: none;
+}
+
+.wmd-table tr:hover td {
+  background: #bcf0da;
+}
+
+/* Table cell alignment - more specific to override th/td defaults */
+.wmd-table .wmd-align-left {
+  text-align: left !important;
+}
+
+.wmd-table .wmd-align-center {
+  text-align: center !important;
+}
+
+.wmd-table .wmd-align-right {
+  text-align: right !important;
+}
+
+/* Brutal Icons */
+.wmd-icon {
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+  vertical-align: middle;
+  font-weight: 900;
+}
+
+/* Utility classes */
+.wmd-separator {
+  border: none;
+  border-top: 3px solid #000000;
+  margin: 32px 0;
+}
+
+.wmd-image {
+  max-width: 100%;
+  height: auto;
+  border: 3px solid #000000;
+  box-shadow: 6px 6px 0 #000000;
+}
+
+.wmd-code {
+  background: #ffd93d;
+  padding: 4px 8px;
+  border: 2px solid #000000;
+  font-family: "JetBrains Mono", "Courier New", monospace;
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: #000000;
+}
+
+.wmd-blockquote {
+  border-left: 6px solid #000000;
+  padding-left: 20px;
+  margin: 20px 0;
+  color: #000000;
+  font-weight: 600;
+  font-style: normal;
+  background: linear-gradient(to right, rgba(255, 217, 61, 0.2), transparent);
+}
+
+/* Button group */
+.wmd-container-button-group {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin: 20px 0;
+}
+
+/* Form group */
+.wmd-container-form-group {
+  margin: 20px 0;
+}
+
+.wmd-container-form-group .wmd-input:not(:last-child),
+.wmd-container-form-group .wmd-textarea:not(:last-child),
+.wmd-container-form-group .wmd-select:not(:last-child) {
+  margin-bottom: 16px;
+}
+
+/* State Containers */
+.wmd-container-loading-state {
+  background: #ffffff;
+  border: 3px solid #000000;
+  padding: 56px 40px;
+  margin: 32px 0;
+  text-align: center;
+  box-shadow: 8px 8px 0 #000000;
+  position: relative;
+}
+
+.wmd-container-loading-state::before {
+  content: '⟳';
+  display: block;
+  font-size: 64px;
+  font-weight: 900;
+  margin-bottom: 24px;
+  animation: spin 1.5s ease-in-out infinite;
+  color: #ffd93d;
+  text-shadow: 3px 3px 0 #000000;
+}
+
+.wmd-container-empty-state {
+  background: #f5f5f5;
+  border: 3px dashed #000000;
+  padding: 72px 40px;
+  margin: 32px 0;
+  text-align: center;
+  color: #666666;
+  font-weight: 600;
+}
+
+.wmd-container-empty-state::before {
+  content: '[EMPTY]';
+  display: block;
+  font-size: 32px;
+  font-weight: 900;
+  letter-spacing: 0.3em;
+  margin-bottom: 24px;
+  color: #999999;
+  text-transform: uppercase;
+}
+
+.wmd-container-error-state {
+  background: #ff6b6b;
+  border: 3px solid #000000;
+  padding: 56px 40px;
+  margin: 32px 0;
+  text-align: center;
+  box-shadow: 8px 8px 0 #000000;
+  color: #000000;
+  font-weight: 600;
+}
+
+.wmd-container-error-state::before {
+  content: '⚠';
+  display: block;
+  font-size: 72px;
+  font-weight: 900;
+  margin-bottom: 24px;
+  text-shadow: 3px 3px 0 rgba(0, 0, 0, 0.2);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .wmd-h1 {
+    font-size: 2rem;
+  }
+
+  .wmd-h2 {
+    font-size: 1.75rem;
+  }
+
+  .wmd-grid-2,
+  .wmd-grid-3,
+  .wmd-grid-4 {
+    grid-template-columns: 1fr;
+  }
+
+  .wmd-nav-content {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .wmd-brand {
+    margin-right: 0;
+    margin-bottom: 12px;
+    font-size: 1.25rem;
+  }
+
+  .wmd-container-card,
+  .wmd-container-modal {
+    box-shadow: 6px 6px 0 #000000;
+  }
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+  </style>
+</head>
+<body class="wmd-root wmd-brutal">
+  <h1 class="wmd-h1">App Landing Page</h1>
+<blockquote class="wmd-blockquote">
+  <p class="wmd-paragraph"><strong>Use Case:</strong> Mobile or web application marketing page with download buttons and features.</p>
+  <p class="wmd-paragraph"><strong>Key Features:</strong> App screenshots, feature highlights, download CTAs, social proof, testimonials</p>
+</blockquote>
+<nav class="wmd-nav">
+  <div class="wmd-nav-content">
+    <a href="#" class="wmd-nav-item"><span class="wmd-icon" data-icon="mobile" aria-label="mobile">●</span>TaskMaster</a>
+    <a href="#" class="wmd-nav-item">Features</a>
+    <a href="#" class="wmd-nav-item">Pricing</a>
+    <a href="#" class="wmd-nav-item">Support</a>
+    <button class="wmd-button">Login</button>
+    <button class="wmd-button wmd-button-primary">Download</button>
+  </div>
+</nav>
+<hr class="wmd-separator" />
+<div class="wmd-container-hero">
+  <h1 class="wmd-h1">Your Personal Productivity Powerhouse</h1>
+  <p class="wmd-paragraph">Stay organized, focused, and on top of your tasks with the #1 rated productivity app.</p>
+  <div class="wmd-container-button-group">
+  <button class="wmd-button wmd-button-primary">Download for iOS</button>
+  <button class="wmd-button wmd-button-primary">Download for Android</button>
+  <button class="wmd-button">Try Web Version</button>
+</div>
+  <div class="wmd-container-form-group">
+  <span class="wmd-icon" data-icon="star" aria-label="star">⭐</span>
+  <span class="wmd-icon" data-icon="star" aria-label="star">⭐</span>
+  <span class="wmd-icon" data-icon="star" aria-label="star">⭐</span>
+  <span class="wmd-icon" data-icon="star" aria-label="star">⭐</span>
+  <span class="wmd-icon" data-icon="star" aria-label="star">⭐</span>
+   <strong>4.9</strong> • 500K+ Reviews • Featured by Apple & Google
+</div>
+  <div class="wmd-container-form-group">
+  <img src="https://via.placeholder.com/800x500" alt="App Screenshots" class="wmd-image" />
+</div>
+</div>
+<hr class="wmd-separator" />
+<h2 class="wmd-h2">As Featured In</h2>
+<nav class="wmd-nav">
+  <div class="wmd-nav-content">
+    <a href="#" class="wmd-nav-item"><span class="wmd-icon" data-icon="apple" aria-label="apple">●</span>App Store Featured</a>
+    <a href="#" class="wmd-nav-item"><span class="wmd-icon" data-icon="android" aria-label="android">●</span>Google Play Editors&#039; Choice</a>
+    <a href="#" class="wmd-nav-item"><span class="wmd-icon" data-icon="producthunt" aria-label="producthunt">●</span>Product Hunt #1</a>
+    <a href="#" class="wmd-nav-item"><span class="wmd-icon" data-icon="techcrunch" aria-label="techcrunch">●</span>TechCrunch</a>
+    <a href="#" class="wmd-nav-item"><span class="wmd-icon" data-icon="verge" aria-label="verge">●</span>The Verge</a>
+  </div>
+</nav>
+<hr class="wmd-separator" />
+<div class="wmd-grid wmd-grid-3 wmd-grid-3" style="--grid-columns: 3">
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3"><span class="wmd-icon" data-icon="check" aria-label="check">✓</span> Smart Task Management</h3>
+    <p class="wmd-paragraph">Create, organize, and prioritize tasks with intelligent categorization and due dates.</p>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3"><span class="wmd-icon" data-icon="calendar" aria-label="calendar">📅</span> Calendar Integration</h3>
+    <p class="wmd-paragraph">Sync with Google Calendar, Outlook, and Apple Calendar seamlessly.</p>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3"><span class="wmd-icon" data-icon="bell" aria-label="bell">🔔</span> Smart Reminders</h3>
+    <p class="wmd-paragraph">Location-based and time-based reminders ensure you never miss a deadline.</p>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3"><span class="wmd-icon" data-icon="repeat" aria-label="repeat">●</span> Recurring Tasks</h3>
+    <p class="wmd-paragraph">Set up daily, weekly, or custom recurring tasks with flexible schedules.</p>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3"><span class="wmd-icon" data-icon="users" aria-label="users">●</span> Team Collaboration</h3>
+    <p class="wmd-paragraph">Share lists, assign tasks, and collaborate with your team in real-time.</p>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3"><span class="wmd-icon" data-icon="cloud" aria-label="cloud">☁️</span> Cloud Sync</h3>
+    <p class="wmd-paragraph">Access your tasks anywhere with automatic sync across all devices.</p>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3"><span class="wmd-icon" data-icon="chart" aria-label="chart">📊</span> Progress Tracking</h3>
+    <p class="wmd-paragraph">Visualize your productivity with charts, streaks, and achievement badges.</p>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3"><span class="wmd-icon" data-icon="shield" aria-label="shield">🛡️</span> Secure &amp; Private</h3>
+    <p class="wmd-paragraph">End-to-end encryption keeps your data safe and private.</p>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3"><span class="wmd-icon" data-icon="palette" aria-label="palette">●</span> Customizable</h3>
+    <p class="wmd-paragraph">Themes, tags, and custom views let you personalize your experience.</p>
+  </div>
+</div>
+<h2 class="wmd-h2"></h2>
+<hr class="wmd-separator" />
+<h2 class="wmd-h2">See It in Action</h2>
+<div class="wmd-container-card">
+  <div class="wmd-container-form-group">
+  <img src="https://via.placeholder.com/700x400" alt="App Interface Screenshot" class="wmd-image" />
+</div>
+  <h3 class="wmd-h3">Beautiful Design Meets Powerful Features</h3>
+  <p class="wmd-paragraph">TaskMaster combines elegant design with powerful productivity features. Manage your day with intuitive gestures, smart filters, and a distraction-free interface.</p>
+  <p class="wmd-paragraph"><strong>Key Features:</strong></p>
+  <ul class="wmd-list">
+  <li class="wmd-list-item">✅ Natural language input: &quot;Meeting tomorrow at 3pm&quot;</li>
+  <li class="wmd-list-item">✅ Quick capture with Siri/Google Assistant</li>
+  <li class="wmd-list-item">✅ Drag and drop task organization</li>
+  <li class="wmd-list-item">✅ Dark mode and custom themes</li>
+  <li class="wmd-list-item">✅ Offline mode with sync when online</li>
+</ul>
+  <button class="wmd-button">Watch Video Demo →</button>
+</div>
+<hr class="wmd-separator" />
+<h2 class="wmd-h2">Loved by Millions</h2>
+<div class="wmd-grid wmd-grid-2 wmd-grid-2" style="--grid-columns: 2">
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3"><span class="wmd-icon" data-icon="star" aria-label="star">⭐</span><span class="wmd-icon" data-icon="star" aria-label="star">⭐</span><span class="wmd-icon" data-icon="star" aria-label="star">⭐</span><span class="wmd-icon" data-icon="star" aria-label="star">⭐</span><span class="wmd-icon" data-icon="star" aria-label="star">⭐</span></h3>
+    <p class="wmd-paragraph"><em>"This app changed my life. I've never been this organized. The natural language input is a game changer!"</em></p>
+    <p class="wmd-paragraph"><strong>Alex Martinez</strong> • Entrepreneur
+<em>App Store Review</em></p>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3"><span class="wmd-icon" data-icon="star" aria-label="star">⭐</span><span class="wmd-icon" data-icon="star" aria-label="star">⭐</span><span class="wmd-icon" data-icon="star" aria-label="star">⭐</span><span class="wmd-icon" data-icon="star" aria-label="star">⭐</span><span class="wmd-icon" data-icon="star" aria-label="star">⭐</span></h3>
+    <p class="wmd-paragraph"><em>"I've tried every task app out there. TaskMaster is the only one that stuck. Simple, fast, and actually helps me get things done."</em></p>
+    <p class="wmd-paragraph"><strong>Sarah Chen</strong> • Product Manager
+<em>Google Play Review</em></p>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3"><span class="wmd-icon" data-icon="star" aria-label="star">⭐</span><span class="wmd-icon" data-icon="star" aria-label="star">⭐</span><span class="wmd-icon" data-icon="star" aria-label="star">⭐</span><span class="wmd-icon" data-icon="star" aria-label="star">⭐</span><span class="wmd-icon" data-icon="star" aria-label="star">⭐</span></h3>
+    <p class="wmd-paragraph"><em>"The team collaboration features are fantastic. Our entire company uses it now. Highly recommended!"</em></p>
+    <p class="wmd-paragraph"><strong>David Kim</strong> • Startup Founder
+<em>ProductHunt Review</em></p>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3"><span class="wmd-icon" data-icon="star" aria-label="star">⭐</span><span class="wmd-icon" data-icon="star" aria-label="star">⭐</span><span class="wmd-icon" data-icon="star" aria-label="star">⭐</span><span class="wmd-icon" data-icon="star" aria-label="star">⭐</span><span class="wmd-icon" data-icon="star" aria-label="star">⭐</span></h3>
+    <p class="wmd-paragraph"><em>"Beautiful interface, powerful features. The recurring tasks and reminders are exactly what I needed."</em></p>
+    <p class="wmd-paragraph"><strong>Emma Johnson</strong> • Designer
+<em>Twitter</em></p>
+  </div>
+</div>
+<h2 class="wmd-h2"></h2>
+<hr class="wmd-separator" />
+<div class="wmd-grid wmd-grid-4 wmd-grid-4" style="--grid-columns: 4">
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">5M+</h3>
+    <p class="wmd-paragraph">Downloads</p>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">4.9★</h3>
+    <p class="wmd-paragraph">Average Rating</p>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">150+</h3>
+    <p class="wmd-paragraph">Countries</p>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">99.9%</h3>
+    <p class="wmd-paragraph">Uptime</p>
+  </div>
+</div>
+<h2 class="wmd-h2"></h2>
+<hr class="wmd-separator" />
+<div class="wmd-grid wmd-grid-3 wmd-grid-3" style="--grid-columns: 3">
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Free</h3>
+    <p class="wmd-paragraph"><strong>$0</strong> forever</p>
+    <p class="wmd-paragraph">Perfect to get started</p>
+    <ul class="wmd-list">
+  <li class="wmd-list-item">Unlimited tasks</li>
+  <li class="wmd-list-item">3 Projects</li>
+  <li class="wmd-list-item">Basic reminders</li>
+  <li class="wmd-list-item">Web &amp; mobile apps</li>
+  <li class="wmd-list-item">Cloud sync</li>
+</ul>
+    <button class="wmd-button wmd-button-primary">Download Free</button>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Pro</h3>
+    <p class="wmd-paragraph"><strong>$4.99</strong> /month</p>
+    <p class="wmd-paragraph">For power users</p>
+    <p class="wmd-paragraph"><strong>Everything in Free, plus:</strong></p>
+    <ul class="wmd-list">
+  <li class="wmd-list-item">Unlimited projects</li>
+  <li class="wmd-list-item">Smart reminders</li>
+  <li class="wmd-list-item">Calendar integration</li>
+  <li class="wmd-list-item">Team collaboration (5)</li>
+  <li class="wmd-list-item">Priority support</li>
+  <li class="wmd-list-item">Custom themes</li>
+</ul>
+    <button class="wmd-button wmd-button-primary">Start 30-Day Trial</button>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Teams</h3>
+    <p class="wmd-paragraph"><strong>$8.99</strong> /user/month</p>
+    <p class="wmd-paragraph">For businesses</p>
+    <p class="wmd-paragraph"><strong>Everything in Pro, plus:</strong></p>
+    <ul class="wmd-list">
+  <li class="wmd-list-item">Unlimited team members</li>
+  <li class="wmd-list-item">Advanced analytics</li>
+  <li class="wmd-list-item">Admin controls</li>
+  <li class="wmd-list-item">API access</li>
+  <li class="wmd-list-item">Dedicated support</li>
+  <li class="wmd-list-item">SLA guarantee</li>
+</ul>
+    <button class="wmd-button wmd-button-primary">Contact Sales</button>
+  </div>
+</div>
+<h2 class="wmd-h2"></h2>
+<hr class="wmd-separator" />
+<h2 class="wmd-h2">Download Now</h2>
+<div class="wmd-container-hero">
+  <h1 class="wmd-h1">Available on All Your Devices</h1>
+  <p class="wmd-paragraph">![iOS Icon] ![Android Icon] ![Web Icon] ![Mac Icon] ![Windows Icon]</p>
+  <nav class="wmd-nav">
+  <div class="wmd-nav-content">
+    <button class="wmd-button wmd-button-primary">Download iOS</button>
+    <button class="wmd-button wmd-button-primary">Download Android</button>
+    <button class="wmd-button">Web App</button>
+    <button class="wmd-button">macOS</button>
+    <button class="wmd-button">Windows</button>
+  </div>
+</nav>
+  <p class="wmd-paragraph"><strong>Works seamlessly across all platforms</strong></p>
+</div>
+<hr class="wmd-separator" />
+<h2 class="wmd-h2">Frequently Asked Questions</h2>
+<div class="wmd-container-card">
+  <h3 class="wmd-h3">Is TaskMaster really free?</h3>
+  <p class="wmd-paragraph">Yes! The free version includes unlimited tasks and core features. Upgrade to Pro for advanced features.</p>
+  <h3 class="wmd-h3">Can I sync across devices?</h3>
+  <p class="wmd-paragraph">Absolutely. All plans include cloud sync across unlimited devices.</p>
+  <h3 class="wmd-h3">Do you offer a student discount?</h3>
+  <p class="wmd-paragraph">Yes! Students get 50% off Pro with a valid .edu email address.</p>
+  <h3 class="wmd-h3">How do I import from other apps?</h3>
+  <p class="wmd-paragraph">We support import from Todoist, Wunderlist, Asana, Trello, and more. Check our migration guide.</p>
+  <h3 class="wmd-h3">Is my data secure?</h3>
+  <p class="wmd-paragraph">Yes. We use end-to-end encryption and never sell your data. See our [privacy policy].</p>
+  <h3 class="wmd-h3">Can I cancel anytime?</h3>
+  <p class="wmd-paragraph">Yes, cancel anytime from your account settings. No questions asked.</p>
+</div>
+<button class="wmd-button">View All FAQs →</button>
+<hr class="wmd-separator" />
+<h2 class="wmd-h2">Ready to Get Organized?</h2>
+<div class="wmd-container-hero">
+  <h1 class="wmd-h1">Start Being More Productive Today</h1>
+  <p class="wmd-paragraph">Join 5 million users who trust TaskMaster for their daily productivity.</p>
+  <div class="wmd-container-button-group">
+  <button class="wmd-button wmd-button-primary">Download for Free</button>
+  <button class="wmd-button">Watch Demo</button>
+</div>
+  <p class="wmd-paragraph"><strong>No credit card required • Works offline • Cancel anytime</strong></p>
+</div>
+<hr class="wmd-separator" />
+<div class="wmd-container-footer">
+  <h2 class="wmd-h2 wmd-grid-4">Links</h2>
+  <h3 class="wmd-h3">Product</h3>
+  <ul class="wmd-list">
+  <li class="wmd-list-item">Features</li>
+  <li class="wmd-list-item">Pricing</li>
+  <li class="wmd-list-item">Download</li>
+  <li class="wmd-list-item">Roadmap</li>
+  <li class="wmd-list-item">What&#039;s New</li>
+</ul>
+  <h3 class="wmd-h3">Support</h3>
+  <ul class="wmd-list">
+  <li class="wmd-list-item">Help Center</li>
+  <li class="wmd-list-item">Contact Us</li>
+  <li class="wmd-list-item">System Status</li>
+  <li class="wmd-list-item">Report Bug</li>
+  <li class="wmd-list-item">Feature Request</li>
+</ul>
+  <h3 class="wmd-h3">Company</h3>
+  <ul class="wmd-list">
+  <li class="wmd-list-item">About</li>
+  <li class="wmd-list-item">Blog</li>
+  <li class="wmd-list-item">Careers</li>
+  <li class="wmd-list-item">Press Kit</li>
+  <li class="wmd-list-item">Affiliate Program</li>
+</ul>
+  <h3 class="wmd-h3">Legal</h3>
+  <ul class="wmd-list">
+  <li class="wmd-list-item">Privacy</li>
+  <li class="wmd-list-item">Terms</li>
+  <li class="wmd-list-item">Security</li>
+  <li class="wmd-list-item">Licenses</li>
+  <li class="wmd-list-item">Cookies</li>
+</ul>
+  <h2 class="wmd-h2"></h2>
+  <hr class="wmd-separator" />
+  <nav class="wmd-nav">
+  <div class="wmd-nav-content">
+    <a href="#" class="wmd-nav-item"><span class="wmd-icon" data-icon="twitter" aria-label="twitter" style="font-family: monospace; font-weight: bold; font-style: normal;">𝕏</span>Follow Us</a>
+    <a href="#" class="wmd-nav-item"><span class="wmd-icon" data-icon="facebook" aria-label="facebook" style="font-family: monospace; font-weight: bold; font-style: normal;">f</span>Like Us</a>
+    <a href="#" class="wmd-nav-item"><span class="wmd-icon" data-icon="instagram" aria-label="instagram" style="font-family: monospace; font-weight: bold; font-style: normal;">◉</span>@taskmaster</a>
+    <a href="#" class="wmd-nav-item"><span class="wmd-icon" data-icon="youtube" aria-label="youtube" style="font-family: monospace; font-weight: bold; font-style: normal;">▶</span>Subscribe</a>
+  </div>
+</nav>
+  <p class="wmd-paragraph">© 2025 TaskMaster Inc. Made with ❤️ in San Francisco</p>
+</div>
+<hr class="wmd-separator" />
+<p class="wmd-paragraph"><strong>Style Variations:</strong></p>
+<ul class="wmd-list">
+  <li class="wmd-list-item">sketch - Quick prototype for app concept</li>
+  <li class="wmd-list-item">clean - Modern app marketing page</li>
+  <li class="wmd-list-item">wireframe - Structure for development team</li>
+  <li class="wmd-list-item">tailwind - Vibrant, contemporary mobile feel</li>
+  <li class="wmd-list-item">material - Google Play aesthetic</li>
+  <li class="wmd-list-item">brutal - Bold, distinctive app branding</li>
+  <li class="wmd-list-item">none - Semantic HTML for React/Vue</li>
+</ul>
+<p class="wmd-paragraph"><strong>Generate this example:</strong></p>
+<pre class="wmd-code-block"><code data-lang="bash">wiremd app-landing.md --style sketch
+wiremd app-landing.md --style material -o app-material.html
+wiremd app-landing.md --style tailwind -o app-tailwind.html</code></pre>
+</body>
+</html>

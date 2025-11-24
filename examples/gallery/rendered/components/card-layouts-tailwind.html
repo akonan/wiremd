@@ -1,0 +1,1222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>wiremd Mockup</title>
+  <style>
+
+/* Tailwind-Inspired Style */
+body {
+  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: #f9fafb;
+  color: #111827;
+  line-height: 1.5;
+  margin: 0;
+  padding: 20px;
+}
+
+/* Typography */
+.wmd-h1 {
+  font-size: 2.25rem;
+  font-weight: 800;
+  color: #111827;
+  margin: 0 0 1rem 0;
+  letter-spacing: -0.025em;
+}
+
+.wmd-h2 {
+  font-size: 1.875rem;
+  font-weight: 700;
+  color: #1f2937;
+  margin: 1.5rem 0 1rem 0;
+  letter-spacing: -0.025em;
+}
+
+.wmd-h3 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #374151;
+  margin: 1.25rem 0 0.75rem 0;
+}
+
+.wmd-h4 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #4b5563;
+  margin: 1rem 0 0.5rem 0;
+}
+
+.wmd-paragraph {
+  color: #6b7280;
+  margin: 0.75rem 0;
+  font-size: 1rem;
+}
+
+/* Buttons */
+.wmd-button {
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  font-weight: 500;
+  font-size: 0.875rem;
+  transition: all 0.15s ease;
+  border: none;
+  cursor: pointer;
+  display: inline-block;
+  text-decoration: none;
+  background: #e5e7eb;
+  color: #374151;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+}
+
+.wmd-button:hover {
+  background: #d1d5db;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.wmd-button-primary, .wmd-button.wmd-button-primary {
+  background: #6366f1;
+  color: white;
+}
+
+.wmd-button-primary:hover, .wmd-button.wmd-button-primary:hover {
+  background: #4f46e5;
+}
+
+.wmd-button:disabled, .wmd-button[disabled] {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Button States */
+.wmd-state-loading {
+  background: #e0e7ff !important;
+  color: #6366f1 !important;
+  position: relative;
+  padding-left: 2.5rem;
+}
+
+.wmd-state-loading::before {
+  content: '';
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 1rem;
+  height: 1rem;
+  border: 2px solid #6366f1;
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+}
+
+.wmd-state-error {
+  background: #fef2f2 !important;
+  color: #ef4444 !important;
+  border: 1px solid #fca5a5;
+}
+
+.wmd-state-success {
+  background: #f0fdf4 !important;
+  color: #22c55e !important;
+  border: 1px solid #86efac;
+}
+
+@keyframes spin {
+  to { transform: translateY(-50%) rotate(360deg); }
+}
+
+/* Forms */
+.wmd-input, .wmd-textarea, .wmd-select {
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  background: white;
+  transition: all 0.15s ease;
+  color: #111827;
+}
+
+.wmd-input:focus, .wmd-textarea:focus, .wmd-select:focus {
+  outline: none;
+  border-color: #6366f1;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+}
+
+.wmd-input::placeholder, .wmd-textarea::placeholder {
+  color: #9ca3af;
+}
+
+.wmd-input[disabled], .wmd-input.wmd-state-disabled,
+.wmd-textarea[disabled], .wmd-textarea.wmd-state-disabled,
+.wmd-select[disabled], .wmd-select.wmd-state-disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  background: #f9fafb;
+  border-color: #e5e7eb;
+}
+
+.wmd-textarea {
+  resize: vertical;
+  min-height: 6rem;
+  font-family: inherit;
+}
+
+.wmd-select {
+  cursor: pointer;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 0.5rem center;
+  background-size: 1.5rem;
+  padding-right: 2.5rem;
+}
+
+/* Checkboxes and Radios */
+.wmd-checkbox, .wmd-radio {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0.5rem 0;
+  cursor: pointer;
+}
+
+.wmd-checkbox input[type="checkbox"],
+.wmd-radio input[type="radio"] {
+  width: 1rem;
+  height: 1rem;
+  cursor: pointer;
+  accent-color: #6366f1;
+}
+
+/* Cards and Containers */
+.wmd-container-card {
+  background: white;
+  border-radius: 0.75rem;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  padding: 1.5rem;
+  margin: 1rem 0;
+}
+
+.wmd-container-hero {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border-radius: 1rem;
+  padding: 3rem 2rem;
+  margin: 2rem 0;
+  text-align: center;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+.wmd-container-hero .wmd-h1,
+.wmd-container-hero .wmd-h2,
+.wmd-container-hero .wmd-h3,
+.wmd-container-hero .wmd-paragraph {
+  color: white;
+}
+
+.wmd-container-modal {
+  background: white;
+  border-radius: 1rem;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  padding: 2rem;
+  margin: 2rem auto;
+  max-width: 600px;
+  position: relative;
+}
+
+.wmd-container-footer {
+  background: #1f2937;
+  color: #e5e7eb;
+  padding: 2rem;
+  margin-top: 3rem;
+  border-radius: 0.75rem;
+}
+
+.wmd-container-footer .wmd-paragraph,
+.wmd-container-footer .wmd-nav-item {
+  color: #e5e7eb;
+}
+
+.wmd-container-section {
+  padding: 1.5rem 0;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.wmd-container-section:last-child {
+  border-bottom: none;
+}
+
+/* Alerts */
+.wmd-container-alert {
+  padding: 1rem 1.25rem;
+  border-radius: 0.5rem;
+  margin: 1rem 0;
+  border-left: 4px solid;
+}
+
+.wmd-container-alert.wmd-warning {
+  background: #fef3c7;
+  border-left-color: #f59e0b;
+  color: #92400e;
+}
+
+.wmd-container-alert.wmd-state-error {
+  background: #fee2e2;
+  border-left-color: #ef4444;
+  color: #991b1b;
+}
+
+.wmd-container-alert.wmd-state-success {
+  background: #d1fae5;
+  border-left-color: #10b981;
+  color: #065f46;
+}
+
+/* Navigation */
+.wmd-nav {
+  background: white;
+  padding: 1rem 1.5rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  margin-bottom: 2rem;
+}
+
+.wmd-nav-content {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.wmd-nav-item {
+  color: #4b5563;
+  text-decoration: none;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.375rem;
+  transition: all 0.15s ease;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.wmd-nav-item:hover {
+  background: #f3f4f6;
+  color: #111827;
+}
+
+.wmd-brand {
+  font-weight: 700;
+  font-size: 1.125rem;
+  color: #111827;
+  margin-right: auto;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Lists */
+.wmd-list {
+  margin: 1rem 0;
+  padding: 0;
+  list-style: none;
+}
+
+.wmd-list-item {
+  padding: 0.75rem 0;
+  border-bottom: 1px solid #f3f4f6;
+  color: #4b5563;
+}
+
+.wmd-list-item:last-child {
+  border-bottom: none;
+}
+
+/* Grid */
+.wmd-grid {
+  display: grid;
+  gap: 1rem;
+  margin: 1.5rem 0;
+}
+
+.wmd-grid-2 {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.wmd-grid-3 {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.wmd-grid-4 {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+/* Tables */
+.wmd-table {
+  width: 100%;
+  background: white;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  margin: 1rem 0;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.wmd-table th {
+  background: #f9fafb;
+  padding: 0.75rem 1rem;
+  text-align: left;
+  font-weight: 600;
+  font-size: 0.875rem;
+  color: #111827;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.wmd-table td {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid #f3f4f6;
+  font-size: 0.875rem;
+  color: #4b5563;
+}
+
+.wmd-table tr:last-child td {
+  border-bottom: none;
+}
+
+/* Table cell alignment - more specific to override th/td defaults */
+.wmd-table .wmd-align-left {
+  text-align: left !important;
+}
+
+.wmd-table .wmd-align-center {
+  text-align: center !important;
+}
+
+.wmd-table .wmd-align-right {
+  text-align: right !important;
+}
+
+/* Icons */
+.wmd-icon {
+  display: inline-block;
+  width: 1.25rem;
+  height: 1.25rem;
+  vertical-align: middle;
+}
+
+
+/* Utility classes */
+.wmd-separator {
+  border: none;
+  border-top: 1px solid #e5e7eb;
+  margin: 2rem 0;
+}
+
+.wmd-image {
+  max-width: 100%;
+  height: auto;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.wmd-code {
+  background: #f3f4f6;
+  padding: 0.125rem 0.375rem;
+  border-radius: 0.25rem;
+  font-family: ui-monospace, SFMono-Regular, "SF Mono", Consolas, monospace;
+  font-size: 0.875rem;
+  color: #6366f1;
+}
+
+.wmd-blockquote {
+  border-left: 4px solid #6366f1;
+  padding-left: 1rem;
+  margin: 1.5rem 0;
+  color: #4b5563;
+  font-style: italic;
+}
+
+/* Button group */
+.wmd-container-button-group {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin: 1rem 0;
+}
+
+/* Form group */
+.wmd-container-form-group {
+  margin: 1rem 0;
+}
+
+/* State Containers */
+.wmd-container-loading-state {
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.75rem;
+  padding: 3rem 2rem;
+  margin: 2rem 0;
+  text-align: center;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+}
+
+.wmd-container-loading-state::before {
+  content: '';
+  display: block;
+  width: 48px;
+  height: 48px;
+  margin: 0 auto 1.5rem;
+  border: 4px solid #e5e7eb;
+  border-top-color: #6366f1;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+.wmd-container-empty-state {
+  background: #f9fafb;
+  border: 2px dashed #d1d5db;
+  border-radius: 0.75rem;
+  padding: 4rem 2rem;
+  margin: 2rem 0;
+  text-align: center;
+  color: #6b7280;
+}
+
+.wmd-container-empty-state::before {
+  content: '📭';
+  display: block;
+  font-size: 4rem;
+  margin-bottom: 1.5rem;
+  opacity: 0.5;
+}
+
+.wmd-container-error-state {
+  background: #fef2f2;
+  border: 1px solid #fca5a5;
+  border-radius: 0.75rem;
+  padding: 3rem 2rem;
+  margin: 2rem 0;
+  text-align: center;
+  color: #991b1b;
+}
+
+.wmd-container-error-state::before {
+  content: '⚠️';
+  display: block;
+  font-size: 3rem;
+  margin-bottom: 1.5rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .wmd-grid-2,
+  .wmd-grid-3,
+  .wmd-grid-4 {
+    grid-template-columns: 1fr;
+  }
+
+  .wmd-nav-content {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .wmd-brand {
+    margin-right: 0;
+    margin-bottom: 0.5rem;
+  }
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+  </style>
+</head>
+<body class="wmd-root wmd-tailwind">
+  <h1 class="wmd-h1">Card Layouts</h1>
+<blockquote class="wmd-blockquote">
+  <p class="wmd-paragraph"><strong>Use Case:</strong> Showcase of card components and grid layouts for content organization.</p>
+  <p class="wmd-paragraph"><strong>Key Features:</strong> Basic cards, feature cards, pricing cards, profile cards, product cards, card grids</p>
+</blockquote>
+<h2 class="wmd-h2">Card Component Showcase</h2>
+<p class="wmd-paragraph">Comprehensive examples of card layouts and patterns.</p>
+<hr class="wmd-separator" />
+<h2 class="wmd-h2">1. Basic Card</h2>
+<h3 class="wmd-h3">Simple Card</h3>
+<pre class="wmd-code-block"><code data-lang="markdown">::: card
+### Card Title
+This is a basic card with title and content.
+
+[Learn More]
+:::</code></pre>
+<p class="wmd-paragraph"><strong>Rendered:</strong></p>
+<div class="wmd-container-card">
+  <h3 class="wmd-h3">Card Title</h3>
+  <p class="wmd-paragraph">This is a basic card with title and content.</p>
+  <button class="wmd-button">Learn More</button>
+</div>
+<hr class="wmd-separator" />
+<h3 class="wmd-h3">Card with Image</h3>
+<pre class="wmd-code-block"><code data-lang="markdown">::: card
+![Feature Image](https://via.placeholder.com/400x200)
+
+### Image Card
+Cards can include images, text, and buttons for rich content presentation.
+
+[View Details →]
+:::</code></pre>
+<p class="wmd-paragraph"><strong>Rendered:</strong></p>
+<div class="wmd-container-card">
+  <h3 class="wmd-h3">Image Card</h3>
+  <p class="wmd-paragraph">Cards can include images, text, and buttons for rich content presentation.</p>
+  <button class="wmd-button">View Details →</button>
+</div>
+<hr class="wmd-separator" />
+<h2 class="wmd-h2">2. Feature Cards</h2>
+<h3 class="wmd-h3">Three Column Feature Grid</h3>
+<pre class="wmd-code-block"><code data-lang="markdown">## Our Features {.grid-3}
+
+### :rocket: Fast Performance
+Lightning-quick loading times and optimized rendering for the best user experience.
+
+[Learn More →]
+
+### :shield: Secure by Default
+Enterprise-grade security with encryption, backups, and compliance certifications.
+
+[Learn More →]
+
+### :gear: Highly Customizable
+Flexible configuration options and extensive API for complete control.
+
+[Learn More →]
+
+##</code></pre>
+<p class="wmd-paragraph"><strong>Rendered:</strong></p>
+<div class="wmd-grid wmd-grid-3 wmd-grid-3" style="--grid-columns: 3">
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3"><span class="wmd-icon" data-icon="rocket" aria-label="rocket">🚀</span> Fast Performance</h3>
+    <p class="wmd-paragraph">Lightning-quick loading times and optimized rendering for the best user experience.</p>
+    <button class="wmd-button">Learn More →</button>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3"><span class="wmd-icon" data-icon="shield" aria-label="shield">🛡️</span> Secure by Default</h3>
+    <p class="wmd-paragraph">Enterprise-grade security with encryption, backups, and compliance certifications.</p>
+    <button class="wmd-button">Learn More →</button>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3"><span class="wmd-icon" data-icon="gear" aria-label="gear">●</span> Highly Customizable</h3>
+    <p class="wmd-paragraph">Flexible configuration options and extensive API for complete control.</p>
+    <button class="wmd-button">Learn More →</button>
+  </div>
+</div>
+<h2 class="wmd-h2"></h2>
+<hr class="wmd-separator" />
+<h2 class="wmd-h2">3. Pricing Cards</h2>
+<h3 class="wmd-h3">Pricing Tiers</h3>
+<pre class="wmd-code-block"><code data-lang="markdown">## Choose Your Plan {.grid-3}
+
+### Starter
+**$9** /month
+
+Perfect for individuals
+
+- 5 Projects
+- 10 GB Storage
+- Basic Support
+- Email Reports
+
+[Start Free Trial]*
+
+### Professional
+**$29** /month
+
+*Most Popular*
+
+For growing teams
+
+- Unlimited Projects
+- 100 GB Storage
+- Priority Support
+- Advanced Analytics
+- API Access
+
+[Start Free Trial]*
+
+### Enterprise
+**Custom**
+
+For large organizations
+
+- Everything in Pro
+- Unlimited Storage
+- Dedicated Support
+- Custom Integration
+- SLA Guarantee
+
+[Contact Sales]*
+
+##</code></pre>
+<p class="wmd-paragraph"><strong>Rendered:</strong></p>
+<div class="wmd-grid wmd-grid-3 wmd-grid-3" style="--grid-columns: 3">
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Starter</h3>
+    <p class="wmd-paragraph"><strong>$9</strong> /month</p>
+    <p class="wmd-paragraph">Perfect for individuals</p>
+    <ul class="wmd-list">
+  <li class="wmd-list-item">5 Projects</li>
+  <li class="wmd-list-item">10 GB Storage</li>
+  <li class="wmd-list-item">Basic Support</li>
+  <li class="wmd-list-item">Email Reports</li>
+</ul>
+    <button class="wmd-button wmd-button-primary">Start Free Trial</button>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Professional</h3>
+    <p class="wmd-paragraph"><strong>$29</strong> /month</p>
+    <p class="wmd-paragraph"><em>Most Popular</em></p>
+    <p class="wmd-paragraph">For growing teams</p>
+    <ul class="wmd-list">
+  <li class="wmd-list-item">Unlimited Projects</li>
+  <li class="wmd-list-item">100 GB Storage</li>
+  <li class="wmd-list-item">Priority Support</li>
+  <li class="wmd-list-item">Advanced Analytics</li>
+  <li class="wmd-list-item">API Access</li>
+</ul>
+    <button class="wmd-button wmd-button-primary">Start Free Trial</button>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Enterprise</h3>
+    <p class="wmd-paragraph"><strong>Custom</strong></p>
+    <p class="wmd-paragraph">For large organizations</p>
+    <ul class="wmd-list">
+  <li class="wmd-list-item">Everything in Pro</li>
+  <li class="wmd-list-item">Unlimited Storage</li>
+  <li class="wmd-list-item">Dedicated Support</li>
+  <li class="wmd-list-item">Custom Integration</li>
+  <li class="wmd-list-item">SLA Guarantee</li>
+</ul>
+    <button class="wmd-button wmd-button-primary">Contact Sales</button>
+  </div>
+</div>
+<h2 class="wmd-h2"></h2>
+<hr class="wmd-separator" />
+<h2 class="wmd-h2">4. Product Cards</h2>
+<h3 class="wmd-h3">Product Grid</h3>
+<pre class="wmd-code-block"><code data-lang="markdown">## Featured Products {.grid-4}
+
+### Wireless Headphones
+![Product](https://via.placeholder.com/250x250)
+
+~~$129.99~~ **$89.99**
+
+:star::star::star::star::star: (127 reviews)
+
+[Add to Cart]*
+
+### Smart Watch
+![Product](https://via.placeholder.com/250x250)
+
+**$299.99**
+
+:star::star::star::star: (89 reviews)
+
+[Add to Cart]*
+
+### Bluetooth Speaker
+![Product](https://via.placeholder.com/250x250)
+
+~~$79.99~~ **$49.99**
+
+:star::star::star::star::star: (203 reviews)
+
+[Add to Cart]*
+
+### Fitness Tracker
+![Product](https://via.placeholder.com/250x250)
+
+**$149.99**
+
+:star::star::star::star: (156 reviews)
+
+[Add to Cart]*
+
+##</code></pre>
+<p class="wmd-paragraph"><strong>Rendered:</strong></p>
+<div class="wmd-grid wmd-grid-4 wmd-grid-4" style="--grid-columns: 4">
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Wireless Headphones</h3>
+    <div class="wmd-container-form-group">
+  <img src="https://via.placeholder.com/250x250" alt="Product" class="wmd-image" />
+</div>
+    <p class="wmd-paragraph">$129.99 <strong>$89.99</strong></p>
+    <p class="wmd-paragraph"><span class="wmd-icon" data-icon="star" aria-label="star">⭐</span><span class="wmd-icon" data-icon="star" aria-label="star">⭐</span><span class="wmd-icon" data-icon="star" aria-label="star">⭐</span><span class="wmd-icon" data-icon="star" aria-label="star">⭐</span><span class="wmd-icon" data-icon="star" aria-label="star">⭐</span>(127 reviews)</p>
+    <button class="wmd-button wmd-button-primary">Add to Cart</button>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Smart Watch</h3>
+    <div class="wmd-container-form-group">
+  <img src="https://via.placeholder.com/250x250" alt="Product" class="wmd-image" />
+</div>
+    <p class="wmd-paragraph"><strong>$299.99</strong></p>
+    <p class="wmd-paragraph"><span class="wmd-icon" data-icon="star" aria-label="star">⭐</span><span class="wmd-icon" data-icon="star" aria-label="star">⭐</span><span class="wmd-icon" data-icon="star" aria-label="star">⭐</span><span class="wmd-icon" data-icon="star" aria-label="star">⭐</span>(89 reviews)</p>
+    <button class="wmd-button wmd-button-primary">Add to Cart</button>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Bluetooth Speaker</h3>
+    <div class="wmd-container-form-group">
+  <img src="https://via.placeholder.com/250x250" alt="Product" class="wmd-image" />
+</div>
+    <p class="wmd-paragraph">$79.99 <strong>$49.99</strong></p>
+    <p class="wmd-paragraph"><span class="wmd-icon" data-icon="star" aria-label="star">⭐</span><span class="wmd-icon" data-icon="star" aria-label="star">⭐</span><span class="wmd-icon" data-icon="star" aria-label="star">⭐</span><span class="wmd-icon" data-icon="star" aria-label="star">⭐</span><span class="wmd-icon" data-icon="star" aria-label="star">⭐</span>(203 reviews)</p>
+    <button class="wmd-button wmd-button-primary">Add to Cart</button>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Fitness Tracker</h3>
+    <div class="wmd-container-form-group">
+  <img src="https://via.placeholder.com/250x250" alt="Product" class="wmd-image" />
+</div>
+    <p class="wmd-paragraph"><strong>$149.99</strong></p>
+    <p class="wmd-paragraph"><span class="wmd-icon" data-icon="star" aria-label="star">⭐</span><span class="wmd-icon" data-icon="star" aria-label="star">⭐</span><span class="wmd-icon" data-icon="star" aria-label="star">⭐</span><span class="wmd-icon" data-icon="star" aria-label="star">⭐</span>(156 reviews)</p>
+    <button class="wmd-button wmd-button-primary">Add to Cart</button>
+  </div>
+</div>
+<h2 class="wmd-h2"></h2>
+<hr class="wmd-separator" />
+<h2 class="wmd-h2">5. Profile/Team Cards</h2>
+<h3 class="wmd-h3">Team Member Grid</h3>
+<pre class="wmd-code-block"><code data-lang="markdown">## Meet Our Team {.grid-4}
+
+### Sarah Johnson
+![Profile](https://via.placeholder.com/200x200)
+
+**CEO &amp; Founder**
+
+&quot;Passionate about building great products&quot;
+
+[LinkedIn] [Twitter] [[email protected]]
+
+### Michael Chen
+![Profile](https://via.placeholder.com/200x200)
+
+**CTO**
+
+&quot;Technology enthusiast and problem solver&quot;
+
+[LinkedIn] [GitHub] [[email protected]]
+
+### Emma Rodriguez
+![Profile](https://via.placeholder.com/200x200)
+
+**Head of Design**
+
+&quot;Creating beautiful user experiences&quot;
+
+[LinkedIn] [Dribbble] [[email protected]]
+
+### David Kim
+![Profile](https://via.placeholder.com/200x200)
+
+**Lead Developer**
+
+&quot;Building scalable solutions&quot;
+
+[LinkedIn] [GitHub] [[email protected]]
+
+##</code></pre>
+<p class="wmd-paragraph"><strong>Rendered:</strong></p>
+<div class="wmd-grid wmd-grid-4 wmd-grid-4" style="--grid-columns: 4">
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Sarah Johnson</h3>
+    <div class="wmd-container-form-group">
+  <img src="https://via.placeholder.com/200x200" alt="Profile" class="wmd-image" />
+</div>
+    <p class="wmd-paragraph"><strong>CEO & Founder</strong></p>
+    <p class="wmd-paragraph">&quot;Passionate about building great products&quot;</p>
+    <p class="wmd-paragraph">[LinkedIn] [Twitter] [[email protected]]</p>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Michael Chen</h3>
+    <div class="wmd-container-form-group">
+  <img src="https://via.placeholder.com/200x200" alt="Profile" class="wmd-image" />
+</div>
+    <p class="wmd-paragraph"><strong>CTO</strong></p>
+    <p class="wmd-paragraph">&quot;Technology enthusiast and problem solver&quot;</p>
+    <p class="wmd-paragraph">[LinkedIn] [GitHub] [[email protected]]</p>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Emma Rodriguez</h3>
+    <div class="wmd-container-form-group">
+  <img src="https://via.placeholder.com/200x200" alt="Profile" class="wmd-image" />
+</div>
+    <p class="wmd-paragraph"><strong>Head of Design</strong></p>
+    <p class="wmd-paragraph">&quot;Creating beautiful user experiences&quot;</p>
+    <p class="wmd-paragraph">[LinkedIn] [Dribbble] [[email protected]]</p>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">David Kim</h3>
+    <div class="wmd-container-form-group">
+  <img src="https://via.placeholder.com/200x200" alt="Profile" class="wmd-image" />
+</div>
+    <p class="wmd-paragraph"><strong>Lead Developer</strong></p>
+    <p class="wmd-paragraph">&quot;Building scalable solutions&quot;</p>
+    <p class="wmd-paragraph">[LinkedIn] [GitHub] [[email protected]]</p>
+  </div>
+</div>
+<h2 class="wmd-h2"></h2>
+<hr class="wmd-separator" />
+<h2 class="wmd-h2">6. Blog/Article Cards</h2>
+<h3 class="wmd-h3">Blog Post Grid</h3>
+<pre class="wmd-code-block"><code data-lang="markdown">## Latest Articles {.grid-3}
+
+### Getting Started with Wireframing
+![Blog Post](https://via.placeholder.com/350x200)
+
+Learn the fundamentals of wireframing and how to create effective designs quickly.
+
+**Design** • 5 min read • Mar 15, 2025
+
+[Read More →]
+
+### 10 UI Design Principles
+![Blog Post](https://via.placeholder.com/350x200)
+
+Essential principles every designer should know for creating intuitive interfaces.
+
+**UI/UX** • 8 min read • Mar 12, 2025
+
+[Read More →]
+
+### Accessibility Best Practices
+![Blog Post](https://via.placeholder.com/350x200)
+
+Make your designs inclusive and accessible to all users with these proven techniques.
+
+**Accessibility** • 6 min read • Mar 10, 2025
+
+[Read More →]
+
+##</code></pre>
+<p class="wmd-paragraph"><strong>Rendered:</strong></p>
+<div class="wmd-grid wmd-grid-3 wmd-grid-3" style="--grid-columns: 3">
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Getting Started with Wireframing</h3>
+    <div class="wmd-container-form-group">
+  <img src="https://via.placeholder.com/350x200" alt="Blog Post" class="wmd-image" />
+</div>
+    <p class="wmd-paragraph">Learn the fundamentals of wireframing and how to create effective designs quickly.</p>
+    <p class="wmd-paragraph"><strong>Design</strong> • 5 min read • Mar 15, 2025</p>
+    <button class="wmd-button">Read More →</button>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">10 UI Design Principles</h3>
+    <div class="wmd-container-form-group">
+  <img src="https://via.placeholder.com/350x200" alt="Blog Post" class="wmd-image" />
+</div>
+    <p class="wmd-paragraph">Essential principles every designer should know for creating intuitive interfaces.</p>
+    <p class="wmd-paragraph"><strong>UI/UX</strong> • 8 min read • Mar 12, 2025</p>
+    <button class="wmd-button">Read More →</button>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Accessibility Best Practices</h3>
+    <div class="wmd-container-form-group">
+  <img src="https://via.placeholder.com/350x200" alt="Blog Post" class="wmd-image" />
+</div>
+    <p class="wmd-paragraph">Make your designs inclusive and accessible to all users with these proven techniques.</p>
+    <p class="wmd-paragraph"><strong>Accessibility</strong> • 6 min read • Mar 10, 2025</p>
+    <button class="wmd-button">Read More →</button>
+  </div>
+</div>
+<h2 class="wmd-h2"></h2>
+<hr class="wmd-separator" />
+<h2 class="wmd-h2">7. Testimonial Cards</h2>
+<h3 class="wmd-h3">Customer Testimonials</h3>
+<pre class="wmd-code-block"><code data-lang="markdown">## What Our Customers Say {.grid-3}
+
+### :star::star::star::star::star:
+*&quot;This product completely transformed how we work. Best decision we made this year!&quot;*
+
+**Sarah Johnson**
+CEO, TechStart Inc.
+
+### :star::star::star::star::star:
+*&quot;Outstanding support and incredible features. Highly recommended for any team.&quot;*
+
+**Michael Chen**
+CTO, DataCorp
+
+### :star::star::star::star::star:
+*&quot;Easy to use, powerful features, and great value. We couldn&#039;t be happier.&quot;*
+
+**Emily Rodriguez**
+Operations Director
+
+##</code></pre>
+<p class="wmd-paragraph"><strong>Rendered:</strong></p>
+<div class="wmd-grid wmd-grid-3 wmd-grid-3" style="--grid-columns: 3">
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3"><span class="wmd-icon" data-icon="star" aria-label="star">⭐</span><span class="wmd-icon" data-icon="star" aria-label="star">⭐</span><span class="wmd-icon" data-icon="star" aria-label="star">⭐</span><span class="wmd-icon" data-icon="star" aria-label="star">⭐</span><span class="wmd-icon" data-icon="star" aria-label="star">⭐</span></h3>
+    <p class="wmd-paragraph"><em>"This product completely transformed how we work. Best decision we made this year!"</em></p>
+    <p class="wmd-paragraph"><strong>Sarah Johnson</strong>
+CEO, TechStart Inc.</p>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3"><span class="wmd-icon" data-icon="star" aria-label="star">⭐</span><span class="wmd-icon" data-icon="star" aria-label="star">⭐</span><span class="wmd-icon" data-icon="star" aria-label="star">⭐</span><span class="wmd-icon" data-icon="star" aria-label="star">⭐</span><span class="wmd-icon" data-icon="star" aria-label="star">⭐</span></h3>
+    <p class="wmd-paragraph"><em>"Outstanding support and incredible features. Highly recommended for any team."</em></p>
+    <p class="wmd-paragraph"><strong>Michael Chen</strong>
+CTO, DataCorp</p>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3"><span class="wmd-icon" data-icon="star" aria-label="star">⭐</span><span class="wmd-icon" data-icon="star" aria-label="star">⭐</span><span class="wmd-icon" data-icon="star" aria-label="star">⭐</span><span class="wmd-icon" data-icon="star" aria-label="star">⭐</span><span class="wmd-icon" data-icon="star" aria-label="star">⭐</span></h3>
+    <p class="wmd-paragraph"><em>"Easy to use, powerful features, and great value. We couldn't be happier."</em></p>
+    <p class="wmd-paragraph"><strong>Emily Rodriguez</strong>
+Operations Director</p>
+  </div>
+</div>
+<h2 class="wmd-h2"></h2>
+<hr class="wmd-separator" />
+<h2 class="wmd-h2">8. Stats/Metrics Cards</h2>
+<h3 class="wmd-h3">Key Metrics Dashboard</h3>
+<pre class="wmd-code-block"><code data-lang="markdown">## Performance Metrics {.grid-4}
+
+### Total Users
+**124,567**
+:chart: +12.5% this month
+
+### Revenue
+**$458,234**
+:chart: +18.3% this month
+
+### Conversion Rate
+**3.2%**
+:chart: +0.8% this month
+
+### Customer Satisfaction
+**4.8** / 5.0
+:star::star::star::star::star:
+
+##</code></pre>
+<p class="wmd-paragraph"><strong>Rendered:</strong></p>
+<div class="wmd-grid wmd-grid-4 wmd-grid-4" style="--grid-columns: 4">
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Total Users</h3>
+    <div class="wmd-container-form-group">
+  <strong>124,567</strong>
+
+  <span class="wmd-icon" data-icon="chart" aria-label="chart">📊</span>
+   +12.5% this month
+</div>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Revenue</h3>
+    <div class="wmd-container-form-group">
+  <strong>$458,234</strong>
+
+  <span class="wmd-icon" data-icon="chart" aria-label="chart">📊</span>
+   +18.3% this month
+</div>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Conversion Rate</h3>
+    <div class="wmd-container-form-group">
+  <strong>3.2%</strong>
+
+  <span class="wmd-icon" data-icon="chart" aria-label="chart">📊</span>
+   +0.8% this month
+</div>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Customer Satisfaction</h3>
+    <div class="wmd-container-form-group">
+  <strong>4.8</strong> / 5.0
+
+  <span class="wmd-icon" data-icon="star" aria-label="star">⭐</span>
+  <span class="wmd-icon" data-icon="star" aria-label="star">⭐</span>
+  <span class="wmd-icon" data-icon="star" aria-label="star">⭐</span>
+  <span class="wmd-icon" data-icon="star" aria-label="star">⭐</span>
+  <span class="wmd-icon" data-icon="star" aria-label="star">⭐</span>
+</div>
+  </div>
+</div>
+<h2 class="wmd-h2"></h2>
+<hr class="wmd-separator" />
+<h2 class="wmd-h2">9. Interactive Cards with States</h2>
+<h3 class="wmd-h3">Card States</h3>
+<pre class="wmd-code-block"><code data-lang="markdown">## Card States {.grid-2}
+
+### Normal Card
+::: card
+Regular card in default state
+
+[Action Button]
+:::
+
+### Highlighted Card
+::: card {.highlight}
+**Featured!**
+
+This card has special emphasis
+
+[Primary Action]*
+:::
+
+##</code></pre>
+<p class="wmd-paragraph"><strong>Rendered:</strong></p>
+<div class="wmd-grid wmd-grid-2 wmd-grid-2" style="--grid-columns: 2">
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Normal Card</h3>
+    <div class="wmd-container-card">
+  <button class="wmd-button">Action Button</button>
+</div>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Highlighted Card</h3>
+    <div class="wmd-container-card">
+  <p class="wmd-paragraph">This card has special emphasis</p>
+  <button class="wmd-button wmd-button-primary">Primary Action</button>
+</div>
+  </div>
+</div>
+<h2 class="wmd-h2"></h2>
+<hr class="wmd-separator" />
+<h2 class="wmd-h2">10. Complex Content Cards</h2>
+<h3 class="wmd-h3">Rich Content Cards</h3>
+<pre class="wmd-code-block"><code data-lang="markdown">::: card
+### Project Dashboard Card
+
+**Project:** Mobile App Redesign
+**Status:** In Progress
+**Due Date:** Mar 25, 2025
+
+---
+
+#### Team Members
+- :user: Sarah (Lead Designer)
+- :user: Mike (Developer)
+- :user: Emma (QA)
+
+#### Progress
+[###############___] 75% Complete
+
+---
+
+**Recent Activity:**
+- Design mockups approved (2h ago)
+- API integration started (5h ago)
+- Sprint planning completed (1d ago)
+
+---
+
+[View Project →] [Edit] [Share]
+:::</code></pre>
+<p class="wmd-paragraph"><strong>Rendered:</strong></p>
+<div class="wmd-container-card">
+  <h3 class="wmd-h3">Project Dashboard Card</h3>
+  <p class="wmd-paragraph"><strong>Project:</strong> Mobile App Redesign
+<strong>Status:</strong> In Progress
+<strong>Due Date:</strong> Mar 25, 2025</p>
+  <hr class="wmd-separator" />
+  <h4 class="wmd-h4">Team Members</h4>
+  <ul class="wmd-list">
+  <li class="wmd-list-item"><span class="wmd-icon" data-icon="user" aria-label="user">👤</span> Sarah (Lead Designer)</li>
+  <li class="wmd-list-item"><span class="wmd-icon" data-icon="user" aria-label="user">👤</span> Mike (Developer)</li>
+  <li class="wmd-list-item"><span class="wmd-icon" data-icon="user" aria-label="user">👤</span> Emma (QA)</li>
+</ul>
+  <h4 class="wmd-h4">Progress</h4>
+  <p class="wmd-paragraph">[###############___] 75% Complete</p>
+  <hr class="wmd-separator" />
+  <p class="wmd-paragraph"><strong>Recent Activity:</strong></p>
+  <ul class="wmd-list">
+  <li class="wmd-list-item">Design mockups approved (2h ago)</li>
+  <li class="wmd-list-item">API integration started (5h ago)</li>
+  <li class="wmd-list-item">Sprint planning completed (1d ago)</li>
+</ul>
+  <hr class="wmd-separator" />
+  <div class="wmd-container-button-group">
+  <button class="wmd-button">View Project →</button>
+  <button class="wmd-button">Edit</button>
+  <button class="wmd-button">Share</button>
+</div>
+</div>
+<hr class="wmd-separator" />
+<h2 class="wmd-h2">11. Horizontal Cards</h2>
+<h3 class="wmd-h3">List-Style Cards</h3>
+<pre class="wmd-code-block"><code data-lang="markdown">::: card
+**Order #12345** | Status: Shipped | Total: $129.99
+
+![Product Thumbnail](https://via.placeholder.com/80x80)
+
+- Wireless Headphones (Qty: 1)
+- USB-C Cable (Qty: 2)
+
+Expected Delivery: Mar 20, 2025
+
+[Track Order →] [View Invoice]
+:::</code></pre>
+<p class="wmd-paragraph"><strong>Rendered:</strong></p>
+<div class="wmd-container-card">
+  <div class="wmd-container-form-group">
+  <img src="https://via.placeholder.com/80x80" alt="Product Thumbnail" class="wmd-image" />
+</div>
+  <ul class="wmd-list">
+  <li class="wmd-list-item">Wireless Headphones (Qty: 1)</li>
+  <li class="wmd-list-item">USB-C Cable (Qty: 2)</li>
+</ul>
+  <p class="wmd-paragraph">Expected Delivery: Mar 20, 2025</p>
+  <div class="wmd-container-button-group">
+  <button class="wmd-button">Track Order →</button>
+  <button class="wmd-button">View Invoice</button>
+</div>
+</div>
+<hr class="wmd-separator" />
+<h2 class="wmd-h2">Best Practices</h2>
+<div class="wmd-container-card">
+  <h3 class="wmd-h3">Card Design Guidelines</h3>
+  <ol class="wmd-list">
+  <li class="wmd-list-item">Consistent Spacing<ul class="wmd-list">
+  <li class="wmd-list-item">Maintain uniform padding</li>
+  <li class="wmd-list-item">Use consistent card heights in grids</li>
+  <li class="wmd-list-item">Balance content density</li>
+</ul></li>
+  <li class="wmd-list-item">Clear Hierarchy<ul class="wmd-list">
+  <li class="wmd-list-item">Use heading levels appropriately</li>
+  <li class="wmd-list-item">Primary action should be prominent</li>
+  <li class="wmd-list-item">Group related information</li>
+</ul></li>
+  <li class="wmd-list-item">Responsive Design<ul class="wmd-list">
+  <li class="wmd-list-item">Use grid layouts (.grid-2, .grid-3, etc.)</li>
+  <li class="wmd-list-item">Cards should stack on mobile</li>
+  <li class="wmd-list-item">Images should scale properly</li>
+</ul></li>
+  <li class="wmd-list-item">Content Strategy<ul class="wmd-list">
+  <li class="wmd-list-item">Keep card content concise</li>
+  <li class="wmd-list-item">Use clear call-to-action</li>
+  <li class="wmd-list-item">Include relevant imagery</li>
+</ul></li>
+  <li class="wmd-list-item">Visual Balance<ul class="wmd-list">
+  <li class="wmd-list-item">Don&#039;t overcrowd cards</li>
+  <li class="wmd-list-item">Use whitespace effectively</li>
+  <li class="wmd-list-item">Maintain alignment</li>
+</ul></li>
+</ol>
+</div>
+<hr class="wmd-separator" />
+<p class="wmd-paragraph"><strong>Style Variations:</strong></p>
+<ul class="wmd-list">
+  <li class="wmd-list-item">sketch - Hand-drawn card wireframes</li>
+  <li class="wmd-list-item">clean - Modern minimal cards</li>
+  <li class="wmd-list-item">wireframe - Structure-focused cards</li>
+  <li class="wmd-list-item">tailwind - Contemporary card design</li>
+  <li class="wmd-list-item">material - Elevated Google-style cards</li>
+  <li class="wmd-list-item">brutal - Bold card layouts</li>
+  <li class="wmd-list-item">none - Semantic HTML for custom styling</li>
+</ul>
+<p class="wmd-paragraph"><strong>Generate this example:</strong></p>
+<pre class="wmd-code-block"><code data-lang="bash">wiremd card-layouts.md --style sketch
+wiremd card-layouts.md --style clean -o cards-clean.html
+wiremd card-layouts.md --style material -o cards-material.html</code></pre>
+</body>
+</html>

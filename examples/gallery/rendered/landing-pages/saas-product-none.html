@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>wiremd Mockup</title>
+  <style>
+
+/* wiremd None Style - Minimal semantic styling */
+* {
+  box-sizing: border-box;
+}
+
+body.wmd-root {
+  font-family: system-ui, -apple-system, sans-serif;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 20px;
+  line-height: 1.6;
+}
+
+.wmd-button {
+  padding: 8px 16px;
+  margin: 4px;
+}
+
+.wmd-input, .wmd-textarea, .wmd-select {
+  display: block;
+  width: 100%;
+  max-width: 400px;
+  padding: 8px;
+  margin: 4px 0;
+}
+
+.wmd-grid {
+  display: grid;
+  grid-template-columns: repeat(var(--grid-columns, 3), 1fr);
+  gap: 20px;
+  margin: 20px 0;
+}
+
+.wmd-nav-content {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.wmd-brand {
+  margin-right: auto;
+  font-weight: bold;
+}
+
+/* State Containers */
+.wmd-container-loading-state,
+.wmd-container-empty-state,
+.wmd-container-error-state {
+  padding: 40px;
+  margin: 20px 0;
+  text-align: center;
+}
+
+@media (max-width: 768px) {
+  .wmd-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+  </style>
+</head>
+<body class="wmd-root wmd-none">
+  <h1 class="wmd-h1">SaaS Product Landing Page</h1>
+<blockquote class="wmd-blockquote">
+  <p class="wmd-paragraph"><strong>Use Case:</strong> Software-as-a-Service product landing page with features, pricing, testimonials.</p>
+  <p class="wmd-paragraph"><strong>Key Features:</strong> Hero section, feature grid, pricing tiers, CTA buttons, social proof, footer</p>
+</blockquote>
+<nav class="wmd-nav">
+  <div class="wmd-nav-content">
+    <div class="wmd-brand"><span class="wmd-icon" data-icon="logo" aria-label="logo">◈</span>CloudFlow</div>
+    <a href="#" class="wmd-nav-item">Features</a>
+    <a href="#" class="wmd-nav-item">Pricing</a>
+    <a href="#" class="wmd-nav-item">Customers</a>
+    <a href="#" class="wmd-nav-item">Docs</a>
+    <a href="#" class="wmd-nav-item">Blog</a>
+    <button class="wmd-button">Sign In</button>
+    <button class="wmd-button wmd-button-primary">Start Free Trial</button>
+  </div>
+</nav>
+<hr class="wmd-separator" />
+<div class="wmd-container-hero">
+  <h1 class="wmd-h1">Streamline Your Workflow in the Cloud</h1>
+  <p class="wmd-paragraph">The all-in-one platform for modern teams to collaborate, automate, and scale their business operations.</p>
+  <div class="wmd-container-button-group">
+  <button class="wmd-button wmd-button-primary">Start Free Trial</button>
+  <button class="wmd-button">Watch Demo</button>
+  <button class="wmd-button">Schedule Demo</button>
+</div>
+  <p class="wmd-paragraph"><strong>No credit card required • 14-day free trial • Cancel anytime</strong></p>
+  <div class="wmd-container-form-group">
+  <img src="https://via.placeholder.com/800x400" alt="Hero Dashboard Screenshot" class="wmd-image" />
+</div>
+</div>
+<hr class="wmd-separator" />
+<h2 class="wmd-h2">Trusted by 50,000+ Teams Worldwide</h2>
+<nav class="wmd-nav">
+  <div class="wmd-nav-content">
+    <div class="wmd-brand"><span class="wmd-icon" data-icon="logo" aria-label="logo">◈</span>Company1</div>
+    <div class="wmd-brand"><span class="wmd-icon" data-icon="logo" aria-label="logo">◈</span>Company2</div>
+    <div class="wmd-brand"><span class="wmd-icon" data-icon="logo" aria-label="logo">◈</span>Company3</div>
+    <div class="wmd-brand"><span class="wmd-icon" data-icon="logo" aria-label="logo">◈</span>Company4</div>
+    <div class="wmd-brand"><span class="wmd-icon" data-icon="logo" aria-label="logo">◈</span>Company5</div>
+    <div class="wmd-brand"><span class="wmd-icon" data-icon="logo" aria-label="logo">◈</span>Company6</div>
+  </div>
+</nav>
+<hr class="wmd-separator" />
+<div class="wmd-grid wmd-grid-3 wmd-grid-3" style="--grid-columns: 3">
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3"><span class="wmd-icon" data-icon="rocket" aria-label="rocket">🚀</span> Lightning Fast</h3>
+    <p class="wmd-paragraph">Deploy in seconds, not hours. Our infrastructure handles millions of requests with 99.99% uptime.</p>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3"><span class="wmd-icon" data-icon="shield" aria-label="shield">🛡️</span> Enterprise Security</h3>
+    <p class="wmd-paragraph">Bank-level encryption, SOC 2 compliance, and advanced access controls keep your data safe.</p>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3"><span class="wmd-icon" data-icon="gear" aria-label="gear">●</span> Fully Customizable</h3>
+    <p class="wmd-paragraph">Powerful API, webhooks, and integrations with 500+ tools you already use.</p>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3"><span class="wmd-icon" data-icon="chart" aria-label="chart">📊</span> Real-time Analytics</h3>
+    <p class="wmd-paragraph">Track performance, user behavior, and business metrics with beautiful dashboards.</p>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3"><span class="wmd-icon" data-icon="people" aria-label="people">●</span> Team Collaboration</h3>
+    <p class="wmd-paragraph">Built for teams with seamless sharing, commenting, and real-time updates.</p>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3"><span class="wmd-icon" data-icon="support" aria-label="support">●</span> 24/7 Support</h3>
+    <p class="wmd-paragraph">Expert support team available around the clock via chat, email, and phone.</p>
+  </div>
+</div>
+<h2 class="wmd-h2"></h2>
+<hr class="wmd-separator" />
+<div class="wmd-grid wmd-grid-2 wmd-grid-2" style="--grid-columns: 2">
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Automation That Just Works</h3>
+    <div class="wmd-container-form-group">
+  <img src="https://via.placeholder.com/500x300" alt="Automation Screenshot" class="wmd-image" />
+</div>
+    <ul class="wmd-list">
+  <li class="wmd-list-item">Smart Workflows - Visual automation builder</li>
+  <li class="wmd-list-item">No-Code Required - Drag and drop interface</li>
+  <li class="wmd-list-item">500+ Integrations - Connect your favorite tools</li>
+  <li class="wmd-list-item">Scheduled Tasks - Run automations on schedule</li>
+  <li class="wmd-list-item">Error Handling - Built-in retry logic</li>
+</ul>
+    <button class="wmd-button">Learn More →</button>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Analytics &amp; Insights</h3>
+    <div class="wmd-container-form-group">
+  <img src="https://via.placeholder.com/500x300" alt="Analytics Screenshot" class="wmd-image" />
+</div>
+    <ul class="wmd-list">
+  <li class="wmd-list-item">Real-time Dashboards - Live data visualization</li>
+  <li class="wmd-list-item">Custom Reports - Build any report you need</li>
+  <li class="wmd-list-item">Data Export - CSV, JSON, API access</li>
+  <li class="wmd-list-item">Predictive AI - Machine learning insights</li>
+  <li class="wmd-list-item">Team Performance - Track productivity metrics</li>
+</ul>
+    <button class="wmd-button">See Examples →</button>
+  </div>
+</div>
+<h2 class="wmd-h2"></h2>
+<hr class="wmd-separator" />
+<div class="wmd-grid wmd-grid-3 wmd-grid-3" style="--grid-columns: 3">
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Starter</h3>
+    <p class="wmd-paragraph"><strong>$29</strong> /month</p>
+    <p class="wmd-paragraph">Perfect for small teams</p>
+    <ul class="wmd-list">
+  <li class="wmd-list-item">5 Team Members</li>
+  <li class="wmd-list-item">10 GB Storage</li>
+  <li class="wmd-list-item">100 Automations/month</li>
+  <li class="wmd-list-item">Email Support</li>
+  <li class="wmd-list-item">Basic Analytics</li>
+</ul>
+    <button class="wmd-button wmd-button-primary">Start Free Trial</button>
+    <p class="wmd-paragraph"><em>Most Popular</em></p>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Professional</h3>
+    <p class="wmd-paragraph"><strong>$99</strong> /month</p>
+    <p class="wmd-paragraph">For growing businesses</p>
+    <ul class="wmd-list">
+  <li class="wmd-list-item">25 Team Members</li>
+  <li class="wmd-list-item">100 GB Storage</li>
+  <li class="wmd-list-item">Unlimited Automations</li>
+  <li class="wmd-list-item">Priority Support</li>
+  <li class="wmd-list-item">Advanced Analytics</li>
+  <li class="wmd-list-item">API Access</li>
+</ul>
+    <button class="wmd-button wmd-button-primary">Start Free Trial</button>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Enterprise</h3>
+    <p class="wmd-paragraph"><strong>Custom</strong></p>
+    <p class="wmd-paragraph">For large organizations</p>
+    <ul class="wmd-list">
+  <li class="wmd-list-item">Unlimited Members</li>
+  <li class="wmd-list-item">Unlimited Storage</li>
+  <li class="wmd-list-item">Unlimited Everything</li>
+  <li class="wmd-list-item">Dedicated Support</li>
+  <li class="wmd-list-item">Custom Integration</li>
+  <li class="wmd-list-item">SLA Guarantee</li>
+  <li class="wmd-list-item">On-premise Option</li>
+</ul>
+    <button class="wmd-button wmd-button-primary">Contact Sales</button>
+  </div>
+</div>
+<h2 class="wmd-h2"></h2>
+<hr class="wmd-separator" />
+<h2 class="wmd-h2">What Our Customers Say</h2>
+<div class="wmd-grid wmd-grid-3 wmd-grid-3" style="--grid-columns: 3">
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3"><span class="wmd-icon" data-icon="star" aria-label="star">⭐</span><span class="wmd-icon" data-icon="star" aria-label="star">⭐</span><span class="wmd-icon" data-icon="star" aria-label="star">⭐</span><span class="wmd-icon" data-icon="star" aria-label="star">⭐</span><span class="wmd-icon" data-icon="star" aria-label="star">⭐</span></h3>
+    <p class="wmd-paragraph"><em>"CloudFlow transformed how our team works. We've saved 20 hours per week on manual tasks."</em></p>
+    <p class="wmd-paragraph"><strong>Sarah Johnson</strong>
+CEO, TechStart Inc.</p>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3"><span class="wmd-icon" data-icon="star" aria-label="star">⭐</span><span class="wmd-icon" data-icon="star" aria-label="star">⭐</span><span class="wmd-icon" data-icon="star" aria-label="star">⭐</span><span class="wmd-icon" data-icon="star" aria-label="star">⭐</span><span class="wmd-icon" data-icon="star" aria-label="star">⭐</span></h3>
+    <p class="wmd-paragraph"><em>"The best investment we made this year. ROI was clear within the first month."</em></p>
+    <p class="wmd-paragraph"><strong>Michael Chen</strong>
+CTO, DataCorp</p>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3"><span class="wmd-icon" data-icon="star" aria-label="star">⭐</span><span class="wmd-icon" data-icon="star" aria-label="star">⭐</span><span class="wmd-icon" data-icon="star" aria-label="star">⭐</span><span class="wmd-icon" data-icon="star" aria-label="star">⭐</span><span class="wmd-icon" data-icon="star" aria-label="star">⭐</span></h3>
+    <p class="wmd-paragraph"><em>"Support team is amazing. They helped us migrate 5 years of data seamlessly."</em></p>
+    <p class="wmd-paragraph"><strong>Emily Rodriguez</strong>
+Operations Director, GlobalTech</p>
+  </div>
+</div>
+<h2 class="wmd-h2"></h2>
+<hr class="wmd-separator" />
+<h2 class="wmd-h2">Integrations</h2>
+<p class="wmd-paragraph">Connect with tools you already love</p>
+<nav class="wmd-nav">
+  <div class="wmd-nav-content">
+    <a href="#" class="wmd-nav-item"><span class="wmd-icon" data-icon="slack" aria-label="slack">●</span>Slack</a>
+    <a href="#" class="wmd-nav-item"><span class="wmd-icon" data-icon="github" aria-label="github" style="font-family: monospace; font-weight: bold; font-style: normal;">⊙</span>GitHub</a>
+    <a href="#" class="wmd-nav-item"><span class="wmd-icon" data-icon="google" aria-label="google">●</span>Google</a>
+    <a href="#" class="wmd-nav-item"><span class="wmd-icon" data-icon="dropbox" aria-label="dropbox">●</span>Dropbox</a>
+    <a href="#" class="wmd-nav-item"><span class="wmd-icon" data-icon="stripe" aria-label="stripe">●</span>Stripe</a>
+    <a href="#" class="wmd-nav-item"><span class="wmd-icon" data-icon="zoom" aria-label="zoom">●</span>Zoom</a>
+    <a href="#" class="wmd-nav-item"><span class="wmd-icon" data-icon="salesforce" aria-label="salesforce">●</span>Salesforce</a>
+    <a href="#" class="wmd-nav-item"><span class="wmd-icon" data-icon="jira" aria-label="jira">●</span>Jira</a>
+  </div>
+</nav>
+<button class="wmd-button">View All 500+ Integrations →</button>
+<hr class="wmd-separator" />
+<h2 class="wmd-h2">Frequently Asked Questions</h2>
+<div class="wmd-container-card">
+  <h3 class="wmd-h3">Do I need a credit card for the free trial?</h3>
+  <p class="wmd-paragraph">No! Start your 14-day free trial without entering any payment information.</p>
+  <h3 class="wmd-h3">Can I change plans anytime?</h3>
+  <p class="wmd-paragraph">Yes, upgrade or downgrade anytime. Changes take effect immediately.</p>
+  <h3 class="wmd-h3">What happens to my data if I cancel?</h3>
+  <p class="wmd-paragraph">You can export all your data anytime. We keep it for 30 days after cancellation.</p>
+  <h3 class="wmd-h3">Do you offer refunds?</h3>
+  <p class="wmd-paragraph">Yes, 30-day money-back guarantee. No questions asked.</p>
+</div>
+<button class="wmd-button">See All FAQs →</button>
+<hr class="wmd-separator" />
+<h2 class="wmd-h2">Ready to Get Started?</h2>
+<div class="wmd-container-hero">
+  <h1 class="wmd-h1">Join 50,000+ Teams Using CloudFlow</h1>
+  <p class="wmd-paragraph">Start your free trial today. No credit card required.</p>
+  <div class="wmd-container-button-group">
+  <button class="wmd-button wmd-button-primary">Start Free Trial</button>
+  <button class="wmd-button">Schedule Demo</button>
+  <button class="wmd-button">View Pricing</button>
+</div>
+</div>
+<hr class="wmd-separator" />
+<div class="wmd-container-footer">
+  <h2 class="wmd-h2 wmd-grid-4">Quick Links</h2>
+  <h3 class="wmd-h3">Product</h3>
+  <ul class="wmd-list">
+  <li class="wmd-list-item">Features</li>
+  <li class="wmd-list-item">Pricing</li>
+  <li class="wmd-list-item">Integrations</li>
+  <li class="wmd-list-item">Changelog</li>
+  <li class="wmd-list-item">Roadmap</li>
+</ul>
+  <h3 class="wmd-h3">Resources</h3>
+  <ul class="wmd-list">
+  <li class="wmd-list-item">Documentation</li>
+  <li class="wmd-list-item">API Reference</li>
+  <li class="wmd-list-item">Tutorials</li>
+  <li class="wmd-list-item">Blog</li>
+  <li class="wmd-list-item">Case Studies</li>
+</ul>
+  <h3 class="wmd-h3">Company</h3>
+  <ul class="wmd-list">
+  <li class="wmd-list-item">About Us</li>
+  <li class="wmd-list-item">Careers</li>
+  <li class="wmd-list-item">Press Kit</li>
+  <li class="wmd-list-item">Contact</li>
+  <li class="wmd-list-item">Partners</li>
+</ul>
+  <h3 class="wmd-h3">Legal</h3>
+  <ul class="wmd-list">
+  <li class="wmd-list-item">Privacy Policy</li>
+  <li class="wmd-list-item">Terms of Service</li>
+  <li class="wmd-list-item">Security</li>
+  <li class="wmd-list-item">GDPR</li>
+  <li class="wmd-list-item">Compliance</li>
+</ul>
+  <h2 class="wmd-h2"></h2>
+  <hr class="wmd-separator" />
+  <nav class="wmd-nav">
+  <div class="wmd-nav-content">
+    <span class="wmd-icon" data-icon="twitter" aria-label="twitter" style="font-family: monospace; font-weight: bold; font-style: normal;">𝕏</span>
+    <span class="wmd-icon" data-icon="linkedin" aria-label="linkedin" style="font-family: monospace; font-weight: bold; font-style: normal;">in</span>
+    <span class="wmd-icon" data-icon="github" aria-label="github" style="font-family: monospace; font-weight: bold; font-style: normal;">⊙</span>
+    <span class="wmd-icon" data-icon="youtube" aria-label="youtube" style="font-family: monospace; font-weight: bold; font-style: normal;">▶</span>
+  </div>
+</nav>
+  <p class="wmd-paragraph">© 2025 CloudFlow Inc. All rights reserved.</p>
+</div>
+<hr class="wmd-separator" />
+<p class="wmd-paragraph"><strong>Style Variations:</strong></p>
+<ul class="wmd-list">
+  <li class="wmd-list-item">sketch - Quick prototype for stakeholder review</li>
+  <li class="wmd-list-item">clean - Modern, professional SaaS aesthetic</li>
+  <li class="wmd-list-item">wireframe - Content hierarchy visualization</li>
+  <li class="wmd-list-item">tailwind - Contemporary design with gradients</li>
+  <li class="wmd-list-item">material - Google-style elevation and cards</li>
+  <li class="wmd-list-item">brutal - Bold, distinctive branding</li>
+  <li class="wmd-list-item">none - Semantic HTML for custom framework</li>
+</ul>
+<p class="wmd-paragraph"><strong>Generate this example:</strong></p>
+<pre class="wmd-code-block"><code data-lang="bash">wiremd saas-product.md --style sketch
+wiremd saas-product.md --style clean -o saas-clean.html
+wiremd saas-product.md --style tailwind -o saas-tailwind.html</code></pre>
+</body>
+</html>

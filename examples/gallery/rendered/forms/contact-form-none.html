@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>wiremd Mockup</title>
+  <style>
+
+/* wiremd None Style - Minimal semantic styling */
+* {
+  box-sizing: border-box;
+}
+
+body.wmd-root {
+  font-family: system-ui, -apple-system, sans-serif;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 20px;
+  line-height: 1.6;
+}
+
+.wmd-button {
+  padding: 8px 16px;
+  margin: 4px;
+}
+
+.wmd-input, .wmd-textarea, .wmd-select {
+  display: block;
+  width: 100%;
+  max-width: 400px;
+  padding: 8px;
+  margin: 4px 0;
+}
+
+.wmd-grid {
+  display: grid;
+  grid-template-columns: repeat(var(--grid-columns, 3), 1fr);
+  gap: 20px;
+  margin: 20px 0;
+}
+
+.wmd-nav-content {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.wmd-brand {
+  margin-right: auto;
+  font-weight: bold;
+}
+
+/* State Containers */
+.wmd-container-loading-state,
+.wmd-container-empty-state,
+.wmd-container-error-state {
+  padding: 40px;
+  margin: 20px 0;
+  text-align: center;
+}
+
+@media (max-width: 768px) {
+  .wmd-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+  </style>
+</head>
+<body class="wmd-root wmd-none">
+  <h1 class="wmd-h1">Contact Form</h1>
+<blockquote class="wmd-blockquote">
+  <p class="wmd-paragraph"><strong>Use Case:</strong> Standard contact form for websites, customer support pages, or inquiry forms.</p>
+  <p class="wmd-paragraph"><strong>Key Features:</strong> Text inputs, email validation, textarea, required fields, button groups</p>
+</blockquote>
+<h2 class="wmd-h2">Get in Touch</h2>
+<p class="wmd-paragraph">We&#039;d love to hear from you! Fill out the form below and we&#039;ll get back to you within 24 hours.</p>
+<hr class="wmd-separator" />
+<div class="wmd-container-card">
+  <h3 class="wmd-h3">Contact Us</h3>
+  <div class="wmd-container-form-group">
+  Full Name
+  <input type="text" class="wmd-input" required style="width: 29ch; max-width: 29ch;" />
+</div>
+  <div class="wmd-container-form-group">
+  Email Address
+  <input type="email" class="wmd-input" required style="width: 29ch; max-width: 29ch;" />
+</div>
+  <div class="wmd-container-form-group">
+  Phone Number
+  <input type="tel" class="wmd-input" style="width: 29ch; max-width: 29ch;" />
+</div>
+  <div class="wmd-container-form-group">
+  Subject
+  <select class="wmd-select">
+    <option value="" disabled selected>Select a topic...</option>
+    <option value="General Inquiry">General Inquiry</option>
+    <option value="Technical Support">Technical Support</option>
+    <option value="Sales Question">Sales Question</option>
+    <option value="Partnership Opportunity">Partnership Opportunity</option>
+    <option value="Other">Other</option>
+  </select>
+</div>
+  <ul class="wmd-list">
+  <li class="wmd-list-item">General Inquiry</li>
+  <li class="wmd-list-item">Technical Support</li>
+  <li class="wmd-list-item">Sales Question</li>
+  <li class="wmd-list-item">Partnership Opportunity</li>
+  <li class="wmd-list-item">Other</li>
+</ul>
+  <div class="wmd-container-form-group">
+  Message
+  <textarea class="wmd-textarea" rows="6" placeholder="Tell us how we can help..." required></textarea>
+</div>
+  <p class="wmd-paragraph">Preferred Contact Method</p>
+  <ul class="wmd-list">
+  <label class="wmd-radio">
+    <input type="radio" checked />
+    <span>Email</span>
+  </label>
+  <label class="wmd-radio">
+    <input type="radio" />
+    <span>Phone</span>
+  </label>
+  <label class="wmd-radio">
+    <input type="radio" />
+    <span>Either</span>
+  </label>
+  <label class="wmd-checkbox">
+    <input type="checkbox" checked />
+    <span>I agree to the privacy policy</span>
+  </label>
+  <label class="wmd-checkbox">
+    <input type="checkbox" />
+    <span>Send me updates and newsletters</span>
+  </label>
+</ul>
+  <div class="wmd-container-button-group">
+  <button class="wmd-button wmd-button-primary">Submit Message</button>
+  <button class="wmd-button">Clear Form</button>
+</div>
+</div>
+<hr class="wmd-separator" />
+<p class="wmd-paragraph"><strong>Style Variations:</strong></p>
+<ul class="wmd-list">
+  <li class="wmd-list-item">sketch - Hand-drawn Balsamiq-style appearance</li>
+  <li class="wmd-list-item">clean - Modern minimal design</li>
+  <li class="wmd-list-item">wireframe - Traditional grayscale wireframe</li>
+  <li class="wmd-list-item">tailwind - Purple accent utility-first design</li>
+  <li class="wmd-list-item">material - Google Material Design with elevation</li>
+  <li class="wmd-list-item">brutal - Neo-brutalism with bold borders</li>
+  <li class="wmd-list-item">none - Unstyled semantic HTML</li>
+</ul>
+<p class="wmd-paragraph"><strong>Generate this example:</strong></p>
+<pre class="wmd-code-block"><code data-lang="bash">wiremd contact-form.md --style sketch
+wiremd contact-form.md --style clean -o contact-form-clean.html
+wiremd contact-form.md --style material -o contact-form-material.html</code></pre>
+</body>
+</html>

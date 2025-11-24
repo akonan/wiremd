@@ -1,0 +1,228 @@
+/* Wiremd Preview Container */
+.wiremd-preview-container {
+	position: relative;
+	margin: 1em 0;
+	padding: 0;
+	/* Don't set background - let wiremd styles control it */
+	border: 1px solid var(--background-modifier-border);
+	border-radius: 6px;
+	overflow: hidden; /* So content background fills the rounded corners */
+}
+
+/* Style Badge */
+.wiremd-style-badge {
+	position: absolute;
+	top: 0.5em;
+	right: 0.5em;
+	padding: 4px 10px;
+	font-size: 0.75em;
+	font-weight: 600;
+	background-color: var(--interactive-accent);
+	color: var(--text-on-accent);
+	border-radius: 4px;
+	cursor: pointer;
+	user-select: none;
+	transition: opacity 0.2s;
+	z-index: 10;
+}
+
+.wiremd-style-badge:hover {
+	opacity: 0.85;
+}
+
+/* Style Selector Dropdown */
+.wiremd-style-selector {
+	position: absolute;
+	top: 2.5em;
+	right: 0.5em;
+	background-color: var(--background-primary);
+	border: 1px solid var(--background-modifier-border);
+	border-radius: 6px;
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+	z-index: 100;
+	min-width: 280px;
+	max-height: 320px;
+	overflow-y: auto;
+}
+
+.wiremd-style-option {
+	padding: 10px 14px;
+	cursor: pointer;
+	font-size: 0.9em;
+	border-bottom: 1px solid var(--background-modifier-border);
+	transition: background-color 0.15s;
+}
+
+.wiremd-style-option:last-child {
+	border-bottom: none;
+}
+
+.wiremd-style-option:hover {
+	background-color: var(--background-modifier-hover);
+}
+
+.wiremd-style-option-active {
+	background-color: var(--interactive-accent);
+	color: var(--text-on-accent);
+	font-weight: 600;
+}
+
+.wiremd-style-option-active:hover {
+	background-color: var(--interactive-accent-hover);
+}
+
+/* Preview Content */
+.wiremd-preview-content {
+	margin-top: 0;
+	position: relative;
+	padding: 1em;
+	padding-top: 2.5em; /* Space for the badge */
+	min-height: 100px;
+	/* Ensure background fills the entire container */
+}
+
+/* Error Display */
+.wiremd-preview-error {
+	padding: 1.5em;
+	background-color: var(--background-primary-alt);
+	border: 2px solid var(--text-error);
+	border-radius: 6px;
+	margin: 1em 0;
+}
+
+.wiremd-error-header {
+	font-size: 1.1em;
+	font-weight: 700;
+	color: var(--text-error);
+	margin-bottom: 0.5em;
+	display: flex;
+	align-items: center;
+}
+
+.wiremd-error-header::before {
+	content: '⚠️';
+	margin-right: 0.5em;
+	font-size: 1.2em;
+}
+
+.wiremd-error-message {
+	font-family: var(--font-monospace);
+	font-size: 0.9em;
+	color: var(--text-error);
+	margin-bottom: 1em;
+	padding: 0.75em;
+	background-color: var(--background-secondary);
+	border-radius: 4px;
+	white-space: pre-wrap;
+	word-break: break-word;
+}
+
+.wiremd-error-code {
+	font-family: var(--font-monospace);
+	font-size: 0.85em;
+	background-color: var(--background-secondary);
+	border: 1px solid var(--background-modifier-border);
+	border-radius: 4px;
+	padding: 1em;
+	overflow-x: auto;
+	margin-top: 1em;
+	max-height: 300px;
+	overflow-y: auto;
+}
+
+/* Mobile Platform Classes */
+.wiremd-mobile-optimized {
+	-webkit-overflow-scrolling: touch;
+	overflow-x: auto;
+}
+
+.wiremd-mobile .wiremd-preview-content {
+	font-size: 1.1em;
+}
+
+.wiremd-phone .wiremd-style-badge {
+	min-height: 44px;
+	min-width: 44px;
+}
+
+.wiremd-tablet .wiremd-style-badge {
+	min-height: 36px;
+	min-width: 36px;
+}
+
+/* Touch Active States */
+.wiremd-touch-active {
+	opacity: 0.7;
+	transform: scale(0.98);
+	transition: all 0.1s ease;
+}
+
+.wiremd-style-option.wiremd-touch-active {
+	background-color: var(--background-modifier-hover);
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+	.wiremd-preview-container {
+		padding: 0.75em;
+		margin: 0.75em 0;
+	}
+
+	.wiremd-style-badge {
+		font-size: 0.7em;
+		padding: 3px 8px;
+		top: 6px;
+		right: 6px;
+		min-height: 44px;
+		min-width: 44px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+
+	.wiremd-style-selector {
+		right: 6px;
+		top: 32px;
+		min-width: 240px;
+		max-width: calc(100vw - 40px);
+	}
+
+	.wiremd-style-option {
+		padding: 12px;
+		font-size: 0.95em;
+		min-height: 44px;
+		display: flex;
+		align-items: center;
+		/* Larger touch targets */
+	}
+
+	.wiremd-preview-content {
+		margin-top: 2.5em;
+	}
+}
+
+/* Touch Device Optimizations */
+@media (hover: none) and (pointer: coarse) {
+	.wiremd-style-badge:active {
+		transform: scale(0.95);
+	}
+
+	.wiremd-style-option:active {
+		background-color: var(--background-modifier-active-hover);
+	}
+}
+
+/* Dark Mode Adjustments */
+.theme-dark .wiremd-style-selector {
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+/* Ensure wiremd content doesn't conflict with Obsidian styles */
+.wiremd-preview-content * {
+	max-width: 100%;
+}
+
+.wiremd-preview-content img {
+	max-width: 100%;
+	height: auto;
+}

@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>wiremd Mockup</title>
+  <style>
+
+/* wiremd Sketch Style - Balsamiq-inspired hand-drawn mockups */
+@import url('https://fonts.googleapis.com/css2?family=Kalam:wght@400;700&display=swap');
+
+* {
+  box-sizing: border-box;
+}
+
+body.wmd-root {
+  font-family: 'Kalam', 'Comic Sans MS', 'Marker Felt', 'Chalkboard', cursive, sans-serif;
+  background: #f5f5dc;
+  color: #333;
+  padding: 20px;
+  margin: 0;
+  line-height: 1.6;
+}
+
+/* Headings */
+.wmd-h1, .wmd-h2, .wmd-h3, .wmd-h4, .wmd-h5, .wmd-h6 {
+  font-weight: bold;
+  margin: 1em 0 0.5em;
+  line-height: 1.3;
+}
+
+.wmd-h1 { font-size: 2em; text-decoration: underline; }
+.wmd-h2 { font-size: 1.75em; }
+.wmd-h3 { font-size: 1.5em; }
+.wmd-h4 { font-size: 1.25em; }
+.wmd-h5 { font-size: 1.1em; }
+.wmd-h6 { font-size: 1em; }
+
+/* Paragraph */
+.wmd-paragraph {
+  margin: 0.5em 0;
+}
+
+/* Buttons */
+.wmd-button {
+  display: inline-block;
+  padding: 8px 16px;
+  margin: 4px;
+  background: #fff;
+  border: 2px solid #000;
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 2px 2px 0 rgba(0,0,0,0.2);
+  transform: rotate(-0.5deg);
+  transition: all 0.1s;
+}
+
+.wmd-button:hover {
+  transform: rotate(-0.5deg) translateY(-2px);
+  box-shadow: 3px 3px 0 rgba(0,0,0,0.2);
+}
+
+.wmd-button-primary, .wmd-button.wmd-primary {
+  background: #87CEEB;
+  border-color: #4682B4;
+}
+
+.wmd-button-secondary, .wmd-button.wmd-secondary {
+  background: #DDD;
+  border-color: #999;
+}
+
+.wmd-button-danger, .wmd-button.wmd-danger {
+  background: #FFB6C1;
+  border-color: #DC143C;
+}
+
+.wmd-button[disabled], .wmd-button.wmd-state-disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.wmd-button.wmd-loading::after {
+  content: '...';
+  animation: loading 1s infinite;
+}
+
+/* Inputs */
+.wmd-input, .wmd-textarea, .wmd-select {
+  display: block;
+  width: 100%;
+  max-width: 400px;
+  padding: 8px 12px;
+  margin: 4px 0;
+  font-family: inherit;
+  font-size: 14px;
+  background: #fff;
+  border: 2px solid #666;
+  border-radius: 4px;
+  transform: rotate(0.3deg);
+}
+
+.wmd-input:focus, .wmd-textarea:focus, .wmd-select:focus {
+  outline: 2px solid #4682B4;
+  outline-offset: 2px;
+}
+
+.wmd-input[disabled], .wmd-input.wmd-state-disabled,
+.wmd-textarea[disabled], .wmd-textarea.wmd-state-disabled,
+.wmd-select[disabled], .wmd-select.wmd-state-disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background: #f5f5f5;
+}
+
+.wmd-textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+/* Checkboxes and Radios */
+.wmd-checkbox, .wmd-radio {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 6px 0;
+  cursor: pointer;
+  user-select: none;
+}
+
+.wmd-checkbox input[type="checkbox"],
+.wmd-radio input[type="radio"] {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+}
+
+/* Icons */
+.wmd-icon {
+  display: inline-block;
+  font-size: 1.2em;
+  line-height: 1;
+  vertical-align: middle;
+  margin: 0 0.2em;
+}
+
+/* Containers */
+.wmd-container-hero, .wmd-container-card, .wmd-container-modal {
+  background: #fff;
+  border: 3px solid #000;
+  border-radius: 12px;
+  padding: 24px;
+  margin: 16px 0;
+  box-shadow: 4px 4px 0 rgba(0,0,0,0.15);
+  transform: rotate(-0.3deg);
+}
+
+.wmd-container-hero {
+  background: linear-gradient(135deg, #FFF9E6 0%, #FFE6CC 100%);
+  text-align: center;
+  padding: 48px 24px;
+}
+
+.wmd-container-card {
+  max-width: 400px;
+}
+
+.wmd-container-modal {
+  position: relative;
+  max-width: 500px;
+  margin: 32px auto;
+  border-width: 4px;
+}
+
+/* Radio Groups */
+.wmd-radio-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 8px 0;
+}
+
+.wmd-radio-group-inline {
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.wmd-radio-group-inline .wmd-radio {
+  margin: 0;
+}
+
+/* Icons */
+.wmd-icon {
+  display: inline-block;
+  font-size: 1.2em;
+  line-height: 1;
+  vertical-align: middle;
+  margin: 0 0.2em;
+}
+
+/* Navigation */
+.wmd-nav {
+  background: #87CEEB;
+  border: 3px solid #4682B4;
+  border-radius: 8px;
+  padding: 12px 16px;
+  margin: 16px 0;
+  box-shadow: 3px 3px 0 rgba(0,0,0,0.15);
+}
+
+.wmd-nav-content {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.wmd-brand {
+  font-weight: bold;
+  font-size: 1.2em;
+  margin-right: auto;
+}
+
+.wmd-nav-item {
+  color: #000;
+  text-decoration: none;
+  font-weight: bold;
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+
+.wmd-nav-item:hover {
+  background: rgba(255,255,255,0.3);
+}
+
+.wmd-nav .wmd-button {
+  margin: 0;
+}
+
+/* Grid */
+.wmd-grid {
+  display: grid;
+  grid-template-columns: repeat(var(--grid-columns, 3), 1fr);
+  gap: 24px;
+  margin: 24px 0;
+}
+
+.wmd-grid-2 { grid-template-columns: repeat(2, 1fr); }
+.wmd-grid-3 { grid-template-columns: repeat(3, 1fr); }
+.wmd-grid-4 { grid-template-columns: repeat(4, 1fr); }
+
+.wmd-grid-item {
+  background: #fff;
+  border: 2px solid #666;
+  border-radius: 8px;
+  padding: 16px;
+  box-shadow: 2px 2px 0 rgba(0,0,0,0.1);
+  transform: rotate(0.5deg);
+}
+
+.wmd-grid-item:nth-child(even) {
+  transform: rotate(-0.5deg);
+}
+
+/* Lists */
+.wmd-list {
+  margin: 12px 0;
+  padding-left: 24px;
+}
+
+.wmd-list-item {
+  margin: 4px 0;
+}
+
+/* Blockquote */
+.wmd-blockquote {
+  border-left: 4px solid #666;
+  padding-left: 16px;
+  margin: 16px 0;
+  font-style: italic;
+  color: #555;
+}
+
+/* Code */
+.wmd-code-inline {
+  background: #FFF3CD;
+  border: 1px solid #FFC107;
+  border-radius: 3px;
+  padding: 2px 6px;
+  font-family: 'Courier New', monospace;
+  font-size: 0.9em;
+}
+
+.wmd-code-block {
+  background: #FFF3CD;
+  border: 2px solid #FFC107;
+  border-radius: 6px;
+  padding: 12px;
+  margin: 12px 0;
+  overflow-x: auto;
+}
+
+.wmd-code-block code {
+  font-family: 'Courier New', monospace;
+  font-size: 0.9em;
+}
+
+/* Separator */
+.wmd-separator {
+  border: none;
+  border-top: 3px dashed #666;
+  margin: 24px 0;
+}
+
+/* Table */
+.wmd-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  border: 3px solid #000;
+  border-radius: 8px;
+  margin: 16px 0;
+  overflow: hidden;
+}
+
+.wmd-table th, .wmd-table td {
+  border: 2px solid #666;
+  padding: 8px 12px;
+  text-align: left;
+}
+
+.wmd-table th {
+  background: #DDD;
+  font-weight: bold;
+}
+
+/* Table cell alignment - more specific to override th/td defaults */
+.wmd-table .wmd-align-left {
+  text-align: left !important;
+}
+
+.wmd-table .wmd-align-center {
+  text-align: center !important;
+}
+
+.wmd-table .wmd-align-right {
+  text-align: right !important;
+}
+
+/* State Containers */
+.wmd-container-loading-state {
+  background: #fff;
+  border: 2px solid #87CEEB;
+  border-radius: 8px;
+  padding: 32px;
+  margin: 16px 0;
+  text-align: center;
+  position: relative;
+}
+
+.wmd-container-loading-state::before {
+  content: '⟳';
+  display: block;
+  font-size: 48px;
+  margin-bottom: 16px;
+  animation: spin 1.5s linear infinite;
+  transform-origin: center;
+}
+
+.wmd-container-empty-state {
+  background: #f5f5f5;
+  border: 2px dashed #999;
+  border-radius: 8px;
+  padding: 48px 32px;
+  margin: 16px 0;
+  text-align: center;
+  color: #666;
+}
+
+.wmd-container-empty-state::before {
+  content: '📭';
+  display: block;
+  font-size: 64px;
+  margin-bottom: 16px;
+  opacity: 0.5;
+}
+
+.wmd-container-error-state {
+  background: #FFE6E6;
+  border: 3px solid #DC143C;
+  border-radius: 8px;
+  padding: 32px;
+  margin: 16px 0;
+  text-align: center;
+}
+
+.wmd-container-error-state::before {
+  content: '⚠️';
+  display: block;
+  font-size: 48px;
+  margin-bottom: 16px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .wmd-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .wmd-nav-content {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .wmd-brand {
+    margin-right: 0;
+  }
+}
+
+@keyframes loading {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+  </style>
+</head>
+<body class="wmd-root wmd-sketch">
+  <h1 class="wmd-h1">Portfolio Site</h1>
+<blockquote class="wmd-blockquote">
+  <p class="wmd-paragraph"><strong>Use Case:</strong> Personal portfolio for designers, developers, photographers, or creative professionals.</p>
+  <p class="wmd-paragraph"><strong>Key Features:</strong> Hero introduction, project gallery, skills showcase, contact form, responsive grid</p>
+</blockquote>
+<nav class="wmd-nav">
+  <div class="wmd-nav-content">
+    <a href="#" class="wmd-nav-item">Jane Doe</a>
+    <a href="#" class="wmd-nav-item"></a>
+    <a href="#" class="wmd-nav-item">About</a>
+    <a href="#" class="wmd-nav-item">Contact</a>
+  </div>
+</nav>
+<hr class="wmd-separator" />
+<div class="wmd-container-hero">
+  <h1 class="wmd-h1">Hi, I&#039;m Jane Doe</h1>
+  <p class="wmd-paragraph"><strong>Product Designer & Creative Developer</strong></p>
+  <p class="wmd-paragraph">I design beautiful, functional digital experiences that users love.</p>
+  <p class="wmd-paragraph">[View My Work ↓] [Download Resume] [[email protected]]</p>
+</div>
+<hr class="wmd-separator" />
+<div class="wmd-container-form-group">
+  <img src="https://via.placeholder.com/200x200" alt="Profile Photo" class="wmd-image" />
+</div>
+<hr class="wmd-separator" />
+<h2 class="wmd-h2">Featured Work</h2>
+<div class="wmd-grid wmd-grid-2 wmd-grid-2" style="--grid-columns: 2">
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">E-Commerce Redesign</h3>
+    <div class="wmd-container-form-group">
+  <img src="https://via.placeholder.com/500x350" alt="Project Screenshot" class="wmd-image" />
+</div>
+    <p class="wmd-paragraph"><strong>Mobile App Design</strong> • 2024</p>
+    <p class="wmd-paragraph">Redesigned the shopping experience for 2M+ users, increasing conversion by 35%.</p>
+    <p class="wmd-paragraph"><strong>Skills:</strong> UI/UX, Figma, User Research, A/B Testing</p>
+    <button class="wmd-button">View Case Study →</button>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">SaaS Dashboard</h3>
+    <div class="wmd-container-form-group">
+  <img src="https://via.placeholder.com/500x350" alt="Project Screenshot" class="wmd-image" />
+</div>
+    <p class="wmd-paragraph"><strong>Web Application</strong> • 2024</p>
+    <p class="wmd-paragraph">Analytics platform for B2B customers with real-time data visualization.</p>
+    <p class="wmd-paragraph"><strong>Skills:</strong> React, TypeScript, D3.js, Design System</p>
+    <button class="wmd-button">View Live Site →</button>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Brand Identity</h3>
+    <div class="wmd-container-form-group">
+  <img src="https://via.placeholder.com/500x350" alt="Project Screenshot" class="wmd-image" />
+</div>
+    <p class="wmd-paragraph"><strong>Branding & Marketing</strong> • 2023</p>
+    <p class="wmd-paragraph">Complete brand identity for sustainable fashion startup including logo, guidelines, and website.</p>
+    <p class="wmd-paragraph"><strong>Skills:</strong> Brand Strategy, Illustration, Web Design</p>
+    <button class="wmd-button">View Portfolio →</button>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Mobile Banking App</h3>
+    <div class="wmd-container-form-group">
+  <img src="https://via.placeholder.com/500x350" alt="Project Screenshot" class="wmd-image" />
+</div>
+    <p class="wmd-paragraph"><strong>Fintech Product</strong> • 2023</p>
+    <p class="wmd-paragraph">Secure, accessible banking app serving 500K+ users with 4.8★ rating.</p>
+    <p class="wmd-paragraph"><strong>Skills:</strong> iOS, Swift, Accessibility, Security</p>
+    <button class="wmd-button">View Case Study →</button>
+  </div>
+</div>
+<h2 class="wmd-h2"></h2>
+<hr class="wmd-separator" />
+<h2 class="wmd-h2">All Projects</h2>
+<table class="wmd-table">
+  <thead>
+    <tr>
+      <th class="wmd-table-cell wmd-align-left">Project</th>
+    <th class="wmd-table-cell wmd-align-left">Year</th>
+    <th class="wmd-table-cell wmd-align-left">Type</th>
+    <th class="wmd-table-cell wmd-align-left">Link</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">:art: E-Commerce Platform</td>
+    <td class="wmd-table-cell wmd-align-left">2024</td>
+    <td class="wmd-table-cell wmd-align-left">UI/UX Design</td>
+    <td class="wmd-table-cell wmd-align-left">[View →]</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">:mobile: Fitness Tracking App</td>
+    <td class="wmd-table-cell wmd-align-left">2024</td>
+    <td class="wmd-table-cell wmd-align-left">Mobile Design</td>
+    <td class="wmd-table-cell wmd-align-left">[View →]</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">:chart: Analytics Dashboard</td>
+    <td class="wmd-table-cell wmd-align-left">2024</td>
+    <td class="wmd-table-cell wmd-align-left">Web Development</td>
+    <td class="wmd-table-cell wmd-align-left">[View →]</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">:palette: Brand Identity System</td>
+    <td class="wmd-table-cell wmd-align-left">2023</td>
+    <td class="wmd-table-cell wmd-align-left">Branding</td>
+    <td class="wmd-table-cell wmd-align-left">[View →]</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">:shopping: Marketplace Redesign</td>
+    <td class="wmd-table-cell wmd-align-left">2023</td>
+    <td class="wmd-table-cell wmd-align-left">Product Design</td>
+    <td class="wmd-table-cell wmd-align-left">[View →]</td>
+  </tr>
+    <tr>
+    <td class="wmd-table-cell wmd-align-left">:camera: Photography Portfolio</td>
+    <td class="wmd-table-cell wmd-align-left">2023</td>
+    <td class="wmd-table-cell wmd-align-left">Web Design</td>
+    <td class="wmd-table-cell wmd-align-left">[View →]</td>
+  </tr>
+  </tbody>
+</table>
+<button class="wmd-button">Load More Projects</button>
+<hr class="wmd-separator" />
+<h2 class="wmd-h2">Skills &amp; Expertise</h2>
+<div class="wmd-grid wmd-grid-3 wmd-grid-3" style="--grid-columns: 3">
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">UI/UX Design</h3>
+    <ul class="wmd-list">
+  <li class="wmd-list-item">User Research</li>
+  <li class="wmd-list-item">Wireframing</li>
+  <li class="wmd-list-item">Prototyping</li>
+  <li class="wmd-list-item">User Testing</li>
+  <li class="wmd-list-item">Design Systems</li>
+</ul>
+    <p class="wmd-paragraph"><strong>Tools:</strong> Figma, Sketch, Adobe XD</p>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Visual Design</h3>
+    <ul class="wmd-list">
+  <li class="wmd-list-item">Typography</li>
+  <li class="wmd-list-item">Color Theory</li>
+  <li class="wmd-list-item">Iconography</li>
+  <li class="wmd-list-item">Illustration</li>
+  <li class="wmd-list-item">Brand Identity</li>
+</ul>
+    <p class="wmd-paragraph"><strong>Tools:</strong> Illustrator, Photoshop</p>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Development</h3>
+    <ul class="wmd-list">
+  <li class="wmd-list-item">HTML/CSS</li>
+  <li class="wmd-list-item">JavaScript</li>
+  <li class="wmd-list-item">React/Vue</li>
+  <li class="wmd-list-item">TypeScript</li>
+  <li class="wmd-list-item">Responsive Design</li>
+</ul>
+    <p class="wmd-paragraph"><strong>Tools:</strong> VS Code, Git, Tailwind</p>
+  </div>
+</div>
+<h2 class="wmd-h2"></h2>
+<hr class="wmd-separator" />
+<h2 class="wmd-h2">Tools I Love</h2>
+<nav class="wmd-nav">
+  <div class="wmd-nav-content">
+    <a href="#" class="wmd-nav-item"><span class="wmd-icon" data-icon="figma" aria-label="figma">●</span>Figma</a>
+    <a href="#" class="wmd-nav-item"><span class="wmd-icon" data-icon="sketch" aria-label="sketch">●</span>Sketch</a>
+    <a href="#" class="wmd-nav-item"><span class="wmd-icon" data-icon="adobe" aria-label="adobe">●</span>Adobe CC</a>
+    <a href="#" class="wmd-nav-item"><span class="wmd-icon" data-icon="react" aria-label="react">●</span>React</a>
+    <a href="#" class="wmd-nav-item"><span class="wmd-icon" data-icon="vue" aria-label="vue">●</span>Vue</a>
+    <a href="#" class="wmd-nav-item"><span class="wmd-icon" data-icon="tailwind" aria-label="tailwind">●</span>Tailwind</a>
+  </div>
+</nav>
+<hr class="wmd-separator" />
+<h2 class="wmd-h2">About Me</h2>
+<div class="wmd-container-card">
+  <h3 class="wmd-h3">My Story</h3>
+  <p class="wmd-paragraph">I&#039;m a product designer with 8+ years of experience creating digital experiences that blend beautiful aesthetics with intuitive functionality. I specialize in user-centered design, working closely with cross-functional teams to bring ideas to life.</p>
+  <p class="wmd-paragraph"><strong>Background:</strong></p>
+  <ul class="wmd-list">
+  <li class="wmd-list-item">🎓 BFA in Graphic Design, Rhode Island School of Design</li>
+  <li class="wmd-list-item">💼 Previously at Google, Airbnb, and various startups</li>
+  <li class="wmd-list-item">🏆 Awwwards Site of the Day (3x)</li>
+  <li class="wmd-list-item">📱 Apps featured on App Store (5+)</li>
+</ul>
+  <p class="wmd-paragraph"><strong>When I'm not designing:</strong></p>
+  <ul class="wmd-list">
+  <li class="wmd-list-item">📸 Exploring photography and visual storytelling</li>
+  <li class="wmd-list-item">✈️ Traveling to experience different cultures</li>
+  <li class="wmd-list-item">📚 Reading about psychology and human behavior</li>
+  <li class="wmd-list-item">🎨 Teaching design workshops for beginners</li>
+</ul>
+</div>
+<hr class="wmd-separator" />
+<h2 class="wmd-h2">Recognition &amp; Awards</h2>
+<div class="wmd-grid wmd-grid-4 wmd-grid-4" style="--grid-columns: 4">
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Awwwards</h3>
+    <p class="wmd-paragraph">3x Site of the Day
+2x Mobile Excellence</p>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">App Store</h3>
+    <p class="wmd-paragraph">5 Featured Apps
+4.8 Average Rating</p>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Dribbble</h3>
+    <p class="wmd-paragraph">Top 1% Designer
+50K+ Followers</p>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Speaking</h3>
+    <p class="wmd-paragraph">10+ Conferences
+TEDx Speaker</p>
+  </div>
+</div>
+<h2 class="wmd-h2"></h2>
+<hr class="wmd-separator" />
+<h2 class="wmd-h2">Let&#039;s Work Together</h2>
+<div class="wmd-container-hero">
+  <h1 class="wmd-h1">Have a Project in Mind?</h1>
+  <p class="wmd-paragraph">I&#039;m currently available for freelance work and new opportunities.</p>
+  <div class="wmd-container-button-group">
+  <button class="wmd-button wmd-button-primary">Get in Touch</button>
+  <button class="wmd-button">Schedule Call</button>
+</div>
+</div>
+<hr class="wmd-separator" />
+<h2 class="wmd-h2">Contact Me</h2>
+<div class="wmd-container-card">
+  <h3 class="wmd-h3">Send a Message</h3>
+  <div class="wmd-container-form-group">
+  Name
+  <input type="text" class="wmd-input" required style="width: 29ch; max-width: 29ch;" />
+</div>
+  <div class="wmd-container-form-group">
+  Email
+  <input type="email" class="wmd-input" required style="width: 29ch; max-width: 29ch;" />
+</div>
+  <div class="wmd-container-form-group">
+  Project Type
+  <select class="wmd-select">
+    <option value="" disabled selected>Select type...</option>
+    <option value="Product Design">Product Design</option>
+    <option value="Web Development">Web Development</option>
+    <option value="Branding">Branding</option>
+    <option value="Consulting">Consulting</option>
+    <option value="Other">Other</option>
+  </select>
+</div>
+  <ul class="wmd-list">
+  <li class="wmd-list-item">Product Design</li>
+  <li class="wmd-list-item">Web Development</li>
+  <li class="wmd-list-item">Branding</li>
+  <li class="wmd-list-item">Consulting</li>
+  <li class="wmd-list-item">Other</li>
+</ul>
+  <p class="wmd-paragraph">Budget Range</p>
+  <ul class="wmd-list">
+  <label class="wmd-radio">
+    <input type="radio" />
+    <span>&lt; $5,000</span>
+  </label>
+  <label class="wmd-radio">
+    <input type="radio" checked />
+    <span>$5,000 - $15,000</span>
+  </label>
+  <label class="wmd-radio">
+    <input type="radio" />
+    <span>$15,000 - $50,000</span>
+  </label>
+  <label class="wmd-radio">
+    <input type="radio" />
+    <span>$50,000+</span>
+  </label>
+</ul>
+  <div class="wmd-container-form-group">
+  Message
+  <textarea class="wmd-textarea" rows="6" placeholder="Tell me about your project..." required></textarea>
+</div>
+  <div class="wmd-container-button-group">
+  <button class="wmd-button wmd-button-primary">Send Message</button>
+  <button class="wmd-button">Clear</button>
+</div>
+</div>
+<hr class="wmd-separator" />
+<div class="wmd-container-footer">
+  <h2 class="wmd-h2 wmd-grid-3">Connect</h2>
+  <h3 class="wmd-h3">Work</h3>
+  <ul class="wmd-list">
+  <li class="wmd-list-item">Portfolio</li>
+  <li class="wmd-list-item">Dribbble</li>
+  <li class="wmd-list-item">Behance</li>
+</ul>
+  <h3 class="wmd-h3">Social</h3>
+  <ul class="wmd-list">
+  <li class="wmd-list-item">Twitter</li>
+  <li class="wmd-list-item">LinkedIn</li>
+  <li class="wmd-list-item">Instagram</li>
+</ul>
+  <h3 class="wmd-h3">Contact</h3>
+  <ul class="wmd-list">
+  <li class="wmd-list-item">[[email protected]](mailto:[email protected])</li>
+  <li class="wmd-list-item">+1 (555) 123-4567</li>
+  <li class="wmd-list-item">San Francisco, CA</li>
+</ul>
+  <h2 class="wmd-h2"></h2>
+  <p class="wmd-paragraph">© 2025 Jane Doe. All rights reserved.</p>
+</div>
+<hr class="wmd-separator" />
+<p class="wmd-paragraph"><strong>Style Variations:</strong></p>
+<ul class="wmd-list">
+  <li class="wmd-list-item">sketch - Casual, creative portfolio feel</li>
+  <li class="wmd-list-item">clean - Minimalist, professional presentation</li>
+  <li class="wmd-list-item">wireframe - Focus on content hierarchy</li>
+  <li class="wmd-list-item">tailwind - Modern, colorful personal brand</li>
+  <li class="wmd-list-item">material - Polished, layered design</li>
+  <li class="wmd-list-item">brutal - Bold, artistic statement</li>
+  <li class="wmd-list-item">none - Clean markup for custom styling</li>
+</ul>
+<p class="wmd-paragraph"><strong>Generate this example:</strong></p>
+<pre class="wmd-code-block"><code data-lang="bash">wiremd portfolio.md --style sketch
+wiremd portfolio.md --style clean -o portfolio-clean.html
+wiremd portfolio.md --style brutal -o portfolio-brutal.html</code></pre>
+</body>
+</html>
