@@ -1,6 +1,6 @@
 {
   "name": "wiremd",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "Text-first UI design tool - Create wireframes and mockups using Markdown syntax",
   "type": "module",
   "sideEffects": false,
@@ -25,10 +25,11 @@
     }
   },
   "bin": {
-    "wiremd": "./dist/cli/index.js"
+    "wiremd": "./bin/wiremd.js"
   },
   "files": [
     "dist",
+    "bin",
     "README.md",
     "LICENSE"
   ],

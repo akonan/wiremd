@@ -9,6 +9,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 No unreleased changes yet.
 
+## [0.1.4] - 2025-11-24
+
+### Fixed
+- Fixed npm global installation by adding a proper CLI wrapper (`bin/wiremd.js`)
+- CLI now works correctly when installed via `npm install -g wiremd`
+- Wrapper explicitly calls `main()` function to ensure proper execution
+
+### Changed
+- Changed bin entry point from `./dist/cli/index.js` to `./bin/wiremd.js`
+- Added `bin` directory to published files
+
 ## [0.1.3] - 2025-11-24
 
 ### Fixed
