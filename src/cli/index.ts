@@ -11,6 +11,7 @@
 
 import { readFileSync, writeFileSync, existsSync, statSync } from 'fs';
 import { resolve, dirname, join } from 'path';
+import { pathToFileURL } from 'url';
 import { parse } from '../parser/index.js';
 import { renderToHTML, renderToJSON } from '../renderer/index.js';
 import { startServer, notifyReload, notifyError } from './server.js';
@@ -457,6 +458,8 @@ export function main(): void {
 }
 
 // Only run main() if this file is executed directly (not imported)
-if (import.meta.url === `file://${process.argv[1]}`) {
+// Use pathToFileURL to handle Windows paths correctly
+const isMainModule = import.meta.url === pathToFileURL(process.argv[1]).href;
+if (isMainModule) {
   main();
 }

@@ -198,21 +198,22 @@ wiremd has a native **Obsidian plugin** that brings live wireframe previews dire
 - **Mobile Optimized**: Touch-friendly interface with responsive design
 - **Command Palette Integration**: Access all features via Obsidian commands
 
-### Quick Start
+### Installation
 
-1. **Install the plugin** in your Obsidian vault:
+1. **Clone the plugin** into your Obsidian vault's plugins folder:
    ```bash
    cd /path/to/your/vault/.obsidian/plugins/
-   git clone https://github.com/akonan/wiremd.git
-   cd wiremd/obsidian-plugin
+   git clone https://github.com/akonan/wiremd-obsidian.git wiremd-preview
+   cd wiremd-preview
    npm install
    npm run build
    ```
 
 2. **Enable the plugin** in Obsidian:
-   - Open Obsidian Settings → Community Plugins
-   - Reload plugins
-   - Enable "Wiremd Preview"
+   - Open Settings → Community Plugins
+   - Turn off "Safe mode" if needed
+   - Click "Reload" to refresh the plugins list
+   - Find "Wiremd Preview" and toggle it on
 
 3. **Create wiremd blocks** in your notes:
    ````markdown
@@ -240,7 +241,7 @@ The plugin will automatically render a live preview with your chosen style!
 - **Export all styles** - Export in all 7 styles at once
 - **Copy to clipboard** - Copy rendered HTML to clipboard
 
-See [obsidian-plugin/README.md](./obsidian-plugin/README.md) for complete documentation.
+See the [wiremd-obsidian repository](https://github.com/akonan/wiremd-obsidian) for complete documentation.
 
 ## Programmatic API
 
