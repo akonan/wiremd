@@ -13,7 +13,7 @@ import { readFileSync, writeFileSync, existsSync, statSync } from 'fs';
 import { resolve, dirname, join } from 'path';
 import { pathToFileURL } from 'url';
 import { parse } from '../parser/index.js';
-import { renderToHTML, renderToJSON } from '../renderer/index.js';
+import { renderToHTML, renderToJSON, renderToPDFFile, renderToImageFile, renderToSVGFile, type ImageFormat } from '../renderer/index.js';
 import { startServer, notifyReload, notifyError } from './server.js';
 import chokidar from 'chokidar';
 import chalk from 'chalk';
@@ -21,13 +21,20 @@ import chalk from 'chalk';
 export interface CLIOptions {
   input: string;
   output?: string;
-  format?: 'html' | 'json';
-  style?: 'sketch' | 'clean' | 'wireframe' | 'none';
+  format?: 'html' | 'json' | 'pdf' | 'png' | 'svg' | 'jpeg' | 'webp';
+  style?: 'sketch' | 'clean' | 'wireframe' | 'none' | 'tailwind' | 'material' | 'brutal';
   watch?: boolean;
   serve?: number;
   pretty?: boolean;
   watchPattern?: string;
   ignorePattern?: string;
+  // PDF specific options
+  pageSize?: 'A4' | 'A3' | 'Letter' | 'Legal' | 'Tabloid';
+  landscape?: boolean;
+  // Image specific options
+  width?: number;
+  height?: number;
+  scale?: number; // Device scale factor for images (2x, 3x)
 }
 
 export function showHelp(): void {
@@ -41,14 +48,24 @@ USAGE:
   wiremd <input.md> [options]
 
 OPTIONS:
-  -o, --output <file>        Output file path (default: <input>.html)
-  -f, --format <format>      Output format: html, json (default: html)
+  -o, --output <file>        Output file path (default: <input>.<ext>)
+  -f, --format <format>      Output format: html, json, pdf, png, svg, jpeg, webp (default: html)
   -s, --style <style>        Visual style: sketch, clean, wireframe, none, tailwind, material, brutal (default: sketch)
   -w, --watch                Watch for changes and regenerate
   --serve <port>             Start dev server with live-reload (default: 3000)
   --watch-pattern <pattern>  Glob pattern for files to watch (e.g., "**/*.md")
   --ignore <pattern>         Glob pattern for files to ignore (e.g., "**/node_modules/**")
   -p, --pretty               Pretty print output (default: true)
+
+  PDF OPTIONS:
+  --page-size <size>         PDF page size: A4, A3, Letter, Legal, Tabloid (default: A4)
+  --landscape                Use landscape orientation for PDF
+
+  IMAGE OPTIONS:
+  --width <pixels>           Width for image export (default: 1200)
+  --height <pixels>          Height for image export (default: 800)
+  --scale <factor>           Device scale factor for high-DPI (e.g., 2 for 2x) (default: 1)
+
   -h, --help                 Show this help message
   -v, --version              Show version number
 
@@ -70,6 +87,15 @@ EXAMPLES:
 
   # Generate JSON output
   wiremd wireframe.md --format json
+
+  # Export to PDF
+  wiremd wireframe.md --format pdf -o wireframe.pdf --page-size A4
+
+  # Export to PNG with high resolution
+  wiremd wireframe.md --format png --width 1920 --height 1080 --scale 2
+
+  # Export to SVG
+  wiremd wireframe.md --format svg -o wireframe.svg
 
 STYLES:
   sketch     - Balsamiq-inspired hand-drawn look (default)
@@ -127,11 +153,12 @@ export function parseArgs(args: string[]): CLIOptions | null {
       case '-f':
       case '--format': {
         const format = args[++i];
-        if (format !== 'html' && format !== 'json') {
-          console.error(`Error: Invalid format "${format}". Must be html or json.`);
+        const validFormats = ['html', 'json', 'pdf', 'png', 'svg', 'jpeg', 'webp'];
+        if (!validFormats.includes(format)) {
+          console.error(`Error: Invalid format "${format}". Must be one of: ${validFormats.join(', ')}.`);
           process.exit(1);
         }
-        options.format = format;
+        options.format = format as any;
         break;
       }
 
@@ -171,6 +198,51 @@ export function parseArgs(args: string[]): CLIOptions | null {
       case '--pretty':
         options.pretty = true;
         break;
+
+      case '--page-size': {
+        const pageSize = args[++i];
+        const validPageSizes = ['A4', 'A3', 'Letter', 'Legal', 'Tabloid'];
+        if (!validPageSizes.includes(pageSize)) {
+          console.error(`Error: Invalid page size "${pageSize}". Must be one of: ${validPageSizes.join(', ')}.`);
+          process.exit(1);
+        }
+        options.pageSize = pageSize as any;
+        break;
+      }
+
+      case '--landscape':
+        options.landscape = true;
+        break;
+
+      case '--width': {
+        const width = parseInt(args[++i], 10);
+        if (isNaN(width) || width <= 0) {
+          console.error('Error: --width must be a positive number');
+          process.exit(1);
+        }
+        options.width = width;
+        break;
+      }
+
+      case '--height': {
+        const height = parseInt(args[++i], 10);
+        if (isNaN(height) || height <= 0) {
+          console.error('Error: --height must be a positive number');
+          process.exit(1);
+        }
+        options.height = height;
+        break;
+      }
+
+      case '--scale': {
+        const scale = parseFloat(args[++i]);
+        if (isNaN(scale) || scale <= 0) {
+          console.error('Error: --scale must be a positive number');
+          process.exit(1);
+        }
+        options.scale = scale;
+        break;
+      }
 
       default:
         if (arg.startsWith('-')) {
@@ -223,8 +295,8 @@ export function checkFileSize(filePath: string): void {
   }
 }
 
-export function generateOutput(options: CLIOptions): string {
-  const { input, format, style, pretty } = options;
+export async function generateOutput(options: CLIOptions): Promise<string | Buffer | void> {
+  const { input, format, style, pretty, output } = options;
 
   // Check if input file exists
   if (!existsSync(input)) {
@@ -241,14 +313,53 @@ export function generateOutput(options: CLIOptions): string {
   const ast = parse(markdown);
 
   // Render to output format
-  if (format === 'json') {
-    return renderToJSON(ast, { pretty });
-  } else {
-    return renderToHTML(ast, { style, pretty, inlineStyles: true });
+  switch (format) {
+    case 'json':
+      return renderToJSON(ast, { pretty });
+
+    case 'pdf':
+      if (!output) {
+        throw new Error('Output file path is required for PDF export');
+      }
+      await renderToPDFFile(ast, output, {
+        style,
+        pageSize: options.pageSize,
+        landscape: options.landscape,
+      });
+      return; // PDF writes directly to file
+
+    case 'png':
+    case 'jpeg':
+    case 'webp':
+      if (!output) {
+        throw new Error(`Output file path is required for ${format.toUpperCase()} export`);
+      }
+      await renderToImageFile(ast, output, format as ImageFormat, {
+        style,
+        width: options.width,
+        height: options.height,
+        deviceScaleFactor: options.scale,
+      });
+      return; // Image writes directly to file
+
+    case 'svg':
+      if (!output) {
+        throw new Error('Output file path is required for SVG export');
+      }
+      await renderToSVGFile(ast, output, {
+        style,
+        width: options.width,
+        height: options.height,
+      });
+      return; // SVG writes directly to file
+
+    case 'html':
+    default:
+      return renderToHTML(ast, { style, pretty, inlineStyles: true });
   }
 }
 
-export function main(): void {
+export async function main(): Promise<void> {
   const args = process.argv.slice(2);
 
   if (args.length === 0) {
@@ -262,9 +373,18 @@ export function main(): void {
     process.exit(0);
   }
 
-  // Determine output path
+  // Determine output path based on format
   if (!options.output) {
-    const ext = options.format === 'json' ? '.json' : '.html';
+    const formatExtensions: Record<string, string> = {
+      'json': '.json',
+      'html': '.html',
+      'pdf': '.pdf',
+      'png': '.png',
+      'svg': '.svg',
+      'jpeg': '.jpg',
+      'webp': '.webp',
+    };
+    const ext = formatExtensions[options.format || 'html'] || '.html';
     options.output = options.input.replace(/\.md$/, ext);
   }
 
@@ -274,8 +394,12 @@ export function main(): void {
 
     // Initial generation
     try {
-      const output = generateOutput(options);
-      writeFileSync(options.output, output, 'utf-8');
+      const output = await generateOutput(options);
+      if (output) {
+        // For HTML and JSON, we need to write the output
+        writeFileSync(options.output, output, 'utf-8');
+      }
+      // For PDF/image formats, generateOutput writes directly to file
       logger.success(`Generated: ${chalk.bold(options.output)}`);
       logger.style(`Style: ${chalk.bold(options.style)}`);
       logger.format(`Format: ${chalk.bold(options.format)}`);
@@ -365,8 +489,12 @@ export function main(): void {
         }
 
         // Regenerate
-        const output = generateOutput(options);
-        writeFileSync(options.output!, output, 'utf-8');
+        const output = await generateOutput(options);
+        if (output) {
+          // For HTML and JSON, we need to write the output
+          writeFileSync(options.output!, output, 'utf-8');
+        }
+        // For PDF/image formats, generateOutput writes directly to file
 
         const timestamp = chalk.dim(new Date().toLocaleTimeString());
         logger.success(`Regenerated: ${chalk.bold(options.output!)} ${timestamp}`);
@@ -444,10 +572,13 @@ export function main(): void {
   logger.info(`Parsing: ${chalk.bold(options.input)}`);
 
   try {
-    const output = generateOutput(options);
+    const output = await generateOutput(options);
 
-    // Write output
-    writeFileSync(options.output, output, 'utf-8');
+    // Write output (for HTML and JSON)
+    if (output) {
+      writeFileSync(options.output, output, 'utf-8');
+    }
+    // For PDF/image formats, generateOutput writes directly to file
     logger.success(`Generated: ${chalk.bold(options.output)}`);
     logger.style(`Style: ${chalk.bold(options.style)}`);
     logger.format(`Format: ${chalk.bold(options.format)}`);
