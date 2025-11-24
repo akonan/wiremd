@@ -12,6 +12,8 @@ import { renderNode } from './html-renderer.js';
 import { getStyleCSS } from './styles.js';
 import * as ReactRenderer from './react-renderer.js';
 import * as TailwindRenderer from './tailwind-renderer.js';
+import { renderToPDF, renderToPDFFile, type PDFRenderOptions } from './pdf-renderer.js';
+import { renderToImage, renderToImageFile, renderToSVG, renderToSVGFile, type ImageRenderOptions, type ImageFormat } from './image-renderer.js';
 
 /**
  * Render wiremd AST to HTML
@@ -208,3 +210,16 @@ export function render(ast: DocumentNode, options: RenderOptions = {}): string {
 
   return renderToHTML(ast, options);
 }
+
+// Export new render functions
+export {
+  renderToPDF,
+  renderToPDFFile,
+  renderToImage,
+  renderToImageFile,
+  renderToSVG,
+  renderToSVGFile,
+  type PDFRenderOptions,
+  type ImageRenderOptions,
+  type ImageFormat,
+};

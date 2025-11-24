@@ -79,7 +79,7 @@ This creates a responsive 3-column grid layout with icons and descriptions.
 - ✅ **Visual syntax** - Looks like what it renders
 - ✅ **Fast to write** - Intuitive shortcuts for common patterns
 - ✅ **Extensible** - Add classes and attributes as needed
-- ✅ **Multiple outputs** - HTML, JSON, React (JSX/TSX), Tailwind CSS, Figma (via plugin)
+- ✅ **Multiple outputs** - HTML, JSON, React (JSX/TSX), Tailwind CSS, PDF, PNG, SVG, JPEG, WebP, Figma (via plugin)
 - ✅ **7 visual styles** - sketch (Balsamiq-inspired), clean, wireframe, tailwind, material, brutal, none
 - ✅ **Full CLI tool** - Watch mode, live-reload dev server, style switching
 - ✅ **Rich examples** - Showcase files demonstrating all styles
@@ -153,7 +153,63 @@ wiremd wireframe.md --watch --serve 3000
 wiremd wireframe.md --format json      # JSON AST output
 wiremd wireframe.md --format react     # React/JSX component
 wiremd wireframe.md --format tailwind  # HTML with Tailwind CSS classes
+
+# Export to PDF (requires puppeteer: npm install puppeteer)
+wiremd wireframe.md --format pdf -o wireframe.pdf
+wiremd wireframe.md --format pdf --page-size A3 --landscape
+
+# Export to images (requires puppeteer: npm install puppeteer)
+wiremd wireframe.md --format png -o wireframe.png
+wiremd wireframe.md --format png --width 1920 --height 1080 --scale 2  # 2x resolution
+wiremd wireframe.md --format svg -o wireframe.svg
+wiremd wireframe.md --format jpeg -o wireframe.jpg
+wiremd wireframe.md --format webp -o wireframe.webp
 ```
+
+## Export Options
+
+wiremd supports multiple export formats for different use cases:
+
+### PDF Export
+Perfect for documentation, client presentations, and print-ready materials.
+
+```bash
+# Basic PDF export
+wiremd design.md --format pdf -o design.pdf
+
+# Customize page size and orientation
+wiremd design.md --format pdf --page-size A3 --landscape
+
+# Available page sizes: A4, A3, Letter, Legal, Tabloid
+```
+
+### Image Export
+Export wireframes as images for embedding in presentations, documentation, or design tools.
+
+```bash
+# PNG export (best for screenshots)
+wiremd design.md --format png -o design.png
+
+# High-resolution export (2x or 3x for retina displays)
+wiremd design.md --format png --width 1920 --height 1080 --scale 2
+
+# SVG export (scalable vector graphics)
+wiremd design.md --format svg -o design.svg
+
+# JPEG export (smaller file sizes)
+wiremd design.md --format jpeg -o design.jpg
+
+# WebP export (modern format, best compression)
+wiremd design.md --format webp -o design.webp
+```
+
+### Export Requirements
+- **PDF and Image exports** require Puppeteer to be installed as an optional dependency:
+  ```bash
+  npm install puppeteer
+  ```
+- Puppeteer will automatically download Chromium for headless rendering
+- All visual styles (sketch, clean, wireframe, etc.) are fully supported in exports
 
 ## Exporting to Figma
 

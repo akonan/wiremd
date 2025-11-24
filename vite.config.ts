@@ -31,6 +31,11 @@ export default defineConfig({
           'util', 'events', 'buffer', 'process', 'url', 'querystring',
           'fs/promises'
         ];
+        // Also exclude puppeteer since it's an optional dependency
+        // and should not be bundled
+        if (id === 'puppeteer' || id.startsWith('puppeteer/')) {
+          return true;
+        }
         return nodeBuiltins.includes(id);
       },
       output: {
