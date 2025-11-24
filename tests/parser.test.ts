@@ -64,6 +64,50 @@ describe('Parser', () => {
         },
       });
     });
+
+    it('should parse button with text after', () => {
+      const result = parse('[Sign In] Forgot password?');
+      expect(result.children[0]).toMatchObject({
+        type: 'paragraph',
+      });
+      expect(result.children[0].children).toHaveLength(2);
+      expect(result.children[0].children[0]).toMatchObject({
+        type: 'button',
+        content: 'Sign In',
+      });
+      expect(result.children[0].children[1]).toMatchObject({
+        type: 'text',
+        content: ' Forgot password?',
+      });
+    });
+
+    it('should parse text with button after', () => {
+      const result = parse("Don't have an account? [Sign Up]");
+      expect(result.children[0]).toMatchObject({
+        type: 'paragraph',
+      });
+      expect(result.children[0].children).toHaveLength(2);
+      expect(result.children[0].children[0]).toMatchObject({
+        type: 'text',
+        content: "Don't have an account? ",
+      });
+      expect(result.children[0].children[1]).toMatchObject({
+        type: 'button',
+        content: 'Sign Up',
+      });
+    });
+
+    it('should parse multiple buttons with text', () => {
+      const result = parse('[Save] or [Cancel] this operation');
+      expect(result.children[0]).toMatchObject({
+        type: 'paragraph',
+      });
+      expect(result.children[0].children).toHaveLength(4);
+      expect(result.children[0].children[0].type).toBe('button');
+      expect(result.children[0].children[1].type).toBe('text');
+      expect(result.children[0].children[2].type).toBe('button');
+      expect(result.children[0].children[3].type).toBe('text');
+    });
   });
 
   describe('Input Syntax', () => {
@@ -123,6 +167,33 @@ describe('Parser', () => {
       expect(result.children[0].children[0]).toMatchObject({
         type: 'checkbox',
         label: 'Checked item',
+        checked: true,
+      });
+    });
+
+    it('should parse standalone unchecked checkbox', () => {
+      const result = parse('[ ] Remember me');
+      expect(result.children[0]).toMatchObject({
+        type: 'checkbox',
+        label: 'Remember me',
+        checked: false,
+      });
+    });
+
+    it('should parse standalone checked checkbox', () => {
+      const result = parse('[x] Keep me logged in');
+      expect(result.children[0]).toMatchObject({
+        type: 'checkbox',
+        label: 'Keep me logged in',
+        checked: true,
+      });
+    });
+
+    it('should parse standalone checkbox with uppercase X', () => {
+      const result = parse('[X] Agree to terms');
+      expect(result.children[0]).toMatchObject({
+        type: 'checkbox',
+        label: 'Agree to terms',
         checked: true,
       });
     });

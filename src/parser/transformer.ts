@@ -519,6 +519,28 @@ function transformParagraph(node: any, _options: ParseOptions, nextNode?: any): 
   // Clean up trailing ::: from container closing markers
   content = content.replace(/\s*:::\s*$/, '').trim();
 
+  // Check for standalone checkbox: [ ] or [x] or [X]
+  const checkboxMatch = content.match(/^\[\s*([xX ])\s*\]\s+(.+)$/);
+  if (checkboxMatch) {
+    const checked = checkboxMatch[1].toLowerCase() === 'x';
+    let label = checkboxMatch[2];
+
+    // Extract attributes from label if present
+    const attrMatch = label.match(/^(.+?)(\{[^}]+\})$/);
+    let props: any = {};
+    if (attrMatch) {
+      label = attrMatch[1].trim();
+      props = parseAttributes(attrMatch[2]);
+    }
+
+    return {
+      type: 'checkbox',
+      label,
+      checked,
+      props,
+    };
+  }
+
   // Check for inline radio buttons: (*) Option1 ( ) Option2 ( ) Option3
   // Must have at least 2 radio button patterns on the same line
   const radioPattern = /\(([*•x ])\)\s+([^(]+?)(?=\s*\(|$)/g;
@@ -1004,6 +1026,36 @@ function transformParagraph(node: any, _options: ParseOptions, nextNode?: any): 
           containerType: 'button-group',
           props: {},
           children: buttons as any[],
+        };
+      } else if (remainingText) {
+        // Button(s) with text - create paragraph with mixed content
+        const children: WiremdNode[] = [];
+        let lastIndex = 0;
+        const buttonMatches = Array.from(content.matchAll(/\[([^\]]+)\](\*)?(?:\s*(\{[^}]*\}))?/g));
+
+        buttonMatches.forEach((match, idx) => {
+          // Add text before button
+          const textBefore = content.substring(lastIndex, match.index);
+          if (textBefore.trim()) {
+            children.push({ type: 'text', content: textBefore, props: {} });
+          }
+
+          // Add button
+          children.push(buttons[idx]);
+
+          lastIndex = match.index! + match[0].length;
+        });
+
+        // Add remaining text after last button
+        const textAfter = content.substring(lastIndex);
+        if (textAfter.trim()) {
+          children.push({ type: 'text', content: textAfter, props: {} });
+        }
+
+        return {
+          type: 'paragraph',
+          children: children as any,
+          props: {},
         };
       }
       // Fallthrough to paragraph if there's mixed content
