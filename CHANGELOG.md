@@ -9,6 +9,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 No unreleased changes yet.
 
+## [0.1.2] - 2025-11-24
+
+### Fixed
+- CLI now returns exit code 1 (error) when called without arguments instead of 0 (success)
+- Improved error handling for missing input files
+
+### Added
+- Comprehensive test coverage for CLI error scenarios
+- New test file: `tests/cli-file-not-found.test.ts`
+
 ## [0.1.0] - 2025-01-22
 
 ### Added
