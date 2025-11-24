@@ -250,8 +250,9 @@ export function main(): void {
   const args = process.argv.slice(2);
 
   if (args.length === 0) {
-    showHelp();
-    process.exit(0);
+    console.error('Error: No input file specified');
+    console.error('Run "wiremd --help" for usage information.\n');
+    process.exit(1);
   }
 
   const options = parseArgs(args);

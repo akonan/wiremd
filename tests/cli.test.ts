@@ -252,10 +252,15 @@ describe('CLI', () => {
       }).toThrow();
     });
 
-    it('should show help when no input specified', () => {
-      // CLI shows help instead of throwing error
-      const result = execSync('node dist/cli/index.js', { encoding: 'utf-8' });
-      expect(result).toContain('USAGE:');
+    it('should error with exit code 1 when no input specified', () => {
+      // CLI should exit with error when no input is provided
+      let exitCode = 0;
+      try {
+        execSync('node dist/cli/index.js', { encoding: 'utf-8', stdio: 'pipe' });
+      } catch (error: any) {
+        exitCode = error.status;
+      }
+      expect(exitCode).toBe(1);
     });
   });
 
