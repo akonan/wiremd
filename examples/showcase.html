@@ -7,12 +7,14 @@
   <style>
 
 /* wiremd Sketch Style - Balsamiq-inspired hand-drawn mockups */
+@import url('https://fonts.googleapis.com/css2?family=Kalam:wght@400;700&display=swap');
+
 * {
   box-sizing: border-box;
 }
 
 body.wmd-root {
-  font-family: 'Comic Sans MS', 'Marker Felt', 'Chalkboard', cursive, sans-serif;
+  font-family: 'Kalam', 'Comic Sans MS', 'Marker Felt', 'Chalkboard', cursive, sans-serif;
   background: #f5f5dc;
   color: #333;
   padding: 20px;
@@ -224,15 +226,23 @@ body.wmd-root {
 }
 
 .wmd-nav-item {
+  display: inline-block;
   color: #000;
   text-decoration: none;
   font-weight: bold;
-  padding: 4px 8px;
-  border-radius: 4px;
+  padding: 6px 14px;
+  background: #fff;
+  border: 2px solid #000;
+  border-radius: 6px;
+  box-shadow: 2px 2px 0 rgba(0,0,0,0.15);
+  transform: rotate(0.3deg);
+  transition: all 0.1s;
 }
 
 .wmd-nav-item:hover {
-  background: rgba(255,255,255,0.3);
+  transform: rotate(0.3deg) translateY(-1px);
+  box-shadow: 2px 3px 0 rgba(0,0,0,0.15);
+  background: #f8f8f8;
 }
 
 .wmd-nav .wmd-button {
@@ -449,6 +459,52 @@ body.wmd-root {
   <li class="wmd-list-item">none - Unstyled semantic HTML for custom CSS</li>
 </ul>
 </blockquote>
+<h2 class="wmd-h2">Table of Contents</h2>
+<ul class="wmd-list">
+  <li class="wmd-list-item">📝 Standard Markdown Support</li>
+  <li class="wmd-list-item">🔘 Buttons</li>
+  <li class="wmd-list-item">📋 Forms &amp; Inputs<ul class="wmd-list">
+  <li class="wmd-list-item">Text Inputs with Labels</li>
+  <li class="wmd-list-item">Input Types &amp; Attributes</li>
+  <li class="wmd-list-item">Textarea</li>
+  <li class="wmd-list-item">Checkboxes</li>
+  <li class="wmd-list-item">Radio Buttons</li>
+  <li class="wmd-list-item">Dropdown/Select</li>
+</ul></li>
+  <li class="wmd-list-item">🗂️ Navigation<ul class="wmd-list">
+  <li class="wmd-list-item">Navigation Bar</li>
+  <li class="wmd-list-item">Breadcrumbs</li>
+</ul></li>
+  <li class="wmd-list-item">📦 Containers<ul class="wmd-list">
+  <li class="wmd-list-item">Card Container</li>
+  <li class="wmd-list-item">Hero Section</li>
+  <li class="wmd-list-item">Alert Types</li>
+  <li class="wmd-list-item">Modal Dialog</li>
+  <li class="wmd-list-item">Sidebar</li>
+  <li class="wmd-list-item">Footer</li>
+</ul></li>
+  <li class="wmd-list-item">🏗️ Grid Layouts<ul class="wmd-list">
+  <li class="wmd-list-item">2-Column Grid</li>
+  <li class="wmd-list-item">3-Column Grid</li>
+  <li class="wmd-list-item">4-Column Grid</li>
+</ul></li>
+  <li class="wmd-list-item">📊 Tables</li>
+  <li class="wmd-list-item">🎨 Icons</li>
+  <li class="wmd-list-item">🎯 Component States</li>
+  <li class="wmd-list-item">🎛️ Interactive Components</li>
+  <li class="wmd-list-item">✅ Common Patterns &amp; Best Practices<ul class="wmd-list">
+  <li class="wmd-list-item">Complete Form Example</li>
+  <li class="wmd-list-item">Dashboard Layout</li>
+</ul></li>
+  <li class="wmd-list-item">🚀 Complete Page Example</li>
+</ul>
+<p class="wmd-paragraph"><strong>Quick Links:</strong></p>
+<ul class="wmd-list">
+  <li class="wmd-list-item">Quick Reference - One-page syntax cheat sheet</li>
+  <li class="wmd-list-item">FAQ - Common questions and troubleshooting</li>
+  <li class="wmd-list-item">Syntax Guide - User-friendly guide</li>
+  <li class="wmd-list-item">Formal Specification - Technical specification</li>
+</ul>
 <hr class="wmd-separator" />
 <h2 class="wmd-h2">📝 Standard Markdown Support</h2>
 <p class="wmd-paragraph">wiremd supports all standard <a href="https://www.markdownguide.org/basic-syntax/">Markdown syntax</a> including:</p>
