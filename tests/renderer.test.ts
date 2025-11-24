@@ -120,6 +120,25 @@ Content
       expect(html).toContain('Home');
       expect(html).toContain('Sign In');
     });
+
+    it('should render navigation items with button styling', () => {
+      const input = `[[ Logo | Sign In | Help ]]`;
+      const ast = parse(input);
+      const html = renderToHTML(ast, { style: 'sketch' });
+
+      // Check that nav items are rendered as links with proper classes
+      expect(html).toContain('class="wmd-nav-item"');
+      expect(html).toContain('Logo');
+      expect(html).toContain('Sign In');
+      expect(html).toContain('Help');
+
+      // Check that the CSS includes button-like styling for nav items
+      expect(html).toContain('.wmd-nav-item');
+      expect(html).toMatch(/\.wmd-nav-item\s*\{[^}]*display:\s*inline-block/);
+      expect(html).toMatch(/\.wmd-nav-item\s*\{[^}]*background:\s*#fff/);
+      expect(html).toMatch(/\.wmd-nav-item\s*\{[^}]*border:\s*2px solid/);
+      expect(html).toMatch(/\.wmd-nav-item\s*\{[^}]*box-shadow/);
+    });
   });
 
   describe('Grid Layout', () => {

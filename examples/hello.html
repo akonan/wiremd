@@ -7,12 +7,14 @@
   <style>
 
 /* wiremd Sketch Style - Balsamiq-inspired hand-drawn mockups */
+@import url('https://fonts.googleapis.com/css2?family=Kalam:wght@400;700&display=swap');
+
 * {
   box-sizing: border-box;
 }
 
 body.wmd-root {
-  font-family: 'Comic Sans MS', 'Marker Felt', 'Chalkboard', cursive, sans-serif;
+  font-family: 'Kalam', 'Comic Sans MS', 'Marker Felt', 'Chalkboard', cursive, sans-serif;
   background: #f5f5dc;
   color: #333;
   padding: 20px;
@@ -106,6 +108,14 @@ body.wmd-root {
   outline-offset: 2px;
 }
 
+.wmd-input[disabled], .wmd-input.wmd-state-disabled,
+.wmd-textarea[disabled], .wmd-textarea.wmd-state-disabled,
+.wmd-select[disabled], .wmd-select.wmd-state-disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background: #f5f5f5;
+}
+
 .wmd-textarea {
   resize: vertical;
   min-height: 80px;
@@ -131,27 +141,11 @@ body.wmd-root {
 /* Icons */
 .wmd-icon {
   display: inline-block;
-  width: 1.2em;
-  height: 1.2em;
-  margin: 0 4px;
-  vertical-align: middle;
-}
-
-.wmd-icon::before {
-  content: '◉';
   font-size: 1.2em;
+  line-height: 1;
+  vertical-align: middle;
+  margin: 0 0.2em;
 }
-
-.wmd-icon[data-icon="house"]::before { content: '🏠'; }
-.wmd-icon[data-icon="user"]::before { content: '👤'; }
-.wmd-icon[data-icon="gear"]::before { content: '⚙️'; }
-.wmd-icon[data-icon="logo"]::before { content: '⭐'; }
-.wmd-icon[data-icon="rocket"]::before { content: '🚀'; }
-.wmd-icon[data-icon="shield"]::before { content: '🛡️'; }
-.wmd-icon[data-icon="zap"]::before { content: '⚡'; }
-.wmd-icon[data-icon="magnifying-glass"]::before { content: '🔍'; }
-.wmd-icon[data-icon="bell"]::before { content: '🔔'; }
-.wmd-icon[data-icon="inbox"]::before { content: '📥'; }
 
 /* Containers */
 .wmd-container-hero, .wmd-container-card, .wmd-container-modal {
@@ -179,6 +173,33 @@ body.wmd-root {
   max-width: 500px;
   margin: 32px auto;
   border-width: 4px;
+}
+
+/* Radio Groups */
+.wmd-radio-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 8px 0;
+}
+
+.wmd-radio-group-inline {
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.wmd-radio-group-inline .wmd-radio {
+  margin: 0;
+}
+
+/* Icons */
+.wmd-icon {
+  display: inline-block;
+  font-size: 1.2em;
+  line-height: 1;
+  vertical-align: middle;
+  margin: 0 0.2em;
 }
 
 /* Navigation */
@@ -317,6 +338,73 @@ body.wmd-root {
   font-weight: bold;
 }
 
+/* Table cell alignment - more specific to override th/td defaults */
+.wmd-table .wmd-align-left {
+  text-align: left !important;
+}
+
+.wmd-table .wmd-align-center {
+  text-align: center !important;
+}
+
+.wmd-table .wmd-align-right {
+  text-align: right !important;
+}
+
+/* State Containers */
+.wmd-container-loading-state {
+  background: #fff;
+  border: 2px solid #87CEEB;
+  border-radius: 8px;
+  padding: 32px;
+  margin: 16px 0;
+  text-align: center;
+  position: relative;
+}
+
+.wmd-container-loading-state::before {
+  content: '⟳';
+  display: block;
+  font-size: 48px;
+  margin-bottom: 16px;
+  animation: spin 1.5s linear infinite;
+  transform-origin: center;
+}
+
+.wmd-container-empty-state {
+  background: #f5f5f5;
+  border: 2px dashed #999;
+  border-radius: 8px;
+  padding: 48px 32px;
+  margin: 16px 0;
+  text-align: center;
+  color: #666;
+}
+
+.wmd-container-empty-state::before {
+  content: '📭';
+  display: block;
+  font-size: 64px;
+  margin-bottom: 16px;
+  opacity: 0.5;
+}
+
+.wmd-container-error-state {
+  background: #FFE6E6;
+  border: 3px solid #DC143C;
+  border-radius: 8px;
+  padding: 32px;
+  margin: 16px 0;
+  text-align: center;
+}
+
+.wmd-container-error-state::before {
+  content: '⚠️';
+  display: block;
+  font-size: 48px;
+  margin-bottom: 16px;
+}
+
 /* Responsive */
 @media (max-width: 768px) {
   .wmd-grid {
@@ -338,21 +426,32 @@ body.wmd-root {
   50% { opacity: 0.5; }
 }
 
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
   </style>
 </head>
 <body class="wmd-root wmd-sketch">
   <h2 class="wmd-h2">Login Form</h2>
-<p class="wmd-paragraph">Username
-[_____________________________]{required}</p>
-<p class="wmd-paragraph">Password
-[*****************************]{required}</p>
+<div class="wmd-container-form-group">
+  Username
+  <input type="text" class="wmd-input" required style="width: 29ch; max-width: 29ch;" />
+</div>
+<div class="wmd-container-form-group">
+  Password
+  <input type="password" class="wmd-input" required style="width: 29ch; max-width: 29ch;" />
+</div>
 <ul class="wmd-list">
   <label class="wmd-checkbox">
     <input type="checkbox" />
     <span>Remember me</span>
   </label>
 </ul>
-<p class="wmd-paragraph">[Sign In]*
-[Forgot Password?]</p>
+<div class="wmd-container-button-group">
+  <button class="wmd-button wmd-button-primary">Sign In</button>
+  <button class="wmd-button">Forgot Password?</button>
+</div>
 </body>
 </html>
