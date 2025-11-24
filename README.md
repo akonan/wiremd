@@ -100,19 +100,34 @@ This is an open-source MIT-licensed project containing:
 
 ## Installation
 
+### npm
 ```bash
-# Clone and build locally (not yet published to npm)
+npm install -g wiremd
+```
+
+### yarn
+```bash
+yarn global add wiremd
+```
+
+### pnpm
+```bash
+pnpm add -g wiremd
+```
+
+### Homebrew (macOS)
+```bash
+brew install akonan/wiremd/wiremd
+```
+
+### From Source
+```bash
 git clone https://github.com/akonan/wiremd.git
 cd wiremd
 npm install
 npm run build
-
-# Use the CLI
 npm link
-wiremd --help
 ```
-
-> Coming soon: `npm install -g wiremd`
 
 ## CLI Usage
 
