@@ -34,5 +34,7 @@
     "typescript": "^5.3.3",
     "vitest": "^1.0.0"
   },
-  "dependencies": {}
+  "dependencies": {
+    "wiremd": "^0.1.3"
+  }
 }
