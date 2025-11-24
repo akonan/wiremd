@@ -87,11 +87,13 @@ For more information: https://github.com/akonan/wiremd
 export function showVersion(): void {
   // Read version from package.json
   try {
-    const pkgPath = resolve(__dirname, '../../package.json');
+    // ESM-compatible way to get directory path
+    const currentDir = import.meta.url ? dirname(new URL(import.meta.url).pathname) : __dirname;
+    const pkgPath = resolve(currentDir, '../../package.json');
     const pkg = JSON.parse(readFileSync(pkgPath, 'utf-8'));
     console.log(`wiremd v${pkg.version}`);
   } catch {
-    console.log('wiremd v0.1.0');
+    console.log('wiremd v0.1.2');
   }
 }
 
