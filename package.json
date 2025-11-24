@@ -1,6 +1,6 @@
 {
   "name": "wiremd",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "Text-first UI design tool - Create wireframes and mockups using Markdown syntax",
   "type": "module",
   "sideEffects": false,
