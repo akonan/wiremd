@@ -1,249 +1,392 @@
 # wiremd Roadmap: Ruthless MVP
 
-> **Goal:** A rock-solid CLI that takes markdown and renders HTML wireframes with sketch style.
-> **Philosophy:** Fix the foundation before adding features. Delete before you add.
+> **Goal:** A rock-solid CLI that takes markdown and renders HTML wireframes.
+> **Philosophy:** Adopt proven syntax (PlantUML Salt), keep markdown structure, fix the foundation.
 
 ---
 
-## The Problem
+## The Pivot: Hybrid Syntax
 
-The current wiremd promises much, delivers little:
-- **Nesting is broken** - containers don't nest, children escape parents
-- **Badges don't exist** - backticks become plain text
-- **Alerts half-work** - classes render but no CSS styles
-- **Newline sensitive** - brittle parsing breaks on whitespace
-- **7 styles, 4 formats** - sprawl before the core works
-- **Docs lie** - syntax spec promises features that don't parse
+Instead of inventing new syntax, we adopt **PlantUML Salt conventions** for components while keeping **Markdown for structure**. This gives us:
 
-**Upstream issue:** https://github.com/akonan/wiremd/issues (nesting support)
+1. **LLM-friendly** - Salt syntax is in training data
+2. **Human-readable** - Markdown structure is universal
+3. **Proven patterns** - Salt has been used since ~2009
+4. **HTML output** - Our unique value (Salt outputs images)
 
 ---
 
-## Phase 1: Foundation (The Ruthless MVP)
+## Syntax Specification v0.2 (Hybrid)
 
-### 1.1 Syntax Redesign
-
-New syntax principles (LLM + Human optimized):
-- **Two-level nesting:** page → section → components
-- **Explicit containers:** `section:` `card:` `form:` `nav:` with indentation
-- **Distinct delimiters:** each symbol means ONE thing
-- **Custom elements:** `@name:` prefix for user-defined components
-- **Custom styles:** `{style: value}` in attributes
-
-#### Core Syntax v0.2
+### Complete Example
 
 ```markdown
-# Page Title
+# Login Page
 
 nav: Brand | Home | About | [Sign In]
 
 card:
-  ## Section Heading
+  ## Welcome Back
 
-  form:
-    label: Email
-    <email______> {required}
+  Email    | "email@example.com    "
+  Password | "****************     "
 
-    label: Password
-    <********>
+  [x] Remember me
+  ( )�Light mode  (x) Dark mode
 
-    [x] Remember me
-    ( )�Option A  (•) Option B
+  ^Select role^
+  - Admin
+  - Editor
+  - Viewer
 
-    [Submit]* [Cancel]
+  [Cancel] | [Submit]*
 
-  alert: Success message {.success}
-  badge: Status `active`
+  !!! Invalid credentials {.error .hidden}
 
-table:
-  | Name | Email | Role |
-  |------|-------|------|
-  | John | j@x.co | Admin |
+card:
+  ## Quick Stats
 
-@custom-widget:
-  Your custom content here
-  {style: "border: 2px dashed blue"}
+  Users: `1,234`  Active: `892`  New: `47`
+
+  table:
+    | Name  | Role   | Status   |
+    |-------|--------|----------|
+    | Alice | Admin  | `active` |
+    | Bob   | Editor | `away`   |
 ```
 
-#### Delimiter Rules (Unambiguous)
+### Component Syntax Reference
+
+#### Text & Structure (Markdown)
+
+| Component | Syntax | Notes |
+|-----------|--------|-------|
+| Heading 1 | `# Title` | Page title |
+| Heading 2 | `## Section` | Section title |
+| Heading 3 | `### Subsection` | Subsection |
+| Paragraph | Plain text | Regular text content |
+| List | `- item` | Unordered list |
+| Ordered List | `1. item` | Numbered list |
+| Link | `[text](url)` | Standard markdown link |
+| Image | `![alt](src)` | Image placeholder |
+| Separator | `---` | Horizontal rule |
+
+#### Buttons (Salt Style)
+
+| Component | Syntax | Example |
+|-----------|--------|---------|
+| Button | `[Text]` | `[Cancel]` |
+| Primary Button | `[Text]*` | `[Submit]*` |
+| Disabled Button | `[Text] {disabled}` | `[Save] {disabled}` |
+| Icon Button | `[:icon: Text]` | `[:search: Find]` |
+
+#### Form Inputs (Salt Style)
+
+| Component | Syntax | Example |
+|-----------|--------|---------|
+| Text Input | `"placeholder    "` | `"Enter name      "` |
+| Email Input | `"email         " {type:email}` | With validation |
+| Password | `"****          "` | Asterisks = password |
+| Textarea | `"""multi-line..."""` | Triple quotes |
+| With Label | `Label \| "input"` | Pipe separates |
+
+#### Selection (Salt Style)
+
+| Component | Syntax | Example |
+|-----------|--------|---------|
+| Dropdown | `^placeholder^` | `^Select country^` |
+| Dropdown Options | `- option` after `^` | Listed below dropdown |
+| Checkbox Unchecked | `[ ] label` | `[ ] Subscribe` |
+| Checkbox Checked | `[x] label` | `[x] Agree to terms` |
+| Radio Unchecked | `( ) label` | `( ) Option A` |
+| Radio Selected | `(x) label` | `(x) Option B` |
+
+#### Containers (wiremd Style)
+
+| Component | Syntax | Example |
+|-----------|--------|---------|
+| Card | `card:` + indent | Content block |
+| Form | `form:` + indent | Form grouping |
+| Nav | `nav:` + indent or inline | Navigation bar |
+| Section | `section:` + indent | Generic section |
+| Modal | `modal:` + indent | Dialog/popup |
+| Sidebar | `sidebar:` + indent | Side panel |
+| Footer | `footer:` + indent | Page footer |
+| Custom | `@name:` + indent | User-defined |
+
+#### Feedback & Status
+
+| Component | Syntax | Example |
+|-----------|--------|---------|
+| Alert | `!!! message` | `!!! Error occurred` |
+| Alert Success | `!!! message {.success}` | Green alert |
+| Alert Warning | `!!! message {.warning}` | Yellow alert |
+| Alert Error | `!!! message {.error}` | Red alert |
+| Badge | `` `text` `` | `` Status: `active` `` |
+| Icon | `:name:` | `:user: :home: :gear:` |
+
+#### Layout
+
+| Component | Syntax | Example |
+|-----------|--------|---------|
+| Column Layout | `\|` separator | `Left \| Right` |
+| Grid | `{.grid-3}` on heading | `## Features {.grid-3}` |
+| Inline Nav | `nav: A \| B \| C` | Horizontal items |
+
+#### Tables (Markdown)
+
+```markdown
+| Header 1 | Header 2 | Header 3 |
+|----------|----------|----------|
+| Cell 1   | Cell 2   | `badge`  |
+| Cell 4   | Cell 5   | Cell 6   |
+```
+
+#### Attributes
 
 | Syntax | Meaning | Example |
 |--------|---------|---------|
-| `# ## ###` | Headings | `## Login Form` |
-| `[Text]` | Button | `[Submit]` `[Cancel]` |
-| `[Text]*` | Primary button | `[Submit]*` |
-| `<____>` | Text input | `<username______>` |
-| `<****>` | Password input | `<************>` |
-| `<...>` | Textarea | `<message...>{rows:5}` |
-| `{___v}` | Dropdown | `{Choose___v}` + list |
-| `[x] [ ]` | Checkbox | `[x] Agree to terms` |
-| `(•) ( )` | Radio | `(•) Yes  ( ) No` |
-| `:icon:` | Icon | `:user: :home: :gear:` |
-| `:::` / `name:` | Container | `card:` `:::card` |
-| `!!!` | Alert | `!!! Warning message` |
-| `` `text` `` | Badge | `Status \`active\`` |
-| `@name:` | Custom element | `@pricing-card:` |
-| `{attrs}` | Attributes | `{.class key:value}` |
+| `{.class}` | CSS class | `{.primary}` |
+| `{.a .b}` | Multiple classes | `{.large .rounded}` |
+| `{key:value}` | Property | `{type:email}` |
+| `{disabled}` | Boolean | Disabled state |
+| `{required}` | Boolean | Required field |
+| `{style:"..."}` | Inline CSS | Custom styling |
 
-#### Nesting Model
+### Nesting Rules
 
+**Maximum 2 levels:**
 ```
 Document (implicit)
-└── Section (card: / form: / nav: / :::name)
-    └── Components (inputs, buttons, text, etc.)
+└── Container (card: / form: / nav: / etc.)
+    └── Components (buttons, inputs, text, etc.)
 ```
 
-Two levels only. No deeper nesting. Covers 95% of wireframe needs.
+**Valid:**
+```markdown
+card:
+  ## Title
+  "input field    "
+  [Submit]*
+```
+
+**Invalid (3+ levels):**
+```markdown
+card:
+  section:           ← Level 2
+    form:            ← Level 3 - NOT ALLOWED
+      "input"
+```
 
 ---
 
-### 1.2 Cleanup Tasks
+## Phase 1: Foundation
 
-- [ ] **Delete React renderer** (`src/renderer/react-renderer.ts`)
-- [ ] **Delete Tailwind renderer** (`src/renderer/tailwind-renderer.ts`)
-- [ ] **Delete 6 styles** - keep only `sketch` in `styles.ts`
-- [ ] **Delete VS Code extension docs** - separate repo
-- [ ] **Delete Figma plugin docs** - separate repo
-- [ ] **Delete dev server** (`src/cli/server.ts`) - or keep minimal?
-- [ ] **Trim tests** to match reduced feature set
-- [ ] **Update package.json** - remove unused exports
+### Week 1: Syntax Lock & Parser Prep
+
+- [ ] **Finalize SYNTAX.md** - This document, cleaned up
+- [ ] **Create test corpus** - 20 example files covering all components
+- [ ] **Audit parser gaps** - List exactly what's broken vs working
+- [ ] **Design AST schema** - Node types for new syntax
+
+**Owner:** Architecture
+**Deliverable:** Locked syntax spec, test files, gap analysis
+
+### Week 2: Input Syntax Migration
+
+- [ ] **Add `"input"` parsing** - Salt-style quoted inputs
+- [ ] **Add `"****"` password detection** - Asterisks in quotes
+- [ ] **Add `"""textarea"""` parsing** - Triple quotes
+- [ ] **Add `^dropdown^` parsing** - Caret-wrapped selects
+- [ ] **Deprecate `[___]` syntax** - Keep working but warn
+- [ ] **Update tests** - All input types covered
+
+**Owner:** Parser
+**Deliverable:** All Salt-style inputs work
+
+### Week 3: Container & Nesting Fix
+
+- [ ] **Rewrite container parser** - Recursive descent, not regex
+- [ ] **Implement indentation tracking** - For `card:` style containers
+- [ ] **Test 2-level nesting** - card → components works
+- [ ] **Block 3+ level nesting** - Clear error message
+- [ ] **Keep `:::` syntax working** - Backwards compat
+- [ ] **Add container type validation** - Known types only
+
+**Owner:** Parser
+**Deliverable:** Nesting works correctly
+
+### Week 4: Missing Components
+
+- [ ] **Implement alert `!!!` syntax** - Parser + renderer
+- [ ] **Add alert CSS** - success/warning/error/info styles
+- [ ] **Implement badge rendering** - Backticks → styled badge
+- [ ] **Add badge CSS** - Inline pill styling
+- [ ] **Fix radio button parsing** - `(x)` and `( )` work
+- [ ] **Add layout `|` separator** - For label | input patterns
+
+**Owner:** Parser + Renderer
+**Deliverable:** All components in spec work
+
+### Week 5: Renderer Cleanup
+
+- [ ] **Delete react-renderer.ts** - 574 lines removed
+- [ ] **Delete tailwind-renderer.ts** - 544 lines removed
+- [ ] **Delete 6 styles from styles.ts** - Keep only sketch
+- [ ] **Clean up HTML renderer** - Remove dead code paths
+- [ ] **Verify sketch style** - All components styled correctly
+- [ ] **Add custom style support** - `{style:"..."}` works
+
+**Owner:** Renderer
+**Deliverable:** Clean, single-style renderer
+
+### Week 6: CLI & Dev Server
+
+- [ ] **Keep dev server** - `--serve` flag works
+- [ ] **Add watch mode** - `--watch` recompiles on change
+- [ ] **Improve error messages** - Line numbers, expected syntax
+- [ ] **Add `--validate` flag** - Check syntax without rendering
+- [ ] **Remove unused CLI options** - No `--format react` etc.
+- [ ] **Test full workflow** - `wiremd file.md --serve` works perfectly
+
+**Owner:** CLI
+**Deliverable:** Polished CLI experience
+
+### Week 7: Documentation & Polish
+
+- [ ] **Delete SYNTAX-SPEC-v0.1.md** - Outdated
+- [ ] **Create SYNTAX.md** - From this roadmap's spec
+- [ ] **Rewrite README.md** - Ruthless, matches reality
+- [ ] **Delete obsolete docs** - Figma, Obsidian, VS Code refs
+- [ ] **Add EXAMPLES.md** - Working examples for each component
+- [ ] **Update CHANGELOG.md** - Document breaking changes
+- [ ] **Final test pass** - All tests green
+
+**Owner:** Documentation
+**Deliverable:** Honest, accurate docs
 
 ---
 
-### 1.3 Parser Fixes
-
-- [ ] **Fix container nesting** - rewrite `remark-containers.ts` with recursion
-- [ ] **Fix newline sensitivity** - normalize whitespace before parsing
-- [ ] **Implement badge parsing** - backticks → badge node
-- [ ] **Implement alert parsing** - `!!!` or `alert:` → alert node with styles
-- [ ] **Add custom element support** - `@name:` → custom node type
-- [ ] **Fix attribute parsing** - `{.class key:value}` actually works
-
----
-
-### 1.4 Renderer Fixes
-
-- [ ] **Add alert CSS** - `.wmd-alert`, `.wmd-success`, `.wmd-warning`, `.wmd-error`
-- [ ] **Add badge CSS** - `.wmd-badge` inline pill styling
-- [ ] **Add custom element rendering** - pass-through with wrapper
-- [ ] **Add custom style support** - inline `style=""` from attributes
-
----
-
-### 1.5 Documentation Rewrite
-
-- [ ] **Delete outdated SYNTAX-SPEC-v0.1.md**
-- [ ] **Create SYNTAX.md** - single source of truth, matches parser
-- [ ] **Rewrite README.md** - ruthless, no false promises
-- [ ] **Delete scattered docs** - one doc per concern max
-- [ ] **Add EXAMPLES.md** - working examples for each component
-
----
-
-### 1.6 CLI Polish
-
-- [ ] **Better error messages** - show line number, expected syntax
-- [ ] **Validate before render** - fail fast with clear errors
-- [ ] **Single style flag** - `--style sketch` (only option for now)
-- [ ] **Watch mode** - keep if useful for iteration
-
----
-
-## Phase 1 Checklist Summary
+## Phase 1 Completion Checklist
 
 ```
-[ ] Syntax v0.2 spec written and approved
-[ ] Container nesting works (2 levels)
-[ ] All basic components parse correctly:
-    [ ] Buttons [Text] [Text]*
-    [ ] Inputs <____> <****>
-    [ ] Textarea <...>{rows:N}
-    [ ] Dropdown {___v} + options
-    [ ] Checkbox [x] [ ]
-    [ ] Radio (•) ( )
-    [ ] Icons :name:
-    [ ] Headings # ## ###
-    [ ] Paragraphs
-    [ ] Lists - and 1.
-    [ ] Tables |---|
-    [ ] Alerts !!!
-    [ ] Badges `text`
-    [ ] Containers card: form: nav: section:
-[ ] Custom elements @name: work
-[ ] Custom styles {style: "..."} work
-[ ] Attributes {.class key:value} work
-[ ] Sketch style renders all components correctly
-[ ] CLI produces valid HTML
+SYNTAX
+[ ] "input" quoted input works
+[ ] "****" password works
+[ ] """textarea""" works
+[ ] ^dropdown^ works with options
+[ ] [x] [ ] checkboxes work
+[ ] (x) ( ) radio buttons work
+[ ] [Button] [Button]* buttons work
+[ ] !!! alerts work with classes
+[ ] `badge` backticks work
+[ ] :icon: icons work
+[ ] | layout separator works
+[ ] {.class key:value} attributes work
+[ ] {style:"..."} custom styles work
+
+CONTAINERS
+[ ] card: works with indentation
+[ ] form: works with indentation
+[ ] nav: works inline and block
+[ ] section: works
+[ ] 2-level nesting works
+[ ] 3+ level nesting blocked with error
+[ ] :::container still works (compat)
+
+RENDERER
+[ ] Sketch style only
+[ ] All components have CSS
+[ ] Alerts styled (success/warning/error/info)
+[ ] Badges styled (inline pills)
+[ ] Custom {style:""} renders inline
+
+CLI
+[ ] wiremd file.md works
+[ ] wiremd file.md -o out.html works
+[ ] wiremd file.md --serve works
+[ ] wiremd file.md --watch works
 [ ] Error messages show line numbers
-[ ] README matches reality
-[ ] SYNTAX.md is single source of truth
+[ ] --validate flag exists
+
+DOCS
+[ ] README.md matches reality
+[ ] SYNTAX.md is complete
+[ ] EXAMPLES.md has all components
+[ ] No false promises
+[ ] No references to removed features
+
+CODE
+[ ] react-renderer.ts deleted
+[ ] tailwind-renderer.ts deleted
+[ ] 6 styles deleted from styles.ts
 [ ] No dead code in src/
-[ ] Tests pass and cover real cases
+[ ] All tests pass
 ```
 
 ---
 
-## Phase 2: Expansion (After Foundation)
+## Phase 2: Expansion (After Phase 1)
 
-Only after Phase 1 is complete:
-
-- [ ] Add second style (clean/wireframe)
-- [ ] Add JSON output for tooling
-- [ ] Add more icons
+- [ ] Add second style (clean or wireframe)
+- [ ] Add JSON AST output (`--format json`)
+- [ ] Expand icon library
 - [ ] Consider React output
-- [ ] Consider dev server with live reload
-- [ ] Consider VS Code extension
+- [ ] Consider Figma export
 - [ ] Community feedback integration
 
 ---
 
 ## Phase 3: Ecosystem
 
-- [ ] npm package stable release (1.0.0)
-- [ ] Figma plugin (separate repo)
-- [ ] Obsidian plugin (separate repo)
+- [ ] npm package 1.0.0 stable release
 - [ ] VS Code extension (separate repo)
-- [ ] Documentation site
-
----
-
-## Design Decisions Log
-
-| Decision | Rationale |
-|----------|-----------|
-| Two-level nesting only | Covers 95% cases, simpler parser |
-| `<input>` not `[___]` | Unambiguous, no confusion with buttons |
-| Indentation for nesting | YAML-style, LLM-native |
-| Custom elements `@name:` | Extensible without parser changes |
-| One style (sketch) | Focus on one thing working perfectly |
-| Delete React/Tailwind | Premature optimization, adds complexity |
+- [ ] Figma plugin (separate repo)
+- [ ] Documentation website
+- [ ] LLM prompt templates for generation
 
 ---
 
 ## Expert Panel Guidance
 
-**Rich Hickey:** "Make it data, not clever ASCII art. Each line declares what it IS."
+**Rich Hickey:**
+> "You're composing, not inventing. Salt solves components. Markdown solves structure. Take both."
 
-**Linus Torvalds:** "Nesting should have been the FIRST thing you got right. Rip out the clever detection."
+**Martin Fowler:**
+> "Strangler Fig Pattern. Add new handlers alongside old. Deprecate gradually. Never big-bang rewrite."
 
-**Martin Fowler:** "Explicit over clever. One syntax per concept. Error recovery matters."
+**Linus Torvalds:**
+> "Your container parser is garbage. Use recursion. Make it boring. Boring code ships."
 
-**Shreyas Doshi:** "Pick ONE wedge product. Ship it. Expand later."
+**Shreyas Doshi:**
+> "One command that works perfectly: `wiremd mockup.md --serve`. That's your MVP. Ship the wedge."
 
 ---
 
 ## Success Criteria
 
-Phase 1 is DONE when:
+Phase 1 is **DONE** when:
 
-1. `wiremd input.md` produces correct HTML 100% of the time
-2. Syntax is documented and matches implementation exactly
-3. Sketch style renders all components correctly
-4. Error messages are helpful (line numbers, expected syntax)
-5. Zero broken promises in README
-6. A new user can learn the syntax in 10 minutes
+1. ✅ `wiremd input.md` produces correct HTML 100% of the time
+2. ✅ All syntax in spec parses correctly
+3. ✅ Nesting works (2 levels)
+4. ✅ Sketch style renders all components
+5. ✅ Error messages show line numbers
+6. ✅ README matches implementation
+7. ✅ New user can learn syntax in 10 minutes
+8. ✅ Claude Code can generate valid wiremd files
+
+---
+
+## Upstream Issues
+
+- **Nesting support:** https://github.com/akonan/wiremd/issues
+  - Container nesting completely broken
+  - Children escape parent containers
+  - Root cause: Non-recursive parser
 
 ---
 
 *Last updated: 2026-01-02*
 *Status: Phase 1 - Foundation*
+*Syntax: v0.2 Hybrid (Salt + Markdown)*
