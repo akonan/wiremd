@@ -1,0 +1,19 @@
+{
+  "name": "wiremd-playground",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "monaco-editor": "^0.55.1",
+    "wiremd": "file:.."
+  },
+  "devDependencies": {
+    "typescript": "^5.3.2",
+    "vite": "^5.0.0"
+  }
+}
