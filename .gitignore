@@ -6,7 +6,9 @@ pnpm-lock.yaml
 # Build outputs
 dist/
 build/
+bin/
 *.tsbuildinfo
+*.vsix
 
 # Test coverage
 coverage/
@@ -43,3 +45,5 @@ temp/
 # OS
 .DS_Store
 Thumbs.db
+
+

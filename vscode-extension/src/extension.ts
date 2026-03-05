@@ -1,122 +1,146 @@
-/**
- * Wiremd VS Code Extension
- * Provides live preview for markdown mockups
- */
-
 import * as vscode from 'vscode';
-import { WiremdPreviewProvider } from './preview-provider';
+import { parse, renderToHTML, renderToJSON, type DocumentNode, type ParseOptions, type RenderOptions } from 'wiremd';
 
-let previewProvider: WiremdPreviewProvider;
+const output = vscode.window.createOutputChannel('Wiremd');
+
+const parseOptions: ParseOptions = {
+  position: true,
+  validate: true,
+  strict: false
+};
+
+const supportedStyles: Array<NonNullable<RenderOptions['style']>> = [
+  'sketch',
+  'clean',
+  'wireframe',
+  'none',
+  'tailwind',
+  'material',
+  'brutal'
+];
+
+type MarkdownItStateLike = {
+  src?: string;
+};
+
+type MarkdownItCoreLike = {
+  ruler: {
+    after: (
+      before: string,
+      ruleName: string,
+      fn: (state: MarkdownItStateLike) => void
+    ) => void;
+  };
+};
+
+type MarkdownItLike = {
+  core: MarkdownItCoreLike;
+};
 
 export function activate(context: vscode.ExtensionContext) {
-  // Create preview provider
-  previewProvider = new WiremdPreviewProvider(context);
+  output.appendLine('wiremd: activate');
+  context.subscriptions.push(output);
 
-  // Register preview provider
-  context.subscriptions.push(
-    vscode.window.registerWebviewPanelSerializer(
-      WiremdPreviewProvider.viewType,
-      previewProvider
-    )
-  );
-
-  // Register commands
-  context.subscriptions.push(
-    vscode.commands.registerCommand('wiremd.openPreview', () => {
-      previewProvider.openPreview(vscode.ViewColumn.Active);
-    })
-  );
-
-  context.subscriptions.push(
-    vscode.commands.registerCommand('wiremd.openPreviewToSide', () => {
-      const activeColumn = vscode.window.activeTextEditor?.viewColumn;
-      const previewColumn = activeColumn
-        ? activeColumn + 1
-        : vscode.ViewColumn.Two;
-      previewProvider.openPreview(previewColumn);
-    })
-  );
-
-  context.subscriptions.push(
-    vscode.commands.registerCommand('wiremd.refreshPreview', () => {
-      previewProvider.refresh();
-    })
-  );
-
-  context.subscriptions.push(
-    vscode.commands.registerCommand('wiremd.changeStyle', async () => {
-      const styles = ['sketch', 'clean', 'wireframe', 'none', 'tailwind', 'material', 'brutal'];
-      const selected = await vscode.window.showQuickPick(styles, {
-        placeHolder: 'Select a visual style'
-      });
-      if (selected) {
-        previewProvider.changeStyle(selected);
-      }
-    })
-  );
-
-  context.subscriptions.push(
-    vscode.commands.registerCommand('wiremd.changeViewport', async () => {
-      const viewports = [
-        { label: 'Desktop (1440px)', value: 'desktop' },
-        { label: 'Laptop (1024px)', value: 'laptop' },
-        { label: 'Tablet (768px)', value: 'tablet' },
-        { label: 'Mobile (375px)', value: 'mobile' },
-        { label: 'Full Width', value: 'full' }
-      ];
-      const selected = await vscode.window.showQuickPick(viewports, {
-        placeHolder: 'Select viewport size'
-      });
-      if (selected) {
-        previewProvider.changeViewport(selected.value);
-      }
-    })
-  );
-
-  // Auto-open preview if configured
-  context.subscriptions.push(
-    vscode.window.onDidChangeActiveTextEditor((editor) => {
-      if (editor && editor.document.languageId === 'markdown') {
-        const config = vscode.workspace.getConfiguration('wiremd');
-        if (config.get('autoOpenPreview')) {
-          // Auto-open preview
-        }
-      }
-    })
-  );
-
-  // Status bar item
-  const statusBarItem = vscode.window.createStatusBarItem(
-    vscode.StatusBarAlignment.Right,
-    100
-  );
-  statusBarItem.text = '$(eye) Wiremd';
-  statusBarItem.tooltip = 'Open Wiremd Preview';
-  statusBarItem.command = 'wiremd.openPreviewToSide';
-  context.subscriptions.push(statusBarItem);
-
-  // Show status bar for markdown files
-  context.subscriptions.push(
-    vscode.window.onDidChangeActiveTextEditor((editor) => {
-      if (editor && editor.document.languageId === 'markdown') {
-        statusBarItem.show();
-      } else {
-        statusBarItem.hide();
-      }
-    })
-  );
-
-  // Show initially if markdown file is open
-  if (
-    vscode.window.activeTextEditor &&
-    vscode.window.activeTextEditor.document.languageId === 'markdown'
-  ) {
-    statusBarItem.show();
-  }
+  return {
+    extendMarkdownIt
+  };
 }
 
 export function deactivate() {
-  if (previewProvider) {
-    previewProvider.dispose();
+  output.dispose();
+}
+
+// Export to extend the built-in Markdown rendering
+export function extendMarkdownIt(md: MarkdownItLike) {
+  output.appendLine('wiremd: extendMarkdownIt called');
+
+  md.core.ruler.after('normalize', 'parse-wiremd-code', (state: MarkdownItStateLike) => {
+    const source = state.src ?? '';
+    state.src = parseWiremdCode(source);
+  });
+
+  return md;
+}
+
+function parseWiremdCode(source: string): string {
+  output.appendLine('wiremd: parseWiremdCode called');
+  const wiremdPattern = /```wiremd([^\r\n]*)\r?\n([\s\S]*?)\r?\n```/gi;
+  let blockIndex = 0;
+
+  return source.replace(wiremdPattern, (fullMatch: string, rawOptions: string, code: string) => {
+    try {
+      const documentNode: DocumentNode = parse(code, parseOptions);
+      const options = parseFenceOptions(rawOptions);
+      blockIndex += 1;
+
+      if (options.view === 'json') {
+        const renderedDocumentNode = renderToJSON(documentNode, { pretty: true });
+        return `\`\`\`json\n${renderedDocumentNode}\n\`\`\``;
+      }
+
+      return renderWiremdFragment(documentNode, options.style, blockIndex);
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : String(error);
+      output.appendLine(`wiremd: parse error: ${message}`);
+      return fullMatch;
+    }
+  });
+}
+
+function parseFenceOptions(rawOptions: string): {
+  view: 'html' | 'json';
+  style: NonNullable<RenderOptions['style']>;
+} {
+  const tokens = rawOptions
+    .trim()
+    .toLowerCase()
+    .split(/\s+/)
+    .filter(Boolean);
+
+  let view: 'html' | 'json' = 'html';
+  let style: NonNullable<RenderOptions['style']> = 'sketch';
+
+  for (const token of tokens) {
+    if (token === 'html' || token === 'json') {
+      view = token;
+      continue;
+    }
+
+    if (supportedStyles.includes(token as NonNullable<RenderOptions['style']>)) {
+      style = token as NonNullable<RenderOptions['style']>;
+    }
   }
+
+  return { view, style };
+}
+
+function renderWiremdFragment(
+  documentNode: DocumentNode,
+  style: NonNullable<RenderOptions['style']>,
+  blockIndex: number
+): string {
+  const classPrefix = `wmd-${blockIndex}-`;
+  const scopeClass = `wiremd-preview-${blockIndex}`;
+
+  const fullHtml = renderToHTML(documentNode, {
+    style,
+    inlineStyles: true,
+    pretty: true,
+    classPrefix
+  });
+
+  const cssMatch = fullHtml.match(/<style>\s*([\s\S]*?)\s*<\/style>/i);
+  const bodyMatch = fullHtml.match(/<body[^>]*>([\s\S]*?)<\/body>/i);
+
+  if (!cssMatch || !bodyMatch) {
+    return fullHtml;
+  }
+
+  const scopedCss = cssMatch[1]
+    .replace(/(^|\n)\s*\*\s*\{/g, `$1.${scopeClass}, .${scopeClass} * {`)
+    .replace(/(^|\n)\s*body\s*\{/g, `$1.${scopeClass}.${classPrefix}root {`)
+    .replace(new RegExp(`body\\.${classPrefix}root`, 'g'), `.${scopeClass}.${classPrefix}root`);
+  const bodyContent = bodyMatch[1].trim();
+
+  return `<style>\n${scopedCss}\n</style>\n<div class="wiremd-preview ${scopeClass} ${classPrefix}root ${classPrefix}${style}">\n${bodyContent}\n</div>`;
 }
