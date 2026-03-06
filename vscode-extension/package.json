@@ -1,10 +1,9 @@
 {
   "name": "wiremd-preview",
-  "displayName": "Wiremd Live Preview",
-  "description": "Live preview for Wiremd markdown mockups",
+  "displayName": "Wiremd Preview",
+  "description": "Render wiremd code fences inside VS Code Markdown preview",
   "version": "0.1.0",
   "publisher": "wiremd",
-  "icon": "icon.png",
   "engines": {
     "vscode": "^1.75.0"
   },
@@ -20,10 +19,40 @@
     "design"
   ],
   "activationEvents": [
-    "onLanguage:markdown"
+    "onLanguage:markdown",
+    "onCommand:markdown.showPreview",
+    "onCommand:markdown.showPreviewToSide",
+    "onCommand:wiremd.openPreview",
+    "onCommand:wiremd.openPreviewToSide",
+    "onStartupFinished",
+    "workspaceContains:**/*.wmd"
   ],
   "main": "./dist/extension.js",
   "contributes": {
+    "languages": [
+      {
+        "id": "markdown",
+        "extensions": [
+          ".wmd"
+        ]
+      }
+    ],
+    "grammars": [
+      {
+        "scopeName": "wiremd.markdown.injection",
+        "path": "./syntaxes/wiremd-injection.tmLanguage.json",
+        "injectTo": [
+          "text.html.markdown"
+        ]
+      }
+    ],
+    "snippets": [
+      {
+        "language": "markdown",
+        "path": "./snippets/wiremd.code-snippets"
+      }
+    ],
+    "markdown.markdownItPlugins": true,
     "commands": [
       {
         "command": "wiremd.openPreview",
@@ -78,6 +107,18 @@
         {
           "command": "wiremd.openPreviewToSide",
           "when": "editorLangId == markdown"
+        },
+        {
+          "command": "wiremd.refreshPreview",
+          "when": "editorLangId == markdown"
+        },
+        {
+          "command": "wiremd.changeStyle",
+          "when": "editorLangId == markdown"
+        },
+        {
+          "command": "wiremd.changeViewport",
+          "when": "editorLangId == markdown"
         }
       ]
     },
@@ -125,23 +166,32 @@
     }
   },
   "scripts": {
-    "vscode:prepublish": "npm run compile",
-    "compile": "tsc -p ./",
-    "watch": "tsc -watch -p ./",
-    "package": "vsce package",
-    "lint": "eslint src --ext ts"
-  },
-  "dependencies": {
-    "wiremd": "file:.."
+    "bundle": "rm -rf dist && esbuild ./src/extension.ts ./src/lsp/server.ts --bundle --platform=node --target=node18 --format=cjs --outdir=dist --outbase=src --external:vscode --sourcemap",
+    "compile": "npm run typecheck && npm run bundle",
+    "watch": "esbuild ./src/extension.ts ./src/lsp/server.ts --bundle --platform=node --target=node18 --format=cjs --outdir=dist --outbase=src --external:vscode --sourcemap --watch",
+    "typecheck": "tsc --noEmit -p ./",
+    "package": "npm run compile && vsce package --no-dependencies",
+    "lint": "eslint src --ext ts",
+    "test": "vitest run",
+    "coverage": "vitest run --coverage --coverage.provider=v8"
   },
   "devDependencies": {
     "@types/node": "^18.0.0",
     "@types/vscode": "^1.75.0",
     "@typescript-eslint/eslint-plugin": "^6.0.0",
     "@typescript-eslint/parser": "^6.0.0",
+    "@vitest/coverage-v8": "^2.1.9",
+    "@vscode/vsce": "^2.22.0",
+    "esbuild": "^0.25.10",
     "eslint": "^8.0.0",
     "typescript": "^5.0.0",
-    "@vscode/vsce": "^2.22.0"
+    "vitest": "^2.1.8"
+  },
+  "dependencies": {
+    "vscode-languageclient": "^9.0.1",
+    "vscode-languageserver": "^9.0.1",
+    "vscode-languageserver-textdocument": "^1.0.12",
+    "wiremd": "file:.."
   },
   "repository": {
     "type": "git",

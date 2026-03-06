@@ -2,6 +2,17 @@
 
 All notable changes to the "wiremd-preview" extension will be documented in this file.
 
+## [Unreleased]
+
+### Added
+- TextMate injection grammar for wiremd syntax highlighting in Markdown files.
+- LSP architecture and server scaffolding for wiremd IntelliSense.
+- Initial language server features:
+  - Context-aware completions for containers/attributes/input types.
+  - Hover docs and attribute signature help.
+  - Diagnostics for common wiremd syntax issues.
+  - Semantic tokens for richer wiremd highlighting.
+
 ## [0.1.0] - 2024-01-09
 
 ### Added

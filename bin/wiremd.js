@@ -7,7 +7,6 @@
  * loading the ES module CLI and explicitly calling main().
  */
 
-// Use dynamic import to load the ES module and call main()
 (async () => {
   try {
     const cli = await import('../dist/cli/index.js');
