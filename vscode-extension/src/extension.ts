@@ -1,9 +1,11 @@
 import * as vscode from 'vscode';
+import * as path from 'node:path';
 import { parse, renderToHTML, renderToJSON, type DocumentNode, type ParseOptions, type RenderOptions } from 'wiremd';
 import { WiremdPreviewProvider } from './preview-provider';
 
 const output = vscode.window.createOutputChannel('Wiremd');
 let previewProvider: WiremdPreviewProvider | undefined;
+let languageClient: { stop: () => Promise<void> } | undefined;
 
 const parseOptions: ParseOptions = {
   position: true,
@@ -45,6 +47,7 @@ type MarkdownItLike = {
 export function activate(context: vscode.ExtensionContext) {
   output.appendLine('wiremd: activate');
   context.subscriptions.push(output);
+  void startLanguageServer(context);
 
   previewProvider = new WiremdPreviewProvider(context);
   context.subscriptions.push(
@@ -137,6 +140,11 @@ export function activate(context: vscode.ExtensionContext) {
  * Disposes extension resources when VS Code deactivates the extension.
  */
 export function deactivate() {
+  if (languageClient) {
+    void languageClient.stop();
+    languageClient = undefined;
+  }
+
   if (previewProvider) {
     previewProvider.dispose();
     previewProvider = undefined;
@@ -239,4 +247,60 @@ function renderWiremdFragment(
   const bodyContent = bodyMatch[1].trim();
 
   return `<style>\n${scopedCss}\n</style>\n<div class="wiremd-preview ${scopeClass} ${classPrefix}root ${classPrefix}${style}">\n${bodyContent}\n</div>`;
+}
+
+function shouldStartLanguageServer(context: vscode.ExtensionContext): boolean {
+  const workspaceLike = vscode.workspace as unknown as {
+    createFileSystemWatcher?: (...args: unknown[]) => unknown;
+  };
+
+  return typeof context.asAbsolutePath === 'function'
+    && typeof workspaceLike.createFileSystemWatcher === 'function';
+}
+
+async function startLanguageServer(context: vscode.ExtensionContext): Promise<void> {
+  if (!shouldStartLanguageServer(context)) {
+    output.appendLine('wiremd: language server skipped');
+    return;
+  }
+
+  try {
+    const clientModule = await import('vscode-languageclient/node');
+    const serverModule = context.asAbsolutePath(path.join('dist', 'lsp', 'server.js'));
+    const serverOptions = {
+      run: {
+        module: serverModule,
+        transport: clientModule.TransportKind.ipc
+      },
+      debug: {
+        module: serverModule,
+        transport: clientModule.TransportKind.ipc,
+        options: {
+          execArgv: ['--nolazy', '--inspect=6011']
+        }
+      }
+    };
+    const clientOptions = {
+      documentSelector: [{ scheme: 'file', language: 'markdown' }]
+    };
+
+    const client = new clientModule.LanguageClient(
+      'wiremdLanguageServer',
+      'Wiremd Language Server',
+      serverOptions,
+      clientOptions
+    );
+
+    void client.start();
+    context.subscriptions.push({
+      dispose: () => {
+        void client.stop();
+      }
+    });
+    languageClient = client;
+    output.appendLine('wiremd: language server started');
+  } catch (error: unknown) {
+    const message = error instanceof Error ? error.message : String(error);
+    output.appendLine(`wiremd: language server failed to start: ${message}`);
+  }
 }

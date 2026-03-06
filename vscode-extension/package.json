@@ -24,7 +24,8 @@
     "onCommand:markdown.showPreviewToSide",
     "onCommand:wiremd.openPreview",
     "onCommand:wiremd.openPreviewToSide",
-    "onStartupFinished"
+    "onStartupFinished",
+    "workspaceContains:**/*.wmd"
   ],
   "main": "./dist/extension.js",
   "contributes": {
@@ -43,6 +44,12 @@
         "injectTo": [
           "text.html.markdown"
         ]
+      }
+    ],
+    "snippets": [
+      {
+        "language": "markdown",
+        "path": "./snippets/wiremd.code-snippets"
       }
     ],
     "markdown.markdownItPlugins": true,
@@ -159,9 +166,9 @@
     }
   },
   "scripts": {
-    "bundle": "rm -rf dist && esbuild ./src/extension.ts --bundle --platform=node --target=node18 --format=cjs --outfile=dist/extension.js --external:vscode --sourcemap",
+    "bundle": "rm -rf dist && esbuild ./src/extension.ts ./src/lsp/server.ts --bundle --platform=node --target=node18 --format=cjs --outdir=dist --outbase=src --external:vscode --sourcemap",
     "compile": "npm run typecheck && npm run bundle",
-    "watch": "esbuild ./src/extension.ts --bundle --platform=node --target=node18 --format=cjs --outfile=dist/extension.js --external:vscode --sourcemap --watch",
+    "watch": "esbuild ./src/extension.ts ./src/lsp/server.ts --bundle --platform=node --target=node18 --format=cjs --outdir=dist --outbase=src --external:vscode --sourcemap --watch",
     "typecheck": "tsc --noEmit -p ./",
     "package": "npm run compile && vsce package --no-dependencies",
     "lint": "eslint src --ext ts",
@@ -181,6 +188,9 @@
     "vitest": "^2.1.8"
   },
   "dependencies": {
+    "vscode-languageclient": "^9.0.1",
+    "vscode-languageserver": "^9.0.1",
+    "vscode-languageserver-textdocument": "^1.0.12",
     "wiremd": "file:.."
   },
   "repository": {

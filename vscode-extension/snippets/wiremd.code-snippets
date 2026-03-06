@@ -1,0 +1,60 @@
+{
+  "wiremd hero container": {
+    "scope": "markdown",
+    "prefix": "wiremd-hero",
+    "description": "Insert a wiremd hero container block",
+    "body": [
+      "::: hero",
+      "# ${1:Welcome}",
+      "${2:Intro text}",
+      "[${3:Get Started}]{.primary}",
+      ":::"
+    ]
+  },
+  "wiremd card container": {
+    "scope": "markdown",
+    "prefix": "wiremd-card",
+    "description": "Insert a wiremd card container block",
+    "body": [
+      "::: card",
+      "### ${1:Card title}",
+      "${2:Body content}",
+      "[${3:Action}]",
+      ":::"
+    ]
+  },
+  "wiremd inline nav": {
+    "scope": "markdown",
+    "prefix": "wiremd-nav",
+    "description": "Insert an inline wiremd navigation container",
+    "body": [
+      "[[ ${1::logo: Brand} | ${2:Home} | ${3:Products} | [${4:Sign In}] ]]{.nav}"
+    ]
+  },
+  "wiremd alert": {
+    "scope": "markdown",
+    "prefix": "wiremd-alert",
+    "description": "Insert a wiremd alert container",
+    "body": [
+      "::: alert ${1|success,info,warning,error|}",
+      "${2:Message}",
+      ":::"
+    ]
+  },
+  "wiremd contact form": {
+    "scope": "markdown",
+    "prefix": "wiremd-form",
+    "description": "Insert a wiremd contact form pattern",
+    "body": [
+      "## ${1:Contact Form}",
+      "",
+      "${2:Name}",
+      "[_____________________________]{required}",
+      "",
+      "${3:Email}",
+      "[_____________________________]{type:email required}",
+      "",
+      "[${4:Submit}]* [${5:Cancel}]"
+    ]
+  }
+}

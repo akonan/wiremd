@@ -46,6 +46,24 @@ describe('extension wiring and security configuration', () => {
     expect(markdownLanguage?.extensions).toContain('.wmd');
   });
 
+  it('declares snippet contributions for markdown wiremd patterns', () => {
+    const packageJsonPath = resolve(root, 'package.json');
+    const packageJson = JSON.parse(readFileSync(packageJsonPath, 'utf8')) as {
+      contributes?: {
+        snippets?: Array<{
+          language: string;
+          path: string;
+        }>;
+      };
+    };
+
+    const snippetContribution = packageJson.contributes?.snippets?.find(
+      (snippet) => snippet.language === 'markdown'
+    );
+
+    expect(snippetContribution?.path).toBe('./snippets/wiremd.code-snippets');
+  });
+
   it('uses activation events that cover markdown preview opening paths', () => {
     const packageJsonPath = resolve(root, 'package.json');
     const packageJson = JSON.parse(readFileSync(packageJsonPath, 'utf8')) as {
@@ -59,7 +77,8 @@ describe('extension wiring and security configuration', () => {
         'onCommand:markdown.showPreviewToSide',
         'onCommand:wiremd.openPreview',
         'onCommand:wiremd.openPreviewToSide',
-        'onStartupFinished'
+        'onStartupFinished',
+        'workspaceContains:**/*.wmd'
       ])
     );
   });

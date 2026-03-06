@@ -4,6 +4,8 @@ VS Code extension with two complementary preview modes:
 - Custom Wiremd Webview panel (commands + toolbar + viewport/style controls)
 - Built-in Markdown preview integration for `wiremd` fenced blocks
 - Direct support for `*.wmd` files (associated to Markdown)
+- Wiremd syntax highlighting injected into Markdown
+- Wiremd Language Server support (completion, hover, signature hints, diagnostics, semantic tokens)
 
 ## Built-in Markdown preview mode
 
@@ -60,6 +62,32 @@ npm install
 npm run compile
 npm test
 ```
+
+## Syntax Highlighting
+
+The extension injects a TextMate grammar into Markdown for wiremd-specific syntax:
+
+- Button syntax: `[Text]`
+- Input syntax: `[___]`, `[***]`
+- Container syntax: `::: type ... :::`
+- Inline container syntax: `[[ ... ]]`
+- Attributes: `{.class}`, `{key:value}`, boolean attributes
+
+Container types use dedicated scopes (`hero`, `card`, `modal`, etc.) so themes can color them differently.
+
+## Language Server Features
+
+The bundled wiremd LSP server currently provides:
+
+- Context-aware autocompletion for container types and attributes
+- Input type suggestions after `type:`
+- Snippet completions for common patterns
+- Hover docs for wiremd syntax
+- Signature help inside attribute blocks
+- Diagnostics for common syntax/typing issues
+- Semantic tokens for richer highlighting
+
+Manual QA checklist (including scope inspection): `docs/manual-validation-checklist.md`.
 
 ## Notes
 
