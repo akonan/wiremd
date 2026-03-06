@@ -1,6 +1,7 @@
 /** wiremd Playground - Preview Panel */
 
-import * as monaco from 'monaco-editor';
+import * as monaco from 'monaco-editor/esm/vs/editor/editor.api.js';
+import 'monaco-editor/esm/vs/basic-languages/html/html.contribution.js';
 import { parse, renderToHTML } from 'wiremd';
 import type { RenderOptions } from 'wiremd';
 
@@ -79,7 +80,10 @@ export function createPreview(elements: {
       elements.errorBar.classList.remove('pg-error--visible');
     } catch (err) {
       const message = err instanceof Error ? err.message : String(err);
+      state.lastHTML = '';
       state.lastError = message;
+      updateIframe('');
+      htmlEditor.setValue('');
       elements.errorMessage.textContent = message;
       elements.errorBar.classList.add('pg-error--visible');
     }

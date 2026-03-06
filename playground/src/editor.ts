@@ -1,9 +1,13 @@
 /** wiremd Playground - Monaco Editor Panel */
 
-import * as monaco from 'monaco-editor';
+import * as monaco from 'monaco-editor/esm/vs/editor/editor.api.js';
 
 // Configure Monaco workers
-self.MonacoEnvironment = {
+(self as typeof globalThis & {
+  MonacoEnvironment?: {
+    getWorker: (_workerId: string, _label: string) => Worker;
+  };
+}).MonacoEnvironment = {
   getWorker(_workerId: string, _label: string) {
     return new Worker(
       new URL('monaco-editor/esm/vs/editor/editor.worker.js', import.meta.url),
@@ -144,9 +148,14 @@ export function initEditor(opts: {
   });
 
   // Debounced onChange
-  let debounceTimer: ReturnType<typeof setTimeout>;
+  let debounceTimer: ReturnType<typeof setTimeout> | undefined;
+  let suppressNextChange = false;
   monacoEditor.onDidChangeModelContent(() => {
-    clearTimeout(debounceTimer);
+    if (suppressNextChange) {
+      suppressNextChange = false;
+      return;
+    }
+    if (debounceTimer) clearTimeout(debounceTimer);
     debounceTimer = setTimeout(() => {
       opts.onChange(monacoEditor.getValue());
     }, 200);
@@ -155,6 +164,8 @@ export function initEditor(opts: {
   return {
     getValue: () => monacoEditor.getValue(),
     setValue: (v: string) => {
+      suppressNextChange = true;
+      if (debounceTimer) clearTimeout(debounceTimer);
       monacoEditor.setValue(v);
       opts.onChange(v);
     },

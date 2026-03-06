@@ -2,6 +2,8 @@
 
 import { examples, type Example } from './examples.js';
 
+const toastTimers = new WeakMap<HTMLElement, ReturnType<typeof setTimeout>>();
+
 export function initToolbar(opts: {
   headerActions: HTMLElement;
   examplesContainer: HTMLElement;
@@ -78,8 +80,11 @@ export function initToolbar(opts: {
 /** Show a toast notification */
 export function showToast(toastEl: HTMLElement, message?: string) {
   if (message) toastEl.textContent = message;
+  const activeTimer = toastTimers.get(toastEl);
+  if (activeTimer) clearTimeout(activeTimer);
   toastEl.classList.add('pg-toast--visible');
-  setTimeout(() => {
+  const timer = setTimeout(() => {
     toastEl.classList.remove('pg-toast--visible');
   }, 2000);
+  toastTimers.set(toastEl, timer);
 }

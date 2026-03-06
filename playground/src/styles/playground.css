@@ -431,6 +431,7 @@ body {
 .pg-divider {
   width: 4px;
   cursor: col-resize;
+  touch-action: none;
   background: var(--pg-border);
   transition: background 0.15s ease;
   flex-shrink: 0;
