@@ -37,6 +37,9 @@ type MarkdownItLike = {
   core: MarkdownItCoreLike;
 };
 
+/**
+ * Activates the extension and returns the Markdown-It plugin hook.
+ */
 export function activate(context: vscode.ExtensionContext) {
   output.appendLine('wiremd: activate');
   context.subscriptions.push(output);
@@ -46,11 +49,16 @@ export function activate(context: vscode.ExtensionContext) {
   };
 }
 
+/**
+ * Disposes extension resources when VS Code deactivates the extension.
+ */
 export function deactivate() {
   output.dispose();
 }
 
-// Export to extend the built-in Markdown rendering
+/**
+ * Extends VS Code's built-in Markdown-It pipeline to render `wiremd` fences.
+ */
 export function extendMarkdownIt(md: MarkdownItLike) {
   output.appendLine('wiremd: extendMarkdownIt called');
 

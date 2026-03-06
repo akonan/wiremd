@@ -6,7 +6,6 @@ pnpm-lock.yaml
 # Build outputs
 dist/
 build/
-bin/
 *.tsbuildinfo
 *.vsix
 
@@ -45,5 +44,3 @@ temp/
 # OS
 .DS_Store
 Thumbs.db
-
-

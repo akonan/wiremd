@@ -16,7 +16,7 @@ Minimal VS Code extension that customizes built-in Markdown preview rendering.
 
 Input markdown:
 
-```markdown
+````markdown
 ```wiremd
 ## Card
 [Click me]
@@ -31,7 +31,7 @@ Input markdown:
 ## Debug AST
 [Button]
 ```
-```
+````
 
 Preview behavior:
 
