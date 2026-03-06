@@ -1,0 +1,318 @@
+{
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "name": "wiremd Markdown Injection",
+  "scopeName": "wiremd.markdown.injection",
+  "injectionSelector": "L:text.html.markdown",
+  "patterns": [
+    {
+      "include": "#container-hero"
+    },
+    {
+      "include": "#container-card"
+    },
+    {
+      "include": "#container-modal"
+    },
+    {
+      "include": "#container-sidebar"
+    },
+    {
+      "include": "#container-footer"
+    },
+    {
+      "include": "#container-alert"
+    },
+    {
+      "include": "#container-grid"
+    },
+    {
+      "include": "#container-layout"
+    },
+    {
+      "include": "#container-section"
+    },
+    {
+      "include": "#container-form-group"
+    },
+    {
+      "include": "#container-button-group"
+    },
+    {
+      "include": "#container-generic"
+    },
+    {
+      "include": "#container-close"
+    },
+    {
+      "include": "#inline-container"
+    },
+    {
+      "include": "#input"
+    },
+    {
+      "include": "#button"
+    },
+    {
+      "include": "#attribute-block"
+    }
+  ],
+  "repository": {
+    "container-hero": {
+      "match": "^(\\s*)(:::)(\\s+)(hero)\\b",
+      "captures": {
+        "2": {
+          "name": "punctuation.definition.container.wiremd"
+        },
+        "4": {
+          "name": "entity.name.type.container.hero.wiremd"
+        }
+      }
+    },
+    "container-card": {
+      "match": "^(\\s*)(:::)(\\s+)(card)\\b",
+      "captures": {
+        "2": {
+          "name": "punctuation.definition.container.wiremd"
+        },
+        "4": {
+          "name": "entity.name.type.container.card.wiremd"
+        }
+      }
+    },
+    "container-modal": {
+      "match": "^(\\s*)(:::)(\\s+)(modal)\\b",
+      "captures": {
+        "2": {
+          "name": "punctuation.definition.container.wiremd"
+        },
+        "4": {
+          "name": "entity.name.type.container.modal.wiremd"
+        }
+      }
+    },
+    "container-sidebar": {
+      "match": "^(\\s*)(:::)(\\s+)(sidebar)\\b",
+      "captures": {
+        "2": {
+          "name": "punctuation.definition.container.wiremd"
+        },
+        "4": {
+          "name": "entity.name.type.container.sidebar.wiremd"
+        }
+      }
+    },
+    "container-footer": {
+      "match": "^(\\s*)(:::)(\\s+)(footer)\\b",
+      "captures": {
+        "2": {
+          "name": "punctuation.definition.container.wiremd"
+        },
+        "4": {
+          "name": "entity.name.type.container.footer.wiremd"
+        }
+      }
+    },
+    "container-alert": {
+      "match": "^(\\s*)(:::)(\\s+)(alert)\\b",
+      "captures": {
+        "2": {
+          "name": "punctuation.definition.container.wiremd"
+        },
+        "4": {
+          "name": "entity.name.type.container.alert.wiremd"
+        }
+      }
+    },
+    "container-grid": {
+      "match": "^(\\s*)(:::)(\\s+)(grid)\\b",
+      "captures": {
+        "2": {
+          "name": "punctuation.definition.container.wiremd"
+        },
+        "4": {
+          "name": "entity.name.type.container.grid.wiremd"
+        }
+      }
+    },
+    "container-layout": {
+      "match": "^(\\s*)(:::)(\\s+)(layout)\\b",
+      "captures": {
+        "2": {
+          "name": "punctuation.definition.container.wiremd"
+        },
+        "4": {
+          "name": "entity.name.type.container.layout.wiremd"
+        }
+      }
+    },
+    "container-section": {
+      "match": "^(\\s*)(:::)(\\s+)(section)\\b",
+      "captures": {
+        "2": {
+          "name": "punctuation.definition.container.wiremd"
+        },
+        "4": {
+          "name": "entity.name.type.container.section.wiremd"
+        }
+      }
+    },
+    "container-form-group": {
+      "match": "^(\\s*)(:::)(\\s+)(form-group)\\b",
+      "captures": {
+        "2": {
+          "name": "punctuation.definition.container.wiremd"
+        },
+        "4": {
+          "name": "entity.name.type.container.form-group.wiremd"
+        }
+      }
+    },
+    "container-button-group": {
+      "match": "^(\\s*)(:::)(\\s+)(button-group)\\b",
+      "captures": {
+        "2": {
+          "name": "punctuation.definition.container.wiremd"
+        },
+        "4": {
+          "name": "entity.name.type.container.button-group.wiremd"
+        }
+      }
+    },
+    "container-generic": {
+      "match": "^(\\s*)(:::)(\\s+)([a-z][a-z0-9-]*)\\b",
+      "captures": {
+        "2": {
+          "name": "punctuation.definition.container.wiremd"
+        },
+        "4": {
+          "name": "entity.name.type.container.generic.wiremd"
+        }
+      }
+    },
+    "container-close": {
+      "match": "^(\\s*)(:::)(\\s*)$",
+      "captures": {
+        "2": {
+          "name": "punctuation.definition.container.wiremd"
+        }
+      }
+    },
+    "inline-container": {
+      "begin": "\\[\\[",
+      "beginCaptures": {
+        "0": {
+          "name": "punctuation.definition.inline-container.begin.wiremd"
+        }
+      },
+      "end": "\\]\\]",
+      "endCaptures": {
+        "0": {
+          "name": "punctuation.definition.inline-container.end.wiremd"
+        }
+      },
+      "name": "meta.inline-container.wiremd",
+      "patterns": [
+        {
+          "include": "#input"
+        },
+        {
+          "include": "#button"
+        },
+        {
+          "match": "\\|",
+          "name": "punctuation.separator.inline-container.wiremd"
+        },
+        {
+          "match": ">",
+          "name": "punctuation.separator.breadcrumb.wiremd"
+        }
+      ]
+    },
+    "input": {
+      "match": "(\\[)(?=[^\\]\\n]*[_*])([^\\]\\n]*)(\\])(?!\\s*\\()",
+      "captures": {
+        "1": {
+          "name": "punctuation.definition.input.begin.wiremd"
+        },
+        "2": {
+          "name": "string.unquoted.input.wiremd"
+        },
+        "3": {
+          "name": "punctuation.definition.input.end.wiremd"
+        }
+      },
+      "name": "meta.input.wiremd"
+    },
+    "button": {
+      "match": "(\\[)(?=[^\\]\\n]*[A-Za-z0-9])([^\\]\\n]*)(\\])(\\*)?(?!\\s*\\()",
+      "captures": {
+        "1": {
+          "name": "punctuation.definition.button.begin.wiremd"
+        },
+        "2": {
+          "name": "string.unquoted.button.wiremd"
+        },
+        "3": {
+          "name": "punctuation.definition.button.end.wiremd"
+        },
+        "4": {
+          "name": "keyword.operator.primary.wiremd"
+        }
+      },
+      "name": "meta.button.wiremd"
+    },
+    "attribute-block": {
+      "begin": "\\{",
+      "beginCaptures": {
+        "0": {
+          "name": "punctuation.definition.attributes.begin.wiremd"
+        }
+      },
+      "end": "\\}",
+      "endCaptures": {
+        "0": {
+          "name": "punctuation.definition.attributes.end.wiremd"
+        }
+      },
+      "name": "meta.attributes.wiremd",
+      "patterns": [
+        {
+          "match": "(state)(:)(disabled|loading|active|error|success|warning)",
+          "captures": {
+            "1": {
+              "name": "entity.other.attribute-name.wiremd"
+            },
+            "2": {
+              "name": "punctuation.separator.key-value.wiremd"
+            },
+            "3": {
+              "name": "constant.language.state.wiremd"
+            }
+          }
+        },
+        {
+          "match": "\\.[A-Za-z][A-Za-z0-9_-]*",
+          "name": "entity.other.attribute-name.class.wiremd"
+        },
+        {
+          "match": "([A-Za-z][A-Za-z0-9_-]*)(:)(\"[^\"]*\"|[^\\s\\}]+)",
+          "captures": {
+            "1": {
+              "name": "entity.other.attribute-name.wiremd"
+            },
+            "2": {
+              "name": "punctuation.separator.key-value.wiremd"
+            },
+            "3": {
+              "name": "string.unquoted.attribute-value.wiremd"
+            }
+          }
+        },
+        {
+          "match": "\\b(required|disabled|checked|selected|multiple|readonly|autofocus)\\b",
+          "name": "constant.language.boolean-attribute.wiremd"
+        }
+      ]
+    }
+  }
+}

@@ -10,6 +10,11 @@ describe('extension wiring and security configuration', () => {
     const packageJson = JSON.parse(readFileSync(packageJsonPath, 'utf8')) as {
       contributes?: {
         'markdown.markdownItPlugins'?: boolean;
+        grammars?: Array<{
+          scopeName: string;
+          path: string;
+          injectTo?: string[];
+        }>;
         configuration?: {
           properties?: Record<string, unknown>;
         };
@@ -17,6 +22,13 @@ describe('extension wiring and security configuration', () => {
     };
 
     expect(packageJson.contributes?.['markdown.markdownItPlugins']).toBe(true);
+
+    const wiremdInjectionGrammar = packageJson.contributes?.grammars?.find(
+      (grammar) => grammar.scopeName === 'wiremd.markdown.injection'
+    );
+
+    expect(wiremdInjectionGrammar?.path).toBe('./syntaxes/wiremd-injection.tmLanguage.json');
+    expect(wiremdInjectionGrammar?.injectTo).toContain('text.html.markdown');
   });
 
   it('registers .wmd files as markdown language', () => {

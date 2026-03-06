@@ -36,6 +36,15 @@
         ]
       }
     ],
+    "grammars": [
+      {
+        "scopeName": "wiremd.markdown.injection",
+        "path": "./syntaxes/wiremd-injection.tmLanguage.json",
+        "injectTo": [
+          "text.html.markdown"
+        ]
+      }
+    ],
     "markdown.markdownItPlugins": true,
     "commands": [
       {
