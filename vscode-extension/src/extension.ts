@@ -1,7 +1,9 @@
 import * as vscode from 'vscode';
 import { parse, renderToHTML, renderToJSON, type DocumentNode, type ParseOptions, type RenderOptions } from 'wiremd';
+import { WiremdPreviewProvider } from './preview-provider';
 
 const output = vscode.window.createOutputChannel('Wiremd');
+let previewProvider: WiremdPreviewProvider | undefined;
 
 const parseOptions: ParseOptions = {
   position: true,
@@ -44,6 +46,88 @@ export function activate(context: vscode.ExtensionContext) {
   output.appendLine('wiremd: activate');
   context.subscriptions.push(output);
 
+  previewProvider = new WiremdPreviewProvider(context);
+  context.subscriptions.push(
+    vscode.window.registerWebviewPanelSerializer(
+      WiremdPreviewProvider.viewType,
+      previewProvider
+    )
+  );
+
+  context.subscriptions.push(
+    vscode.commands.registerCommand('wiremd.openPreview', () => {
+      previewProvider?.openPreview(vscode.ViewColumn.Active);
+    })
+  );
+
+  context.subscriptions.push(
+    vscode.commands.registerCommand('wiremd.openPreviewToSide', () => {
+      const activeColumn = vscode.window.activeTextEditor?.viewColumn;
+      const previewColumn = activeColumn
+        ? activeColumn + 1
+        : vscode.ViewColumn.Two;
+      previewProvider?.openPreview(previewColumn);
+    })
+  );
+
+  context.subscriptions.push(
+    vscode.commands.registerCommand('wiremd.refreshPreview', () => {
+      previewProvider?.refresh();
+    })
+  );
+
+  context.subscriptions.push(
+    vscode.commands.registerCommand('wiremd.changeStyle', async () => {
+      const selected = await vscode.window.showQuickPick(supportedStyles, {
+        placeHolder: 'Select a visual style'
+      });
+      if (selected) {
+        previewProvider?.changeStyle(selected);
+      }
+    })
+  );
+
+  context.subscriptions.push(
+    vscode.commands.registerCommand('wiremd.changeViewport', async () => {
+      const viewports = [
+        { label: 'Desktop (1440px)', value: 'desktop' },
+        { label: 'Laptop (1024px)', value: 'laptop' },
+        { label: 'Tablet (768px)', value: 'tablet' },
+        { label: 'Mobile (375px)', value: 'mobile' },
+        { label: 'Full Width', value: 'full' }
+      ];
+      const selected = await vscode.window.showQuickPick(viewports, {
+        placeHolder: 'Select viewport size'
+      });
+      if (selected) {
+        previewProvider?.changeViewport(selected.value);
+      }
+    })
+  );
+
+  const statusBarItem = vscode.window.createStatusBarItem(
+    vscode.StatusBarAlignment.Right,
+    100
+  );
+  statusBarItem.text = '$(eye) Wiremd';
+  statusBarItem.tooltip = 'Open Wiremd Preview';
+  statusBarItem.command = 'wiremd.openPreviewToSide';
+  context.subscriptions.push(statusBarItem);
+
+  context.subscriptions.push(
+    vscode.window.onDidChangeActiveTextEditor((editor) => {
+      if (editor?.document.languageId === 'markdown') {
+        statusBarItem.show();
+      } else {
+        statusBarItem.hide();
+      }
+    })
+  );
+
+  if (vscode.window.activeTextEditor?.document.languageId === 'markdown') {
+    statusBarItem.show();
+  }
+
   return {
     extendMarkdownIt
   };
@@ -53,6 +137,10 @@ export function activate(context: vscode.ExtensionContext) {
  * Disposes extension resources when VS Code deactivates the extension.
  */
 export function deactivate() {
+  if (previewProvider) {
+    previewProvider.dispose();
+    previewProvider = undefined;
+  }
   output.dispose();
 }
 

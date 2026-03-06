@@ -4,15 +4,18 @@
 
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { createServer } from 'http';
-import { readFileSync, writeFileSync, unlinkSync } from 'fs';
+import { readFileSync, writeFileSync, mkdirSync, rmSync } from 'fs';
 import { startServer, notifyReload, notifyError } from '../src/cli/server.js';
 
 describe('Dev Server', () => {
   const TEST_PORT = 3456;
-  const TEST_OUTPUT = './test-output.html';
+  const TEST_DIR = './tests/.artifacts/server';
+  const TEST_OUTPUT = `${TEST_DIR}/server-test-output.html`;
   let server: any;
 
   beforeEach(() => {
+    mkdirSync(TEST_DIR, { recursive: true });
+
     // Create a test HTML file
     writeFileSync(
       TEST_OUTPUT,
@@ -24,7 +27,7 @@ describe('Dev Server', () => {
   afterEach(() => {
     // Clean up test file
     try {
-      unlinkSync(TEST_OUTPUT);
+      rmSync(TEST_DIR, { recursive: true, force: true });
     } catch (e) {
       // Ignore if file doesn't exist
     }

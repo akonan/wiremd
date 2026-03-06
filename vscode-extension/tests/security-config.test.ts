@@ -19,21 +19,40 @@ describe('extension wiring and security configuration', () => {
     expect(packageJson.contributes?.['markdown.markdownItPlugins']).toBe(true);
   });
 
+  it('registers .wmd files as markdown language', () => {
+    const packageJsonPath = resolve(root, 'package.json');
+    const packageJson = JSON.parse(readFileSync(packageJsonPath, 'utf8')) as {
+      contributes?: {
+        languages?: Array<{
+          id: string;
+          extensions?: string[];
+        }>;
+      };
+    };
+
+    const markdownLanguage = packageJson.contributes?.languages?.find((language) => language.id === 'markdown');
+    expect(markdownLanguage?.extensions).toContain('.wmd');
+  });
+
   it('uses activation events that cover markdown preview opening paths', () => {
     const packageJsonPath = resolve(root, 'package.json');
     const packageJson = JSON.parse(readFileSync(packageJsonPath, 'utf8')) as {
       activationEvents?: string[];
     };
 
-    expect(packageJson.activationEvents).toEqual([
-      'onLanguage:markdown',
-      'onCommand:markdown.showPreview',
-      'onCommand:markdown.showPreviewToSide',
-      'onStartupFinished'
-    ]);
+    expect(packageJson.activationEvents).toEqual(
+      expect.arrayContaining([
+        'onLanguage:markdown',
+        'onCommand:markdown.showPreview',
+        'onCommand:markdown.showPreviewToSide',
+        'onCommand:wiremd.openPreview',
+        'onCommand:wiremd.openPreviewToSide',
+        'onStartupFinished'
+      ])
+    );
   });
 
-  it('does not declare preview commands or preview configuration', () => {
+  it('declares preview commands and preview configuration', () => {
     const packageJsonPath = resolve(root, 'package.json');
     const packageJson = JSON.parse(readFileSync(packageJsonPath, 'utf8')) as {
       contributes?: {
@@ -45,7 +64,21 @@ describe('extension wiring and security configuration', () => {
     };
 
     const commands = packageJson.contributes?.commands ?? [];
-    expect(commands).toHaveLength(0);
-    expect(packageJson.contributes?.configuration).toBeUndefined();
+    const commandIds = commands.map((command) => command.command);
+    expect(commandIds).toEqual(
+      expect.arrayContaining([
+        'wiremd.openPreview',
+        'wiremd.openPreviewToSide',
+        'wiremd.refreshPreview',
+        'wiremd.changeStyle',
+        'wiremd.changeViewport'
+      ])
+    );
+    expect(packageJson.contributes?.configuration?.properties).toMatchObject({
+      'wiremd.defaultStyle': expect.any(Object),
+      'wiremd.autoRefresh': expect.any(Object),
+      'wiremd.refreshDelay': expect.any(Object),
+      'wiremd.showErrorOverlay': expect.any(Object)
+    });
   });
 });

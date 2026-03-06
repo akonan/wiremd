@@ -38,6 +38,7 @@ pnpm-debug.log*
 # Temporary
 tmp/
 temp/
+tests/.artifacts/
 *.tmp
 *.pid
 

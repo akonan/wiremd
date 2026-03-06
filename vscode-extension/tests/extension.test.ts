@@ -1,14 +1,35 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
+const createDisposable = () => ({ dispose: vi.fn() });
+const mockOutputChannel = { appendLine: vi.fn(), dispose: vi.fn() };
+const mockStatusBarItem = { text: '', tooltip: '', command: '', show: vi.fn(), hide: vi.fn(), dispose: vi.fn() };
+const mockConfiguration = {
+  get: vi.fn((_key: string, defaultValue?: unknown) => defaultValue)
+};
+
 const mockVscode = {
   window: {
-    createOutputChannel: vi.fn(() => ({ appendLine: vi.fn(), dispose: vi.fn() })),
-    StatusBarAlignment: { Right: 2 }
+    createOutputChannel: vi.fn(() => mockOutputChannel),
+    registerWebviewPanelSerializer: vi.fn(() => createDisposable()),
+    createStatusBarItem: vi.fn(() => mockStatusBarItem),
+    onDidChangeActiveTextEditor: vi.fn(() => createDisposable()),
+    showQuickPick: vi.fn(),
+    showErrorMessage: vi.fn(),
+    showWarningMessage: vi.fn(),
+    showInformationMessage: vi.fn(),
+    activeTextEditor: undefined as undefined | { document: { languageId: string }; viewColumn?: number }
   },
   commands: {
-    executeCommand: vi.fn()
+    executeCommand: vi.fn(),
+    registerCommand: vi.fn(() => createDisposable())
   },
-  workspace: {}
+  workspace: {
+    onDidChangeTextDocument: vi.fn(() => createDisposable()),
+    onDidChangeConfiguration: vi.fn(() => createDisposable()),
+    getConfiguration: vi.fn(() => mockConfiguration)
+  },
+  StatusBarAlignment: { Right: 2 },
+  ViewColumn: { Active: 1, Two: 2 }
 };
 
 vi.mock('vscode', () => mockVscode);
@@ -17,9 +38,10 @@ describe('extension activation', () => {
   beforeEach(() => {
     vi.resetModules();
     vi.clearAllMocks();
+    mockVscode.window.activeTextEditor = undefined;
   });
 
-  it('activates without registering preview commands', async () => {
+  it('activates with preview commands and markdown-it hook', async () => {
     const extension = await import('../src/extension');
 
     const context = { subscriptions: [] as Array<{ dispose(): void }>, extensionPath: '/tmp/ext' };
@@ -27,7 +49,10 @@ describe('extension activation', () => {
       extendMarkdownIt?: (md: unknown) => unknown;
     };
 
-    expect(context.subscriptions.length).toBeGreaterThan(0);
+    expect(context.subscriptions.length).toBeGreaterThan(6);
+    expect(mockVscode.window.registerWebviewPanelSerializer).toHaveBeenCalledTimes(1);
+    expect(mockVscode.commands.registerCommand).toHaveBeenCalledTimes(5);
+    expect(mockVscode.window.createStatusBarItem).toHaveBeenCalledTimes(1);
     expect(typeof api.extendMarkdownIt).toBe('function');
   });
 
@@ -39,6 +64,7 @@ describe('extension activation', () => {
     extension.deactivate();
 
     expect(mockVscode.window.createOutputChannel).toHaveBeenCalledTimes(1);
+    expect(mockOutputChannel.dispose).toHaveBeenCalled();
   });
 
   it('exports extendMarkdownIt and registers markdown-it rule', async () => {

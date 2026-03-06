@@ -1,8 +1,11 @@
-# Wiremd Markdown Preview Extension
+# Wiremd Preview Extension
 
-Minimal VS Code extension that customizes built-in Markdown preview rendering.
+VS Code extension with two complementary preview modes:
+- Custom Wiremd Webview panel (commands + toolbar + viewport/style controls)
+- Built-in Markdown preview integration for `wiremd` fenced blocks
+- Direct support for `*.wmd` files (associated to Markdown)
 
-## What it does
+## Built-in Markdown preview mode
 
 1. Detects and replaces **all** fenced code blocks tagged as `wiremd` in Markdown preview.
 2. Parses each block with `wiremd.parse`.
@@ -60,10 +63,15 @@ npm test
 
 ## Notes
 
-- This extension intentionally does **not** provide a custom webview preview panel.
-- Integration is done through `contributes.markdown.markdownItPlugins` + `extendMarkdownIt`.
+- Markdown preview integration is done through `contributes.markdown.markdownItPlugins` + `extendMarkdownIt`.
 - HTML rendering is isolated per fence block (scoped CSS + unique class prefix), so styles from one `wiremd` block do not leak into the rest of the Markdown preview.
 - Fence option syntax is order-independent; examples:
 	- `wiremd material`
 	- `wiremd html wireframe`
 	- `wiremd json`
+- Custom Webview panel commands:
+	- `Wiremd: Open Preview`
+	- `Wiremd: Open Preview to the Side`
+	- `Wiremd: Refresh Wiremd Preview`
+	- `Wiremd: Change Preview Style`
+	- `Wiremd: Change Preview Viewport`

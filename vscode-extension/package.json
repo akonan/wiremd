@@ -22,11 +22,132 @@
     "onLanguage:markdown",
     "onCommand:markdown.showPreview",
     "onCommand:markdown.showPreviewToSide",
+    "onCommand:wiremd.openPreview",
+    "onCommand:wiremd.openPreviewToSide",
     "onStartupFinished"
   ],
   "main": "./dist/extension.js",
   "contributes": {
-    "markdown.markdownItPlugins": true
+    "languages": [
+      {
+        "id": "markdown",
+        "extensions": [
+          ".wmd"
+        ]
+      }
+    ],
+    "markdown.markdownItPlugins": true,
+    "commands": [
+      {
+        "command": "wiremd.openPreview",
+        "title": "Open Wiremd Preview",
+        "category": "Wiremd",
+        "icon": "$(open-preview)"
+      },
+      {
+        "command": "wiremd.openPreviewToSide",
+        "title": "Open Wiremd Preview to the Side",
+        "category": "Wiremd",
+        "icon": "$(open-preview)"
+      },
+      {
+        "command": "wiremd.refreshPreview",
+        "title": "Refresh Wiremd Preview",
+        "category": "Wiremd",
+        "icon": "$(refresh)"
+      },
+      {
+        "command": "wiremd.changeStyle",
+        "title": "Change Preview Style",
+        "category": "Wiremd",
+        "icon": "$(symbol-color)"
+      },
+      {
+        "command": "wiremd.changeViewport",
+        "title": "Change Preview Viewport",
+        "category": "Wiremd",
+        "icon": "$(device-mobile)"
+      }
+    ],
+    "menus": {
+      "editor/title": [
+        {
+          "command": "wiremd.openPreviewToSide",
+          "when": "editorLangId == markdown",
+          "group": "navigation"
+        }
+      ],
+      "editor/title/context": [
+        {
+          "command": "wiremd.openPreview",
+          "when": "editorLangId == markdown"
+        }
+      ],
+      "commandPalette": [
+        {
+          "command": "wiremd.openPreview",
+          "when": "editorLangId == markdown"
+        },
+        {
+          "command": "wiremd.openPreviewToSide",
+          "when": "editorLangId == markdown"
+        },
+        {
+          "command": "wiremd.refreshPreview",
+          "when": "editorLangId == markdown"
+        },
+        {
+          "command": "wiremd.changeStyle",
+          "when": "editorLangId == markdown"
+        },
+        {
+          "command": "wiremd.changeViewport",
+          "when": "editorLangId == markdown"
+        }
+      ]
+    },
+    "keybindings": [
+      {
+        "command": "wiremd.openPreviewToSide",
+        "key": "ctrl+k v",
+        "mac": "cmd+k v",
+        "when": "editorLangId == markdown"
+      }
+    ],
+    "configuration": {
+      "title": "Wiremd",
+      "properties": {
+        "wiremd.defaultStyle": {
+          "type": "string",
+          "default": "sketch",
+          "enum": [
+            "sketch",
+            "clean",
+            "wireframe",
+            "none",
+            "tailwind",
+            "material",
+            "brutal"
+          ],
+          "description": "Default visual style for wireframes"
+        },
+        "wiremd.autoRefresh": {
+          "type": "boolean",
+          "default": true,
+          "description": "Automatically refresh preview on file changes"
+        },
+        "wiremd.refreshDelay": {
+          "type": "number",
+          "default": 300,
+          "description": "Delay in milliseconds before refreshing preview"
+        },
+        "wiremd.showErrorOverlay": {
+          "type": "boolean",
+          "default": true,
+          "description": "Show error overlay in preview"
+        }
+      }
+    }
   },
   "scripts": {
     "bundle": "rm -rf dist && esbuild ./src/extension.ts --bundle --platform=node --target=node18 --format=cjs --outfile=dist/extension.js --external:vscode --sourcemap",
@@ -35,13 +156,15 @@
     "typecheck": "tsc --noEmit -p ./",
     "package": "npm run compile && vsce package --no-dependencies",
     "lint": "eslint src --ext ts",
-    "test": "vitest run"
+    "test": "vitest run",
+    "coverage": "vitest run --coverage --coverage.provider=v8"
   },
   "devDependencies": {
     "@types/node": "^18.0.0",
     "@types/vscode": "^1.75.0",
     "@typescript-eslint/eslint-plugin": "^6.0.0",
     "@typescript-eslint/parser": "^6.0.0",
+    "@vitest/coverage-v8": "^2.1.9",
     "@vscode/vsce": "^2.22.0",
     "esbuild": "^0.25.10",
     "eslint": "^8.0.0",

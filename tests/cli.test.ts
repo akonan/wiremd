@@ -3,14 +3,19 @@
  */
 
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
-import { readFileSync, writeFileSync, unlinkSync, existsSync } from 'fs';
+import { readFileSync, writeFileSync, existsSync, mkdirSync, rmSync } from 'fs';
 import { execSync } from 'child_process';
 
 describe('CLI', () => {
-  const TEST_INPUT = './test-input.md';
-  const TEST_OUTPUT = './test-output.html';
+  const TEST_DIR = './tests/.artifacts/cli';
+  const TEST_INPUT = `${TEST_DIR}/test-input.md`;
+  const TEST_OUTPUT = `${TEST_DIR}/test-output.html`;
+  const TEST_JSON_OUTPUT = `${TEST_DIR}/test-output.json`;
+  const CUSTOM_OUTPUT = `${TEST_DIR}/custom-output.html`;
 
   beforeEach(() => {
+    mkdirSync(TEST_DIR, { recursive: true });
+
     // Create test input file
     writeFileSync(
       TEST_INPUT,
@@ -22,12 +27,7 @@ describe('CLI', () => {
   afterEach(() => {
     // Clean up test files
     try {
-      if (existsSync(TEST_INPUT)) {
-        unlinkSync(TEST_INPUT);
-      }
-      if (existsSync(TEST_OUTPUT)) {
-        unlinkSync(TEST_OUTPUT);
-      }
+      rmSync(TEST_DIR, { recursive: true, force: true });
     } catch (e) {
       // Ignore if files don't exist
     }
@@ -221,16 +221,12 @@ describe('CLI', () => {
     });
 
     it('should generate JSON format', () => {
-      const jsonOutput = './test-output.json';
       execSync(
-        `node dist/cli/index.js ${TEST_INPUT} -o ${jsonOutput} --format json`
+        `node dist/cli/index.js ${TEST_INPUT} -o ${TEST_JSON_OUTPUT} --format json`
       );
 
-      const content = readFileSync(jsonOutput, 'utf-8');
+      const content = readFileSync(TEST_JSON_OUTPUT, 'utf-8');
       expect(() => JSON.parse(content)).not.toThrow();
-
-      // Clean up
-      unlinkSync(jsonOutput);
     });
 
     it('should reject invalid format', () => {
@@ -270,19 +266,12 @@ describe('CLI', () => {
 
       const autoOutput = TEST_INPUT.replace('.md', '.html');
       expect(existsSync(autoOutput)).toBe(true);
-
-      // Clean up
-      unlinkSync(autoOutput);
     });
 
     it('should respect custom output path', () => {
-      const customOutput = './custom-output.html';
-      execSync(`node dist/cli/index.js ${TEST_INPUT} -o ${customOutput}`);
+      execSync(`node dist/cli/index.js ${TEST_INPUT} -o ${CUSTOM_OUTPUT}`);
 
-      expect(existsSync(customOutput)).toBe(true);
-
-      // Clean up
-      unlinkSync(customOutput);
+      expect(existsSync(CUSTOM_OUTPUT)).toBe(true);
     });
   });
 
