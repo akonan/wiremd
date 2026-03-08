@@ -1,7 +1,8 @@
 # wiremd Syntax Specification v0.1
 
-**Status:** Locked for implementation
+**Status:** Implemented and maintained
 **Date:** November 6, 2025
+**Last Implementation Update:** March 8, 2026
 **Approach:** Hybrid model (visual patterns + markdown + attributes)
 
 ---
@@ -207,8 +208,25 @@ Content
 - Heading with `.grid-N` class where N is column count
 - Direct child headings become grid items
 - Supports: `.grid-2`, `.grid-3`, `.grid-4`, `.grid-auto`
+- Supports breakpoint-specific grid classes: `.xs:grid-N`, `.sm:grid-N`, `.md:grid-N`, `.lg:grid-N`, `.xl:grid-N`, `.2xl:grid-N`
 
-### 4.2 Sidebar + Main Layout
+### 4.2 Viewport Blocks
+
+```markdown
+::: mobile
+## Features {.grid-1}
+:::
+
+::: desktop
+## Features {.grid-3}
+:::
+```
+
+**Parser Rules:**
+- `::: mobile|tablet|desktop|laptop` is parsed as a section container with viewport metadata
+- Viewport metadata is stored in `props.responsive.visibleIn`
+
+### 4.3 Sidebar + Main Layout
 
 ```markdown
 ::: layout {.sidebar-main}
@@ -270,7 +288,8 @@ Main content
 **Parser Rules:**
 - Curly braces with `:` prefix for states
 - Represents component state
-- Single state per element (primary state)
+- Multiple states can be combined on one element
+- Parser stores `props.state` (primary/latest) and `props.states` (all states)
 
 ### 5.4 Combined Attributes
 
@@ -282,6 +301,47 @@ Main content
 - Can combine classes, key-values, and states in single `{...}` block
 - Space-separated
 - Order doesn't matter
+
+### 5.5 Annotation and Comment Attributes
+
+```markdown
+## Hero {.annotation="Needs approval"}
+[Submit] <!-- Primary CTA -->
+
+::: note
+Pending final copy from marketing.
+:::
+```
+
+**Parser Rules:**
+- `.annotation="..."`, `todo="..."`, and `version-note="..."` are normalized into `props.annotations`
+- HTML comments are captured as annotation metadata (not rendered by default in visual outputs)
+- `::: note` blocks are parsed as annotation-oriented section containers
+
+### 5.6 Data Placeholder Syntax
+
+```markdown
+{{user.name}}
+{{user.email}}
+{{lorem:2}}
+{{image:400x300}}
+{{date}}
+{{number:1000-9999}}
+```
+
+**Parser/Renderer Rules:**
+- Placeholders are preserved in AST text fields and resolved at render time by default
+- Unsupported placeholders are retained as literal `{{...}}` unless placeholder resolution is explicitly disabled/fallback is configured
+- Supported expressions:
+  - `user.name`
+  - `user.email`
+  - `lorem:<paragraph-count>`
+  - `image:<width>x<height>`
+  - `date`
+  - `number:<min>-<max>`
+- Deterministic output is supported via `placeholderSeed` (API) / `--seed` (CLI)
+- Placeholder resolution can be disabled via `resolvePlaceholders: false` (API) / `--no-placeholders` (CLI)
+- In `strict` parse mode, invalid placeholder syntax yields validation errors
 
 ---
 
@@ -430,23 +490,35 @@ Notifications `3`
 
 ```markdown
 [Button]{:disabled}      # Disabled state
+[Button]{:hover}         # Hover state
+[Button]{:active}        # Active/pressed state
+[Button]{:focus}         # Focus state
 [Loading...]{:loading}   # Loading state
 [Success]{:success}      # Success state
 [Error]{:error}          # Error state
+[Warning]{:warning}      # Warning state
 ```
 
-### 8.2 Loading States
+### 8.2 State Blocks
 
 ```markdown
-::: loading
-:spinner: Loading...
-Please wait while we process your request
+::: state=hover
+[Submit]
 :::
-
-[Submit]{:loading}
 ```
 
-### 8.3 Empty States
+### 8.3 Loading States
+
+```markdown
+[Submit]{:loading}
+
+::: loading-state
+:spinner: Loading...
+Please wait while we process your request.
+:::
+```
+
+### 8.4 Empty States
 
 ```markdown
 ::: empty-state
@@ -457,7 +529,7 @@ Get started by creating your first item
 :::
 ```
 
-### 8.4 Error States
+### 8.5 Error States
 
 ```markdown
 ::: error-state
@@ -490,6 +562,11 @@ We couldn't load this page
 | Attribute | `{key:value}` | `{type:email}` |
 | State | `{:state}` | `{:disabled}` |
 | Grid | `{.grid-N}` | `{.grid-3}` |
+| Responsive Grid | `{.md:grid-N}` | `{.grid-3 .md:grid-2 .sm:grid-1}` |
+| Viewport Block | `::: mobile ... :::` | `::: mobile ... :::` |
+| Annotation | `{.annotation="..."}` | `{.annotation="Needs review"}` |
+| Comment | `<!-- ... -->` | `[Submit] <!-- Primary CTA -->` |
+| Note Block | `::: note ... :::` | `::: note ... :::` |
 
 ---
 
@@ -563,7 +640,15 @@ We couldn't load this page
   "props": {
     "key": "value",
     "classes": ["class1", "class2"],
-    "state": "state-name"
+    "state": "state-name",
+    "states": ["state-a", "state-b"],
+    "responsive": {
+      "gridColumns": { "sm": 1, "md": 2 },
+      "visibleIn": ["mobile"]
+    },
+    "annotations": [
+      { "kind": "comment", "text": "Primary CTA" }
+    ]
   },
   "children": [...],
   "content": "text content",
@@ -616,6 +701,40 @@ We couldn't load this page
 - `loading`
 - `empty-state`
 - `error-state`
+
+### 11.4 Implemented Extension Metadata (Responsive + Annotations)
+
+```json
+{
+  "type": "grid",
+  "columns": 3,
+  "props": {
+    "classes": ["grid-3", "md:grid-2", "sm:grid-1"],
+    "responsive": {
+      "gridColumns": {
+        "md": 2,
+        "sm": 1
+      }
+    }
+  }
+}
+```
+
+```json
+{
+  "type": "button",
+  "content": "Submit",
+  "props": {
+    "annotations": [
+      {
+        "kind": "comment",
+        "source": "inline-comment",
+        "text": "Primary CTA"
+      }
+    ]
+  }
+}
+```
 
 ---
 
@@ -878,11 +997,13 @@ Content
 ✓ Tables (basic)
 ✓ State (loading, empty, error)
 ✓ Attributes (classes, key-value, states)
+✓ Responsive breakpoint syntax (`.md:grid-*`, viewport blocks)
+✓ State blocks (`::: state=...`)
+✓ Annotation/comment syntax (`<!-- ... -->`, `.annotation=...`, `::: note`)
 
 ### 16.2 Deferred to v0.2+
 
 ⏳ Advanced form elements (multi-select, date pickers, file uploads)
-⏳ Responsive attributes and breakpoints
 ⏳ Animations and transitions
 ⏳ Component library system
 ⏳ Template/partial includes
@@ -911,6 +1032,6 @@ Syntax additions should be backwards compatible where possible
 
 ---
 
-**Specification Status:** LOCKED for v0.1 implementation
-**Last Updated:** November 6, 2025
-**Next Steps:** Implement parser following this specification
+**Specification Status:** Implemented for v0.1 baseline plus documented extensions
+**Last Updated:** March 7, 2026
+**Next Steps:** Keep spec aligned with parser/renderer behavior and release docs

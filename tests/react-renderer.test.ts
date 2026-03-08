@@ -41,6 +41,36 @@ describe('React Renderer', () => {
       expect(jsx).toContain('disabled');
     });
 
+    it('should render state class for inline state syntax', () => {
+      const ast = parse('[Submit]{:active}');
+      const jsx = renderToReact(ast);
+
+      expect(jsx).toContain('className="wmd-button wmd-state-active"');
+    });
+
+    it('should apply state blocks to children in JSX output', () => {
+      const ast = parse('::: state=disabled\n[Submit]\n:::');
+      const jsx = renderToReact(ast);
+
+      expect(jsx).toContain('wmd-state-disabled');
+      expect(jsx).toContain('disabled');
+    });
+
+    it('should resolve placeholders in React output by default', () => {
+      const ast = parse('## Welcome {{user.name}}');
+      const jsx = renderToReact(ast, { placeholderSeed: 'react-seed' });
+
+      expect(jsx).not.toContain('{{user.name}}');
+      expect(jsx).toMatch(/Welcome [A-Za-z]+ [A-Za-z]+/);
+    });
+
+    it('should keep placeholders in React output when disabled', () => {
+      const ast = parse('## Welcome {{user.name}}');
+      const jsx = renderToReact(ast, { resolvePlaceholders: false });
+
+      expect(jsx).toContain('Welcome &#123;&#123;user.name&#125;&#125;');
+    });
+
     it('should render an input', () => {
       const ast = parse('[___________]{type:email required}');
       const jsx = renderToReact(ast);
@@ -144,6 +174,47 @@ describe('React Renderer', () => {
       expect(jsx).toContain('wmd-grid-3');
       expect(jsx).toContain("'--grid-columns': 3");
       expect(jsx).toContain('as React.CSSProperties');
+    });
+
+    it('should render responsive breakpoint classes for grids', () => {
+      const ast = parse('## Features {.grid-3 .md:grid-2 .sm:grid-1}\n### A\n### B\n### C');
+      const jsx = renderToReact(ast);
+
+      expect(jsx).toContain('wmd-grid-md-2');
+      expect(jsx).toContain('wmd-grid-sm-1');
+    });
+
+    it('should render viewport block classes', () => {
+      const ast = parse('::: mobile\n[Submit]\n:::');
+      const jsx = renderToReact(ast);
+
+      expect(jsx).toContain('wmd-viewport-mobile');
+    });
+  });
+
+  describe('Annotation Rendering', () => {
+    it('should hide inline comment annotations by default', () => {
+      const ast = parse('[Submit] <!-- REACT-ANNOTATION-XYZ -->');
+      const jsx = renderToReact(ast);
+
+      expect(jsx).not.toContain('REACT-ANNOTATION-XYZ');
+    });
+
+    it('should render annotations when showAnnotations is enabled', () => {
+      const ast = parse('[Submit] <!-- REACT-ANNOTATION-XYZ -->');
+      const jsx = renderToReact(ast, { showAnnotations: true });
+
+      expect(jsx).toContain('REACT-ANNOTATION-XYZ');
+      expect(jsx).toContain('wmd-annotation-callout');
+    });
+
+    it('should hide ::: note blocks by default and show with showAnnotations', () => {
+      const ast = parse('::: note\nREACT-NOTE-XYZ\n:::');
+      const hiddenJsx = renderToReact(ast);
+      const visibleJsx = renderToReact(ast, { showAnnotations: true });
+
+      expect(hiddenJsx).not.toContain('REACT-NOTE-XYZ');
+      expect(visibleJsx).toContain('REACT-NOTE-XYZ');
     });
   });
 

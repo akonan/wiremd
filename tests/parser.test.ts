@@ -486,4 +486,227 @@ Advanced features included
       expect(result.children[0].children).toHaveLength(4);
     });
   });
+
+  describe('Advanced Attribute Parsing', () => {
+    it('should parse quoted values with spaces', () => {
+      const result = parse('[_____]{placeholder:"Enter full name"}');
+      expect(result.children[0]).toMatchObject({
+        type: 'input',
+        props: {
+          placeholder: 'Enter full name',
+        },
+      });
+    });
+
+    it('should parse dot assignments like .annotation="..."', () => {
+      const result = parse('## Hero {.annotation="Needs approval from design"}');
+      expect(result.children[0]).toMatchObject({
+        type: 'heading',
+        props: {
+          annotation: 'Needs approval from design',
+        },
+      });
+    });
+
+    it('should preserve multiple states in props.states while keeping primary state', () => {
+      const result = parse('[Submit]{:disabled state=loading}');
+      expect(result.children[0]).toMatchObject({
+        type: 'button',
+        props: {
+          state: 'loading',
+        },
+      });
+      expect(result.children[0].props.states).toEqual(['disabled', 'loading']);
+    });
+
+    it('should parse responsive breakpoint classes into metadata', () => {
+      const input = `
+## Features {.grid-3 .md:grid-2 .sm:grid-1}
+
+### Feature One
+Fast
+
+### Feature Two
+Secure
+
+### Feature Three
+Reliable
+      `.trim();
+
+      const result = parse(input);
+      expect(result.children[0]).toMatchObject({
+        type: 'grid',
+        columns: 3,
+      });
+      expect(result.children[0].props.responsive.gridColumns).toEqual({
+        md: 2,
+        sm: 1,
+      });
+    });
+  });
+
+  describe('State Syntax', () => {
+    it('should parse inline state syntax', () => {
+      const result = parse('[Submit]{:hover}');
+      expect(result.children[0]).toMatchObject({
+        type: 'button',
+        props: {
+          state: 'hover',
+        },
+      });
+      expect(result.children[0].props.states).toEqual(['hover']);
+    });
+
+    it('should parse state blocks and apply state to child components', () => {
+      const input = `
+::: state=active
+[Submit]
+:::
+      `.trim();
+
+      const result = parse(input);
+      expect(result.children[0]).toMatchObject({
+        type: 'container',
+        containerType: 'section',
+        props: {
+          state: 'active',
+        },
+      });
+      expect(result.children[0].children[0]).toMatchObject({
+        type: 'button',
+        props: {
+          state: 'active',
+        },
+      });
+    });
+
+    it('should keep explicit child state when inside a state block', () => {
+      const input = `
+::: state=hover
+[Submit]{:disabled}
+:::
+      `.trim();
+
+      const result = parse(input);
+      expect(result.children[0].children[0]).toMatchObject({
+        type: 'button',
+        props: {
+          state: 'disabled',
+        },
+      });
+    });
+  });
+
+  describe('Responsive Syntax', () => {
+    it('should parse mobile viewport blocks', () => {
+      const input = `
+::: mobile
+## Features {.grid-1}
+:::
+      `.trim();
+
+      const result = parse(input);
+      expect(result.children[0]).toMatchObject({
+        type: 'container',
+        containerType: 'section',
+      });
+      expect(result.children[0].props.responsive.visibleIn).toEqual(['mobile']);
+      expect(result.children[0].props.classes).toContain('viewport-mobile');
+    });
+
+    it('should parse desktop viewport blocks', () => {
+      const input = `
+::: desktop
+## Features {.grid-3}
+:::
+      `.trim();
+
+      const result = parse(input);
+      expect(result.children[0].props.responsive.visibleIn).toEqual(['desktop']);
+      expect(result.children[0].props.classes).toContain('viewport-desktop');
+    });
+  });
+
+  describe('Annotation and Comment Syntax', () => {
+    it('should attach inline HTML comments to the parsed component as annotations', () => {
+      const result = parse('[Submit] <!-- This should be primary CTA -->');
+
+      expect(result.children[0]).toMatchObject({
+        type: 'button',
+        content: 'Submit',
+      });
+      expect(result.children[0].props.annotations).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            kind: 'comment',
+            text: 'This should be primary CTA',
+          }),
+        ])
+      );
+    });
+
+    it('should store standalone HTML comments in document metadata', () => {
+      const result = parse('<!-- This is a doc-level note -->\n\n[Submit]');
+
+      expect(result.meta.annotations).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            kind: 'comment',
+            text: 'This is a doc-level note',
+          }),
+        ])
+      );
+      expect(result.children[0].type).toBe('button');
+    });
+
+    it('should parse ::: note blocks as annotation-only containers', () => {
+      const result = parse('::: note\nThis section is pending final copy.\n:::');
+      expect(result.children[0]).toMatchObject({
+        type: 'container',
+        containerType: 'section',
+        props: {
+          annotationRole: 'note',
+        },
+      });
+      expect(result.children[0].props.classes).toContain('annotation-note');
+      expect(result.children[0].props.annotations).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            kind: 'note',
+          }),
+        ])
+      );
+    });
+
+    it('should normalize annotation attributes into props.annotations metadata', () => {
+      const result = parse('## Hero {.annotation="Needs approval" todo="Update copy" version-note="v2"}');
+      const heading = result.children[0];
+
+      expect(heading.props.annotations).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({ kind: 'annotation', text: 'Needs approval' }),
+          expect.objectContaining({ kind: 'todo', todo: 'Update copy' }),
+          expect.objectContaining({ kind: 'version', version: 'v2' }),
+        ])
+      );
+    });
+  });
+
+  describe('Placeholder Validation', () => {
+    it('should allow valid placeholders in strict mode', () => {
+      expect(() => parse('## Welcome {{user.name}}', { strict: true })).not.toThrow();
+    });
+
+    it('should throw in strict mode for unsupported placeholders', () => {
+      expect(() => parse('## Welcome {{user.phone}}', { strict: true })).toThrow(
+        /Validation failed/
+      );
+    });
+
+    it('should throw in strict mode for unbalanced placeholder braces', () => {
+      expect(() => parse('## Welcome {{user.name', { strict: true })).toThrow(
+        /Validation failed/
+      );
+    });
+  });
 });

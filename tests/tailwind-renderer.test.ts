@@ -50,6 +50,36 @@ describe('Tailwind Renderer', () => {
       expect(html).toContain('disabled');
     });
 
+    it('should render focus state styling for buttons', () => {
+      const ast = parse('[Submit]{:focus}');
+      const html = renderToTailwind(ast);
+
+      expect(html).toContain('ring-2 ring-indigo-500');
+    });
+
+    it('should apply state blocks to child components', () => {
+      const ast = parse('::: state=disabled\n[Submit]\n:::');
+      const html = renderToTailwind(ast);
+
+      expect(html).toContain('opacity-50 cursor-not-allowed');
+      expect(html).toContain('disabled');
+    });
+
+    it('should resolve placeholders in Tailwind output by default', () => {
+      const ast = parse('## Welcome {{user.name}}');
+      const html = renderToTailwind(ast, { placeholderSeed: 'tailwind-seed' });
+
+      expect(html).not.toContain('{{user.name}}');
+      expect(html).toMatch(/Welcome [A-Za-z]+ [A-Za-z]+/);
+    });
+
+    it('should keep placeholders in Tailwind output when disabled', () => {
+      const ast = parse('## Welcome {{user.name}}');
+      const html = renderToTailwind(ast, { resolvePlaceholders: false });
+
+      expect(html).toContain('Welcome {{user.name}}');
+    });
+
     it('should render an input with Tailwind classes', () => {
       const ast = parse('[___________]{type:email required}');
       const html = renderToTailwind(ast);
@@ -179,6 +209,13 @@ describe('Tailwind Renderer', () => {
 
       expect(html).toContain('class="bg-gray-900 text-gray-300 p-8 rounded-lg mt-12"');
     });
+
+    it('should render viewport visibility classes for mobile blocks', () => {
+      const ast = parse('::: mobile\n[Submit]\n:::');
+      const html = renderToTailwind(ast);
+
+      expect(html).toContain('block md:hidden');
+    });
   });
 
   describe('Navigation', () => {
@@ -222,6 +259,41 @@ describe('Tailwind Renderer', () => {
       const html = renderToTailwind(ast);
 
       expect(html).toContain('class="bg-white border border-gray-200 rounded-lg p-6 hover:shadow-md transition-shadow"');
+    });
+
+    it('should render explicit responsive breakpoint syntax', () => {
+      const ast = parse('## Features {.grid-3 .md:grid-2 .sm:grid-1}\n### A\n### B\n### C');
+      const html = renderToTailwind(ast);
+
+      expect(html).toContain('grid-cols-3');
+      expect(html).toContain('md:grid-cols-2');
+      expect(html).toContain('sm:grid-cols-1');
+    });
+  });
+
+  describe('Annotation Rendering', () => {
+    it('should hide inline comment annotations by default', () => {
+      const ast = parse('[Submit] <!-- TAILWIND-ANNOTATION-XYZ -->');
+      const html = renderToTailwind(ast);
+
+      expect(html).not.toContain('TAILWIND-ANNOTATION-XYZ');
+    });
+
+    it('should render annotations when showAnnotations is enabled', () => {
+      const ast = parse('[Submit] <!-- TAILWIND-ANNOTATION-XYZ -->');
+      const html = renderToTailwind(ast, { showAnnotations: true });
+
+      expect(html).toContain('TAILWIND-ANNOTATION-XYZ');
+      expect(html).toContain('border-amber-300 bg-amber-50');
+    });
+
+    it('should hide ::: note blocks by default and show with showAnnotations', () => {
+      const ast = parse('::: note\nTAILWIND-NOTE-XYZ\n:::');
+      const hiddenHtml = renderToTailwind(ast);
+      const visibleHtml = renderToTailwind(ast, { showAnnotations: true });
+
+      expect(hiddenHtml).not.toContain('TAILWIND-NOTE-XYZ');
+      expect(visibleHtml).toContain('TAILWIND-NOTE-XYZ');
     });
   });
 

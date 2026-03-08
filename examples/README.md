@@ -24,6 +24,10 @@ Each example demonstrates real-world patterns and can be rendered in all 7 visua
 - `hello-clean.html` - Generated with clean style
 - `hello.json` - JSON AST output
 - `showcase.md` - Complete syntax reference and component showcase
+- `responsive-breakpoints-demo.md` - Responsive grid breakpoints and viewport blocks
+- `state-syntax-demo.md` - Inline states and state block examples
+- `annotations-demo.md` - Comments, annotation attributes, and note blocks
+- `data-placeholders-demo.md` - Seedable placeholder data (`{{user.name}}`, `{{lorem:2}}`, etc.)
 
 ## Generate Examples
 
@@ -38,6 +42,12 @@ wiremd hello.md --style none -o hello-none.html
 
 # JSON output
 wiremd hello.md --format json
+
+# Deterministic placeholder data output
+wiremd data-placeholders-demo.md --seed demo-2026
+
+# Keep placeholders unresolved
+wiremd data-placeholders-demo.md --no-placeholders
 ```
 
 ## Watch Mode

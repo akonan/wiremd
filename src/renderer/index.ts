@@ -12,6 +12,7 @@ import { renderNode } from './html-renderer.js';
 import { getStyleCSS } from './styles.js';
 import * as ReactRenderer from './react-renderer.js';
 import * as TailwindRenderer from './tailwind-renderer.js';
+import { resolveNodePlaceholders } from '../placeholders/index.js';
 
 /**
  * Render wiremd AST to HTML
@@ -33,11 +34,14 @@ export function renderToHTML(
   ast: DocumentNode,
   options: RenderOptions = {}
 ): string {
+  const renderableAst = getRenderableAST(ast, options);
+
   const {
     style = 'sketch',
     inlineStyles = true,
     pretty = true,
     classPrefix = 'wmd-',
+    showAnnotations = false,
   } = options;
 
   const context = {
@@ -45,10 +49,11 @@ export function renderToHTML(
     classPrefix,
     inlineStyles,
     pretty,
+    showAnnotations,
   };
 
   // Render all children
-  const childrenHTML = ast.children.map((child) => renderNode(child, context)).join('\n');
+  const childrenHTML = renderableAst.children.map((child) => renderNode(child, context)).join('\n');
 
   // Build complete HTML document
   const css = inlineStyles ? getStyleCSS(style, classPrefix) : '';
@@ -80,9 +85,10 @@ export function renderToJSON(
   ast: DocumentNode,
   options: RenderOptions = {}
 ): string {
+  const renderableAst = getRenderableAST(ast, options);
   const { pretty = true } = options;
 
-  return JSON.stringify(ast, null, pretty ? 2 : 0);
+  return JSON.stringify(renderableAst, null, pretty ? 2 : 0);
 }
 
 /**
@@ -105,10 +111,13 @@ export function renderToReact(
   ast: DocumentNode,
   options: RenderOptions & { typescript?: boolean; componentName?: string } = {}
 ): string {
+  const renderableAst = getRenderableAST(ast, options);
+
   const {
     classPrefix = 'wmd-',
     typescript = true,
     componentName = 'WiremdComponent',
+    showAnnotations = false,
   } = options;
 
   const context: ReactRenderer.ReactRenderContext = {
@@ -116,10 +125,11 @@ export function renderToReact(
     typescript,
     useClassName: true,
     componentName,
+    showAnnotations,
   };
 
   // Render all children
-  const childrenJSX = ast.children.map((child) => ReactRenderer.renderNode(child, context, 1)).join('\n');
+  const childrenJSX = renderableAst.children.map((child) => ReactRenderer.renderNode(child, context, 1)).join('\n');
 
   // Build React component
   const typeAnnotation = typescript ? ': React.FC' : '';
@@ -158,14 +168,16 @@ export function renderToTailwind(
   ast: DocumentNode,
   options: RenderOptions = {}
 ): string {
-  const { pretty = true } = options;
+  const renderableAst = getRenderableAST(ast, options);
+  const { pretty = true, showAnnotations = false } = options;
 
   const context: TailwindRenderer.TailwindRenderContext = {
     pretty,
+    showAnnotations,
   };
 
   // Render all children
-  const childrenHTML = ast.children.map((child) => TailwindRenderer.renderNode(child, context)).join('\n  ');
+  const childrenHTML = renderableAst.children.map((child) => TailwindRenderer.renderNode(child, context)).join('\n  ');
 
   // Build complete HTML document
   const html = `<!DOCTYPE html>
@@ -207,4 +219,16 @@ export function render(ast: DocumentNode, options: RenderOptions = {}): string {
   }
 
   return renderToHTML(ast, options);
+}
+
+function getRenderableAST(ast: DocumentNode, options: RenderOptions): DocumentNode {
+  const { resolvePlaceholders = true, placeholderSeed } = options;
+  if (!resolvePlaceholders) {
+    return ast;
+  }
+
+  return resolveNodePlaceholders(ast, {
+    seed: placeholderSeed,
+    preserveUnknown: true,
+  });
 }

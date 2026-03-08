@@ -115,6 +115,107 @@ Enterprise-grade security
 Grows with your needs
 ```
 
+### Responsive Breakpoints
+
+You can define grid columns per breakpoint in the same heading:
+
+```markdown
+## Features {.grid-3 .md:grid-2 .sm:grid-1}
+```
+
+You can also target whole blocks to specific viewports:
+
+```markdown
+::: mobile
+## Features {.grid-1}
+:::
+
+::: desktop
+## Features {.grid-3}
+:::
+```
+
+### Component States
+
+Inline states:
+
+```markdown
+[Submit]{:disabled}
+[Submit]{:hover}
+[Submit]{:loading}
+```
+
+State blocks (applied to children unless they already define an explicit state):
+
+```markdown
+::: state=hover
+[Submit]
+:::
+```
+
+Supported states: `hover`, `active`, `focus`, `disabled`, `loading`, `error`, `success`, `warning`.
+
+### Annotations and Comments
+
+Inline comments (stored in AST/JSON, hidden by default in visual renders):
+
+```markdown
+[Submit] <!-- This should be primary CTA -->
+```
+
+Annotation attributes:
+
+```markdown
+## Hero {.annotation="Needs approval from design team"}
+```
+
+Note blocks:
+
+```markdown
+::: note
+This section is pending final copy from marketing.
+:::
+```
+
+Show annotations in HTML output:
+
+```bash
+wiremd wireframe.md --show-annotations
+```
+
+### Data Placeholders
+
+Generate mock content directly in your wiremd documents:
+
+```markdown
+{{user.name}}
+{{user.email}}
+{{lorem:2}}
+{{image:400x300}}
+{{date}}
+{{number:1000-9999}}
+```
+
+Use placeholders inside headings, paragraphs, labels, and image URLs:
+
+```markdown
+## Welcome {{user.name}}
+
+Contact: {{user.email}}
+
+![Hero image]({{image:1280x720}})
+```
+
+CLI options:
+
+```bash
+# Deterministic placeholder output
+wiremd wireframe.md --seed demo-2026
+
+# Keep placeholders as literal text
+wiremd wireframe.md --no-placeholders
+```
+
 ## Component Examples
 
 ### Forms
@@ -169,12 +270,12 @@ This is a great product that solves your problems.
 wiremd supports multiple visual styles:
 
 ```bash
-mdmock file.md --style sketch    # Default Balsamiq-style
-mdmock file.md --style clean     # Modern minimal
-mdmock file.md --style wireframe # Traditional grayscale
-mdmock file.md --style material  # Material Design
-mdmock file.md --style tailwind  # Tailwind-inspired
-mdmock file.md --style brutal    # Brutalist
+wiremd file.md --style sketch    # Default Balsamiq-style
+wiremd file.md --style clean     # Modern minimal
+wiremd file.md --style wireframe # Traditional grayscale
+wiremd file.md --style material  # Material Design
+wiremd file.md --style tailwind  # Tailwind-inspired
+wiremd file.md --style brutal    # Brutalist
 ```
 
 ### Custom Classes
@@ -212,7 +313,7 @@ Password
 ### Disabled State
 
 ```markdown
-[Submit]{disabled}
+[Submit]{:disabled}
 ```
 
 ### Icons (with text)

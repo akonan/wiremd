@@ -8,13 +8,20 @@
  */
 
 import type { Root as MdastRoot } from 'mdast';
-import type {
+import {
+  COMPONENT_STATES,
+  type AnnotationMetadata,
+  type BreakpointName,
   DocumentNode,
   WiremdNode,
   ParseOptions,
   DocumentMeta,
+  type ViewportName,
 } from '../types.js';
 import { SYNTAX_VERSION } from '../index.js';
+
+const BREAKPOINT_NAMES: BreakpointName[] = ['xs', 'sm', 'md', 'lg', 'xl', '2xl'];
+const COMPONENT_STATE_SET = new Set<string>(COMPONENT_STATES);
 
 /**
  * Transform MDAST to wiremd AST
@@ -36,6 +43,7 @@ export function transformToWiremdAST(
   while (i < mdast.children.length) {
     const node = mdast.children[i];
     const nextNode = mdast.children[i + 1];
+    const nodeComments = extractCommentTexts(node);
 
     // Check if this is a heading with grid class
     if (node.type === 'heading') {
@@ -65,9 +73,12 @@ export function transformToWiremdAST(
 
             // Add the heading
             const childNextNode = mdast.children[i + 1];
+            const childComments = extractCommentTexts(childNode);
             const headingNode = transformNode(childNode, options, childNextNode);
             if (headingNode) {
-              gridItem.push(headingNode);
+              gridItem.push(attachCommentAnnotationsToNode(headingNode, childComments));
+            } else if (childComments.length > 0) {
+              addDocumentComments(meta, childComments);
             }
 
             i++;
@@ -84,14 +95,17 @@ export function transformToWiremdAST(
               }
 
               const contentNextNode = mdast.children[i + 1];
+              const contentComments = extractCommentTexts(contentNode);
               const contentTransformed = transformNode(contentNode, options, contentNextNode);
               if (contentTransformed) {
-                gridItem.push(contentTransformed);
+                gridItem.push(attachCommentAnnotationsToNode(contentTransformed, contentComments));
 
                 // Skip consumed nodes
                 if (contentTransformed.type === 'select' && contentNextNode?.type === 'list') {
                   i++;
                 }
+              } else if (contentComments.length > 0) {
+                addDocumentComments(meta, contentComments);
               }
 
               i++;
@@ -110,12 +124,14 @@ export function transformToWiremdAST(
         }
 
         // Create grid node
-        children.push({
+        const gridNode = attachCommentAnnotationsToNode({
           type: 'grid',
           columns,
           props: (headingTransformed as any).props || {},
           children: gridItems,
-        });
+        }, nodeComments);
+
+        children.push(gridNode);
 
         continue;
       }
@@ -123,21 +139,24 @@ export function transformToWiremdAST(
 
     const transformed = transformNode(node, options, nextNode);
     if (transformed) {
-      children.push(transformed);
+      const transformedWithComments = attachCommentAnnotationsToNode(transformed, nodeComments);
+      children.push(transformedWithComments);
 
       // If this was a select node and we consumed the next list, skip it
-      if (transformed.type === 'select' && nextNode && nextNode.type === 'list') {
+      if (transformedWithComments.type === 'select' && nextNode && nextNode.type === 'list') {
         i++; // Skip the next node (list) as it was consumed
       }
       // Also check if it's a container with a select child that has consumed the list
-      if (transformed.type === 'container' && nextNode && nextNode.type === 'list') {
-        const hasSelectWithOptions = (transformed.children || []).some((child: any) =>
+      if (transformedWithComments.type === 'container' && nextNode && nextNode.type === 'list') {
+        const hasSelectWithOptions = (transformedWithComments.children || []).some((child: any) =>
           child.type === 'select' && child.options && child.options.length > 0
         );
         if (hasSelectWithOptions) {
           i++; // Skip the next node (list) as it was consumed by the select
         }
       }
+    } else if (nodeComments.length > 0) {
+      addDocumentComments(meta, nodeComments);
     }
 
     i++;
@@ -228,6 +247,16 @@ function transformNode(
         props: {},
       };
 
+    case 'html':
+      if (isHtmlComment(node.value)) {
+        return null;
+      }
+      return {
+        type: 'text',
+        content: String(node.value || ''),
+        props: {},
+      };
+
     default:
       // Warn about unsupported nodes in development
       if (process.env.NODE_ENV !== 'production') {
@@ -243,23 +272,95 @@ function transformNode(
 function transformContainer(node: any, options: ParseOptions): WiremdNode {
   const children: WiremdNode[] = [];
   const nodeChildren = node.children || [];
+  const containerComments: string[] = [];
 
   for (let i = 0; i < nodeChildren.length; i++) {
     const child = nodeChildren[i];
     const nextChild = nodeChildren[i + 1];
+    const childComments = extractCommentTexts(child);
     const transformed = transformNode(child, options, nextChild);
 
     if (transformed) {
-      children.push(transformed);
+      children.push(attachCommentAnnotationsToNode(transformed, childComments));
 
       // Skip next node if it was consumed (dropdown options)
       if (transformed.type === 'select' && nextChild && nextChild.type === 'list') {
         i++;
       }
+    } else if (childComments.length > 0) {
+      containerComments.push(...childComments);
     }
   }
 
   const props = parseAttributes(node.attributes || '');
+  if (containerComments.length > 0) {
+    addCommentAnnotationsToProps(props, containerComments, 'block-comment');
+  }
+
+  const stateBlockMatch = String(node.containerType || '')
+    .trim()
+    .match(/^state\s*=\s*["']?([a-z-]+)["']?$/i);
+
+  if (stateBlockMatch) {
+    const blockState = stateBlockMatch[1].toLowerCase();
+    addState(props, blockState);
+
+    return {
+      type: 'container',
+      containerType: 'section',
+      props,
+      children: applyStateToChildren(children, blockState),
+    };
+  }
+
+  const viewportContainer = normalizeViewportContainer(node.containerType);
+  if (viewportContainer) {
+    props.responsive = props.responsive || {};
+    props.responsive.visibleIn = props.responsive.visibleIn || [];
+    if (!props.responsive.visibleIn.includes(viewportContainer)) {
+      props.responsive.visibleIn.push(viewportContainer);
+    }
+
+    props.classes = Array.isArray(props.classes) ? props.classes : [];
+    const viewportClass = `viewport-${viewportContainer}`;
+    if (!props.classes.includes(viewportClass)) {
+      props.classes.push(viewportClass);
+    }
+
+    return {
+      type: 'container',
+      containerType: 'section',
+      props,
+      children,
+    };
+  }
+
+  const normalizedType = String(node.containerType || '').trim().toLowerCase();
+  if (normalizedType === 'note') {
+    props.annotationRole = 'note';
+    props.classes = Array.isArray(props.classes) ? props.classes : [];
+    if (!props.classes.includes('annotation-note')) {
+      props.classes.push('annotation-note');
+    }
+
+    const noteText = extractTextFromWiremdChildren(children);
+    if (noteText) {
+      addAnnotationToProps(props, {
+        kind: 'note',
+        source: 'note-block',
+        text: noteText,
+        note: noteText,
+        tags: ['note'],
+      });
+    }
+
+    return {
+      type: 'container',
+      containerType: 'section',
+      props,
+      children,
+    };
+  }
 
   return {
     type: 'container',
@@ -344,7 +445,7 @@ function transformInlineContainer(node: any, _options: ParseOptions): WiremdNode
  */
 function transformHeading(node: any, _options: ParseOptions): WiremdNode {
   // Extract attributes from heading text
-  const content = extractTextContent(node);
+  const content = stripHtmlComments(extractTextContent(node));
 
   // Check if heading has attributes at the end: "Title {.class}"
   const attrMatch = content.match(/^(.+?)(\{[^}]+\})$/);
@@ -407,7 +508,7 @@ function transformParagraph(node: any, _options: ParseOptions, nextNode?: any): 
 
   // If it has rich content and is not a special pattern, return as a rich text paragraph
   if (hasRichContent) {
-    let content = extractTextContent(node);
+    let content = stripHtmlComments(extractTextContent(node));
     // Clean up trailing ::: from container closing markers
     content = content.replace(/\s*:::\s*$/, '').trim();
 
@@ -491,6 +592,9 @@ function transformParagraph(node: any, _options: ParseOptions, nextNode?: any): 
         currentText += `<code>${extractTextContent(child)}</code>`;
       } else if (child.type === 'link') {
         currentText += `<a href="${child.url}">${extractTextContent(child)}</a>`;
+      } else if (child.type === 'html' && isHtmlComment(child.value)) {
+        // Comments are captured as metadata and never rendered inline by default.
+        continue;
       } else {
         currentText += extractTextContent(child);
       }
@@ -515,7 +619,7 @@ function transformParagraph(node: any, _options: ParseOptions, nextNode?: any): 
     };
   }
 
-  let content = extractTextContent(node);
+  let content = stripHtmlComments(extractTextContent(node));
   // Clean up trailing ::: from container closing markers
   content = content.replace(/\s*:::\s*$/, '').trim();
 
@@ -1430,6 +1534,10 @@ function extractTextContent(node: any): string {
     return node;
   }
 
+  if (node?.type === 'html' && isHtmlComment(node.value)) {
+    return '';
+  }
+
   if (node.value) {
     return node.value;
   }
@@ -1450,38 +1558,503 @@ function parseAttributes(attrString: string): any {
   };
 
   if (!attrString) {
-    return props;
+    return normalizeAnnotationProps(props);
   }
 
   // Remove outer braces
   const inner = attrString.replace(/^\{|\}$/g, '').trim();
 
   if (!inner) {
+    return normalizeAnnotationProps(props);
+  }
+
+  const tokens = tokenizeAttributeString(inner);
+
+  for (const token of tokens) {
+    if (!token) {
+      continue;
+    }
+
+    // Dot assignment: .annotation="Needs review"
+    const dotAssignment = parseDotAssignment(token);
+    if (dotAssignment) {
+      props[dotAssignment.key] = parseAttributeValue(dotAssignment.value);
+      continue;
+    }
+
+    // Class: .classname
+    if (token.startsWith('.')) {
+      const className = token.slice(1);
+      if (!className) {
+        continue;
+      }
+      props.classes.push(className);
+      parseResponsiveClass(className, props);
+      continue;
+    }
+
+    // State: :state
+    if (token.startsWith(':')) {
+      addState(props, token.slice(1));
+      continue;
+    }
+
+    // Key-value: key:value or key=value
+    const keyValue = splitKeyValueToken(token);
+    if (keyValue) {
+      const key = keyValue.key.trim();
+      const value = parseAttributeValue(keyValue.value);
+
+      if (key === 'state' && typeof value === 'string') {
+        addState(props, value);
+      } else {
+        props[key] = value;
+      }
+      continue;
+    }
+
+    // Boolean: required, disabled, etc.
+    if (COMPONENT_STATE_SET.has(token)) {
+      addState(props, token);
+    } else {
+      props[token] = true;
+    }
+  }
+
+  return normalizeAnnotationProps(props);
+}
+
+function tokenizeAttributeString(input: string): string[] {
+  const tokens: string[] = [];
+  let current = '';
+  let quote: '"' | '\'' | null = null;
+
+  for (let i = 0; i < input.length; i++) {
+    const char = input[i];
+
+    if (quote) {
+      current += char;
+      if (char === quote && input[i - 1] !== '\\') {
+        quote = null;
+      }
+      continue;
+    }
+
+    if (char === '"' || char === '\'') {
+      quote = char;
+      current += char;
+      continue;
+    }
+
+    if (/\s/.test(char)) {
+      if (current) {
+        tokens.push(current);
+        current = '';
+      }
+      continue;
+    }
+
+    current += char;
+  }
+
+  if (current) {
+    tokens.push(current);
+  }
+
+  return tokens;
+}
+
+function parseDotAssignment(token: string): { key: string; value: string } | null {
+  const match = token.match(/^\.([a-zA-Z][\w-]*)=(.+)$/);
+  if (!match) {
+    return null;
+  }
+
+  return {
+    key: match[1],
+    value: match[2],
+  };
+}
+
+function parseResponsiveClass(className: string, props: any): void {
+  const responsiveGridMatch = className.match(/^(xs|sm|md|lg|xl|2xl):grid-(\d+)$/);
+  if (!responsiveGridMatch) {
+    return;
+  }
+
+  const breakpoint = responsiveGridMatch[1] as BreakpointName;
+  const columns = parseInt(responsiveGridMatch[2], 10);
+
+  if (!BREAKPOINT_NAMES.includes(breakpoint) || Number.isNaN(columns)) {
+    return;
+  }
+
+  props.responsive = props.responsive || {};
+  props.responsive.gridColumns = props.responsive.gridColumns || {};
+  props.responsive.gridColumns[breakpoint] = columns;
+}
+
+function splitKeyValueToken(token: string): { key: string; value: string } | null {
+  let quote: '"' | '\'' | null = null;
+
+  for (let i = 0; i < token.length; i++) {
+    const char = token[i];
+
+    if (quote) {
+      if (char === quote && token[i - 1] !== '\\') {
+        quote = null;
+      }
+      continue;
+    }
+
+    if (char === '"' || char === '\'') {
+      quote = char;
+      continue;
+    }
+
+    if (char === '=' || char === ':') {
+      return {
+        key: token.slice(0, i),
+        value: token.slice(i + 1),
+      };
+    }
+  }
+
+  return null;
+}
+
+function parseAttributeValue(value: string): boolean | number | string {
+  const trimmed = value.trim();
+  if (!trimmed) {
+    return true;
+  }
+
+  const unquoted = stripWrappingQuotes(trimmed);
+  const lower = unquoted.toLowerCase();
+
+  if (lower === 'true') {
+    return true;
+  }
+
+  if (lower === 'false') {
+    return false;
+  }
+
+  if (/^-?\d+(\.\d+)?$/.test(unquoted)) {
+    return Number(unquoted);
+  }
+
+  return unquoted;
+}
+
+function stripWrappingQuotes(value: string): string {
+  if (value.length < 2) {
+    return value;
+  }
+
+  const startsWithDouble = value.startsWith('"') && value.endsWith('"');
+  const startsWithSingle = value.startsWith('\'') && value.endsWith('\'');
+
+  if (startsWithDouble || startsWithSingle) {
+    return value.slice(1, -1);
+  }
+
+  return value;
+}
+
+function addState(props: any, rawState: string): void {
+  const normalizedState = rawState.trim().toLowerCase();
+  if (!normalizedState) {
+    return;
+  }
+
+  props.states = Array.isArray(props.states) ? props.states : [];
+  if (!props.states.includes(normalizedState)) {
+    props.states.push(normalizedState);
+  }
+
+  // Keep a primary state for backward compatibility with current renderers.
+  props.state = normalizedState;
+}
+
+function normalizeViewportContainer(rawContainerType: unknown): ViewportName | null {
+  if (typeof rawContainerType !== 'string') {
+    return null;
+  }
+
+  const containerType = rawContainerType.trim().toLowerCase();
+  const viewportNames: ViewportName[] = ['mobile', 'tablet', 'desktop', 'laptop'];
+
+  if (!viewportNames.includes(containerType as ViewportName)) {
+    return null;
+  }
+
+  return containerType as ViewportName;
+}
+
+function applyStateToChildren(children: WiremdNode[], state: string): WiremdNode[] {
+  return children.map((child) => applyStateToNode(child, state));
+}
+
+function applyStateToNode(node: WiremdNode, state: string): WiremdNode {
+  const nextNode: any = { ...node };
+
+  if (nextNode.props && typeof nextNode.props === 'object') {
+    const nextProps = { ...nextNode.props };
+    const hasPrimaryState = typeof nextProps.state === 'string' && nextProps.state.length > 0;
+    const hasStateList = Array.isArray(nextProps.states) && nextProps.states.length > 0;
+
+    if (!hasPrimaryState && !hasStateList) {
+      addState(nextProps, state);
+    }
+
+    nextNode.props = nextProps;
+  }
+
+  if (Array.isArray(nextNode.children)) {
+    nextNode.children = nextNode.children.map((child: WiremdNode) => applyStateToNode(child, state));
+  }
+
+  return nextNode as WiremdNode;
+}
+
+function stripHtmlComments(input: string): string {
+  return input.replace(/<!--[\s\S]*?-->/g, '').trim();
+}
+
+function isHtmlComment(value: unknown): boolean {
+  if (typeof value !== 'string') {
+    return false;
+  }
+
+  return /^<!--[\s\S]*?-->$/.test(value.trim());
+}
+
+function parseHtmlComment(value: unknown): string | null {
+  if (typeof value !== 'string') {
+    return null;
+  }
+
+  const match = value.trim().match(/^<!--([\s\S]*?)-->$/);
+  if (!match) {
+    return null;
+  }
+
+  const comment = match[1].trim();
+  return comment || null;
+}
+
+function extractCommentTexts(node: any): string[] {
+  const comments: string[] = [];
+  if (!node || typeof node !== 'object') {
+    return comments;
+  }
+
+  const directComment = parseHtmlComment(node.value);
+  if (node.type === 'html' && directComment) {
+    comments.push(directComment);
+  }
+
+  if (Array.isArray(node.children)) {
+    node.children.forEach((child: any) => {
+      if (child?.type !== 'html') {
+        return;
+      }
+      const comment = parseHtmlComment(child.value);
+      if (comment) {
+        comments.push(comment);
+      }
+    });
+  }
+
+  return comments;
+}
+
+function addDocumentComments(meta: DocumentMeta, comments: string[]): void {
+  if (!comments.length) {
+    return;
+  }
+
+  meta.annotations = Array.isArray(meta.annotations) ? meta.annotations : [];
+  comments.forEach((comment) => {
+    const nextAnnotation: AnnotationMetadata = {
+      kind: 'comment',
+      source: 'document-comment',
+      text: comment,
+      note: comment,
+      tags: ['comment'],
+    };
+
+    const duplicate = meta.annotations!.some((annotation) =>
+      annotation.kind === nextAnnotation.kind
+      && annotation.source === nextAnnotation.source
+      && annotation.text === nextAnnotation.text
+    );
+
+    if (!duplicate) {
+      meta.annotations!.push(nextAnnotation);
+    }
+  });
+}
+
+function addCommentAnnotationsToProps(
+  props: any,
+  comments: string[],
+  source: AnnotationMetadata['source'] = 'inline-comment'
+): void {
+  comments.forEach((comment) => {
+    addAnnotationToProps(props, {
+      kind: 'comment',
+      source,
+      text: comment,
+      note: comment,
+      tags: ['comment'],
+    });
+  });
+}
+
+function attachCommentAnnotationsToNode(node: WiremdNode, comments: string[]): WiremdNode {
+  if (!comments.length) {
+    return node;
+  }
+
+  const nextNode: any = { ...node };
+  if (!nextNode.props || typeof nextNode.props !== 'object') {
+    return nextNode as WiremdNode;
+  }
+
+  nextNode.props = { ...nextNode.props };
+  addCommentAnnotationsToProps(nextNode.props, comments);
+  return nextNode as WiremdNode;
+}
+
+function normalizeAnnotationProps(props: any): any {
+  if (!props || typeof props !== 'object') {
     return props;
   }
 
-  // Split by spaces (simple parser for now)
-  const parts = inner.split(/\s+/);
+  if (typeof props['version-note'] === 'string' && !props.versionNote) {
+    props.versionNote = props['version-note'];
+  }
 
-  for (const part of parts) {
-    // Class: .classname
-    if (part.startsWith('.')) {
-      props.classes.push(part.slice(1));
-    }
-    // State: :state
-    else if (part.startsWith(':')) {
-      props.state = part.slice(1);
-    }
-    // Key-value: key:value
-    else if (part.includes(':')) {
-      const [key, value] = part.split(':', 2);
-      props[key] = value || true;
-    }
-    // Boolean: required, disabled, etc.
-    else {
-      props[part] = true;
-    }
+  if (typeof props.version_note === 'string' && !props.versionNote) {
+    props.versionNote = props.version_note;
+  }
+
+  if (typeof props.annotation === 'string' && props.annotation.trim()) {
+    addAnnotationToProps(props, {
+      kind: 'annotation',
+      source: 'attribute',
+      text: props.annotation.trim(),
+      note: props.annotation.trim(),
+      tags: ['annotation'],
+    });
+  }
+
+  if (typeof props.note === 'string' && props.note.trim()) {
+    addAnnotationToProps(props, {
+      kind: 'note',
+      source: 'attribute',
+      text: props.note.trim(),
+      note: props.note.trim(),
+      tags: ['note'],
+    });
+  }
+
+  if (typeof props.todo === 'string' && props.todo.trim()) {
+    addAnnotationToProps(props, {
+      kind: 'todo',
+      source: 'attribute',
+      text: props.todo.trim(),
+      todo: props.todo.trim(),
+      tags: ['todo'],
+    });
+  }
+
+  if (typeof props.versionNote === 'string' && props.versionNote.trim()) {
+    addAnnotationToProps(props, {
+      kind: 'version',
+      source: 'attribute',
+      text: props.versionNote.trim(),
+      version: props.versionNote.trim(),
+      tags: ['version'],
+    });
   }
 
   return props;
+}
+
+function addAnnotationToProps(props: any, annotation: AnnotationMetadata): void {
+  props.annotations = Array.isArray(props.annotations) ? props.annotations : [];
+
+  const normalizedText = (
+    annotation.text
+    || annotation.note
+    || annotation.todo
+    || annotation.version
+    || ''
+  ).trim();
+
+  if (!normalizedText) {
+    return;
+  }
+
+  const alreadyIncluded = props.annotations.some((item: AnnotationMetadata) => {
+    const itemText = (
+      item.text
+      || item.note
+      || item.todo
+      || item.version
+      || ''
+    ).trim();
+
+    return itemText === normalizedText && item.kind === annotation.kind;
+  });
+
+  if (!alreadyIncluded) {
+    props.annotations.push(annotation);
+  }
+}
+
+function extractTextFromWiremdChildren(children: WiremdNode[]): string {
+  const text = children
+    .map((child) => extractTextFromWiremdNode(child))
+    .filter(Boolean)
+    .join(' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+
+  return text;
+}
+
+function extractTextFromWiremdNode(node: WiremdNode): string {
+  const value: any = node as any;
+  const parts: string[] = [];
+
+  if (typeof value.content === 'string' && value.content.trim()) {
+    parts.push(value.content.trim());
+  }
+
+  if (typeof value.label === 'string' && value.label.trim()) {
+    parts.push(value.label.trim());
+  }
+
+  if (typeof value.title === 'string' && value.title.trim()) {
+    parts.push(value.title.trim());
+  }
+
+  if (typeof value.value === 'string' && value.value.trim() && value.type === 'code') {
+    parts.push(value.value.trim());
+  }
+
+  if (Array.isArray(value.children)) {
+    value.children.forEach((child: WiremdNode) => {
+      const childText = extractTextFromWiremdNode(child);
+      if (childText) {
+        parts.push(childText);
+      }
+    });
+  }
+
+  return parts.join(' ').replace(/\s+/g, ' ').trim();
 }

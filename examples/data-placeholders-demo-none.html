@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>wiremd Mockup</title>
+  <style>
+
+/* wiremd None Style - Minimal semantic styling */
+* {
+  box-sizing: border-box;
+}
+
+body.wmd-root {
+  font-family: system-ui, -apple-system, sans-serif;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 20px;
+  line-height: 1.6;
+}
+
+.wmd-button {
+  padding: 8px 16px;
+  margin: 4px;
+}
+
+.wmd-input, .wmd-textarea, .wmd-select {
+  display: block;
+  width: 100%;
+  max-width: 400px;
+  padding: 8px;
+  margin: 4px 0;
+}
+
+.wmd-grid {
+  display: grid;
+  grid-template-columns: repeat(var(--grid-columns, 3), 1fr);
+  gap: 20px;
+  margin: 20px 0;
+}
+
+.wmd-nav-content {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.wmd-brand {
+  margin-right: auto;
+  font-weight: bold;
+}
+
+/* State Containers */
+.wmd-container-loading-state,
+.wmd-container-empty-state,
+.wmd-container-error-state {
+  padding: 40px;
+  margin: 20px 0;
+  text-align: center;
+}
+
+@media (max-width: 768px) {
+  .wmd-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+
+/* Shared component state utilities */
+.wmd-state-hover {
+  filter: brightness(0.97);
+}
+
+.wmd-button.wmd-state-hover {
+  transform: translateY(-1px);
+}
+
+.wmd-state-active {
+  transform: translateY(1px);
+}
+
+.wmd-state-focus {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
+
+.wmd-state-loading {
+  opacity: 0.75;
+  cursor: wait;
+}
+
+.wmd-state-error {
+  border-color: #dc2626 !important;
+}
+
+.wmd-state-success {
+  border-color: #16a34a !important;
+}
+
+.wmd-state-disabled {
+  opacity: 0.55;
+  pointer-events: none;
+}
+
+
+/* Shared responsive viewport utilities */
+.wmd-viewport-mobile,
+.wmd-viewport-tablet,
+.wmd-viewport-desktop,
+.wmd-viewport-laptop {
+  display: none;
+}
+
+@media (max-width: 767px) {
+  .wmd-viewport-mobile {
+    display: block;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  .wmd-viewport-tablet {
+    display: block;
+  }
+}
+
+@media (min-width: 1024px) {
+  .wmd-viewport-desktop,
+  .wmd-viewport-laptop {
+    display: block;
+  }
+}
+
+/* Shared responsive grid utilities */
+@media (min-width: 480px) {
+  .wmd-grid-xs-1 { grid-template-columns: repeat(1, 1fr) !important; }
+  .wmd-grid-xs-2 { grid-template-columns: repeat(2, 1fr) !important; }
+  .wmd-grid-xs-3 { grid-template-columns: repeat(3, 1fr) !important; }
+  .wmd-grid-xs-4 { grid-template-columns: repeat(4, 1fr) !important; }
+  .wmd-grid-xs-5 { grid-template-columns: repeat(5, 1fr) !important; }
+  .wmd-grid-xs-6 { grid-template-columns: repeat(6, 1fr) !important; }
+  .wmd-grid-xs-7 { grid-template-columns: repeat(7, 1fr) !important; }
+  .wmd-grid-xs-8 { grid-template-columns: repeat(8, 1fr) !important; }
+  .wmd-grid-xs-9 { grid-template-columns: repeat(9, 1fr) !important; }
+  .wmd-grid-xs-10 { grid-template-columns: repeat(10, 1fr) !important; }
+  .wmd-grid-xs-11 { grid-template-columns: repeat(11, 1fr) !important; }
+  .wmd-grid-xs-12 { grid-template-columns: repeat(12, 1fr) !important; }
+}
+
+@media (min-width: 640px) {
+  .wmd-grid-sm-1 { grid-template-columns: repeat(1, 1fr) !important; }
+  .wmd-grid-sm-2 { grid-template-columns: repeat(2, 1fr) !important; }
+  .wmd-grid-sm-3 { grid-template-columns: repeat(3, 1fr) !important; }
+  .wmd-grid-sm-4 { grid-template-columns: repeat(4, 1fr) !important; }
+  .wmd-grid-sm-5 { grid-template-columns: repeat(5, 1fr) !important; }
+  .wmd-grid-sm-6 { grid-template-columns: repeat(6, 1fr) !important; }
+  .wmd-grid-sm-7 { grid-template-columns: repeat(7, 1fr) !important; }
+  .wmd-grid-sm-8 { grid-template-columns: repeat(8, 1fr) !important; }
+  .wmd-grid-sm-9 { grid-template-columns: repeat(9, 1fr) !important; }
+  .wmd-grid-sm-10 { grid-template-columns: repeat(10, 1fr) !important; }
+  .wmd-grid-sm-11 { grid-template-columns: repeat(11, 1fr) !important; }
+  .wmd-grid-sm-12 { grid-template-columns: repeat(12, 1fr) !important; }
+}
+
+@media (min-width: 768px) {
+  .wmd-grid-md-1 { grid-template-columns: repeat(1, 1fr) !important; }
+  .wmd-grid-md-2 { grid-template-columns: repeat(2, 1fr) !important; }
+  .wmd-grid-md-3 { grid-template-columns: repeat(3, 1fr) !important; }
+  .wmd-grid-md-4 { grid-template-columns: repeat(4, 1fr) !important; }
+  .wmd-grid-md-5 { grid-template-columns: repeat(5, 1fr) !important; }
+  .wmd-grid-md-6 { grid-template-columns: repeat(6, 1fr) !important; }
+  .wmd-grid-md-7 { grid-template-columns: repeat(7, 1fr) !important; }
+  .wmd-grid-md-8 { grid-template-columns: repeat(8, 1fr) !important; }
+  .wmd-grid-md-9 { grid-template-columns: repeat(9, 1fr) !important; }
+  .wmd-grid-md-10 { grid-template-columns: repeat(10, 1fr) !important; }
+  .wmd-grid-md-11 { grid-template-columns: repeat(11, 1fr) !important; }
+  .wmd-grid-md-12 { grid-template-columns: repeat(12, 1fr) !important; }
+}
+
+@media (min-width: 1024px) {
+  .wmd-grid-lg-1 { grid-template-columns: repeat(1, 1fr) !important; }
+  .wmd-grid-lg-2 { grid-template-columns: repeat(2, 1fr) !important; }
+  .wmd-grid-lg-3 { grid-template-columns: repeat(3, 1fr) !important; }
+  .wmd-grid-lg-4 { grid-template-columns: repeat(4, 1fr) !important; }
+  .wmd-grid-lg-5 { grid-template-columns: repeat(5, 1fr) !important; }
+  .wmd-grid-lg-6 { grid-template-columns: repeat(6, 1fr) !important; }
+  .wmd-grid-lg-7 { grid-template-columns: repeat(7, 1fr) !important; }
+  .wmd-grid-lg-8 { grid-template-columns: repeat(8, 1fr) !important; }
+  .wmd-grid-lg-9 { grid-template-columns: repeat(9, 1fr) !important; }
+  .wmd-grid-lg-10 { grid-template-columns: repeat(10, 1fr) !important; }
+  .wmd-grid-lg-11 { grid-template-columns: repeat(11, 1fr) !important; }
+  .wmd-grid-lg-12 { grid-template-columns: repeat(12, 1fr) !important; }
+}
+
+@media (min-width: 1280px) {
+  .wmd-grid-xl-1 { grid-template-columns: repeat(1, 1fr) !important; }
+  .wmd-grid-xl-2 { grid-template-columns: repeat(2, 1fr) !important; }
+  .wmd-grid-xl-3 { grid-template-columns: repeat(3, 1fr) !important; }
+  .wmd-grid-xl-4 { grid-template-columns: repeat(4, 1fr) !important; }
+  .wmd-grid-xl-5 { grid-template-columns: repeat(5, 1fr) !important; }
+  .wmd-grid-xl-6 { grid-template-columns: repeat(6, 1fr) !important; }
+  .wmd-grid-xl-7 { grid-template-columns: repeat(7, 1fr) !important; }
+  .wmd-grid-xl-8 { grid-template-columns: repeat(8, 1fr) !important; }
+  .wmd-grid-xl-9 { grid-template-columns: repeat(9, 1fr) !important; }
+  .wmd-grid-xl-10 { grid-template-columns: repeat(10, 1fr) !important; }
+  .wmd-grid-xl-11 { grid-template-columns: repeat(11, 1fr) !important; }
+  .wmd-grid-xl-12 { grid-template-columns: repeat(12, 1fr) !important; }
+}
+
+@media (min-width: 1536px) {
+  .wmd-grid-2xl-1 { grid-template-columns: repeat(1, 1fr) !important; }
+  .wmd-grid-2xl-2 { grid-template-columns: repeat(2, 1fr) !important; }
+  .wmd-grid-2xl-3 { grid-template-columns: repeat(3, 1fr) !important; }
+  .wmd-grid-2xl-4 { grid-template-columns: repeat(4, 1fr) !important; }
+  .wmd-grid-2xl-5 { grid-template-columns: repeat(5, 1fr) !important; }
+  .wmd-grid-2xl-6 { grid-template-columns: repeat(6, 1fr) !important; }
+  .wmd-grid-2xl-7 { grid-template-columns: repeat(7, 1fr) !important; }
+  .wmd-grid-2xl-8 { grid-template-columns: repeat(8, 1fr) !important; }
+  .wmd-grid-2xl-9 { grid-template-columns: repeat(9, 1fr) !important; }
+  .wmd-grid-2xl-10 { grid-template-columns: repeat(10, 1fr) !important; }
+  .wmd-grid-2xl-11 { grid-template-columns: repeat(11, 1fr) !important; }
+  .wmd-grid-2xl-12 { grid-template-columns: repeat(12, 1fr) !important; }
+}
+
+
+/* Shared annotation utilities */
+.wmd-annotation-callout {
+  margin-top: 8px;
+  margin-bottom: 12px;
+  padding: 8px 10px;
+  border: 1px dashed #d97706;
+  border-radius: 6px;
+  background: #fffbeb;
+  color: #92400e;
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+.wmd-container-section.wmd-annotation-note {
+  border-left: 4px solid #f59e0b;
+  background: #fffbeb;
+}
+
+  </style>
+</head>
+<body class="wmd-root wmd-none">
+  <h1 class="wmd-h1">Data Placeholder Demo</h1>
+<div class="wmd-grid wmd-grid-2 wmd-sm:grid-1 wmd-grid-2 wmd-grid-sm-1" style="--grid-columns: 2">
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">User</h3>
+    <div class="wmd-container-form-group">
+  Name
+  <input type="text" class="wmd-input wmd-state-disabled" placeholder="Riley Lewis" disabled style="width: 19ch; max-width: 19ch;" />
+</div>
+    <div class="wmd-container-form-group">
+  Email
+  <input type="email" class="wmd-input wmd-state-disabled" placeholder="riley.lewis@wiremd.dev" disabled style="width: 20ch; max-width: 20ch;" />
+</div>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Meta</h3>
+    <p class="wmd-paragraph">Generated on 2026-04-17
+Reference number: 6558</p>
+  </div>
+</div>
+<h2 class="wmd-h2">Marketing Copy</h2>
+<p class="wmd-paragraph">Et proident pariatur aute sit excepteur veniam veniam labore nisi deserunt. Aute nisi anim consectetur ut sed deserunt laboris do fugiat. Adipiscing voluptate nulla deserunt non sunt non cupidatat. Anim cupidatat aute ullamco aliqua elit minim aliquip.
+
+Esse aliqua sit pariatur in anim pariatur nisi esse occaecat id in amet laboris. Incididunt esse consectetur mollit velit dolore pariatur dolor sunt proident anim elit et nulla. Sed nulla labore incididunt laborum pariatur ullamco duis laborum nostrud. Id et enim laboris adipiscing fugiat duis exercitation aliqua consequat reprehenderit velit commodo.</p>
+<h2 class="wmd-h2">Media</h2>
+<div class="wmd-container-form-group">
+  <img src="https://placehold.co/400x300?text=Placeholder" alt="Product mockup" class="wmd-image" />
+</div>
+</body>
+</html>

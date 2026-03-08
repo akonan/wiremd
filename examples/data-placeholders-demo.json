@@ -1,0 +1,150 @@
+{
+  "type": "document",
+  "version": "0.1",
+  "meta": {
+    "version": "0.1",
+    "viewport": "desktop",
+    "theme": "sketch"
+  },
+  "children": [
+    {
+      "type": "heading",
+      "level": 1,
+      "content": "Data Placeholder Demo",
+      "props": {
+        "classes": []
+      }
+    },
+    {
+      "type": "grid",
+      "columns": 2,
+      "props": {
+        "classes": [
+          "grid-2",
+          "sm:grid-1"
+        ],
+        "responsive": {
+          "gridColumns": {
+            "sm": 1
+          }
+        }
+      },
+      "children": [
+        {
+          "type": "grid-item",
+          "props": {},
+          "children": [
+            {
+              "type": "heading",
+              "level": 3,
+              "content": "User",
+              "props": {
+                "classes": []
+              }
+            },
+            {
+              "type": "container",
+              "containerType": "form-group",
+              "props": {},
+              "children": [
+                {
+                  "type": "text",
+                  "content": "Name"
+                },
+                {
+                  "type": "input",
+                  "props": {
+                    "classes": [],
+                    "states": [
+                      "disabled"
+                    ],
+                    "state": "disabled",
+                    "placeholder": "Riley Lewis",
+                    "width": 19
+                  }
+                }
+              ]
+            },
+            {
+              "type": "container",
+              "containerType": "form-group",
+              "props": {},
+              "children": [
+                {
+                  "type": "text",
+                  "content": "Email"
+                },
+                {
+                  "type": "input",
+                  "props": {
+                    "classes": [],
+                    "type": "email",
+                    "states": [
+                      "disabled"
+                    ],
+                    "state": "disabled",
+                    "placeholder": "riley.lewis@wiremd.dev",
+                    "width": 20
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "grid-item",
+          "props": {},
+          "children": [
+            {
+              "type": "heading",
+              "level": 3,
+              "content": "Meta",
+              "props": {
+                "classes": []
+              }
+            },
+            {
+              "type": "paragraph",
+              "content": "Generated on 2026-04-17\nReference number: 6558",
+              "props": {}
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "content": "Marketing Copy",
+      "props": {
+        "classes": []
+      }
+    },
+    {
+      "type": "paragraph",
+      "content": "Et proident pariatur aute sit excepteur veniam veniam labore nisi deserunt. Aute nisi anim consectetur ut sed deserunt laboris do fugiat. Adipiscing voluptate nulla deserunt non sunt non cupidatat. Anim cupidatat aute ullamco aliqua elit minim aliquip.\n\nEsse aliqua sit pariatur in anim pariatur nisi esse occaecat id in amet laboris. Incididunt esse consectetur mollit velit dolore pariatur dolor sunt proident anim elit et nulla. Sed nulla labore incididunt laborum pariatur ullamco duis laborum nostrud. Id et enim laboris adipiscing fugiat duis exercitation aliqua consequat reprehenderit velit commodo.",
+      "props": {}
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "content": "Media",
+      "props": {
+        "classes": []
+      }
+    },
+    {
+      "type": "container",
+      "containerType": "form-group",
+      "children": [
+        {
+          "type": "image",
+          "src": "https://placehold.co/400x300?text=Placeholder",
+          "alt": "Product mockup",
+          "props": {}
+        }
+      ],
+      "props": {}
+    }
+  ]
+}

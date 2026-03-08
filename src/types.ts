@@ -22,9 +22,70 @@ export interface Location {
   end: Position;
 }
 
+export const COMPONENT_STATES = [
+  'hover',
+  'active',
+  'focus',
+  'disabled',
+  'loading',
+  'error',
+  'success',
+  'warning',
+] as const;
+
+export type ComponentState = (typeof COMPONENT_STATES)[number];
+
+export type BreakpointName = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl';
+export type ViewportName = 'mobile' | 'tablet' | 'desktop' | 'laptop' | 'full' | 'auto';
+
+export interface ResponsiveMetadata {
+  gridColumns?: Partial<Record<BreakpointName, number>>;
+  visibleIn?: ViewportName[];
+}
+
+export interface AnnotationMetadata {
+  kind?: 'comment' | 'annotation' | 'note' | 'todo' | 'version';
+  source?: 'inline-comment' | 'block-comment' | 'note-block' | 'attribute' | 'document-comment';
+  text?: string;
+  note?: string;
+  todo?: string;
+  version?: string;
+  target?: string;
+  tags?: string[];
+}
+
+export type PlaceholderKind = 'user.name' | 'user.email' | 'lorem' | 'image' | 'date' | 'number';
+
+interface PlaceholderTokenBase {
+  kind: PlaceholderKind;
+  raw: string;
+  expression: string;
+}
+
+export type PlaceholderToken =
+  | (PlaceholderTokenBase & { kind: 'user.name' })
+  | (PlaceholderTokenBase & { kind: 'user.email' })
+  | (PlaceholderTokenBase & { kind: 'lorem'; paragraphs: number })
+  | (PlaceholderTokenBase & { kind: 'image'; width: number; height: number })
+  | (PlaceholderTokenBase & { kind: 'date' })
+  | (PlaceholderTokenBase & { kind: 'number'; min: number; max: number });
+
+export interface DataGenerationOptions {
+  seed?: string | number;
+  now?: Date;
+  preserveUnknown?: boolean;
+}
+
 export interface ComponentProps {
   classes?: string[];
-  state?: 'disabled' | 'loading' | 'active' | 'error' | 'success' | 'warning';
+  state?: ComponentState;
+  states?: ComponentState[];
+  responsive?: ResponsiveMetadata;
+  annotation?: string;
+  annotations?: AnnotationMetadata[];
+  todo?: string;
+  versionNote?: string;
+  annotationRole?: 'note' | 'comment' | 'annotation';
   [key: string]: unknown;
 }
 
@@ -35,9 +96,10 @@ export interface ComponentProps {
 export interface DocumentMeta {
   title?: string;
   description?: string;
-  viewport?: 'mobile' | 'tablet' | 'desktop' | 'auto';
-  theme?: 'sketch' | 'clean' | 'wireframe' | 'none';
+  viewport?: ViewportName;
+  theme?: 'sketch' | 'clean' | 'wireframe' | 'none' | 'tailwind' | 'material' | 'brutal';
   version?: string;
+  annotations?: AnnotationMetadata[];
 }
 
 export interface DocumentNode {
@@ -161,6 +223,9 @@ export interface RenderOptions {
   inlineStyles?: boolean;
   pretty?: boolean;
   classPrefix?: string;
+  showAnnotations?: boolean;
+  resolvePlaceholders?: boolean;
+  placeholderSeed?: string | number;
   typescript?: boolean; // For React renderer
   componentName?: string; // For React renderer
 }

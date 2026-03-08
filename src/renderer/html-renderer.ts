@@ -14,107 +14,145 @@ export interface RenderContext {
   classPrefix: string;
   inlineStyles: boolean;
   pretty: boolean;
+  showAnnotations?: boolean;
 }
 
 /**
  * Render a wiremd AST node to HTML
  */
 export function renderNode(node: WiremdNode, context: RenderContext): string {
+  if (isAnnotationOnlyNode(node) && !context.showAnnotations) {
+    return '';
+  }
+
+  let rendered = '';
+
   switch (node.type) {
     case 'button':
-      return renderButton(node, context);
+      rendered = renderButton(node, context);
+      break;
 
     case 'input':
-      return renderInput(node, context);
+      rendered = renderInput(node, context);
+      break;
 
     case 'textarea':
-      return renderTextarea(node, context);
+      rendered = renderTextarea(node, context);
+      break;
 
     case 'select':
-      return renderSelect(node, context);
+      rendered = renderSelect(node, context);
+      break;
 
     case 'checkbox':
-      return renderCheckbox(node, context);
+      rendered = renderCheckbox(node, context);
+      break;
 
     case 'radio':
-      return renderRadio(node, context);
+      rendered = renderRadio(node, context);
+      break;
 
     case 'radio-group':
-      return renderRadioGroup(node, context);
+      rendered = renderRadioGroup(node, context);
+      break;
 
     case 'icon':
-      return renderIcon(node, context);
+      rendered = renderIcon(node, context);
+      break;
 
     case 'container':
-      return renderContainer(node, context);
+      rendered = renderContainer(node, context);
+      break;
 
     case 'nav':
-      return renderNav(node, context);
+      rendered = renderNav(node, context);
+      break;
 
     case 'nav-item':
-      return renderNavItem(node, context);
+      rendered = renderNavItem(node, context);
+      break;
 
     case 'brand':
-      return renderBrand(node, context);
+      rendered = renderBrand(node, context);
+      break;
 
     case 'grid':
-      return renderGrid(node, context);
+      rendered = renderGrid(node, context);
+      break;
 
     case 'grid-item':
-      return renderGridItem(node, context);
+      rendered = renderGridItem(node, context);
+      break;
 
     case 'heading':
-      return renderHeading(node, context);
+      rendered = renderHeading(node, context);
+      break;
 
     case 'paragraph':
-      return renderParagraph(node, context);
+      rendered = renderParagraph(node, context);
+      break;
 
     case 'text':
-      return renderText(node, context);
+      rendered = renderText(node, context);
+      break;
 
     case 'image':
-      return renderImage(node, context);
+      rendered = renderImage(node, context);
+      break;
 
     case 'link':
-      return renderLink(node, context);
+      rendered = renderLink(node, context);
+      break;
 
     case 'list':
-      return renderList(node, context);
+      rendered = renderList(node, context);
+      break;
 
     case 'list-item':
-      return renderListItem(node, context);
+      rendered = renderListItem(node, context);
+      break;
 
     case 'table':
-      return renderTable(node, context);
+      rendered = renderTable(node, context);
+      break;
 
     case 'table-header':
-      return renderTableHeader(node, context);
+      rendered = renderTableHeader(node, context);
+      break;
 
     case 'table-row':
-      return renderTableRow(node, context);
+      rendered = renderTableRow(node, context);
+      break;
 
     case 'table-cell':
-      return renderTableCell(node, context);
+      rendered = renderTableCell(node, context);
+      break;
 
     case 'blockquote':
-      return renderBlockquote(node, context);
+      rendered = renderBlockquote(node, context);
+      break;
 
     case 'code':
-      return renderCode(node, context);
+      rendered = renderCode(node, context);
+      break;
 
     case 'separator':
-      return renderSeparator(node, context);
+      rendered = renderSeparator(node, context);
+      break;
 
     default:
-      return `<!-- Unknown node type: ${(node as any).type} -->`;
+      rendered = `<!-- Unknown node type: ${(node as any).type} -->`;
+      break;
   }
+
+  return appendAnnotationMarkup(rendered, node, context);
 }
 
 function renderButton(node: any, context: RenderContext): string {
   const { classPrefix: prefix } = context;
   const classes = buildClasses(prefix, 'button', node.props);
-  const disabled = node.props.state === 'disabled' ? ' disabled' : '';
-  const loading = node.props.state === 'loading' ? ` ${prefix}loading` : '';
+  const disabled = hasState(node.props, 'disabled') || node.props.disabled ? ' disabled' : '';
+  const loading = hasState(node.props, 'loading') ? ` ${prefix}loading` : '';
 
   // Handle children (like icons in buttons)
   const contentHTML = node.children
@@ -129,7 +167,7 @@ function renderInput(node: any, context: RenderContext): string {
   const classes = buildClasses(prefix, 'input', node.props);
   const type = node.props.inputType || node.props.type || 'text';
   const required = node.props.required ? ' required' : '';
-  const disabled = node.props.disabled ? ' disabled' : '';
+  const disabled = (node.props.disabled || hasState(node.props, 'disabled')) ? ' disabled' : '';
   const placeholder = node.props.placeholder ? ` placeholder="${escapeHtml(node.props.placeholder)}"` : '';
   const value = node.props.value ? ` value="${escapeHtml(node.props.value)}"` : '';
 
@@ -144,7 +182,7 @@ function renderTextarea(node: any, context: RenderContext): string {
   const classes = buildClasses(prefix, 'textarea', node.props);
   const rows = node.props.rows || 4;
   const required = node.props.required ? ' required' : '';
-  const disabled = node.props.disabled ? ' disabled' : '';
+  const disabled = (node.props.disabled || hasState(node.props, 'disabled')) ? ' disabled' : '';
   const placeholder = node.props.placeholder ? ` placeholder="${escapeHtml(node.props.placeholder)}"` : '';
   const value = node.props.value || '';
 
@@ -155,7 +193,7 @@ function renderSelect(node: any, context: RenderContext): string {
   const { classPrefix: prefix } = context;
   const classes = buildClasses(prefix, 'select', node.props);
   const required = node.props.required ? ' required' : '';
-  const disabled = node.props.disabled ? ' disabled' : '';
+  const disabled = (node.props.disabled || hasState(node.props, 'disabled')) ? ' disabled' : '';
   const multiple = node.props.multiple ? ' multiple' : '';
 
   const optionsHTML = (node.options || []).map((opt: any) => {
@@ -177,7 +215,7 @@ function renderCheckbox(node: any, context: RenderContext): string {
   const { classPrefix: prefix } = context;
   const classes = buildClasses(prefix, 'checkbox', node.props);
   const checked = node.checked ? ' checked' : '';
-  const disabled = node.props.disabled ? ' disabled' : '';
+  const disabled = (node.props.disabled || hasState(node.props, 'disabled')) ? ' disabled' : '';
   const value = node.props.value ? ` value="${escapeHtml(node.props.value)}"` : '';
 
   // Separate inline children (icons/text) from nested children (lists)
@@ -215,7 +253,7 @@ function renderRadio(node: any, context: RenderContext): string {
   const { classPrefix: prefix } = context;
   const classes = buildClasses(prefix, 'radio', node.props);
   const checked = node.selected ? ' checked' : '';
-  const disabled = node.props.disabled ? ' disabled' : '';
+  const disabled = (node.props.disabled || hasState(node.props, 'disabled')) ? ' disabled' : '';
   const name = node.props.name ? ` name="${escapeHtml(node.props.name)}"` : '';
   const value = node.props.value ? ` value="${escapeHtml(node.props.value)}"` : '';
 
@@ -409,7 +447,8 @@ function renderGrid(node: any, context: RenderContext): string {
   const { classPrefix: prefix } = context;
   const classes = buildClasses(prefix, 'grid', node.props);
   const columns = node.columns || 3;
-  const gridClass = `${classes} ${prefix}grid-${columns}`;
+  const responsiveClass = buildResponsiveGridClasses(prefix, node.props?.responsive?.gridColumns);
+  const gridClass = `${classes} ${prefix}grid-${columns}${responsiveClass ? ` ${responsiveClass}` : ''}`;
   const childrenHTML = (node.children || []).map((child: any) => renderNode(child, context)).join('\n  ');
 
   return `<div class="${gridClass}" style="--grid-columns: ${columns}">
@@ -618,12 +657,128 @@ function buildClasses(prefix: string, baseClass: string, props: any): string {
     classes.push(`${prefix}${baseClass}-${props.variant}`);
   }
 
-  // Add state class
-  if (props.state) {
-    classes.push(`${prefix}state-${props.state}`);
-  }
+  const states = getStates(props);
+  states.forEach((state) => {
+    classes.push(`${prefix}state-${state}`);
+  });
 
   return classes.join(' ');
+}
+
+function getStates(props: any): string[] {
+  if (!props || typeof props !== 'object') {
+    return [];
+  }
+
+  const states: string[] = [];
+
+  if (typeof props.state === 'string' && props.state.trim()) {
+    states.push(props.state.trim());
+  }
+
+  if (Array.isArray(props.states)) {
+    props.states.forEach((state: unknown) => {
+      if (typeof state === 'string' && state.trim() && !states.includes(state.trim())) {
+        states.push(state.trim());
+      }
+    });
+  }
+
+  return states;
+}
+
+function hasState(props: any, state: string): boolean {
+  return getStates(props).includes(state);
+}
+
+function buildResponsiveGridClasses(prefix: string, gridColumns?: Record<string, number>): string {
+  if (!gridColumns || typeof gridColumns !== 'object') {
+    return '';
+  }
+
+  const classes: string[] = [];
+  Object.entries(gridColumns).forEach(([breakpoint, columns]) => {
+    if (typeof columns === 'number' && columns > 0) {
+      classes.push(`${prefix}grid-${breakpoint}-${columns}`);
+    }
+  });
+
+  return classes.join(' ');
+}
+
+function appendAnnotationMarkup(rendered: string, node: WiremdNode, context: RenderContext): string {
+  if (!context.showAnnotations) {
+    return rendered;
+  }
+
+  const annotationText = buildAnnotationText((node as any).props);
+  if (!annotationText) {
+    return rendered;
+  }
+
+  const prefix = context.classPrefix;
+  return `${rendered}\n<div class="${prefix}annotation-callout">${escapeHtml(annotationText)}</div>`;
+}
+
+function isAnnotationOnlyNode(node: WiremdNode): boolean {
+  if (node.type !== 'container') {
+    return false;
+  }
+
+  const props: any = (node as any).props;
+  if (!props || typeof props !== 'object') {
+    return false;
+  }
+
+  if (props.annotationRole === 'note') {
+    return true;
+  }
+
+  return Array.isArray(props.classes) && props.classes.includes('annotation-note');
+}
+
+function buildAnnotationText(props: any): string {
+  if (!props || typeof props !== 'object') {
+    return '';
+  }
+
+  const entries: string[] = [];
+  const seen = new Set<string>();
+
+  const push = (prefix: string, value: unknown): void => {
+    if (typeof value !== 'string' || !value.trim()) {
+      return;
+    }
+    const text = prefix ? `${prefix}: ${value.trim()}` : value.trim();
+    if (!seen.has(text)) {
+      seen.add(text);
+      entries.push(text);
+    }
+  };
+
+  push('Annotation', props.annotation);
+  push('TODO', props.todo);
+  push('Version', props.versionNote);
+
+  if (Array.isArray(props.annotations)) {
+    props.annotations.forEach((annotation: any) => {
+      if (!annotation || typeof annotation !== 'object') {
+        return;
+      }
+
+      if (typeof annotation.todo === 'string' && annotation.todo.trim()) {
+        push('TODO', annotation.todo);
+      } else if (typeof annotation.version === 'string' && annotation.version.trim()) {
+        push('Version', annotation.version);
+      } else if (typeof annotation.note === 'string' && annotation.note.trim()) {
+        push('Note', annotation.note);
+      } else if (typeof annotation.text === 'string' && annotation.text.trim()) {
+        push('Annotation', annotation.text);
+      }
+    });
+  }
+
+  return entries.join(' | ');
 }
 
 /**

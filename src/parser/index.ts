@@ -10,10 +10,15 @@
 import { unified } from 'unified';
 import remarkParse from 'remark-parse';
 import remarkGfm from 'remark-gfm';
-import type { DocumentNode, ParseOptions, ValidationError } from '../types.js';
+import { COMPONENT_STATES, type DocumentNode, type ParseOptions, type ValidationError } from '../types.js';
+import { extractPlaceholderMatches } from '../placeholders/parser.js';
 import { transformToWiremdAST } from './transformer.js';
 import { remarkWiremdContainers } from './remark-containers.js';
 import { remarkWiremdInlineContainers } from './remark-inline-containers.js';
+
+const VALID_COMPONENT_STATES = new Set<string>(COMPONENT_STATES);
+const VALID_BREAKPOINTS = new Set<string>(['xs', 'sm', 'md', 'lg', 'xl', '2xl']);
+const VALID_VIEWPORTS = new Set<string>(['mobile', 'tablet', 'desktop', 'laptop', 'full', 'auto']);
 
 /**
  * Parse markdown with wiremd syntax into AST
@@ -51,6 +56,16 @@ export function parse(input: string, options: ParseOptions = {}): DocumentNode {
   // Transform MDAST to wiremd AST
   const wiremdAST = transformToWiremdAST(processed, options);
 
+  if (options.validate || options.strict) {
+    const validationErrors = validate(wiremdAST);
+
+    if (options.strict && validationErrors.length > 0) {
+      const firstError = validationErrors[0];
+      const location = firstError.path?.length ? ` at ${firstError.path.join('.')}` : '';
+      throw new Error(`Validation failed${location}: ${firstError.message}`);
+    }
+  }
+
   return wiremdAST;
 }
 
@@ -85,6 +100,14 @@ export function validate(ast: DocumentNode): ValidationError[] {
       code: 'INVALID_CHILDREN',
     });
     return errors; // Can't continue without children array
+  }
+
+  if (ast.meta && ast.meta.annotations !== undefined) {
+    validateAnnotationsArray(ast.meta.annotations, ['root.meta.annotations'], 'INVALID_DOCUMENT_ANNOTATIONS');
+  }
+
+  if (ast.meta) {
+    validatePlaceholdersInValue(ast.meta, ['root.meta']);
   }
 
   // Validate children recursively
@@ -128,6 +151,9 @@ export function validate(ast: DocumentNode): ValidationError[] {
       });
       return; // Can't validate further if type is unknown
     }
+
+    validateComponentProps(node, path);
+    validatePlaceholdersInNode(node, path);
 
     // Validate required properties for each component type
     switch (nodeType) {
@@ -766,6 +792,281 @@ export function validate(ast: DocumentNode): ValidationError[] {
         });
       }
     }
+  }
+
+  function validateAnnotationsArray(value: unknown, path: string[], codePrefix = 'INVALID_ANNOTATIONS'): void {
+    if (!Array.isArray(value)) {
+      errors.push({
+        message: 'Annotations must be an array when provided',
+        path,
+        code: codePrefix,
+      });
+      return;
+    }
+
+    value.forEach((annotation: any, index: number) => {
+      const annotationPath = [...path, `[${index}]`];
+      if (!annotation || typeof annotation !== 'object') {
+        errors.push({
+          message: 'Each annotation must be an object',
+          path: annotationPath,
+          code: codePrefix,
+        });
+        return;
+      }
+
+      const scalarFields = ['text', 'note', 'todo', 'version', 'source', 'kind', 'target'];
+      scalarFields.forEach((field) => {
+        if (annotation[field] !== undefined && typeof annotation[field] !== 'string') {
+          errors.push({
+            message: `Annotation field "${field}" must be a string when provided`,
+            path: [...annotationPath, field],
+            code: codePrefix,
+          });
+        }
+      });
+
+      if (annotation.tags !== undefined) {
+        if (!Array.isArray(annotation.tags)) {
+          errors.push({
+            message: 'Annotation tags must be an array when provided',
+            path: [...annotationPath, 'tags'],
+            code: codePrefix,
+          });
+        } else {
+          annotation.tags.forEach((tag: unknown, tagIndex: number) => {
+            if (typeof tag !== 'string') {
+              errors.push({
+                message: 'Annotation tags must contain strings only',
+                path: [...annotationPath, `tags[${tagIndex}]`],
+                code: codePrefix,
+              });
+            }
+          });
+        }
+      }
+    });
+  }
+
+  function validateComponentProps(node: any, path: string[]): void {
+    if (!node.props) {
+      return;
+    }
+
+    if (typeof node.props !== 'object') {
+      errors.push({
+        message: 'Node props must be an object',
+        path,
+        code: 'INVALID_PROPS',
+      });
+      return;
+    }
+
+    if (node.props.state && !VALID_COMPONENT_STATES.has(node.props.state)) {
+      errors.push({
+        message: `Invalid state "${node.props.state}". Must be one of: ${Array.from(VALID_COMPONENT_STATES).join(', ')}`,
+        path,
+        code: 'INVALID_STATE',
+      });
+    }
+
+    if (node.props.states !== undefined) {
+      if (!Array.isArray(node.props.states)) {
+        errors.push({
+          message: 'props.states must be an array when provided',
+          path,
+          code: 'INVALID_STATES_FORMAT',
+        });
+      } else {
+        node.props.states.forEach((state: any, index: number) => {
+          if (typeof state !== 'string' || !VALID_COMPONENT_STATES.has(state)) {
+            errors.push({
+              message: `Invalid state "${state}" in props.states. Must be one of: ${Array.from(VALID_COMPONENT_STATES).join(', ')}`,
+              path: [...path, `props.states[${index}]`],
+              code: 'INVALID_STATE',
+            });
+          }
+        });
+      }
+    }
+
+    if (node.props.annotation !== undefined && typeof node.props.annotation !== 'string') {
+      errors.push({
+        message: 'props.annotation must be a string when provided',
+        path: [...path, 'props.annotation'],
+        code: 'INVALID_ANNOTATION',
+      });
+    }
+
+    if (node.props.todo !== undefined && typeof node.props.todo !== 'string') {
+      errors.push({
+        message: 'props.todo must be a string when provided',
+        path: [...path, 'props.todo'],
+        code: 'INVALID_ANNOTATION',
+      });
+    }
+
+    if (node.props.versionNote !== undefined && typeof node.props.versionNote !== 'string') {
+      errors.push({
+        message: 'props.versionNote must be a string when provided',
+        path: [...path, 'props.versionNote'],
+        code: 'INVALID_ANNOTATION',
+      });
+    }
+
+    if (node.props.annotations !== undefined) {
+      validateAnnotationsArray(node.props.annotations, [...path, 'props.annotations']);
+    }
+
+    if (!node.props.responsive) {
+      return;
+    }
+
+    if (typeof node.props.responsive !== 'object') {
+      errors.push({
+        message: 'props.responsive must be an object when provided',
+        path,
+        code: 'INVALID_RESPONSIVE',
+      });
+      return;
+    }
+
+    const responsive = node.props.responsive;
+    if (!responsive.gridColumns) {
+      // continue with other responsive keys
+    } else {
+      if (typeof responsive.gridColumns !== 'object') {
+        errors.push({
+          message: 'props.responsive.gridColumns must be an object',
+          path,
+          code: 'INVALID_RESPONSIVE_GRID',
+        });
+      } else {
+        Object.entries(responsive.gridColumns).forEach(([breakpoint, columns]) => {
+          if (!VALID_BREAKPOINTS.has(breakpoint)) {
+            errors.push({
+              message: `Invalid responsive breakpoint "${breakpoint}". Must be one of: ${Array.from(VALID_BREAKPOINTS).join(', ')}`,
+              path: [...path, `props.responsive.gridColumns.${breakpoint}`],
+              code: 'INVALID_RESPONSIVE_BREAKPOINT',
+            });
+            return;
+          }
+
+          if (typeof columns !== 'number' || columns < 1) {
+            errors.push({
+              message: `Responsive columns for "${breakpoint}" must be a number >= 1`,
+              path: [...path, `props.responsive.gridColumns.${breakpoint}`],
+              code: 'INVALID_RESPONSIVE_GRID_COLUMNS',
+            });
+          }
+        });
+      }
+    }
+
+    if (responsive.visibleIn === undefined) {
+      return;
+    }
+
+    if (!Array.isArray(responsive.visibleIn)) {
+      errors.push({
+        message: 'props.responsive.visibleIn must be an array when provided',
+        path,
+        code: 'INVALID_RESPONSIVE_VISIBLE_IN',
+      });
+      return;
+    }
+
+    responsive.visibleIn.forEach((viewport: unknown, index: number) => {
+      if (typeof viewport !== 'string' || !VALID_VIEWPORTS.has(viewport)) {
+        errors.push({
+          message: `Invalid viewport "${String(viewport)}" in props.responsive.visibleIn. Must be one of: ${Array.from(VALID_VIEWPORTS).join(', ')}`,
+          path: [...path, `props.responsive.visibleIn[${index}]`],
+          code: 'INVALID_RESPONSIVE_VIEWPORT',
+        });
+      }
+    });
+  }
+
+  function validatePlaceholdersInNode(node: unknown, path: string[]): void {
+    if (!node || typeof node !== 'object') {
+      return;
+    }
+
+    const shallowNode: Record<string, unknown> = { ...(node as Record<string, unknown>) };
+    delete shallowNode.children;
+    delete shallowNode.position;
+
+    validatePlaceholdersInValue(shallowNode, path);
+  }
+
+  function validatePlaceholdersInValue(value: unknown, path: string[]): void {
+    if (typeof value === 'string') {
+      validatePlaceholderText(value, path);
+      return;
+    }
+
+    if (Array.isArray(value)) {
+      value.forEach((item, index) => {
+        validatePlaceholdersInValue(item, [...path, `[${index}]`]);
+      });
+      return;
+    }
+
+    if (!value || typeof value !== 'object') {
+      return;
+    }
+
+    Object.entries(value as Record<string, unknown>).forEach(([key, nestedValue]) => {
+      validatePlaceholdersInValue(nestedValue, [...path, key]);
+    });
+  }
+
+  function validatePlaceholderText(text: string, path: string[]): void {
+    if (!text.includes('{{') && !text.includes('}}')) {
+      return;
+    }
+
+    if (hasUnbalancedPlaceholderBraces(text)) {
+      errors.push({
+        message: 'Unbalanced placeholder braces detected',
+        path,
+        code: 'INVALID_PLACEHOLDER_SYNTAX',
+      });
+    }
+
+    const matches = extractPlaceholderMatches(text);
+    matches.forEach((match) => {
+      if (match.token === null) {
+        errors.push({
+          message: `Unsupported placeholder expression: ${match.expression}`,
+          path,
+          code: 'INVALID_PLACEHOLDER_SYNTAX',
+        });
+      }
+    });
+  }
+
+  function hasUnbalancedPlaceholderBraces(text: string): boolean {
+    let balance = 0;
+
+    for (let i = 0; i < text.length - 1; i++) {
+      const currentPair = text.slice(i, i + 2);
+      if (currentPair === '{{') {
+        balance++;
+        i++;
+        continue;
+      }
+
+      if (currentPair === '}}') {
+        if (balance === 0) {
+          return true;
+        }
+        balance--;
+        i++;
+      }
+    }
+
+    return balance !== 0;
   }
 
   // Start validation from root children

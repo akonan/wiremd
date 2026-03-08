@@ -41,6 +41,8 @@
 | **3-Column Grid** | `## Title {.grid-3}` | Section with 3 columns |
 | **4-Column Grid** | `## Title {.grid-4}` | Section with 4 columns |
 | **Auto Grid** | `## Title {.grid-auto}` | Auto-fit columns |
+| **Responsive Grid** | `## Title {.grid-3 .md:grid-2 .sm:grid-1}` | Per-breakpoint columns |
+| **Viewport Block** | `::: mobile ... :::` | Show block only in target viewport |
 
 Grid items are defined by `###` headings under the grid heading.
 
@@ -50,8 +52,8 @@ Grid items are defined by `###` headings under the grid heading.
 |----------------|--------|---------|
 | **Class** | `{.classname}` | `{.primary .large}` |
 | **Key-Value** | `{key:value}` | `{type:email required}` |
-| **State** | `{state:name}` | `{state:disabled}` |
-| **Combined** | `{.class key:value state:name}` | `{.primary type:submit state:loading}` |
+| **State** | `{:state}` or `{state:name}` | `{:disabled}` |
+| **Combined** | `{.class key:value :state}` | `{.primary type:submit :loading}` |
 
 ## Input Types
 
@@ -73,8 +75,8 @@ Grid items are defined by `###` headings under the grid heading.
 {required}           # Required field
 {required:true}      # Also valid
 {disabled}           # Disabled
-{state:disabled}     # Also valid
-{state:error}        # Error state
+{:disabled}          # Also valid
+{:error}             # Error state
 {min:1 max:100}      # Number constraints
 {rows:5}             # Textarea rows
 {cols:60}            # Textarea columns
@@ -89,8 +91,9 @@ Grid items are defined by `###` headings under the grid heading.
 [Button]{.secondary}        # Secondary
 [Button]{.outline}          # Outline
 [Button]{variant:danger}    # Danger/destructive
-[Button]{state:disabled}    # Disabled
-[Button]{state:loading}     # Loading
+[Button]{:disabled}         # Disabled
+[Button]{:loading}          # Loading
+[Button]{:focus}            # Focus
 ```
 
 ## Form Pattern
@@ -131,7 +134,7 @@ Message
 ## Grid Pattern
 
 ```markdown
-## Features {.grid-3}
+## Features {.grid-3 .md:grid-2 .sm:grid-1}
 
 ### Feature 1
 Description here
@@ -141,6 +144,61 @@ Description here
 
 ### Feature 3
 Description here
+```
+
+## Viewport Blocks
+
+```markdown
+::: mobile
+## Features {.grid-1}
+:::
+
+::: desktop
+## Features {.grid-3}
+:::
+```
+
+## State Blocks
+
+```markdown
+::: state=hover
+[Submit]
+:::
+```
+
+## Annotations and Comments
+
+```markdown
+[Submit] <!-- Primary CTA -->
+## Hero {.annotation="Needs approval from design team"}
+
+::: note
+Pending final copy from marketing.
+:::
+```
+
+```bash
+# Render annotation callouts (hidden by default)
+wiremd wireframe.md --show-annotations
+```
+
+## Data Placeholders
+
+```markdown
+{{user.name}}
+{{user.email}}
+{{lorem:2}}
+{{image:400x300}}
+{{date}}
+{{number:1000-9999}}
+```
+
+```bash
+# Deterministic placeholder generation
+wiremd wireframe.md --seed demo-2026
+
+# Keep placeholders literal
+wiremd wireframe.md --no-placeholders
 ```
 
 ## Common Examples

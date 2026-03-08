@@ -11,100 +11,138 @@ import type { WiremdNode } from '../types.js';
 
 export interface TailwindRenderContext {
   pretty: boolean;
+  showAnnotations?: boolean;
 }
 
 /**
  * Render a wiremd AST node to HTML with Tailwind classes
  */
 export function renderNode(node: WiremdNode, context: TailwindRenderContext): string {
+  if (isAnnotationOnlyNode(node) && !context.showAnnotations) {
+    return '';
+  }
+
+  let rendered = '';
+
   switch (node.type) {
     case 'button':
-      return renderButton(node, context);
+      rendered = renderButton(node, context);
+      break;
 
     case 'input':
-      return renderInput(node, context);
+      rendered = renderInput(node, context);
+      break;
 
     case 'textarea':
-      return renderTextarea(node, context);
+      rendered = renderTextarea(node, context);
+      break;
 
     case 'select':
-      return renderSelect(node, context);
+      rendered = renderSelect(node, context);
+      break;
 
     case 'checkbox':
-      return renderCheckbox(node, context);
+      rendered = renderCheckbox(node, context);
+      break;
 
     case 'radio':
-      return renderRadio(node, context);
+      rendered = renderRadio(node, context);
+      break;
 
     case 'radio-group':
-      return renderRadioGroup(node, context);
+      rendered = renderRadioGroup(node, context);
+      break;
 
     case 'icon':
-      return renderIcon(node, context);
+      rendered = renderIcon(node, context);
+      break;
 
     case 'container':
-      return renderContainer(node, context);
+      rendered = renderContainer(node, context);
+      break;
 
     case 'nav':
-      return renderNav(node, context);
+      rendered = renderNav(node, context);
+      break;
 
     case 'nav-item':
-      return renderNavItem(node, context);
+      rendered = renderNavItem(node, context);
+      break;
 
     case 'brand':
-      return renderBrand(node, context);
+      rendered = renderBrand(node, context);
+      break;
 
     case 'grid':
-      return renderGrid(node, context);
+      rendered = renderGrid(node, context);
+      break;
 
     case 'grid-item':
-      return renderGridItem(node, context);
+      rendered = renderGridItem(node, context);
+      break;
 
     case 'heading':
-      return renderHeading(node, context);
+      rendered = renderHeading(node, context);
+      break;
 
     case 'paragraph':
-      return renderParagraph(node, context);
+      rendered = renderParagraph(node, context);
+      break;
 
     case 'text':
-      return renderText(node);
+      rendered = renderText(node);
+      break;
 
     case 'image':
-      return renderImage(node, context);
+      rendered = renderImage(node, context);
+      break;
 
     case 'link':
-      return renderLink(node, context);
+      rendered = renderLink(node, context);
+      break;
 
     case 'list':
-      return renderList(node, context);
+      rendered = renderList(node, context);
+      break;
 
     case 'list-item':
-      return renderListItem(node, context);
+      rendered = renderListItem(node, context);
+      break;
 
     case 'table':
-      return renderTable(node, context);
+      rendered = renderTable(node, context);
+      break;
 
     case 'table-header':
-      return renderTableHeader(node, context);
+      rendered = renderTableHeader(node, context);
+      break;
 
     case 'table-row':
-      return renderTableRow(node, context);
+      rendered = renderTableRow(node, context);
+      break;
 
     case 'table-cell':
-      return renderTableCell(node, context);
+      rendered = renderTableCell(node, context);
+      break;
 
     case 'blockquote':
-      return renderBlockquote(node, context);
+      rendered = renderBlockquote(node, context);
+      break;
 
     case 'code':
-      return renderCode(node);
+      rendered = renderCode(node);
+      break;
 
     case 'separator':
-      return renderSeparator();
+      rendered = renderSeparator();
+      break;
 
     default:
-      return `<!-- Unknown node type: ${(node as any).type} -->`;
+      rendered = `<!-- Unknown node type: ${(node as any).type} -->`;
+      break;
   }
+
+  return appendAnnotationMarkup(rendered, node, context);
 }
 
 function renderButton(node: any, context: TailwindRenderContext): string {
@@ -129,13 +167,29 @@ function renderButton(node: any, context: TailwindRenderContext): string {
   }
 
   // State styles
-  if (node.props.state === 'disabled') {
+  if (hasState(node.props, 'disabled')) {
     classes += ' opacity-50 cursor-not-allowed';
-  } else if (node.props.state === 'loading') {
+  } else if (hasState(node.props, 'loading')) {
     classes += ' opacity-75 cursor-wait';
   }
 
-  const disabled = node.props.state === 'disabled' ? ' disabled' : '';
+  if (hasState(node.props, 'hover')) {
+    classes += ' brightness-95';
+  }
+  if (hasState(node.props, 'active')) {
+    classes += ' scale-[0.98]';
+  }
+  if (hasState(node.props, 'focus')) {
+    classes += ' ring-2 ring-indigo-500 ring-offset-1';
+  }
+  if (hasState(node.props, 'error')) {
+    classes += ' border border-red-500 text-red-700';
+  }
+  if (hasState(node.props, 'success')) {
+    classes += ' border border-green-500 text-green-700';
+  }
+
+  const disabled = (hasState(node.props, 'disabled') || node.props.disabled) ? ' disabled' : '';
 
   const contentHTML = node.children
     ? node.children.map((child: any) => renderNode(child, context)).join('')
@@ -145,32 +199,62 @@ function renderButton(node: any, context: TailwindRenderContext): string {
 }
 
 function renderInput(node: any, _context: TailwindRenderContext): string {
-  const classes = 'w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent';
+  let classes = 'w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent';
   const type = node.props.inputType || node.props.type || 'text';
   const required = node.props.required ? ' required' : '';
-  const disabled = node.props.disabled ? ' disabled' : '';
+  const disabled = (node.props.disabled || hasState(node.props, 'disabled')) ? ' disabled' : '';
   const placeholder = node.props.placeholder ? ` placeholder="${escapeHtml(node.props.placeholder)}"` : '';
   const value = node.props.value ? ` value="${escapeHtml(node.props.value)}"` : '';
+
+  if (hasState(node.props, 'focus')) {
+    classes += ' ring-2 ring-indigo-500';
+  }
+  if (hasState(node.props, 'error')) {
+    classes += ' border-red-500 text-red-700';
+  }
+  if (hasState(node.props, 'success')) {
+    classes += ' border-green-500 text-green-700';
+  }
 
   return `<input type="${type}" class="${classes}"${placeholder}${value}${required}${disabled} />`;
 }
 
 function renderTextarea(node: any, _context: TailwindRenderContext): string {
-  const classes = 'w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent resize-vertical';
+  let classes = 'w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent resize-vertical';
   const rows = node.props.rows || 4;
   const required = node.props.required ? ' required' : '';
-  const disabled = node.props.disabled ? ' disabled' : '';
+  const disabled = (node.props.disabled || hasState(node.props, 'disabled')) ? ' disabled' : '';
   const placeholder = node.props.placeholder ? ` placeholder="${escapeHtml(node.props.placeholder)}"` : '';
   const value = node.props.value || '';
+
+  if (hasState(node.props, 'focus')) {
+    classes += ' ring-2 ring-indigo-500';
+  }
+  if (hasState(node.props, 'error')) {
+    classes += ' border-red-500 text-red-700';
+  }
+  if (hasState(node.props, 'success')) {
+    classes += ' border-green-500 text-green-700';
+  }
 
   return `<textarea class="${classes}" rows="${rows}"${placeholder}${required}${disabled}>${escapeHtml(value)}</textarea>`;
 }
 
 function renderSelect(node: any, _context: TailwindRenderContext): string {
-  const classes = 'w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent';
+  let classes = 'w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent';
   const required = node.props.required ? ' required' : '';
-  const disabled = node.props.disabled ? ' disabled' : '';
+  const disabled = (node.props.disabled || hasState(node.props, 'disabled')) ? ' disabled' : '';
   const multiple = node.props.multiple ? ' multiple' : '';
+
+  if (hasState(node.props, 'focus')) {
+    classes += ' ring-2 ring-indigo-500';
+  }
+  if (hasState(node.props, 'error')) {
+    classes += ' border-red-500 text-red-700';
+  }
+  if (hasState(node.props, 'success')) {
+    classes += ' border-green-500 text-green-700';
+  }
 
   const optionsHTML = (node.options || []).map((opt: any) => {
     const selected = opt.selected ? ' selected' : '';
@@ -190,7 +274,7 @@ function renderSelect(node: any, _context: TailwindRenderContext): string {
 function renderCheckbox(node: any, context: TailwindRenderContext): string {
   const classes = 'flex items-center gap-2 cursor-pointer';
   const checked = node.checked ? ' checked' : '';
-  const disabled = node.props.disabled ? ' disabled' : '';
+  const disabled = (node.props.disabled || hasState(node.props, 'disabled')) ? ' disabled' : '';
   const value = node.props.value ? ` value="${escapeHtml(node.props.value)}"` : '';
 
   const labelHTML = node.children
@@ -206,7 +290,7 @@ function renderCheckbox(node: any, context: TailwindRenderContext): string {
 function renderRadio(node: any, _context: TailwindRenderContext): string {
   const classes = 'flex items-center gap-2 cursor-pointer';
   const checked = node.selected ? ' checked' : '';
-  const disabled = node.props.disabled ? ' disabled' : '';
+  const disabled = (node.props.disabled || hasState(node.props, 'disabled')) ? ' disabled' : '';
   const name = node.props.name ? ` name="${escapeHtml(node.props.name)}"` : '';
   const value = node.props.value ? ` value="${escapeHtml(node.props.value)}"` : '';
 
@@ -269,11 +353,11 @@ function renderContainer(node: any, context: TailwindRenderContext): string {
       break;
     case 'alert':
       classes = 'border-l-4 p-4 my-4 rounded';
-      if (node.props.state === 'error') {
+      if (hasState(node.props, 'error')) {
         classes += ' bg-red-50 border-red-500 text-red-900';
-      } else if (node.props.state === 'success') {
+      } else if (hasState(node.props, 'success')) {
         classes += ' bg-green-50 border-green-500 text-green-900';
-      } else if (node.props.state === 'warning') {
+      } else if (hasState(node.props, 'warning')) {
         classes += ' bg-yellow-50 border-yellow-500 text-yellow-900';
       } else {
         classes += ' bg-blue-50 border-blue-500 text-blue-900';
@@ -291,6 +375,8 @@ function renderContainer(node: any, context: TailwindRenderContext): string {
     default:
       classes = 'p-4 my-4';
   }
+
+  classes += getTailwindViewportVisibilityClasses(node.props?.responsive?.visibleIn);
 
   const childrenHTML = (node.children || []).map((child: any) => renderNode(child, context)).join('\n  ');
 
@@ -331,15 +417,27 @@ function renderBrand(node: any, context: TailwindRenderContext): string {
 function renderGrid(node: any, context: TailwindRenderContext): string {
   const columns = node.columns || 3;
   let gridClasses = 'grid gap-6 my-8';
+  const responsiveGridColumns = node.props?.responsive?.gridColumns;
+  const hasExplicitResponsiveGrid = responsiveGridColumns && Object.keys(responsiveGridColumns).length > 0;
 
-  if (columns === 2) {
-    gridClasses += ' grid-cols-1 md:grid-cols-2';
-  } else if (columns === 3) {
-    gridClasses += ' grid-cols-1 md:grid-cols-2 lg:grid-cols-3';
-  } else if (columns === 4) {
-    gridClasses += ' grid-cols-1 md:grid-cols-2 lg:grid-cols-4';
+  if (hasExplicitResponsiveGrid) {
+    gridClasses += ` grid-cols-${Math.min(Math.max(columns, 1), 12)}`;
+
+    Object.entries(responsiveGridColumns).forEach(([breakpoint, responsiveColumns]) => {
+      if (typeof responsiveColumns === 'number' && responsiveColumns > 0) {
+        gridClasses += ` ${breakpoint}:grid-cols-${Math.min(Math.max(responsiveColumns, 1), 12)}`;
+      }
+    });
   } else {
-    gridClasses += ` grid-cols-1 md:grid-cols-${Math.min(columns, 4)}`;
+    if (columns === 2) {
+      gridClasses += ' grid-cols-1 md:grid-cols-2';
+    } else if (columns === 3) {
+      gridClasses += ' grid-cols-1 md:grid-cols-2 lg:grid-cols-3';
+    } else if (columns === 4) {
+      gridClasses += ' grid-cols-1 md:grid-cols-2 lg:grid-cols-4';
+    } else {
+      gridClasses += ` grid-cols-1 md:grid-cols-${Math.min(columns, 4)}`;
+    }
   }
 
   const childrenHTML = (node.children || []).map((child: any) => renderNode(child, context)).join('\n  ');
@@ -541,4 +639,123 @@ function escapeHtml(text: string): string {
     .replace(/>/g, '&gt;')
     .replace(/"/g, '&quot;')
     .replace(/'/g, '&#039;');
+}
+
+function getStates(props: any): string[] {
+  if (!props || typeof props !== 'object') {
+    return [];
+  }
+
+  const states: string[] = [];
+  if (typeof props.state === 'string' && props.state.trim()) {
+    states.push(props.state.trim());
+  }
+
+  if (Array.isArray(props.states)) {
+    props.states.forEach((state: unknown) => {
+      if (typeof state === 'string' && state.trim() && !states.includes(state.trim())) {
+        states.push(state.trim());
+      }
+    });
+  }
+
+  return states;
+}
+
+function hasState(props: any, state: string): boolean {
+  return getStates(props).includes(state);
+}
+
+function getTailwindViewportVisibilityClasses(visibleIn?: string[]): string {
+  if (!Array.isArray(visibleIn) || visibleIn.length === 0) {
+    return '';
+  }
+
+  const viewport = visibleIn[0];
+  switch (viewport) {
+    case 'mobile':
+      return ' block md:hidden';
+    case 'desktop':
+      return ' hidden md:block';
+    case 'tablet':
+      return ' hidden md:block lg:hidden';
+    case 'laptop':
+      return ' hidden lg:block xl:hidden';
+    default:
+      return '';
+  }
+}
+
+function appendAnnotationMarkup(rendered: string, node: WiremdNode, context: TailwindRenderContext): string {
+  if (!context.showAnnotations) {
+    return rendered;
+  }
+
+  const annotationText = buildAnnotationText((node as any).props);
+  if (!annotationText) {
+    return rendered;
+  }
+
+  return `${rendered}\n<div class="mt-2 rounded border border-amber-300 bg-amber-50 px-3 py-2 text-xs text-amber-900">${escapeHtml(annotationText)}</div>`;
+}
+
+function isAnnotationOnlyNode(node: WiremdNode): boolean {
+  if (node.type !== 'container') {
+    return false;
+  }
+
+  const props: any = (node as any).props;
+  if (!props || typeof props !== 'object') {
+    return false;
+  }
+
+  if (props.annotationRole === 'note') {
+    return true;
+  }
+
+  return Array.isArray(props.classes) && props.classes.includes('annotation-note');
+}
+
+function buildAnnotationText(props: any): string {
+  if (!props || typeof props !== 'object') {
+    return '';
+  }
+
+  const entries: string[] = [];
+  const seen = new Set<string>();
+
+  const push = (prefix: string, value: unknown): void => {
+    if (typeof value !== 'string' || !value.trim()) {
+      return;
+    }
+    const text = prefix ? `${prefix}: ${value.trim()}` : value.trim();
+    if (!seen.has(text)) {
+      seen.add(text);
+      entries.push(text);
+    }
+  };
+
+  push('Annotation', props.annotation);
+  push('TODO', props.todo);
+  push('Version', props.versionNote);
+
+  if (Array.isArray(props.annotations)) {
+    props.annotations.forEach((annotation: any) => {
+      if (!annotation || typeof annotation !== 'object') {
+        return;
+      }
+
+      if (typeof annotation.todo === 'string' && annotation.todo.trim()) {
+        push('TODO', annotation.todo);
+      } else if (typeof annotation.version === 'string' && annotation.version.trim()) {
+        push('Version', annotation.version);
+      } else if (typeof annotation.note === 'string' && annotation.note.trim()) {
+        push('Note', annotation.note);
+      } else if (typeof annotation.text === 'string' && annotation.text.trim()) {
+        push('Annotation', annotation.text);
+      }
+    });
+  }
+
+  return entries.join(' | ');
 }

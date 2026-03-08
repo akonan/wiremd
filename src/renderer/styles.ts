@@ -11,24 +11,162 @@
  * Get CSS for the specified style
  */
 export function getStyleCSS(style: string, prefix: string): string {
+  let themeCss = '';
+
   switch (style) {
     case 'sketch':
-      return getSketchStyle(prefix);
+      themeCss = getSketchStyle(prefix);
+      break;
     case 'clean':
-      return getCleanStyle(prefix);
+      themeCss = getCleanStyle(prefix);
+      break;
     case 'wireframe':
-      return getWireframeStyle(prefix);
+      themeCss = getWireframeStyle(prefix);
+      break;
     case 'none':
-      return getNoneStyle(prefix);
+      themeCss = getNoneStyle(prefix);
+      break;
     case 'tailwind':
-      return getTailwindStyle(prefix);
+      themeCss = getTailwindStyle(prefix);
+      break;
     case 'material':
-      return getMaterialStyle(prefix);
+      themeCss = getMaterialStyle(prefix);
+      break;
     case 'brutal':
-      return getBrutalStyle(prefix);
+      themeCss = getBrutalStyle(prefix);
+      break;
     default:
-      return getSketchStyle(prefix);
+      themeCss = getSketchStyle(prefix);
+      break;
   }
+
+  return `${themeCss}\n${getSharedStateStyles(prefix)}\n${getSharedResponsiveStyles(prefix)}\n${getSharedAnnotationStyles(prefix)}`;
+}
+
+function getSharedStateStyles(prefix: string): string {
+  return `
+/* Shared component state utilities */
+.${prefix}state-hover {
+  filter: brightness(0.97);
+}
+
+.${prefix}button.${prefix}state-hover {
+  transform: translateY(-1px);
+}
+
+.${prefix}state-active {
+  transform: translateY(1px);
+}
+
+.${prefix}state-focus {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
+
+.${prefix}state-loading {
+  opacity: 0.75;
+  cursor: wait;
+}
+
+.${prefix}state-error {
+  border-color: #dc2626 !important;
+}
+
+.${prefix}state-success {
+  border-color: #16a34a !important;
+}
+
+.${prefix}state-disabled {
+  opacity: 0.55;
+  pointer-events: none;
+}
+`;
+}
+
+function getSharedResponsiveStyles(prefix: string): string {
+  return `
+/* Shared responsive viewport utilities */
+.${prefix}viewport-mobile,
+.${prefix}viewport-tablet,
+.${prefix}viewport-desktop,
+.${prefix}viewport-laptop {
+  display: none;
+}
+
+@media (max-width: 767px) {
+  .${prefix}viewport-mobile {
+    display: block;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  .${prefix}viewport-tablet {
+    display: block;
+  }
+}
+
+@media (min-width: 1024px) {
+  .${prefix}viewport-desktop,
+  .${prefix}viewport-laptop {
+    display: block;
+  }
+}
+
+/* Shared responsive grid utilities */
+@media (min-width: 480px) {
+  ${buildGridBreakpointCss(prefix, 'xs')}
+}
+
+@media (min-width: 640px) {
+  ${buildGridBreakpointCss(prefix, 'sm')}
+}
+
+@media (min-width: 768px) {
+  ${buildGridBreakpointCss(prefix, 'md')}
+}
+
+@media (min-width: 1024px) {
+  ${buildGridBreakpointCss(prefix, 'lg')}
+}
+
+@media (min-width: 1280px) {
+  ${buildGridBreakpointCss(prefix, 'xl')}
+}
+
+@media (min-width: 1536px) {
+  ${buildGridBreakpointCss(prefix, '2xl')}
+}
+`;
+}
+
+function getSharedAnnotationStyles(prefix: string): string {
+  return `
+/* Shared annotation utilities */
+.${prefix}annotation-callout {
+  margin-top: 8px;
+  margin-bottom: 12px;
+  padding: 8px 10px;
+  border: 1px dashed #d97706;
+  border-radius: 6px;
+  background: #fffbeb;
+  color: #92400e;
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+.${prefix}container-section.${prefix}annotation-note {
+  border-left: 4px solid #f59e0b;
+  background: #fffbeb;
+}
+`;
+}
+
+function buildGridBreakpointCss(prefix: string, breakpoint: string): string {
+  const rules: string[] = [];
+  for (let columns = 1; columns <= 12; columns++) {
+    rules.push(`.${prefix}grid-${breakpoint}-${columns} { grid-template-columns: repeat(${columns}, 1fr) !important; }`);
+  }
+  return rules.join('\n  ');
 }
 
 /**

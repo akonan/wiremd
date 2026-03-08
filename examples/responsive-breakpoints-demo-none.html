@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>wiremd Mockup</title>
+  <style>
+
+/* wiremd None Style - Minimal semantic styling */
+* {
+  box-sizing: border-box;
+}
+
+body.wmd-root {
+  font-family: system-ui, -apple-system, sans-serif;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 20px;
+  line-height: 1.6;
+}
+
+.wmd-button {
+  padding: 8px 16px;
+  margin: 4px;
+}
+
+.wmd-input, .wmd-textarea, .wmd-select {
+  display: block;
+  width: 100%;
+  max-width: 400px;
+  padding: 8px;
+  margin: 4px 0;
+}
+
+.wmd-grid {
+  display: grid;
+  grid-template-columns: repeat(var(--grid-columns, 3), 1fr);
+  gap: 20px;
+  margin: 20px 0;
+}
+
+.wmd-nav-content {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.wmd-brand {
+  margin-right: auto;
+  font-weight: bold;
+}
+
+/* State Containers */
+.wmd-container-loading-state,
+.wmd-container-empty-state,
+.wmd-container-error-state {
+  padding: 40px;
+  margin: 20px 0;
+  text-align: center;
+}
+
+@media (max-width: 768px) {
+  .wmd-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+  </style>
+</head>
+<body class="wmd-root wmd-none">
+  <h1 class="wmd-h1">Responsive Breakpoints Demo</h1>
+<p class="wmd-paragraph">This example demonstrates responsive grid breakpoints and viewport blocks.</p>
+<div class="wmd-grid wmd-grid-3 wmd-md:grid-2 wmd-sm:grid-1 wmd-grid-3" style="--grid-columns: 3">
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Fast Setup</h3>
+    <p class="wmd-paragraph">Install and start in minutes.</p>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Flexible Layouts</h3>
+    <p class="wmd-paragraph">Adapt UI structure by breakpoint.</p>
+  </div>
+  <div class="wmd-grid-item">
+    <h3 class="wmd-h3">Team Friendly</h3>
+    <p class="wmd-paragraph">Keep design changes reviewable in Git.</p>
+    <div class="wmd-container-mobile">
+  <h2 class="wmd-h2 wmd-grid-1">Mobile Callout</h2>
+  <h3 class="wmd-h3">Mobile UX</h3>
+  <p class="wmd-paragraph">Prioritize one-column content and simplified actions.</p>
+</div>
+    <div class="wmd-container-tablet">
+  <h2 class="wmd-h2 wmd-grid-2">Tablet Callout</h2>
+  <h3 class="wmd-h3">Browsing</h3>
+  <p class="wmd-paragraph">Show denser content than mobile.</p>
+  <h3 class="wmd-h3">Touch Targets</h3>
+  <p class="wmd-paragraph">Keep controls accessible for touch devices.</p>
+</div>
+    <div class="wmd-container-desktop">
+  <h2 class="wmd-h2 wmd-grid-3">Desktop Callout</h2>
+  <h3 class="wmd-h3">Detailed View</h3>
+  <p class="wmd-paragraph">Use multi-column layouts for dashboards and admin pages.</p>
+  <h3 class="wmd-h3">Power Features</h3>
+  <p class="wmd-paragraph">Expose advanced controls for larger screens.</p>
+  <h3 class="wmd-h3">Context Panels</h3>
+  <p class="wmd-paragraph">Keep extra context visible while editing.</p>
+</div>
+  </div>
+</div>
+</body>
+</html>
