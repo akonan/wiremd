@@ -22,11 +22,13 @@ export interface CLIOptions {
   input: string;
   output?: string;
   format?: 'html' | 'json';
-  style?: 'sketch' | 'clean' | 'wireframe' | 'none';
+  style?: 'sketch' | 'clean' | 'wireframe' | 'none' | 'tailwind' | 'material' | 'brutal';
   watch?: boolean;
   serve?: number;
   pretty?: boolean;
   showAnnotations?: boolean;
+  resolvePlaceholders?: boolean;
+  placeholderSeed?: string | number;
   watchPattern?: string;
   ignorePattern?: string;
 }
@@ -50,6 +52,8 @@ OPTIONS:
   --watch-pattern <pattern>  Glob pattern for files to watch (e.g., "**/*.md")
   --ignore <pattern>         Glob pattern for files to ignore (e.g., "**/node_modules/**")
   --show-annotations         Render visual annotation notes/comments in HTML output
+  --seed <value>             Seed for deterministic placeholder data generation
+  --no-placeholders          Keep {{...}} placeholders as literal text in output
   -p, --pretty               Pretty print output (default: true)
   -h, --help                 Show this help message
   -v, --version              Show version number
@@ -72,6 +76,12 @@ EXAMPLES:
 
   # Generate JSON output
   wiremd wireframe.md --format json
+
+  # Deterministic placeholders
+  wiremd wireframe.md --seed demo-123
+
+  # Keep placeholders unresolved
+  wiremd wireframe.md --no-placeholders
 
 STYLES:
   sketch     - Balsamiq-inspired hand-drawn look (default)
@@ -105,6 +115,7 @@ export function parseArgs(args: string[]): CLIOptions | null {
     format: 'html',
     style: 'sketch',
     pretty: true,
+    resolvePlaceholders: true,
   };
 
   for (let i = 0; i < args.length; i++) {
@@ -173,6 +184,22 @@ export function parseArgs(args: string[]): CLIOptions | null {
         options.showAnnotations = true;
         break;
 
+      case '--seed': {
+        const seedValue = args[++i];
+        if (seedValue === undefined) {
+          console.error('Error: --seed requires a value');
+          process.exit(1);
+        }
+        options.placeholderSeed = /^-?\d+$/.test(seedValue)
+          ? Number.parseInt(seedValue, 10)
+          : seedValue;
+        break;
+      }
+
+      case '--no-placeholders':
+        options.resolvePlaceholders = false;
+        break;
+
       case '-p':
       case '--pretty':
         options.pretty = true;
@@ -230,7 +257,15 @@ export function checkFileSize(filePath: string): void {
 }
 
 export function generateOutput(options: CLIOptions): string {
-  const { input, format, style, pretty, showAnnotations } = options;
+  const {
+    input,
+    format,
+    style,
+    pretty,
+    showAnnotations,
+    resolvePlaceholders,
+    placeholderSeed,
+  } = options;
 
   // Check if input file exists
   if (!existsSync(input)) {
@@ -248,9 +283,16 @@ export function generateOutput(options: CLIOptions): string {
 
   // Render to output format
   if (format === 'json') {
-    return renderToJSON(ast, { pretty });
+    return renderToJSON(ast, { pretty, resolvePlaceholders, placeholderSeed });
   } else {
-    return renderToHTML(ast, { style, pretty, inlineStyles: true, showAnnotations });
+    return renderToHTML(ast, {
+      style,
+      pretty,
+      inlineStyles: true,
+      showAnnotations,
+      resolvePlaceholders,
+      placeholderSeed,
+    });
   }
 }
 

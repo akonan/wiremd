@@ -85,6 +85,27 @@ describe('HTML Renderer', () => {
       expect(html).toContain('<button');
       expect(html).toContain('disabled');
     });
+
+    it('should resolve placeholders in HTML output by default', () => {
+      const ast = parse('## Hello {{user.name}}');
+      const html = renderToHTML(ast, {
+        style: 'sketch',
+        placeholderSeed: 'renderer-seed',
+      });
+
+      expect(html).not.toContain('{{user.name}}');
+      expect(html).toMatch(/Hello [A-Za-z]+ [A-Za-z]+/);
+    });
+
+    it('should keep placeholders when resolvePlaceholders is false', () => {
+      const ast = parse('## Hello {{user.name}}');
+      const html = renderToHTML(ast, {
+        style: 'sketch',
+        resolvePlaceholders: false,
+      });
+
+      expect(html).toContain('Hello {{user.name}}');
+    });
   });
 
   describe('Containers', () => {
@@ -352,6 +373,13 @@ Email
 
       expect(json).toContain('JSON-ANNOTATION-XYZ');
       expect(json).toContain('"annotations"');
+    });
+
+    it('should resolve placeholders in JSON output by default', () => {
+      const ast = parse('## Welcome {{user.name}}');
+      const json = renderToJSON(ast, { placeholderSeed: 'json-seed' });
+
+      expect(json).not.toContain('{{user.name}}');
     });
 
     it('should render compact JSON', () => {

@@ -54,6 +54,28 @@ export interface AnnotationMetadata {
   tags?: string[];
 }
 
+export type PlaceholderKind = 'user.name' | 'user.email' | 'lorem' | 'image' | 'date' | 'number';
+
+interface PlaceholderTokenBase {
+  kind: PlaceholderKind;
+  raw: string;
+  expression: string;
+}
+
+export type PlaceholderToken =
+  | (PlaceholderTokenBase & { kind: 'user.name' })
+  | (PlaceholderTokenBase & { kind: 'user.email' })
+  | (PlaceholderTokenBase & { kind: 'lorem'; paragraphs: number })
+  | (PlaceholderTokenBase & { kind: 'image'; width: number; height: number })
+  | (PlaceholderTokenBase & { kind: 'date' })
+  | (PlaceholderTokenBase & { kind: 'number'; min: number; max: number });
+
+export interface DataGenerationOptions {
+  seed?: string | number;
+  now?: Date;
+  preserveUnknown?: boolean;
+}
+
 export interface ComponentProps {
   classes?: string[];
   state?: ComponentState;
@@ -202,6 +224,8 @@ export interface RenderOptions {
   pretty?: boolean;
   classPrefix?: string;
   showAnnotations?: boolean;
+  resolvePlaceholders?: boolean;
+  placeholderSeed?: string | number;
   typescript?: boolean; // For React renderer
   componentName?: string; // For React renderer
 }

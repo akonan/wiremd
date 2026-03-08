@@ -20,10 +20,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - `::: note ... :::` annotation blocks
 - CLI support for visual annotation rendering:
   - `--show-annotations` flag for HTML output
+- Data placeholder syntax:
+  - `{{user.name}}`, `{{user.email}}`, `{{lorem:N}}`, `{{image:WxH}}`, `{{date}}`, `{{number:min-max}}`
+  - Deterministic placeholder generation with `--seed` (CLI) / `placeholderSeed` (API)
+  - Placeholder opt-out with `--no-placeholders` (CLI) / `resolvePlaceholders: false` (API)
 
 ### Changed
 - HTML/React/Tailwind renderers now hide annotation visuals by default and only render them when `showAnnotations` is enabled.
 - Validation now includes annotation metadata shape checks (`props.annotations` and `meta.annotations`).
+- Render pipeline now resolves placeholders consistently for HTML, JSON, React, and Tailwind outputs.
+- Parser validation now reports invalid placeholder expressions and unbalanced placeholder braces in strict mode.
 
 ### Compatibility Notes
 - Existing documents remain compatible.

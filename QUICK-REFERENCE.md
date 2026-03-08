@@ -182,6 +182,25 @@ Pending final copy from marketing.
 wiremd wireframe.md --show-annotations
 ```
 
+## Data Placeholders
+
+```markdown
+{{user.name}}
+{{user.email}}
+{{lorem:2}}
+{{image:400x300}}
+{{date}}
+{{number:1000-9999}}
+```
+
+```bash
+# Deterministic placeholder generation
+wiremd wireframe.md --seed demo-2026
+
+# Keep placeholders literal
+wiremd wireframe.md --no-placeholders
+```
+
 ## Common Examples
 
 ### Login Form

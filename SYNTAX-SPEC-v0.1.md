@@ -2,7 +2,7 @@
 
 **Status:** Implemented and maintained
 **Date:** November 6, 2025
-**Last Implementation Update:** March 7, 2026
+**Last Implementation Update:** March 8, 2026
 **Approach:** Hybrid model (visual patterns + markdown + attributes)
 
 ---
@@ -317,6 +317,31 @@ Pending final copy from marketing.
 - `.annotation="..."`, `todo="..."`, and `version-note="..."` are normalized into `props.annotations`
 - HTML comments are captured as annotation metadata (not rendered by default in visual outputs)
 - `::: note` blocks are parsed as annotation-oriented section containers
+
+### 5.6 Data Placeholder Syntax
+
+```markdown
+{{user.name}}
+{{user.email}}
+{{lorem:2}}
+{{image:400x300}}
+{{date}}
+{{number:1000-9999}}
+```
+
+**Parser/Renderer Rules:**
+- Placeholders are preserved in AST text fields and resolved at render time by default
+- Unsupported placeholders are retained as literal `{{...}}` unless placeholder resolution is explicitly disabled/fallback is configured
+- Supported expressions:
+  - `user.name`
+  - `user.email`
+  - `lorem:<paragraph-count>`
+  - `image:<width>x<height>`
+  - `date`
+  - `number:<min>-<max>`
+- Deterministic output is supported via `placeholderSeed` (API) / `--seed` (CLI)
+- Placeholder resolution can be disabled via `resolvePlaceholders: false` (API) / `--no-placeholders` (CLI)
+- In `strict` parse mode, invalid placeholder syntax yields validation errors
 
 ---
 

@@ -953,4 +953,27 @@ Advanced features
       expect(errors.length).toBeGreaterThan(2);
     });
   });
+
+  describe('Placeholder Validation', () => {
+    it('should accept valid placeholder expressions', () => {
+      const ast = parse('## Hello {{user.name}} and {{number:100-999}}');
+      const errors = validate(ast);
+
+      expect(errors.some((error) => error.code === 'INVALID_PLACEHOLDER_SYNTAX')).toBe(false);
+    });
+
+    it('should reject unsupported placeholder expressions', () => {
+      const ast = parse('## Hello {{user.phone}}');
+      const errors = validate(ast);
+
+      expect(errors.some((error) => error.code === 'INVALID_PLACEHOLDER_SYNTAX')).toBe(true);
+    });
+
+    it('should reject unbalanced placeholder braces', () => {
+      const ast = parse('## Hello {{user.name');
+      const errors = validate(ast);
+
+      expect(errors.some((error) => error.code === 'INVALID_PLACEHOLDER_SYNTAX')).toBe(true);
+    });
+  });
 });

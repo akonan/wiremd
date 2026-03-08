@@ -691,4 +691,22 @@ Reliable
       );
     });
   });
+
+  describe('Placeholder Validation', () => {
+    it('should allow valid placeholders in strict mode', () => {
+      expect(() => parse('## Welcome {{user.name}}', { strict: true })).not.toThrow();
+    });
+
+    it('should throw in strict mode for unsupported placeholders', () => {
+      expect(() => parse('## Welcome {{user.phone}}', { strict: true })).toThrow(
+        /Validation failed/
+      );
+    });
+
+    it('should throw in strict mode for unbalanced placeholder braces', () => {
+      expect(() => parse('## Welcome {{user.name', { strict: true })).toThrow(
+        /Validation failed/
+      );
+    });
+  });
 });

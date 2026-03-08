@@ -56,6 +56,21 @@ describe('React Renderer', () => {
       expect(jsx).toContain('disabled');
     });
 
+    it('should resolve placeholders in React output by default', () => {
+      const ast = parse('## Welcome {{user.name}}');
+      const jsx = renderToReact(ast, { placeholderSeed: 'react-seed' });
+
+      expect(jsx).not.toContain('{{user.name}}');
+      expect(jsx).toMatch(/Welcome [A-Za-z]+ [A-Za-z]+/);
+    });
+
+    it('should keep placeholders in React output when disabled', () => {
+      const ast = parse('## Welcome {{user.name}}');
+      const jsx = renderToReact(ast, { resolvePlaceholders: false });
+
+      expect(jsx).toContain('Welcome &#123;&#123;user.name&#125;&#125;');
+    });
+
     it('should render an input', () => {
       const ast = parse('[___________]{type:email required}');
       const jsx = renderToReact(ast);

@@ -79,6 +79,7 @@ This creates a responsive 3-column grid layout with icons and descriptions.
 - ✅ **Responsive breakpoints** - Per-breakpoint grids (`.md:grid-2`) and viewport blocks (`::: mobile`)
 - ✅ **Component states** - Inline state syntax (`{:hover}`) and state blocks (`::: state=disabled`)
 - ✅ **Annotations/comments** - Design notes in AST/JSON plus optional visual rendering with `--show-annotations`
+- ✅ **Data placeholders** - Seedable mock data with `{{user.name}}`, `{{lorem:2}}`, `{{number:1000-9999}}`, etc.
 - ✅ **Visual syntax** - Looks like what it renders
 - ✅ **Fast to write** - Intuitive shortcuts for common patterns
 - ✅ **Extensible** - Add classes and attributes as needed
@@ -157,6 +158,12 @@ wiremd wireframe.md --format json      # JSON AST output
 
 # Render annotation callouts in HTML output
 wiremd wireframe.md --show-annotations
+
+# Deterministic placeholder data
+wiremd wireframe.md --seed demo-2026
+
+# Keep placeholders unresolved in output
+wiremd wireframe.md --no-placeholders
 ```
 
 React and Tailwind outputs are available through the programmatic API (`renderToReact`, `renderToTailwind`).
@@ -205,6 +212,36 @@ This section is pending final copy from marketing.
 ```
 
 By default, annotations are hidden in HTML/React/Tailwind renderers. Use `--show-annotations` (CLI) or `showAnnotations: true` (API) to display them.
+
+## Data Placeholders
+
+Use placeholders to generate realistic dummy data in text-first mockups:
+
+```markdown
+{{user.name}}          <!-- Alex Johnson -->
+{{user.email}}         <!-- alex.johnson@example.com -->
+{{lorem:2}}            <!-- 2 paragraphs of lorem ipsum -->
+{{image:400x300}}      <!-- Placeholder image URL -->
+{{date}}               <!-- 2026-03-08 -->
+{{number:1000-9999}}   <!-- Random number -->
+```
+
+CLI controls:
+
+```bash
+# deterministic output across runs
+wiremd demo.md --seed demo-2026
+
+# keep literal placeholders
+wiremd demo.md --no-placeholders
+```
+
+API controls:
+
+```ts
+renderToHTML(ast, { placeholderSeed: 'demo-2026' });
+renderToHTML(ast, { resolvePlaceholders: false });
+```
 
 ## Exporting to Figma
 

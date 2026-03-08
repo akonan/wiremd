@@ -183,6 +183,39 @@ Show annotations in HTML output:
 wiremd wireframe.md --show-annotations
 ```
 
+### Data Placeholders
+
+Generate mock content directly in your wiremd documents:
+
+```markdown
+{{user.name}}
+{{user.email}}
+{{lorem:2}}
+{{image:400x300}}
+{{date}}
+{{number:1000-9999}}
+```
+
+Use placeholders inside headings, paragraphs, labels, and image URLs:
+
+```markdown
+## Welcome {{user.name}}
+
+Contact: {{user.email}}
+
+![Hero image]({{image:1280x720}})
+```
+
+CLI options:
+
+```bash
+# Deterministic placeholder output
+wiremd wireframe.md --seed demo-2026
+
+# Keep placeholders as literal text
+wiremd wireframe.md --no-placeholders
+```
+
 ## Component Examples
 
 ### Forms

@@ -1,7 +1,7 @@
 # Plan de Implementacion - Checklist de Avance
 
-Fecha: 2026-03-06
-Estado general: En progreso (PR1, PR2, PR3, PR4 y PR5 completados; cierre de release pendiente)
+Fecha: 2026-03-08
+Estado general: En progreso (PR1, PR2, PR3, PR4, PR5, PR6 y PR8 completados; PR7 casi completo, pendiente metadata opcional)
 
 ## Registro de avances
 
@@ -42,6 +42,24 @@ Estado general: En progreso (PR1, PR2, PR3, PR4 y PR5 completados; cierre de rel
   - QUICK-REFERENCE actualizado como cheat sheet de nuevas sintaxis (`.md:grid-*`, `{:hover}`, `::: note`) y comando de anotaciones.
   - SYNTAX-SPEC-v0.1 actualizado para reflejar extensiones implementadas y ejemplos AST/JSON de responsive + annotations.
   - CHANGELOG actualizado en `Unreleased` con entradas de responsive/state/annotations y notas de compatibilidad.
+- 2026-03-08: Plan detallado anadido para Issue #52 (data placeholder syntax), con checklists por archivo y criterios de aceptacion por PR.
+- 2026-03-08: PR6 completado para Issue #52.
+  - Anadido motor de placeholders en `src/placeholders/*` con parser de expresiones, generador seedable y provider por defecto.
+  - Extendidos tipos con `PlaceholderToken`, `DataGenerationOptions`, `RenderOptions.resolvePlaceholders` y `RenderOptions.placeholderSeed`.
+  - Integracion inicial en render pipeline (`renderToHTML`, `renderToJSON`, `renderToReact`, `renderToTailwind`) con resolucion habilitada por defecto.
+  - CLI extendida con `--seed` y `--no-placeholders`.
+  - Cobertura de tests ampliada (`tests/placeholders.test.ts`, renderer/react/tailwind/cli-unit).
+  - Verificacion: `npm run typecheck`, suite objetivo en verde y `npm run test` completo en verde.
+- 2026-03-08: Avance de PR7 para Issue #52.
+  - Integrada resolucion de placeholders en `src/renderer/index.ts` para HTML/JSON/React/Tailwind.
+  - Anadida validacion de placeholders en `src/parser/index.ts` con errores explicitos para sintaxis invalida.
+  - `parse(..., { strict: true })` ahora falla cuando hay placeholders invalidos o llaves desbalanceadas.
+  - CLI extendida con `--seed` y `--no-placeholders` para control de reproducibilidad y resolucion.
+  - Verificacion: `npm run typecheck`, `npm run test` (suite completa) y `npm run build` en verde.
+- 2026-03-08: PR8 completado para Issue #52.
+  - Documentacion actualizada en `README.md`, `docs/guide/syntax.md`, `QUICK-REFERENCE.md`, `SYNTAX-SPEC-v0.1.md` y `CHANGELOG.md`.
+  - Anadido `examples/data-placeholders-demo.md` con placeholders soportados.
+  - Outputs regenerados para demo de placeholders (`html/json` + variantes de estilo) y catalogo de examples actualizado.
 
 ## PR 1 - Base tecnica (AST + parser robusto de atributos)
 
@@ -137,10 +155,90 @@ Criterio de aceptacion del PR:
 Criterio de aceptacion del PR:
 - [x] Documentacion y ejemplos sincronizados con comportamiento real del codigo
 
+## PR 6 - Issue #52 (Core placeholders: sintaxis + motor deterministico)
+
+Objetivo:
+- [x] Definir un motor de placeholders reutilizable con sintaxis `{{...}}`, soporte para seed y salida deterministica.
+
+- [x] [src/types.ts](/home/inigo_novoa/wiremd/wiremd/src/types.ts): anadir tipos para placeholders (`PlaceholderKind`, `PlaceholderToken`, `DataGenerationOptions`) y extender `RenderOptions` con `resolvePlaceholders`, `placeholderSeed`.
+  Criterio de aceptacion: tipos exportados sin `any`; API publica tipada para activar/desactivar placeholders y seed.
+- [x] [src/placeholders/index.ts](/home/inigo_novoa/wiremd/wiremd/src/placeholders/index.ts) (nuevo): exponer API `resolveTextPlaceholders(text, options)` y `resolveNodePlaceholders(node, options)`.
+  Criterio de aceptacion: modulo unico de entrada para resolver placeholders en texto y nodos AST.
+- [x] [src/placeholders/parser.ts](/home/inigo_novoa/wiremd/wiremd/src/placeholders/parser.ts) (nuevo): parser de expresiones (`user.name`, `user.email`, `lorem:n`, `image:WxH`, `date`, `number:min-max`).
+  Criterio de aceptacion: expresiones validas generan tokens normalizados; expresiones invalidas devuelven error controlado o fallback literal.
+- [x] [src/placeholders/generator.ts](/home/inigo_novoa/wiremd/wiremd/src/placeholders/generator.ts) (nuevo): generador de datos con PRNG seedable (sin dependencia externa en primera iteracion).
+  Criterio de aceptacion: misma seed produce mismos resultados en ejecuciones repetidas.
+- [x] [src/placeholders/providers/default-provider.ts](/home/inigo_novoa/wiremd/wiremd/src/placeholders/providers/default-provider.ts) (nuevo): provider base para `user`, `lorem`, `image`, `date`, `number`.
+  Criterio de aceptacion: cubre 100% de placeholders propuestos en #52.
+- [x] [tests/placeholders.test.ts](/home/inigo_novoa/wiremd/wiremd/tests/placeholders.test.ts) (nuevo): tests de parser + generador + seed.
+  Criterio de aceptacion: casos felices + invalidos + determinismo cubiertos.
+
+Criterio de aceptacion del PR:
+- [x] `{{user.name}}`, `{{user.email}}`, `{{lorem:2}}`, `{{image:400x300}}`, `{{date}}`, `{{number:1000-9999}}` resuelven correctamente en tests unitarios.
+- [x] Seed fija (`placeholderSeed`) garantiza salida estable.
+- [x] Sin regresiones en parse/render existentes.
+
+## PR 7 - Issue #52 (Integracion parser/render/CLI)
+
+Objetivo:
+- [x] Integrar resolucion de placeholders en el pipeline de render, configurable por CLI y API.
+
+- [ ] [src/parser/transformer.ts](/home/inigo_novoa/wiremd/wiremd/src/parser/transformer.ts): detectar placeholders en contenidos textuales y, opcionalmente, adjuntar metadata de placeholders encontrados.
+  Criterio de aceptacion: placeholders sobreviven al parse sin perder formato ni posicion relativa.
+- [x] [src/parser/index.ts](/home/inigo_novoa/wiremd/wiremd/src/parser/index.ts): validacion adicional para placeholders invalidos en modo `strict`.
+  Criterio de aceptacion: en modo estricto se reportan placeholders mal formados con mensaje claro.
+- [x] [src/renderer/index.ts](/home/inigo_novoa/wiremd/wiremd/src/renderer/index.ts): preprocesar AST con `resolveNodePlaceholders` antes de render HTML/React/Tailwind/JSON (segun opcion).
+  Criterio de aceptacion: mismos placeholders se resuelven de forma consistente en todos los formatos.
+- [x] [src/renderer/html-renderer.ts](/home/inigo_novoa/wiremd/wiremd/src/renderer/html-renderer.ts), [src/renderer/react-renderer.ts](/home/inigo_novoa/wiremd/wiremd/src/renderer/react-renderer.ts), [src/renderer/tailwind-renderer.ts](/home/inigo_novoa/wiremd/wiremd/src/renderer/tailwind-renderer.ts): confirmar cobertura de campos con texto (`heading`, `paragraph`, `button`, `input.placeholder`, `table-cell`, etc.).
+  Criterio de aceptacion: no quedan tokens `{{...}}` sin resolver cuando `resolvePlaceholders=true`.
+- [x] [src/cli/index.ts](/home/inigo_novoa/wiremd/wiremd/src/cli/index.ts): anadir flags `--seed <value>` y `--no-placeholders` (o equivalente) y documentar en `--help`.
+  Criterio de aceptacion: CLI permite salida deterministica y opcion de mantener placeholders literales.
+- [x] [tests/renderer.test.ts](/home/inigo_novoa/wiremd/wiremd/tests/renderer.test.ts), [tests/react-renderer.test.ts](/home/inigo_novoa/wiremd/wiremd/tests/react-renderer.test.ts), [tests/tailwind-renderer.test.ts](/home/inigo_novoa/wiremd/wiremd/tests/tailwind-renderer.test.ts), [tests/cli-unit.test.ts](/home/inigo_novoa/wiremd/wiremd/tests/cli-unit.test.ts), [tests/integration.test.ts](/home/inigo_novoa/wiremd/wiremd/tests/integration.test.ts): tests E2E en todos los formatos.
+  Criterio de aceptacion: cobertura de placeholders en render + CLI en verde.
+
+Criterio de aceptacion del PR:
+- [x] Placeholders resueltos en HTML, React, Tailwind y JSON.
+- [x] `--seed` produce salidas reproducibles.
+- [x] `--no-placeholders` deja `{{...}}` intacto en la salida.
+
+## PR 8 - Issue #52 (Documentacion, ejemplos y release notes)
+
+Objetivo:
+- [x] Publicar guia de uso completa y ejemplos reproducibles para placeholders.
+
+- [x] [README.md](/home/inigo_novoa/wiremd/wiremd/README.md): nueva seccion "Data placeholders" con sintaxis, seed y flags CLI.
+  Criterio de aceptacion: incluye todos los placeholders del issue + ejemplo real de salida.
+- [x] [docs/guide/syntax.md](/home/inigo_novoa/wiremd/wiremd/docs/guide/syntax.md): seccion detallada de placeholders (gramatica, fallback y buenas practicas).
+  Criterio de aceptacion: ejemplos de texto, formularios e imagenes placeholder.
+- [x] [QUICK-REFERENCE.md](/home/inigo_novoa/wiremd/wiremd/QUICK-REFERENCE.md): bloque rapido de sintaxis `{{...}}`.
+  Criterio de aceptacion: referencia corta alineada con implementacion real.
+- [x] [SYNTAX-SPEC-v0.1.md](/home/inigo_novoa/wiremd/wiremd/SYNTAX-SPEC-v0.1.md): ampliar spec con placeholders, tokens y comportamiento deterministico.
+  Criterio de aceptacion: spec incluye ejemplos AST/JSON actualizados.
+- [x] [CHANGELOG.md](/home/inigo_novoa/wiremd/wiremd/CHANGELOG.md): entrada de feature para #52.
+  Criterio de aceptacion: release notes explican feature y flags nuevas.
+- [x] [examples/data-placeholders-demo.md](/home/inigo_novoa/wiremd/wiremd/examples/data-placeholders-demo.md) (nuevo): demo dedicada con todos los placeholders.
+  Criterio de aceptacion: ejemplo ejecutable en CLI sin ajustes manuales.
+- [x] [examples/data-placeholders-demo.html](/home/inigo_novoa/wiremd/wiremd/examples/data-placeholders-demo.html), [examples/data-placeholders-demo.json](/home/inigo_novoa/wiremd/wiremd/examples/data-placeholders-demo.json), [examples/README.md](/home/inigo_novoa/wiremd/wiremd/examples/README.md): outputs y catalogo actualizados.
+  Criterio de aceptacion: outputs regenerados y documentados en examples README.
+
+Criterio de aceptacion del PR:
+- [x] Documentacion, examples y changelog sincronizados con codigo.
+- [x] Equipo puede reproducir resultados con seed fija desde CLI.
+
+## Criterios funcionales globales - Issue #52
+
+- [x] Placeholders soportados oficialmente: `user.name`, `user.email`, `lorem:n`, `image:WxH`, `date`, `number:min-max`.
+- [x] Resolucion deterministica opcional mediante seed.
+- [x] Comportamiento configurable: resolver placeholders o preservarlos literales.
+- [x] Errores de sintaxis de placeholders claros en modo estricto.
+- [x] Sin breaking changes sobre sintaxis existente.
+
 ## Checklist final de release
 
-- [ ] `npm run typecheck`
-- [ ] `npm run test`
-- [ ] `npm run build`
+- [x] `npm run typecheck`
+- [x] `npm run test`
+- [x] `npm run build`
 - [ ] Probar manualmente 3 archivos demo: responsive, states, annotations con y sin `--show-annotations`
 - [ ] Verificar que salida HTML, React, Tailwind y JSON reflejan los mismos metadatos clave
+- [ ] Probar manualmente demo de placeholders con y sin seed fija
+- [ ] Verificar salida estable entre ejecuciones cuando se usa `--seed`

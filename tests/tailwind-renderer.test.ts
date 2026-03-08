@@ -65,6 +65,21 @@ describe('Tailwind Renderer', () => {
       expect(html).toContain('disabled');
     });
 
+    it('should resolve placeholders in Tailwind output by default', () => {
+      const ast = parse('## Welcome {{user.name}}');
+      const html = renderToTailwind(ast, { placeholderSeed: 'tailwind-seed' });
+
+      expect(html).not.toContain('{{user.name}}');
+      expect(html).toMatch(/Welcome [A-Za-z]+ [A-Za-z]+/);
+    });
+
+    it('should keep placeholders in Tailwind output when disabled', () => {
+      const ast = parse('## Welcome {{user.name}}');
+      const html = renderToTailwind(ast, { resolvePlaceholders: false });
+
+      expect(html).toContain('Welcome {{user.name}}');
+    });
+
     it('should render an input with Tailwind classes', () => {
       const ast = parse('[___________]{type:email required}');
       const html = renderToTailwind(ast);

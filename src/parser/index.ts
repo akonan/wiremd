@@ -11,6 +11,7 @@ import { unified } from 'unified';
 import remarkParse from 'remark-parse';
 import remarkGfm from 'remark-gfm';
 import { COMPONENT_STATES, type DocumentNode, type ParseOptions, type ValidationError } from '../types.js';
+import { extractPlaceholderMatches } from '../placeholders/parser.js';
 import { transformToWiremdAST } from './transformer.js';
 import { remarkWiremdContainers } from './remark-containers.js';
 import { remarkWiremdInlineContainers } from './remark-inline-containers.js';
@@ -55,6 +56,16 @@ export function parse(input: string, options: ParseOptions = {}): DocumentNode {
   // Transform MDAST to wiremd AST
   const wiremdAST = transformToWiremdAST(processed, options);
 
+  if (options.validate || options.strict) {
+    const validationErrors = validate(wiremdAST);
+
+    if (options.strict && validationErrors.length > 0) {
+      const firstError = validationErrors[0];
+      const location = firstError.path?.length ? ` at ${firstError.path.join('.')}` : '';
+      throw new Error(`Validation failed${location}: ${firstError.message}`);
+    }
+  }
+
   return wiremdAST;
 }
 
@@ -93,6 +104,10 @@ export function validate(ast: DocumentNode): ValidationError[] {
 
   if (ast.meta && ast.meta.annotations !== undefined) {
     validateAnnotationsArray(ast.meta.annotations, ['root.meta.annotations'], 'INVALID_DOCUMENT_ANNOTATIONS');
+  }
+
+  if (ast.meta) {
+    validatePlaceholdersInValue(ast.meta, ['root.meta']);
   }
 
   // Validate children recursively
@@ -138,6 +153,7 @@ export function validate(ast: DocumentNode): ValidationError[] {
     }
 
     validateComponentProps(node, path);
+    validatePlaceholdersInNode(node, path);
 
     // Validate required properties for each component type
     switch (nodeType) {
@@ -969,6 +985,88 @@ export function validate(ast: DocumentNode): ValidationError[] {
         });
       }
     });
+  }
+
+  function validatePlaceholdersInNode(node: unknown, path: string[]): void {
+    if (!node || typeof node !== 'object') {
+      return;
+    }
+
+    const shallowNode: Record<string, unknown> = { ...(node as Record<string, unknown>) };
+    delete shallowNode.children;
+    delete shallowNode.position;
+
+    validatePlaceholdersInValue(shallowNode, path);
+  }
+
+  function validatePlaceholdersInValue(value: unknown, path: string[]): void {
+    if (typeof value === 'string') {
+      validatePlaceholderText(value, path);
+      return;
+    }
+
+    if (Array.isArray(value)) {
+      value.forEach((item, index) => {
+        validatePlaceholdersInValue(item, [...path, `[${index}]`]);
+      });
+      return;
+    }
+
+    if (!value || typeof value !== 'object') {
+      return;
+    }
+
+    Object.entries(value as Record<string, unknown>).forEach(([key, nestedValue]) => {
+      validatePlaceholdersInValue(nestedValue, [...path, key]);
+    });
+  }
+
+  function validatePlaceholderText(text: string, path: string[]): void {
+    if (!text.includes('{{') && !text.includes('}}')) {
+      return;
+    }
+
+    if (hasUnbalancedPlaceholderBraces(text)) {
+      errors.push({
+        message: 'Unbalanced placeholder braces detected',
+        path,
+        code: 'INVALID_PLACEHOLDER_SYNTAX',
+      });
+    }
+
+    const matches = extractPlaceholderMatches(text);
+    matches.forEach((match) => {
+      if (match.token === null) {
+        errors.push({
+          message: `Unsupported placeholder expression: ${match.expression}`,
+          path,
+          code: 'INVALID_PLACEHOLDER_SYNTAX',
+        });
+      }
+    });
+  }
+
+  function hasUnbalancedPlaceholderBraces(text: string): boolean {
+    let balance = 0;
+
+    for (let i = 0; i < text.length - 1; i++) {
+      const currentPair = text.slice(i, i + 2);
+      if (currentPair === '{{') {
+        balance++;
+        i++;
+        continue;
+      }
+
+      if (currentPair === '}}') {
+        if (balance === 0) {
+          return true;
+        }
+        balance--;
+        i++;
+      }
+    }
+
+    return balance !== 0;
   }
 
   // Start validation from root children
