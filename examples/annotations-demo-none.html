@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>wiremd Mockup</title>
+  <style>
+
+/* wiremd None Style - Minimal semantic styling */
+* {
+  box-sizing: border-box;
+}
+
+body.wmd-root {
+  font-family: system-ui, -apple-system, sans-serif;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 20px;
+  line-height: 1.6;
+}
+
+.wmd-button {
+  padding: 8px 16px;
+  margin: 4px;
+}
+
+.wmd-input, .wmd-textarea, .wmd-select {
+  display: block;
+  width: 100%;
+  max-width: 400px;
+  padding: 8px;
+  margin: 4px 0;
+}
+
+.wmd-grid {
+  display: grid;
+  grid-template-columns: repeat(var(--grid-columns, 3), 1fr);
+  gap: 20px;
+  margin: 20px 0;
+}
+
+.wmd-nav-content {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.wmd-brand {
+  margin-right: auto;
+  font-weight: bold;
+}
+
+/* State Containers */
+.wmd-container-loading-state,
+.wmd-container-empty-state,
+.wmd-container-error-state {
+  padding: 40px;
+  margin: 20px 0;
+  text-align: center;
+}
+
+@media (max-width: 768px) {
+  .wmd-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+  </style>
+</head>
+<body class="wmd-root wmd-none">
+  <h1 class="wmd-h1">Annotations and Comments Demo</h1>
+<h2 class="wmd-h2 wmd-annotation="Needs">Hero Section</h2>
+<p class="wmd-paragraph">Build wireframes directly from Markdown and keep every change in Git.</p>
+<div class="wmd-container-form-group">
+  [Get Started]* <!-- Primary CTA -->
+  <button class="wmd-button">View Pricing</button>
+</div>
+<h2 class="wmd-h2">Signup Form</h2>
+<div class="wmd-container-form-group">
+  Name
+  <input type="text" class="wmd-input" style="width: 29ch; max-width: 29ch;" />
+</div>
+<div class="wmd-container-form-group">
+  Work Email
+  <input type="email" class="wmd-input" style="width: 29ch; max-width: 29ch;" />
+</div>
+<p class="wmd-paragraph"><button class="wmd-button wmd-button-primary">Create Account</button> <!-- Validate final button label --></p>
+<h2 class="wmd-h2">Release Notes</h2>
+<div class="wmd-container-note">
+  <p class="wmd-paragraph">This section is pending final review by product marketing.</p>
+</div>
+<div class="wmd-container-note">
+  <p class="wmd-paragraph">Add legal text and privacy consent before publishing.</p>
+</div>
+</body>
+</html>

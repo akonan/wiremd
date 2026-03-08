@@ -91,6 +91,11 @@ describe('CLI Unit Tests', () => {
       expect(result?.pretty).toBe(true);
     });
 
+    it('should parse --show-annotations option', () => {
+      const result = parseArgs(['test.md', '--show-annotations']);
+      expect(result?.showAnnotations).toBe(true);
+    });
+
     it('should parse multiple options together', () => {
       const result = parseArgs([
         'test.md',
@@ -245,6 +250,7 @@ describe('CLI Unit Tests', () => {
       expect(output).toContain('--serve');
       expect(output).toContain('--watch-pattern');
       expect(output).toContain('--ignore');
+      expect(output).toContain('--show-annotations');
       expect(output).toContain('--pretty');
       expect(output).toContain('--help');
       expect(output).toContain('--version');
@@ -442,6 +448,22 @@ describe('CLI Unit Tests', () => {
 
       const output = generateOutput(options);
       expect(output).toContain('<html');
+    });
+
+    it('should render annotation callouts when showAnnotations is enabled', () => {
+      const annotationFile = `${TEST_DIR}/annotations.md`;
+      writeFileSync(annotationFile, '[Submit] <!-- CLI-ANNOTATION-XYZ -->', 'utf-8');
+
+      const output = generateOutput({
+        input: annotationFile,
+        format: 'html',
+        style: 'sketch',
+        pretty: true,
+        showAnnotations: true,
+      });
+
+      expect(output).toContain('CLI-ANNOTATION-XYZ');
+      expect(output).toContain('wmd-annotation-callout');
     });
 
     it('should throw error for non-existent file', () => {

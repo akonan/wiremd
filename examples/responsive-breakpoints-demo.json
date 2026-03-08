@@ -1,0 +1,229 @@
+{
+  "type": "document",
+  "version": "0.1",
+  "meta": {
+    "version": "0.1",
+    "viewport": "desktop",
+    "theme": "sketch"
+  },
+  "children": [
+    {
+      "type": "heading",
+      "level": 1,
+      "content": "Responsive Breakpoints Demo",
+      "props": {
+        "classes": []
+      }
+    },
+    {
+      "type": "paragraph",
+      "content": "This example demonstrates responsive grid breakpoints and viewport blocks.",
+      "props": {}
+    },
+    {
+      "type": "grid",
+      "columns": 3,
+      "props": {
+        "classes": [
+          "grid-3",
+          "md:grid-2",
+          "sm:grid-1"
+        ]
+      },
+      "children": [
+        {
+          "type": "grid-item",
+          "props": {},
+          "children": [
+            {
+              "type": "heading",
+              "level": 3,
+              "content": "Fast Setup",
+              "props": {
+                "classes": []
+              }
+            },
+            {
+              "type": "paragraph",
+              "content": "Install and start in minutes.",
+              "props": {}
+            }
+          ]
+        },
+        {
+          "type": "grid-item",
+          "props": {},
+          "children": [
+            {
+              "type": "heading",
+              "level": 3,
+              "content": "Flexible Layouts",
+              "props": {
+                "classes": []
+              }
+            },
+            {
+              "type": "paragraph",
+              "content": "Adapt UI structure by breakpoint.",
+              "props": {}
+            }
+          ]
+        },
+        {
+          "type": "grid-item",
+          "props": {},
+          "children": [
+            {
+              "type": "heading",
+              "level": 3,
+              "content": "Team Friendly",
+              "props": {
+                "classes": []
+              }
+            },
+            {
+              "type": "paragraph",
+              "content": "Keep design changes reviewable in Git.",
+              "props": {}
+            },
+            {
+              "type": "container",
+              "containerType": "mobile",
+              "props": {
+                "classes": []
+              },
+              "children": [
+                {
+                  "type": "heading",
+                  "level": 2,
+                  "content": "Mobile Callout",
+                  "props": {
+                    "classes": [
+                      "grid-1"
+                    ]
+                  }
+                },
+                {
+                  "type": "heading",
+                  "level": 3,
+                  "content": "Mobile UX",
+                  "props": {
+                    "classes": []
+                  }
+                },
+                {
+                  "type": "paragraph",
+                  "content": "Prioritize one-column content and simplified actions.",
+                  "props": {}
+                }
+              ]
+            },
+            {
+              "type": "container",
+              "containerType": "tablet",
+              "props": {
+                "classes": []
+              },
+              "children": [
+                {
+                  "type": "heading",
+                  "level": 2,
+                  "content": "Tablet Callout",
+                  "props": {
+                    "classes": [
+                      "grid-2"
+                    ]
+                  }
+                },
+                {
+                  "type": "heading",
+                  "level": 3,
+                  "content": "Browsing",
+                  "props": {
+                    "classes": []
+                  }
+                },
+                {
+                  "type": "paragraph",
+                  "content": "Show denser content than mobile.",
+                  "props": {}
+                },
+                {
+                  "type": "heading",
+                  "level": 3,
+                  "content": "Touch Targets",
+                  "props": {
+                    "classes": []
+                  }
+                },
+                {
+                  "type": "paragraph",
+                  "content": "Keep controls accessible for touch devices.",
+                  "props": {}
+                }
+              ]
+            },
+            {
+              "type": "container",
+              "containerType": "desktop",
+              "props": {
+                "classes": []
+              },
+              "children": [
+                {
+                  "type": "heading",
+                  "level": 2,
+                  "content": "Desktop Callout",
+                  "props": {
+                    "classes": [
+                      "grid-3"
+                    ]
+                  }
+                },
+                {
+                  "type": "heading",
+                  "level": 3,
+                  "content": "Detailed View",
+                  "props": {
+                    "classes": []
+                  }
+                },
+                {
+                  "type": "paragraph",
+                  "content": "Use multi-column layouts for dashboards and admin pages.",
+                  "props": {}
+                },
+                {
+                  "type": "heading",
+                  "level": 3,
+                  "content": "Power Features",
+                  "props": {
+                    "classes": []
+                  }
+                },
+                {
+                  "type": "paragraph",
+                  "content": "Expose advanced controls for larger screens.",
+                  "props": {}
+                },
+                {
+                  "type": "heading",
+                  "level": 3,
+                  "content": "Context Panels",
+                  "props": {
+                    "classes": []
+                  }
+                },
+                {
+                  "type": "paragraph",
+                  "content": "Keep extra context visible while editing.",
+                  "props": {}
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

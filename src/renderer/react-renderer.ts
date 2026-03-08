@@ -14,6 +14,7 @@ export interface ReactRenderContext {
   typescript: boolean;
   useClassName: boolean; // true = className, false = class
   componentName?: string;
+  showAnnotations?: boolean;
 }
 
 /**
@@ -31,103 +32,139 @@ function repeatString(str: string, count: number): string {
  * Render a wiremd AST node to React/JSX
  */
 export function renderNode(node: WiremdNode, context: ReactRenderContext, indent = 0): string {
+  if (isAnnotationOnlyNode(node) && !context.showAnnotations) {
+    return '';
+  }
+
   const indentStr = repeatString('  ', indent);
+  let rendered = '';
 
   switch (node.type) {
     case 'button':
-      return renderButton(node, context, indent);
+      rendered = renderButton(node, context, indent);
+      break;
 
     case 'input':
-      return renderInput(node, context, indent);
+      rendered = renderInput(node, context, indent);
+      break;
 
     case 'textarea':
-      return renderTextarea(node, context, indent);
+      rendered = renderTextarea(node, context, indent);
+      break;
 
     case 'select':
-      return renderSelect(node, context, indent);
+      rendered = renderSelect(node, context, indent);
+      break;
 
     case 'checkbox':
-      return renderCheckbox(node, context, indent);
+      rendered = renderCheckbox(node, context, indent);
+      break;
 
     case 'radio':
-      return renderRadio(node, context, indent);
+      rendered = renderRadio(node, context, indent);
+      break;
 
     case 'radio-group':
-      return renderRadioGroup(node, context, indent);
+      rendered = renderRadioGroup(node, context, indent);
+      break;
 
     case 'icon':
-      return renderIcon(node, context, indent);
+      rendered = renderIcon(node, context, indent);
+      break;
 
     case 'container':
-      return renderContainer(node, context, indent);
+      rendered = renderContainer(node, context, indent);
+      break;
 
     case 'nav':
-      return renderNav(node, context, indent);
+      rendered = renderNav(node, context, indent);
+      break;
 
     case 'nav-item':
-      return renderNavItem(node, context, indent);
+      rendered = renderNavItem(node, context, indent);
+      break;
 
     case 'brand':
-      return renderBrand(node, context, indent);
+      rendered = renderBrand(node, context, indent);
+      break;
 
     case 'grid':
-      return renderGrid(node, context, indent);
+      rendered = renderGrid(node, context, indent);
+      break;
 
     case 'grid-item':
-      return renderGridItem(node, context, indent);
+      rendered = renderGridItem(node, context, indent);
+      break;
 
     case 'heading':
-      return renderHeading(node, context, indent);
+      rendered = renderHeading(node, context, indent);
+      break;
 
     case 'paragraph':
-      return renderParagraph(node, context, indent);
+      rendered = renderParagraph(node, context, indent);
+      break;
 
     case 'text':
-      return renderText(node, context, indent);
+      rendered = renderText(node, context, indent);
+      break;
 
     case 'image':
-      return renderImage(node, context, indent);
+      rendered = renderImage(node, context, indent);
+      break;
 
     case 'link':
-      return renderLink(node, context, indent);
+      rendered = renderLink(node, context, indent);
+      break;
 
     case 'list':
-      return renderList(node, context, indent);
+      rendered = renderList(node, context, indent);
+      break;
 
     case 'list-item':
-      return renderListItem(node, context, indent);
+      rendered = renderListItem(node, context, indent);
+      break;
 
     case 'table':
-      return renderTable(node, context, indent);
+      rendered = renderTable(node, context, indent);
+      break;
 
     case 'table-header':
-      return renderTableHeader(node, context, indent);
+      rendered = renderTableHeader(node, context, indent);
+      break;
 
     case 'table-row':
-      return renderTableRow(node, context, indent);
+      rendered = renderTableRow(node, context, indent);
+      break;
 
     case 'table-cell':
-      return renderTableCell(node, context, indent);
+      rendered = renderTableCell(node, context, indent);
+      break;
 
     case 'blockquote':
-      return renderBlockquote(node, context, indent);
+      rendered = renderBlockquote(node, context, indent);
+      break;
 
     case 'code':
-      return renderCode(node, context, indent);
+      rendered = renderCode(node, context, indent);
+      break;
 
     case 'separator':
-      return renderSeparator(node, context, indent);
+      rendered = renderSeparator(node, context, indent);
+      break;
 
     default:
-      return `${indentStr}{/* Unknown node type: ${(node as any).type} */}`;
+      rendered = `${indentStr}{/* Unknown node type: ${(node as any).type} */}`;
+      break;
   }
+
+  return appendAnnotationJSX(rendered, node, context, indentStr);
 }
 
 function renderButton(node: any, context: ReactRenderContext, indent: number): string {
   const indentStr = repeatString('  ', indent);
   const { classPrefix: prefix } = context;
   const classes = buildClasses(prefix, 'button', node.props);
-  const disabled = node.props.state === 'disabled';
+  const disabled = hasState(node.props, 'disabled') || node.props.disabled;
   const classAttr = context.useClassName ? 'className' : 'class';
 
   const contentJSX = node.children
@@ -148,7 +185,7 @@ function renderInput(node: any, context: ReactRenderContext, indent: number): st
   if (node.props.placeholder) attrs.push(`placeholder="${escapeJSX(node.props.placeholder)}"`);
   if (node.props.value) attrs.push(`defaultValue="${escapeJSX(node.props.value)}"`);
   if (node.props.required) attrs.push('required');
-  if (node.props.disabled) attrs.push('disabled');
+  if (node.props.disabled || hasState(node.props, 'disabled')) attrs.push('disabled');
 
   return `${indentStr}<input type="${type}" ${classAttr}="${classes}" ${attrs.join(' ')} />`;
 }
@@ -163,7 +200,7 @@ function renderTextarea(node: any, context: ReactRenderContext, indent: number):
   const attrs: string[] = [];
   if (node.props.placeholder) attrs.push(`placeholder="${escapeJSX(node.props.placeholder)}"`);
   if (node.props.required) attrs.push('required');
-  if (node.props.disabled) attrs.push('disabled');
+  if (node.props.disabled || hasState(node.props, 'disabled')) attrs.push('disabled');
 
   const value = node.props.value || '';
 
@@ -178,7 +215,7 @@ function renderSelect(node: any, context: ReactRenderContext, indent: number): s
 
   const attrs: string[] = [];
   if (node.props.required) attrs.push('required');
-  if (node.props.disabled) attrs.push('disabled');
+  if (node.props.disabled || hasState(node.props, 'disabled')) attrs.push('disabled');
   if (node.props.multiple) attrs.push('multiple');
 
   const optionsJSX = (node.options || []).map((opt: any) => {
@@ -205,7 +242,7 @@ function renderCheckbox(node: any, context: ReactRenderContext, indent: number):
 
   const attrs: string[] = [];
   if (node.props.value) attrs.push(`value="${escapeJSX(node.props.value)}"`);
-  if (node.props.disabled) attrs.push('disabled');
+  if (node.props.disabled || hasState(node.props, 'disabled')) attrs.push('disabled');
 
   const labelJSX = node.children
     ? node.children.map((child: any) => renderNode(child, context, 0)).join('')
@@ -227,7 +264,7 @@ function renderRadio(node: any, context: ReactRenderContext, indent: number): st
   const attrs: string[] = [];
   if (node.props.name) attrs.push(`name="${escapeJSX(node.props.name)}"`);
   if (node.props.value) attrs.push(`value="${escapeJSX(node.props.value)}"`);
-  if (node.props.disabled) attrs.push('disabled');
+  if (node.props.disabled || hasState(node.props, 'disabled')) attrs.push('disabled');
 
   return `${indentStr}<label ${classAttr}="${classes}">
 ${indentStr}  <input type="radio"${checked ? ' defaultChecked' : ''} ${attrs.join(' ')} />
@@ -333,7 +370,8 @@ function renderGrid(node: any, context: ReactRenderContext, indent: number): str
   const { classPrefix: prefix } = context;
   const classes = buildClasses(prefix, 'grid', node.props);
   const columns = node.columns || 3;
-  const gridClass = `${classes} ${prefix}grid-${columns}`;
+  const responsiveClass = buildResponsiveGridClasses(prefix, node.props?.responsive?.gridColumns);
+  const gridClass = `${classes} ${prefix}grid-${columns}${responsiveClass ? ` ${responsiveClass}` : ''}`;
   const classAttr = context.useClassName ? 'className' : 'class';
   const childrenJSX = (node.children || []).map((child: any) => renderNode(child, context, indent + 1)).join('\n');
 
@@ -550,11 +588,134 @@ function buildClasses(prefix: string, baseClass: string, props: any): string {
     classes.push(`${prefix}${baseClass}-${props.variant}`);
   }
 
-  if (props.state) {
-    classes.push(`${prefix}state-${props.state}`);
-  }
+  const states = getStates(props);
+  states.forEach((state) => {
+    classes.push(`${prefix}state-${state}`);
+  });
 
   return classes.join(' ');
+}
+
+function getStates(props: any): string[] {
+  if (!props || typeof props !== 'object') {
+    return [];
+  }
+
+  const states: string[] = [];
+
+  if (typeof props.state === 'string' && props.state.trim()) {
+    states.push(props.state.trim());
+  }
+
+  if (Array.isArray(props.states)) {
+    props.states.forEach((state: unknown) => {
+      if (typeof state === 'string' && state.trim() && !states.includes(state.trim())) {
+        states.push(state.trim());
+      }
+    });
+  }
+
+  return states;
+}
+
+function hasState(props: any, state: string): boolean {
+  return getStates(props).includes(state);
+}
+
+function buildResponsiveGridClasses(prefix: string, gridColumns?: Record<string, number>): string {
+  if (!gridColumns || typeof gridColumns !== 'object') {
+    return '';
+  }
+
+  const classes: string[] = [];
+  Object.entries(gridColumns).forEach(([breakpoint, columns]) => {
+    if (typeof columns === 'number' && columns > 0) {
+      classes.push(`${prefix}grid-${breakpoint}-${columns}`);
+    }
+  });
+
+  return classes.join(' ');
+}
+
+function appendAnnotationJSX(
+  rendered: string,
+  node: WiremdNode,
+  context: ReactRenderContext,
+  indentStr: string
+): string {
+  if (!context.showAnnotations) {
+    return rendered;
+  }
+
+  const annotationText = buildAnnotationText((node as any).props);
+  if (!annotationText) {
+    return rendered;
+  }
+
+  const classAttr = context.useClassName ? 'className' : 'class';
+  const annotation = `${indentStr}<aside ${classAttr}="${context.classPrefix}annotation-callout">${escapeJSX(annotationText)}</aside>`;
+  return `${rendered}\n${annotation}`;
+}
+
+function isAnnotationOnlyNode(node: WiremdNode): boolean {
+  if (node.type !== 'container') {
+    return false;
+  }
+
+  const props: any = (node as any).props;
+  if (!props || typeof props !== 'object') {
+    return false;
+  }
+
+  if (props.annotationRole === 'note') {
+    return true;
+  }
+
+  return Array.isArray(props.classes) && props.classes.includes('annotation-note');
+}
+
+function buildAnnotationText(props: any): string {
+  if (!props || typeof props !== 'object') {
+    return '';
+  }
+
+  const entries: string[] = [];
+  const seen = new Set<string>();
+
+  const push = (prefix: string, value: unknown): void => {
+    if (typeof value !== 'string' || !value.trim()) {
+      return;
+    }
+    const text = prefix ? `${prefix}: ${value.trim()}` : value.trim();
+    if (!seen.has(text)) {
+      seen.add(text);
+      entries.push(text);
+    }
+  };
+
+  push('Annotation', props.annotation);
+  push('TODO', props.todo);
+  push('Version', props.versionNote);
+
+  if (Array.isArray(props.annotations)) {
+    props.annotations.forEach((annotation: any) => {
+      if (!annotation || typeof annotation !== 'object') {
+        return;
+      }
+
+      if (typeof annotation.todo === 'string' && annotation.todo.trim()) {
+        push('TODO', annotation.todo);
+      } else if (typeof annotation.version === 'string' && annotation.version.trim()) {
+        push('Version', annotation.version);
+      } else if (typeof annotation.note === 'string' && annotation.note.trim()) {
+        push('Note', annotation.note);
+      } else if (typeof annotation.text === 'string' && annotation.text.trim()) {
+        push('Annotation', annotation.text);
+      }
+    });
+  }
+
+  return entries.join(' | ');
 }
 
 /**

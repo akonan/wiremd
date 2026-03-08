@@ -38,6 +38,7 @@ export function renderToHTML(
     inlineStyles = true,
     pretty = true,
     classPrefix = 'wmd-',
+    showAnnotations = false,
   } = options;
 
   const context = {
@@ -45,6 +46,7 @@ export function renderToHTML(
     classPrefix,
     inlineStyles,
     pretty,
+    showAnnotations,
   };
 
   // Render all children
@@ -109,6 +111,7 @@ export function renderToReact(
     classPrefix = 'wmd-',
     typescript = true,
     componentName = 'WiremdComponent',
+    showAnnotations = false,
   } = options;
 
   const context: ReactRenderer.ReactRenderContext = {
@@ -116,6 +119,7 @@ export function renderToReact(
     typescript,
     useClassName: true,
     componentName,
+    showAnnotations,
   };
 
   // Render all children
@@ -158,10 +162,11 @@ export function renderToTailwind(
   ast: DocumentNode,
   options: RenderOptions = {}
 ): string {
-  const { pretty = true } = options;
+  const { pretty = true, showAnnotations = false } = options;
 
   const context: TailwindRenderer.TailwindRenderContext = {
     pretty,
+    showAnnotations,
   };
 
   // Render all children

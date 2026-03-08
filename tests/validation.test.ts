@@ -742,6 +742,104 @@ Content
     });
   });
 
+  describe('State and Responsive Validation', () => {
+    it('should accept valid component states', () => {
+      const ast = parse('[Submit]{:hover :active}');
+      const errors = validate(ast);
+      expect(errors.some(e => e.code === 'INVALID_STATE')).toBe(false);
+    });
+
+    it('should reject invalid component states', () => {
+      const ast = parse('[Submit]{:ghost}');
+      const errors = validate(ast);
+      expect(errors.some(e => e.code === 'INVALID_STATE')).toBe(true);
+    });
+
+    it('should reject invalid props.states format', () => {
+      const ast = parse('[Submit]');
+      (ast.children[0] as any).props.states = 'disabled';
+      const errors = validate(ast);
+      expect(errors.some(e => e.code === 'INVALID_STATES_FORMAT')).toBe(true);
+    });
+
+    it('should accept valid responsive grid breakpoint metadata', () => {
+      const ast = parse('## Features {.grid-3 .md:grid-2}\n### A\n### B\n### C');
+      const errors = validate(ast);
+      expect(errors.some(e => e.code?.startsWith('INVALID_RESPONSIVE'))).toBe(false);
+    });
+
+    it('should reject unknown responsive breakpoints', () => {
+      const ast = parse('[Submit]');
+      (ast.children[0] as any).props.responsive = {
+        gridColumns: {
+          xxl: 2,
+        },
+      };
+      const errors = validate(ast);
+      expect(errors.some(e => e.code === 'INVALID_RESPONSIVE_BREAKPOINT')).toBe(true);
+    });
+
+    it('should reject invalid responsive column values', () => {
+      const ast = parse('[Submit]');
+      (ast.children[0] as any).props.responsive = {
+        gridColumns: {
+          md: 0,
+        },
+      };
+      const errors = validate(ast);
+      expect(errors.some(e => e.code === 'INVALID_RESPONSIVE_GRID_COLUMNS')).toBe(true);
+    });
+
+    it('should accept valid responsive visibleIn metadata', () => {
+      const ast = parse('::: mobile\n[Submit]\n:::');
+      const errors = validate(ast);
+      expect(errors.some(e => e.code === 'INVALID_RESPONSIVE_VIEWPORT')).toBe(false);
+    });
+
+    it('should reject invalid responsive visibleIn metadata', () => {
+      const ast = parse('[Submit]');
+      (ast.children[0] as any).props.responsive = {
+        visibleIn: ['watch'],
+      };
+      const errors = validate(ast);
+      expect(errors.some(e => e.code === 'INVALID_RESPONSIVE_VIEWPORT')).toBe(true);
+    });
+  });
+
+  describe('Annotation Validation', () => {
+    it('should accept valid annotation metadata on component props', () => {
+      const ast = parse('## Hero {.annotation="Needs review"}');
+      const errors = validate(ast);
+
+      expect(errors.some(e => e.code === 'INVALID_ANNOTATION')).toBe(false);
+      expect(errors.some(e => e.code === 'INVALID_ANNOTATIONS')).toBe(false);
+    });
+
+    it('should reject invalid annotation scalar fields', () => {
+      const ast = parse('[Submit]');
+      (ast.children[0] as any).props.annotation = 123;
+      const errors = validate(ast);
+
+      expect(errors.some(e => e.code === 'INVALID_ANNOTATION')).toBe(true);
+    });
+
+    it('should reject invalid annotations array shape', () => {
+      const ast = parse('[Submit]');
+      (ast.children[0] as any).props.annotations = [{ text: 42 }];
+      const errors = validate(ast);
+
+      expect(errors.some(e => e.code === 'INVALID_ANNOTATIONS')).toBe(true);
+    });
+
+    it('should reject invalid document-level annotations shape', () => {
+      const ast = parse('[Submit]');
+      (ast.meta as any).annotations = [{ note: 123 }];
+      const errors = validate(ast);
+
+      expect(errors.some(e => e.code === 'INVALID_DOCUMENT_ANNOTATIONS')).toBe(true);
+    });
+  });
+
   describe('Error Messages', () => {
     it('should provide clear error message with path', () => {
       const ast = parse('[Button]');

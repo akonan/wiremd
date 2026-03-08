@@ -76,6 +76,9 @@ This creates a responsive 3-column grid layout with icons and descriptions.
 - ✅ **Markdown-first** - Valid markdown that degrades gracefully
 - ✅ **Full markdown support** - Headings, text formatting, lists, links, images, blockquotes, code blocks, tables
 - ✅ **Grid layouts** - Responsive multi-column grids (2, 3, 4+ columns) with simple `.grid-N` syntax
+- ✅ **Responsive breakpoints** - Per-breakpoint grids (`.md:grid-2`) and viewport blocks (`::: mobile`)
+- ✅ **Component states** - Inline state syntax (`{:hover}`) and state blocks (`::: state=disabled`)
+- ✅ **Annotations/comments** - Design notes in AST/JSON plus optional visual rendering with `--show-annotations`
 - ✅ **Visual syntax** - Looks like what it renders
 - ✅ **Fast to write** - Intuitive shortcuts for common patterns
 - ✅ **Extensible** - Add classes and attributes as needed
@@ -149,11 +152,59 @@ wiremd wireframe.md --style none       # Unstyled semantic HTML
 # Watch mode with live-reload dev server
 wiremd wireframe.md --watch --serve 3000
 
-# Generate different output formats
+# Generate JSON AST output
 wiremd wireframe.md --format json      # JSON AST output
-wiremd wireframe.md --format react     # React/JSX component
-wiremd wireframe.md --format tailwind  # HTML with Tailwind CSS classes
+
+# Render annotation callouts in HTML output
+wiremd wireframe.md --show-annotations
 ```
+
+React and Tailwind outputs are available through the programmatic API (`renderToReact`, `renderToTailwind`).
+
+## Responsive, States, and Annotations
+
+```markdown
+## Features {.grid-3 .md:grid-2 .sm:grid-1}
+
+### Fast
+Optimized rendering pipeline
+
+### Secure
+Validation-first parser
+
+### Extensible
+Plugin-friendly architecture
+```
+
+```markdown
+::: mobile
+## Features {.grid-1}
+:::
+
+::: desktop
+## Features {.grid-3}
+:::
+```
+
+```markdown
+[Submit]{:disabled}
+[Retry]{:hover}
+
+::: state=loading
+[Publish]
+:::
+```
+
+```markdown
+[Submit] <!-- Primary CTA -->
+## Hero {.annotation="Needs approval from design team"}
+
+::: note
+This section is pending final copy from marketing.
+:::
+```
+
+By default, annotations are hidden in HTML/React/Tailwind renderers. Use `--show-annotations` (CLI) or `showAnnotations: true` (API) to display them.
 
 ## Exporting to Figma
 

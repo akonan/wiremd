@@ -26,6 +26,7 @@ export interface CLIOptions {
   watch?: boolean;
   serve?: number;
   pretty?: boolean;
+  showAnnotations?: boolean;
   watchPattern?: string;
   ignorePattern?: string;
 }
@@ -48,6 +49,7 @@ OPTIONS:
   --serve <port>             Start dev server with live-reload (default: 3000)
   --watch-pattern <pattern>  Glob pattern for files to watch (e.g., "**/*.md")
   --ignore <pattern>         Glob pattern for files to ignore (e.g., "**/node_modules/**")
+  --show-annotations         Render visual annotation notes/comments in HTML output
   -p, --pretty               Pretty print output (default: true)
   -h, --help                 Show this help message
   -v, --version              Show version number
@@ -167,6 +169,10 @@ export function parseArgs(args: string[]): CLIOptions | null {
         options.ignorePattern = args[++i];
         break;
 
+      case '--show-annotations':
+        options.showAnnotations = true;
+        break;
+
       case '-p':
       case '--pretty':
         options.pretty = true;
@@ -224,7 +230,7 @@ export function checkFileSize(filePath: string): void {
 }
 
 export function generateOutput(options: CLIOptions): string {
-  const { input, format, style, pretty } = options;
+  const { input, format, style, pretty, showAnnotations } = options;
 
   // Check if input file exists
   if (!existsSync(input)) {
@@ -244,7 +250,7 @@ export function generateOutput(options: CLIOptions): string {
   if (format === 'json') {
     return renderToJSON(ast, { pretty });
   } else {
-    return renderToHTML(ast, { style, pretty, inlineStyles: true });
+    return renderToHTML(ast, { style, pretty, inlineStyles: true, showAnnotations });
   }
 }
 

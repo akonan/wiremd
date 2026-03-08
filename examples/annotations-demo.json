@@ -1,0 +1,166 @@
+{
+  "type": "document",
+  "version": "0.1",
+  "meta": {
+    "version": "0.1",
+    "viewport": "desktop",
+    "theme": "sketch"
+  },
+  "children": [
+    {
+      "type": "heading",
+      "level": 1,
+      "content": "Annotations and Comments Demo",
+      "props": {
+        "classes": []
+      }
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "content": "Hero Section",
+      "props": {
+        "classes": [
+          "annotation=\"Needs"
+        ],
+        "approval": true,
+        "from": true,
+        "design": true,
+        "team\"": true
+      }
+    },
+    {
+      "type": "paragraph",
+      "content": "Build wireframes directly from Markdown and keep every change in Git.",
+      "props": {}
+    },
+    {
+      "type": "container",
+      "containerType": "form-group",
+      "props": {},
+      "children": [
+        {
+          "type": "text",
+          "content": "[Get Started]* <!-- Primary CTA -->"
+        },
+        {
+          "type": "button",
+          "content": "View Pricing",
+          "props": {
+            "classes": []
+          }
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "content": "Signup Form",
+      "props": {
+        "classes": [],
+        "todo=\"Replace": true,
+        "placeholder": true,
+        "copy": true,
+        "with": true,
+        "product-specific": true,
+        "messaging\"": true
+      }
+    },
+    {
+      "type": "container",
+      "containerType": "form-group",
+      "props": {},
+      "children": [
+        {
+          "type": "text",
+          "content": "Name"
+        },
+        {
+          "type": "input",
+          "props": {
+            "classes": [],
+            "width": 29
+          }
+        }
+      ]
+    },
+    {
+      "type": "container",
+      "containerType": "form-group",
+      "props": {},
+      "children": [
+        {
+          "type": "text",
+          "content": "Work Email"
+        },
+        {
+          "type": "input",
+          "props": {
+            "classes": [],
+            "type": "email",
+            "width": 29
+          }
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "button",
+          "content": "Create Account",
+          "props": {
+            "classes": [],
+            "variant": "primary"
+          }
+        },
+        {
+          "type": "text",
+          "content": " <!-- Validate final button label -->",
+          "props": {}
+        }
+      ],
+      "props": {}
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "content": "Release Notes",
+      "props": {
+        "classes": [],
+        "version-note=\"v0.1": true,
+        "responsive/states/annotations": true,
+        "docs": true,
+        "update\"": true
+      }
+    },
+    {
+      "type": "container",
+      "containerType": "note",
+      "props": {
+        "classes": []
+      },
+      "children": [
+        {
+          "type": "paragraph",
+          "content": "This section is pending final review by product marketing.",
+          "props": {}
+        }
+      ]
+    },
+    {
+      "type": "container",
+      "containerType": "note",
+      "props": {
+        "classes": []
+      },
+      "children": [
+        {
+          "type": "paragraph",
+          "content": "Add legal text and privacy consent before publishing.",
+          "props": {}
+        }
+      ]
+    }
+  ]
+}

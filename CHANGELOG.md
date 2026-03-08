@@ -7,7 +7,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-No unreleased changes yet.
+### Added
+- Responsive breakpoint syntax in parser/renderers:
+  - Grid breakpoints via heading classes like `.md:grid-2`, `.sm:grid-1`
+  - Viewport blocks via containers like `::: mobile ... :::` and `::: desktop ... :::`
+- State syntax improvements:
+  - Inline state attributes like `{:hover}`, `{:disabled}`, `{:loading}`
+  - State block syntax `::: state=<state> ... :::` with child-state propagation
+- Annotation/comment syntax:
+  - HTML comments (`<!-- ... -->`) captured as annotation metadata in AST/JSON
+  - Attribute-driven annotations (`.annotation=...`, `todo=...`, `version-note=...`)
+  - `::: note ... :::` annotation blocks
+- CLI support for visual annotation rendering:
+  - `--show-annotations` flag for HTML output
+
+### Changed
+- HTML/React/Tailwind renderers now hide annotation visuals by default and only render them when `showAnnotations` is enabled.
+- Validation now includes annotation metadata shape checks (`props.annotations` and `meta.annotations`).
+
+### Compatibility Notes
+- Existing documents remain compatible.
+- Annotation metadata is included in JSON output without requiring visual annotation mode.
 
 ## [0.1.4] - 2025-11-24
 
