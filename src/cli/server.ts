@@ -169,11 +169,14 @@ const liveReloadScript = `
   #wiremd-preview-wrapper.viewport-mobile {
     padding: 20px;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
   }
 
   #wiremd-preview-wrapper.viewport-mobile > * {
     max-width: 375px;
+    width: 100%;
     box-shadow: 0 0 20px rgba(0,0,0,0.1);
     border-radius: 8px;
     overflow: hidden;
@@ -182,11 +185,14 @@ const liveReloadScript = `
   #wiremd-preview-wrapper.viewport-tablet {
     padding: 20px;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
   }
 
   #wiremd-preview-wrapper.viewport-tablet > * {
     max-width: 768px;
+    width: 100%;
     box-shadow: 0 0 20px rgba(0,0,0,0.1);
     border-radius: 8px;
     overflow: hidden;
@@ -195,11 +201,14 @@ const liveReloadScript = `
   #wiremd-preview-wrapper.viewport-laptop {
     padding: 20px;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
   }
 
   #wiremd-preview-wrapper.viewport-laptop > * {
     max-width: 1024px;
+    width: 100%;
     box-shadow: 0 0 20px rgba(0,0,0,0.1);
     border-radius: 8px;
     overflow: hidden;
