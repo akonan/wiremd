@@ -214,16 +214,23 @@ export function validate(ast: DocumentNode): ValidationError[] {
             code: 'MISSING_PROPS',
           });
         }
-        // Validate inputType if present
-        if (node.props?.inputType) {
-          const validInputTypes = ['text', 'email', 'password', 'tel', 'url', 'number', 'date', 'time', 'datetime-local', 'search'];
-          if (!validInputTypes.includes(node.props.inputType)) {
-            errors.push({
-              message: `Invalid inputType: "${node.props.inputType}". Must be one of: ${validInputTypes.join(', ')}`,
-              path,
-              code: 'INVALID_INPUT_TYPE',
-            });
-          }
+        // Validate canonical type and legacy inputType independently.
+        const validInputTypes = ['text', 'email', 'password', 'tel', 'url', 'number', 'date', 'time', 'datetime-local', 'search'];
+
+        if (node.props?.type && !validInputTypes.includes(node.props.type)) {
+          errors.push({
+            message: `Invalid input type: "${node.props.type}". Must be one of: ${validInputTypes.join(', ')}`,
+            path,
+            code: 'INVALID_INPUT_TYPE',
+          });
+        }
+
+        if (node.props?.inputType && !validInputTypes.includes(node.props.inputType)) {
+          errors.push({
+            message: `Invalid input type: "${node.props.inputType}". Must be one of: ${validInputTypes.join(', ')}`,
+            path,
+            code: 'INVALID_INPUT_TYPE',
+          });
         }
         // Inputs shouldn't have children
         if (node.children) {
