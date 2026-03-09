@@ -478,6 +478,17 @@ function transformHeading(node: any, _options: ParseOptions): WiremdNode {
  * This is where we'll detect buttons, inputs, etc.
  */
 function transformParagraph(node: any, _options: ParseOptions, nextNode?: any): WiremdNode {
+  const rawContent = extractTextContent(node).trim();
+
+  // Preserve embedded ::: blocks as plain paragraph text so container parsing can process them.
+  if (/^:::\s*[^\n]+/.test(rawContent) && /\n:::\s*$/.test(rawContent)) {
+    return {
+      type: 'paragraph',
+      content: rawContent,
+      props: {},
+    };
+  }
+
   // Check if this paragraph has rich content (strong, emphasis, links, images, etc.)
   const hasRichContent = node.children && node.children.some((child: any) =>
     child.type === 'strong' || child.type === 'emphasis' || child.type === 'link' || child.type === 'code' || child.type === 'inlineCode' || child.type === 'image'

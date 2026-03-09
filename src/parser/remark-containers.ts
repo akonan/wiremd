@@ -173,31 +173,27 @@ export const remarkWiremdContainers: Plugin = () => {
               const lines = text.split('\n');
               let foundClosing = false;
               const newLines: string[] = [];
+              let nestedContainerDepth = 0;
 
               for (const line of lines) {
                 const trimmed = line.trim();
                 if (trimmed === ':::') {
-                  foundClosing = true;
-                  break;
+                  if (nestedContainerDepth > 0) {
+                    nestedContainerDepth--;
+                    newLines.push(line);
+                  } else {
+                    foundClosing = true;
+                    break;
+                  }
                 } else if (trimmed.startsWith(':::')) {
                   // Check if this is a new container start (has content after :::)
                   const afterMarker = trimmed.substring(3).trim();
                   if (afterMarker) {
-                    // This looks like a new container start, not a closing marker
-                    // Treat the current line as the last line before this new container
+                    // Nested container opening marker inside current container content.
+                    nestedContainerDepth++;
+                    newLines.push(line);
+                  } else {
                     foundClosing = true;
-                    // Add the current line back to the tree for processing
-                    const remainingLines = lines.slice(lines.indexOf(line));
-                    if (remainingLines.length > 0) {
-                      // Insert this as a new paragraph node that will be processed next
-                      tree.children.splice(i + 1, 0, {
-                        type: 'paragraph',
-                        children: [{
-                          type: 'text',
-                          value: remainingLines.join('\n')
-                        }]
-                      });
-                    }
                     break;
                   }
                 } else if (line.includes(':::')) {
