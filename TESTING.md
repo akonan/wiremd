@@ -4,21 +4,63 @@ Wiremd includes comprehensive test coverage for all features, including the live
 
 ## Test Overview
 
-**Total Tests: 152**
+**Total Tests: 537**
+
+**Total Test Files: 20**
 
 ### Test Files
 
-1. **parser.test.ts** (29 tests)
+1. **api-examples.test.ts** (26 tests)
+  - API examples coverage
+  - Parsing and rendering expectations
+
+2. **cli-file-not-found.test.ts** (3 tests)
+  - Missing file handling
+  - Exit behavior
+
+3. **cli-unit.test.ts** (40 tests)
+  - CLI unit behaviors
+  - Option handling and validation
+
+4. **cli.test.ts** (38 tests)
+  - CLI command parsing
+  - File generation
+  - Style and format options
+  - Watch mode
+  - Error handling
+  - Server integration
+
+5. **edge-cases.test.ts** (63 tests)
+  - Parser robustness
+  - Nested container regressions
+  - Stress and malformed inputs
+
+6. **error-handling.test.ts** (29 tests)
+  - Error paths
+  - Messaging and resilience
+
+7. **integration.test.ts** (35 tests)
+  - End-to-end live preview flow
+  - CLI and server integration
+  - WebSocket message handling
+  - UI component integration
+  - Feature coverage verification
+
+8. **parser.test.ts** (35 tests)
    - Markdown parsing
    - AST transformation
    - Custom syntax handling
 
-2. **renderer.test.ts** (19 tests)
+9. **react-renderer.test.ts** (23 tests)
+  - React renderer output
+  - Component mapping
+
+10. **renderer.test.ts** (20 tests)
    - HTML rendering
    - Style application
    - Component rendering
 
-3. **server.test.ts** (31 tests)
+11. **server.test.ts** (31 tests)
    - Dev server functionality
    - WebSocket communication
    - Live-reload injection
@@ -26,20 +68,36 @@ Wiremd includes comprehensive test coverage for all features, including the live
    - Viewport switcher
    - Connection status
 
-4. **cli.test.ts** (38 tests)
-   - CLI command parsing
-   - File generation
-   - Style and format options
-   - Watch mode
-   - Error handling
-   - Server integration
+12. **tailwind-renderer.test.ts** (34 tests)
+  - Tailwind-specific rendering
+  - Utility class behavior
 
-5. **integration.test.ts** (35 tests)
-   - End-to-end live preview flow
-   - CLI and server integration
-   - WebSocket message handling
-   - UI component integration
-   - Feature coverage verification
+13. **type-guards.test.ts** (27 tests)
+  - Runtime type checks
+  - Contract safety
+
+14. **validation.test.ts** (77 tests)
+  - AST validation rules
+  - Error reporting behavior
+
+15. **tests/conformance/01-document-structure.test.ts** (5 tests)
+  - Document contract conformance
+
+16. **tests/conformance/02-components.test.ts** (22 tests)
+  - Component conformance
+  - Ambiguity resolution rules
+
+17. **tests/conformance/03-containers.test.ts** (6 tests)
+  - Container and nesting conformance
+
+18. **tests/conformance/04-layouts.test.ts** (4 tests)
+  - Layout conformance
+
+19. **tests/conformance/05-attributes.test.ts** (10 tests)
+  - Attribute parsing conformance
+
+20. **tests/conformance/06-special-patterns.test.ts** (9 tests)
+  - Special pattern and state conformance
 
 ## Running Tests
 
@@ -61,6 +119,16 @@ npm run test:coverage
 ### Run specific test file
 ```bash
 npm test -- tests/server.test.ts
+```
+
+### Run conformance suite (spec contract)
+```bash
+npx vitest run tests/conformance
+```
+
+### Run one conformance file
+```bash
+npx vitest run tests/conformance/03-containers.test.ts
 ```
 
 ## Test Coverage
@@ -118,6 +186,23 @@ Tests the complete live preview flow:
 - ✅ Documentation completeness
 - ✅ Package dependencies
 - ✅ Feature coverage verification
+
+### Conformance Tests (`tests/conformance/`)
+
+Conformance tests validate that parser behavior matches `SYNTAX-SPEC-v0.1.md`, not accidental implementation details.
+
+- ✅ Document contract (`01-document-structure.test.ts`)
+- ✅ Components and ambiguity rules (`02-components.test.ts`)
+- ✅ Containers and nesting (`03-containers.test.ts`)
+- ✅ Layout semantics (`04-layouts.test.ts`)
+- ✅ Attribute parsing rules (`05-attributes.test.ts`)
+- ✅ Special patterns and states (`06-special-patterns.test.ts`)
+
+Use these tests as a release gate for syntax/AST changes:
+
+```bash
+npx vitest run tests/conformance
+```
 
 ## Test Structure
 
@@ -200,6 +285,9 @@ Tests run automatically on:
 # Example GitHub Actions workflow
 - name: Run tests
   run: npm test
+
+- name: Run conformance
+  run: npx vitest run tests/conformance
 
 - name: Upload coverage
   run: npm run test:coverage
@@ -349,4 +437,4 @@ When adding features:
 
 ---
 
-**All tests passing!** ✅ 152/152
+**All tests passing!** ✅ 537/537
