@@ -5,6 +5,33 @@ import { parse, validate, renderToHTML, renderToJSON } from '../src/index.js';
  * Edge case tests to ensure robustness
  */
 describe('Edge Cases', () => {
+  function expectNestedContainerShape(
+    ast: any,
+    parentType: string,
+    nestedType: string,
+    nestedParagraph: string
+  ): void {
+    expect(ast.children).toHaveLength(1);
+
+    const parent = ast.children[0] as any;
+    expect(parent.type).toBe('container');
+    expect(parent.containerType).toBe(parentType);
+
+    const nested = (parent.children || []).find(
+      (node: any) => node.type === 'container' && node.containerType === nestedType
+    );
+
+    expect(nested).toBeDefined();
+    expect(Array.isArray(nested.children)).toBe(true);
+    expect(nested.children[0].type).toBe('paragraph');
+    expect(nested.children[0].content).toBe(nestedParagraph);
+
+    const topLevelNested = (ast.children || []).filter(
+      (node: any) => node.type === 'container' && node.containerType === nestedType
+    );
+    expect(topLevelNested).toHaveLength(0);
+  }
+
   describe('Empty and whitespace inputs', () => {
     it('should handle empty string', () => {
       const ast = parse('');
@@ -138,6 +165,155 @@ describe('Edge Cases', () => {
     it('should handle mixed delimiters', () => {
       expect(() => parse('[Button}')).not.toThrow();
       expect(() => parse('{Button]')).not.toThrow();
+    });
+
+    it.each([
+      {
+        name: 'hero > card baseline',
+        input: `::: hero
+## Welcome
+
+::: card
+Feature content
+:::
+
+:::`,
+        parentType: 'hero',
+        nestedType: 'card',
+        nestedParagraph: 'Feature content',
+      },
+      {
+        name: 'layout > sidebar with heading and text',
+        input: `::: layout
+## Dashboard
+
+::: sidebar
+Menu items
+:::
+
+:::`,
+        parentType: 'layout',
+        nestedType: 'sidebar',
+        nestedParagraph: 'Menu items',
+      },
+      {
+        name: 'card with attributes > button-group',
+        input: `::: card {.elevated data-id:"main-card"}
+Title text
+
+::: button-group
+[Save]
+:::
+
+:::`,
+        parentType: 'card',
+        nestedType: 'button-group',
+        nestedParagraph: '[Save]',
+      },
+      {
+        name: 'section > alert after blank lines',
+        input: `::: section
+Intro paragraph
+
+
+::: alert
+Important notice
+:::
+
+:::`,
+        parentType: 'section',
+        nestedType: 'alert',
+        nestedParagraph: 'Important notice',
+      },
+      {
+        name: 'modal > footer with plain text',
+        input: `::: modal
+Modal title
+
+::: footer
+Footer actions
+:::
+
+:::`,
+        parentType: 'modal',
+        nestedType: 'footer',
+        nestedParagraph: 'Footer actions',
+      },
+      {
+        name: 'grid > section with multiline body',
+        input: `::: grid
+Grid intro
+
+::: section
+Line one
+Line two
+:::
+
+:::`,
+        parentType: 'grid',
+        nestedType: 'section',
+        nestedParagraph: 'Line one\nLine two',
+      },
+      {
+        name: 'sidebar with attrs > card',
+        input: `::: sidebar {.sticky data-pos:"left"}
+Sidebar text
+
+::: card
+Quick links
+:::
+
+:::`,
+        parentType: 'sidebar',
+        nestedType: 'card',
+        nestedParagraph: 'Quick links',
+      },
+      {
+        name: 'hero > modal after heading',
+        input: `::: hero
+## Landing
+
+::: modal
+Dialog body
+:::
+
+:::`,
+        parentType: 'hero',
+        nestedType: 'modal',
+        nestedParagraph: 'Dialog body',
+      },
+      {
+        name: 'layout > grid with extra spacing',
+        input: `::: layout
+Layout copy
+
+
+::: grid
+Cells here
+:::
+
+:::`,
+        parentType: 'layout',
+        nestedType: 'grid',
+        nestedParagraph: 'Cells here',
+      },
+      {
+        name: 'section > form-group preserving text content',
+        input: `::: section
+Form section
+
+::: form-group
+Username field
+:::
+
+:::`,
+        parentType: 'section',
+        nestedType: 'form-group',
+        nestedParagraph: 'Username field',
+      },
+    ])('should preserve nested ::: container structure: $name', ({ input, parentType, nestedType, nestedParagraph }) => {
+      const ast = parse(input);
+      expectNestedContainerShape(ast, parentType, nestedType, nestedParagraph);
     });
   });
 

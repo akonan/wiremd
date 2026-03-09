@@ -307,7 +307,7 @@ interface ButtonNode {
   children?: WiremdNode[];
 
   props: ComponentProps & {
-    // Visual variant
+    // Legacy variant (prefer props.classes like ['primary'])
     variant?: 'primary' | 'secondary' | 'danger';
 
     // Button type
@@ -326,7 +326,7 @@ const ast = parse('[Submit]{.primary type:submit}');
 const button = ast.children[0];
 if (button.type === 'button') {
   console.log('Content:', button.content); // 'Submit'
-  console.log('Variant:', button.props.variant); // 'primary'
+  console.log('Classes:', button.props.classes); // ['primary']
   console.log('Type:', button.props.type); // 'submit'
 }
 ```
@@ -340,7 +340,20 @@ interface InputNode {
   type: 'input';
 
   props: ComponentProps & {
-    // Input type
+    // Canonical input type
+    type?:
+      | 'text'
+      | 'email'
+      | 'password'
+      | 'tel'
+      | 'url'
+      | 'number'
+      | 'date'
+      | 'time'
+      | 'datetime-local'
+      | 'search';
+
+    // Legacy compatibility field
     inputType?:
       | 'text'
       | 'email'
@@ -384,7 +397,7 @@ const ast = parse('[_____________________________]{type:email required placehold
 
 const input = ast.children[0];
 if (input.type === 'input') {
-  console.log('Type:', input.props.inputType); // 'email'
+  console.log('Type:', input.props.type); // 'email'
   console.log('Required:', input.props.required); // true
   console.log('Placeholder:', input.props.placeholder); // 'Enter email'
 }
@@ -883,9 +896,9 @@ const ast = parse('[Submit]\n[_____________________________]');
 ast.children.forEach(node => {
   if (isButtonNode(node)) {
     console.log('Button:', node.content);
-    console.log('Variant:', node.props.variant);
+    console.log('Classes:', node.props.classes);
   } else if (isInputNode(node)) {
-    console.log('Input type:', node.props.inputType);
+    console.log('Input type:', node.props.type);
   }
 });
 ```
@@ -930,11 +943,11 @@ import type { WiremdNode, ButtonNode, InputNode } from 'wiremd';
 type NodeProcessor<T extends WiremdNode> = (node: T) => void;
 
 const buttonProcessor: NodeProcessor<ButtonNode> = (button) => {
-  console.log(`Button: ${button.content}, variant: ${button.props.variant}`);
+  console.log(`Button: ${button.content}, classes: ${button.props.classes}`);
 };
 
 const inputProcessor: NodeProcessor<InputNode> = (input) => {
-  console.log(`Input: ${input.props.inputType}, required: ${input.props.required}`);
+  console.log(`Input: ${input.props.type}, required: ${input.props.required}`);
 };
 
 function processNode(node: WiremdNode): void {

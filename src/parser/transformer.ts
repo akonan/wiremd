@@ -40,10 +40,10 @@ export function transformToWiremdAST(
     // Check if this is a heading with grid class
     if (node.type === 'heading') {
       const content = extractTextContent(node);
-      const gridMatch = content.match(/\{[^}]*\.grid-(\d+)[^}]*\}/);
+      const gridMatch = content.match(/\{[^}]*\.grid-(\d+|auto)[^}]*\}/);
 
       if (gridMatch) {
-        const columns = parseInt(gridMatch[1], 10);
+        const columns = gridMatch[1] === 'auto' ? 0 : parseInt(gridMatch[1], 10);
         const gridHeadingLevel = node.depth;
 
         // This is a grid container - collect grid items
@@ -123,6 +123,37 @@ export function transformToWiremdAST(
 
     const transformed = transformNode(node, options, nextNode);
     if (transformed) {
+      // Standalone attribute blocks apply to the preceding block node.
+      if (
+        transformed.type === 'paragraph' &&
+        !transformed.children &&
+        typeof transformed.content === 'string' &&
+        /^\{[^}]+\}$/.test(transformed.content.trim()) &&
+        children.length > 0
+      ) {
+        const attrs = parseAttributes(transformed.content.trim());
+        const previous = children[children.length - 1] as any;
+        previous.props = previous.props || {};
+        previous.props.classes = previous.props.classes || [];
+
+        if (Array.isArray(attrs.classes)) {
+          for (const cls of attrs.classes) {
+            if (!previous.props.classes.includes(cls)) {
+              previous.props.classes.push(cls);
+            }
+          }
+        }
+
+        for (const [key, value] of Object.entries(attrs)) {
+          if (key !== 'classes') {
+            previous.props[key] = value;
+          }
+        }
+
+        i++;
+        continue;
+      }
+
       children.push(transformed);
 
       // If this was a select node and we consumed the next list, skip it
@@ -137,6 +168,9 @@ export function transformToWiremdAST(
         if (hasSelectWithOptions) {
           i++; // Skip the next node (list) as it was consumed by the select
         }
+      }
+      if ((transformed as any).type === 'tabs' && (transformed as any).props?.consumedNext) {
+        i++; // Skip content node consumed by tabs parser.
       }
     }
 
@@ -241,6 +275,36 @@ function transformNode(
  * Transform container node (:::)
  */
 function transformContainer(node: any, options: ParseOptions): WiremdNode {
+  if (node.containerType === 'loading') {
+    return {
+      type: 'loading-state',
+      props: parseAttributes(node.attributes || ''),
+      children: (node.children || [])
+        .map((child: any) => transformNode(child, options))
+        .filter(Boolean) as any,
+    };
+  }
+
+  if (node.containerType === 'empty-state') {
+    return {
+      type: 'empty-state',
+      props: parseAttributes(node.attributes || ''),
+      children: (node.children || [])
+        .map((child: any) => transformNode(child, options))
+        .filter(Boolean) as any,
+    };
+  }
+
+  if (node.containerType === 'error-state') {
+    return {
+      type: 'error-state',
+      props: parseAttributes(node.attributes || ''),
+      children: (node.children || [])
+        .map((child: any) => transformNode(child, options))
+        .filter(Boolean) as any,
+    };
+  }
+
   const children: WiremdNode[] = [];
   const nodeChildren = node.children || [];
 
@@ -250,6 +314,15 @@ function transformContainer(node: any, options: ParseOptions): WiremdNode {
     const transformed = transformNode(child, options, nextChild);
 
     if (transformed) {
+      // Parse nested ::: containers that may have been flattened into paragraph content.
+      if (transformed.type === 'paragraph' && typeof transformed.content === 'string' && transformed.content.includes(':::')) {
+        const nested = parseNestedContainersFromText(transformed.content);
+        if (nested.length > 0) {
+          children.push(...nested);
+          continue;
+        }
+      }
+
       children.push(transformed);
 
       // Skip next node if it was consumed (dropdown options)
@@ -284,10 +357,15 @@ function transformInlineContainer(node: any, _options: ParseOptions): WiremdNode
     // Check if it's a button: [Text] or [Text]*
     const buttonMatch = trimmed.match(/^\[([^\]]+)\](\*)?$/);
     if (buttonMatch) {
+      const props: any = {};
+      if (buttonMatch[2]) {
+        addPrimaryClass(props);
+      }
       children.push({
         type: 'button',
         content: buttonMatch[1],
         props: {
+          ...props,
           variant: buttonMatch[2] ? 'primary' : undefined,
         },
       });
@@ -400,9 +478,20 @@ function transformHeading(node: any, _options: ParseOptions): WiremdNode {
  * This is where we'll detect buttons, inputs, etc.
  */
 function transformParagraph(node: any, _options: ParseOptions, nextNode?: any): WiremdNode {
+  const rawContent = extractTextContent(node).trim();
+
+  // Preserve embedded ::: blocks as plain paragraph text so container parsing can process them.
+  if (/^:::\s*[^\n]+/.test(rawContent) && /\n:::\s*$/.test(rawContent)) {
+    return {
+      type: 'paragraph',
+      content: rawContent,
+      props: {},
+    };
+  }
+
   // Check if this paragraph has rich content (strong, emphasis, links, images, etc.)
   const hasRichContent = node.children && node.children.some((child: any) =>
-    child.type === 'strong' || child.type === 'emphasis' || child.type === 'link' || child.type === 'code' || child.type === 'image'
+    child.type === 'strong' || child.type === 'emphasis' || child.type === 'link' || child.type === 'code' || child.type === 'inlineCode' || child.type === 'image'
   );
 
   // If it has rich content and is not a special pattern, return as a rich text paragraph
@@ -411,10 +500,36 @@ function transformParagraph(node: any, _options: ParseOptions, nextNode?: any): 
     // Clean up trailing ::: from container closing markers
     content = content.replace(/\s*:::\s*$/, '').trim();
 
+    // Badge/Pill pattern with one inline code token in text context.
+    const inlineCodeNodes = (node.children || []).filter((child: any) => child.type === 'inlineCode');
+    if (inlineCodeNodes.length === 1 && (node.children || []).length >= 2) {
+      return {
+        type: 'badge',
+        content: inlineCodeNodes[0].value,
+        props: {},
+      };
+    }
+
+    // Keep markdown links as canonical link nodes when the paragraph is only a link.
+    if (node.children?.length === 1 && node.children[0].type === 'link') {
+      const linkChild = node.children[0];
+      return {
+        type: 'link',
+        href: linkChild.url || '#',
+        title: linkChild.title,
+        content: extractTextContent(linkChild),
+        children: linkChild.children?.map((child: any) => transformNode(child, _options)).filter(Boolean) || [],
+        props: {},
+      };
+    }
+
     // Still check for button patterns first
     const buttonMatch = content.match(/^\[([^\]]+)\](\*)?(?:\s*(\{[^}]*\}))?$/);
     if (buttonMatch) {
       const attrs = buttonMatch[3] ? parseAttributes(buttonMatch[3]) : {};
+      if (buttonMatch[2]) {
+        addPrimaryClass(attrs);
+      }
       return {
         type: 'button',
         content: buttonMatch[1],
@@ -452,6 +567,9 @@ function transformParagraph(node: any, _options: ParseOptions, nextNode?: any): 
             // It's a button
             flushText();
             const attrs = buttonMatch[3] ? parseAttributes(buttonMatch[3]) : {};
+            if (buttonMatch[2]) {
+              addPrimaryClass(attrs);
+            }
             processedChildren.push({
               type: 'button',
               content: buttonMatch[1],
@@ -487,10 +605,23 @@ function transformParagraph(node: any, _options: ParseOptions, nextNode?: any): 
         currentText += `<strong>${extractTextContent(child)}</strong>`;
       } else if (child.type === 'emphasis') {
         currentText += `<em>${extractTextContent(child)}</em>`;
-      } else if (child.type === 'code') {
-        currentText += `<code>${extractTextContent(child)}</code>`;
+      } else if (child.type === 'code' || child.type === 'inlineCode') {
+        flushText();
+        processedChildren.push({
+          type: 'code',
+          value: extractTextContent(child),
+          inline: true,
+        });
       } else if (child.type === 'link') {
-        currentText += `<a href="${child.url}">${extractTextContent(child)}</a>`;
+        flushText();
+        processedChildren.push({
+          type: 'link',
+          href: child.url || '#',
+          title: child.title,
+          content: extractTextContent(child),
+          children: child.children?.map((grandChild: any) => transformNode(grandChild, _options)).filter(Boolean) || [],
+          props: {},
+        });
       } else {
         currentText += extractTextContent(child);
       }
@@ -506,6 +637,14 @@ function transformParagraph(node: any, _options: ParseOptions, nextNode?: any): 
       };
     }
 
+    if (processedChildren.length === 1 && processedChildren[0].type === 'link') {
+      return processedChildren[0];
+    }
+
+    if (processedChildren.length === 1 && processedChildren[0].type === 'code') {
+      return processedChildren[0];
+    }
+
     // If we have multiple children or buttons, return as container
     return {
       type: 'container',
@@ -518,6 +657,92 @@ function transformParagraph(node: any, _options: ParseOptions, nextNode?: any): 
   let content = extractTextContent(node);
   // Clean up trailing ::: from container closing markers
   content = content.replace(/\s*:::\s*$/, '').trim();
+
+  // Canonical link parsing for text paragraphs: [Text](url) and [Text]{.class}(url)
+  const canonicalLinkMatch = content.match(/^\[([^\]]+)\](?:\s*(\{[^}]*\}))?\(([^)]+)\)$/);
+  if (canonicalLinkMatch) {
+    const [, label, attrs, href] = canonicalLinkMatch;
+    return {
+      type: 'link',
+      href,
+      content: label,
+      props: attrs ? parseAttributes(attrs) : { classes: [] },
+    };
+  }
+
+  const rawLines = content.split('\n').map((line) => line.trim()).filter(Boolean);
+  const lastLine = rawLines[rawLines.length - 1] || '';
+  const hasTrailingAttr = /^\{[^}]+\}$/.test(lastLine);
+  const trailingAttrs = hasTrailingAttr ? lastLine : '';
+  const mainText = hasTrailingAttr ? rawLines.slice(0, -1).join(' ').trim() : content;
+
+  // Breadcrumbs: Home > Products > Current (with optional trailing attr block)
+  if (/\s>\s/.test(mainText) && !/^\[.*\]\s*\|/.test(mainText)) {
+    const crumbParts = mainText.split('>').map((part) => part.trim()).filter(Boolean);
+    if (crumbParts.length >= 2) {
+      return {
+        type: 'breadcrumbs',
+        props: trailingAttrs ? parseAttributes(trailingAttrs) : {},
+        children: crumbParts.map((part) => ({ type: 'breadcrumb-item', content: part, props: {} })) as any,
+      };
+    }
+  }
+
+  // Tabs: [Overview]* | Details | Reviews
+  if (/\|/.test(mainText) && /\[/.test(mainText)) {
+    const parts = mainText.split('|').map((part) => part.trim()).filter(Boolean);
+    const tabs = parts.map((part) => {
+      let active = false;
+      let label = part;
+
+      const bracketMatch = part.match(/^\[([^\]]+)\](\*)?$/);
+      if (bracketMatch) {
+        label = bracketMatch[1].trim();
+        active = !!bracketMatch[2];
+      } else if (part.endsWith('*')) {
+        label = part.slice(0, -1).trim();
+        active = true;
+      }
+
+      return {
+        type: 'tab',
+        label,
+        active,
+        props: {},
+        children: [] as WiremdNode[],
+      };
+    });
+
+    if (tabs.length >= 2 && tabs.every((tab) => tab.label.length > 0)) {
+      if (nextNode) {
+        const activeTab = tabs.find((tab) => tab.active) || tabs[0];
+        const tabContent = transformNode(nextNode, _options);
+        if (tabContent) {
+          activeTab.children.push(tabContent);
+        }
+      }
+
+      return {
+        type: 'tabs',
+        props: {
+          consumedNext: !!nextNode,
+        },
+        children: tabs as any,
+      };
+    }
+  }
+
+  // Badge/Pill: Status `active`
+  if (node.children && Array.isArray(node.children)) {
+    const inlineCodeNodes = node.children.filter((child: any) => child.type === 'inlineCode');
+    if (inlineCodeNodes.length === 1 && node.children.length >= 2) {
+      return {
+        type: 'badge',
+        content: inlineCodeNodes[0].value,
+        props: {},
+      };
+    }
+  }
 
   // Check for standalone checkbox: [ ] or [x] or [X]
   const checkboxMatch = content.match(/^\[\s*([xX ])\s*\]\s+(.+)$/);
@@ -576,6 +801,25 @@ function transformParagraph(node: any, _options: ParseOptions, nextNode?: any): 
     };
   }
 
+  // Single-line radio button syntax: ( ) Label / (•) Label / (x) Label
+  const singleRadioMatch = content.match(/^\(([•x* ])\)\s+(.+)$/);
+  if (singleRadioMatch) {
+    let label = singleRadioMatch[2].trim();
+    let props: any = {};
+    const attrMatch = label.match(/^(.+?)(\{[^}]+\})$/);
+    if (attrMatch) {
+      label = attrMatch[1].trim();
+      props = parseAttributes(attrMatch[2]);
+    }
+
+    return {
+      type: 'radio',
+      label,
+      selected: singleRadioMatch[1] !== ' ',
+      props,
+    };
+  }
+
   // Check for inline container syntax [[...]]
   const inlineContainerMatch = content.match(/^\[\[\s*(.+?)\s*\]\](\{[^}]+\})?/);
   if (inlineContainerMatch) {
@@ -620,6 +864,17 @@ function transformParagraph(node: any, _options: ParseOptions, nextNode?: any): 
 
   // If we have multiple lines, check if ALL lines are buttons/form elements
   if (lines.length > 1) {
+    // Visual multiline textarea: repeated bracket lines with only spaces/underscores/asterisks.
+    const allTextareaRows = lines.every(line => /^\[\s*[_* ]+\s*\]$/.test(line.trim()));
+    if (allTextareaRows) {
+      return {
+        type: 'textarea',
+        props: {
+          rows: lines.length,
+        },
+      };
+    }
+
     // Check if all lines have icon patterns (e.g., ":star: Star Icon")
     const allWithIcons = lines.every(line => /:([a-z-]+):/.test(line.trim()));
 
@@ -678,6 +933,7 @@ function transformParagraph(node: any, _options: ParseOptions, nextNode?: any): 
           const [, text, isPrimary, attrs] = buttonMatch;
           const props = parseAttributes(attrs || '');
           if (isPrimary) {
+            addPrimaryClass(props);
             props.variant = 'primary';
           }
           buttons.push({
@@ -752,9 +1008,12 @@ function transformParagraph(node: any, _options: ParseOptions, nextNode?: any): 
 
         // Determine input type and placeholder from pattern
         let placeholderText = '';
-        if (pattern.includes('*') && pattern.replace(/[^*]/g, '').length > 3) {
-          props.inputType = 'password';
+        if (pattern.includes('*') && pattern.replace(/[^*]/g, '').length >= 3) {
+          setInputType(props, 'password');
         } else {
+          if (!props.type) {
+            setInputType(props, 'text');
+          }
           // Extract placeholder text before underscores
           const placeholderMatch = pattern.match(/^([^_*]+)[_*]/);
           if (placeholderMatch) {
@@ -840,6 +1099,7 @@ function transformParagraph(node: any, _options: ParseOptions, nextNode?: any): 
           }
 
           if (isPrimary) {
+            addPrimaryClass(props);
             props.variant = 'primary';
           }
           buttons.push({
@@ -920,9 +1180,12 @@ function transformParagraph(node: any, _options: ParseOptions, nextNode?: any): 
       const props = parseAttributes(attrs || '');
 
       // Determine input type from pattern
-      if (pattern.includes('*') && pattern.replace(/[^*]/g, '').length > 3) {
-        props.inputType = 'password';
+      if (pattern.includes('*') && pattern.replace(/[^*]/g, '').length >= 3) {
+        setInputType(props, 'password');
       } else {
+        if (!props.type) {
+          setInputType(props, 'text');
+        }
         // Extract placeholder text before underscores
         const placeholderMatch = pattern.match(/^([^_*]+)[_*]/);
         if (placeholderMatch) {
@@ -971,6 +1234,7 @@ function transformParagraph(node: any, _options: ParseOptions, nextNode?: any): 
         }
 
         if (isPrimary) {
+          addPrimaryClass(props);
           props.variant = 'primary';
         }
 
@@ -1441,6 +1705,95 @@ function extractTextContent(node: any): string {
   return '';
 }
 
+function addPrimaryClass(props: any): void {
+  if (!Array.isArray(props.classes)) {
+    props.classes = [];
+  }
+  if (!props.classes.includes('primary')) {
+    props.classes.push('primary');
+  }
+}
+
+function setInputType(props: any, type: string): void {
+  props.type = type;
+  // Keep legacy compatibility with consumers still reading inputType.
+  props.inputType = type;
+}
+
+function parseNestedContainersFromText(content: string): WiremdNode[] {
+  const nested: WiremdNode[] = [];
+  const lines = content.split('\n');
+  let i = 0;
+
+  while (i < lines.length) {
+    const start = lines[i].trim();
+    const startMatch = start.match(/^:::\s*([^\s{]+(?:\s+[^\s{]+)*)\s*(\{[^}]+\})?\s*$/);
+
+    if (!startMatch) {
+      i++;
+      continue;
+    }
+
+    const containerType = startMatch[1].trim();
+    const attrs = startMatch[2] || '';
+    i++;
+
+    const bodyLines: string[] = [];
+    while (i < lines.length && lines[i].trim() !== ':::') {
+      bodyLines.push(lines[i]);
+      i++;
+    }
+
+    const body = bodyLines.join('\n').trim();
+    const children: WiremdNode[] = body
+      ? [{ type: 'paragraph', content: body, props: {} } as any]
+      : [];
+
+    nested.push({
+      type: 'container',
+      containerType: containerType as any,
+      props: parseAttributes(attrs),
+      children,
+    });
+
+    if (i < lines.length && lines[i].trim() === ':::') {
+      i++;
+    }
+  }
+
+  return nested;
+}
+
+function splitAttributeParts(inner: string): string[] {
+  const parts: string[] = [];
+  let current = '';
+  let inQuotes = false;
+
+  for (const ch of inner) {
+    if (ch === '"') {
+      inQuotes = !inQuotes;
+      current += ch;
+      continue;
+    }
+
+    if (!inQuotes && /\s/.test(ch)) {
+      if (current) {
+        parts.push(current);
+        current = '';
+      }
+      continue;
+    }
+
+    current += ch;
+  }
+
+  if (current) {
+    parts.push(current);
+  }
+
+  return parts;
+}
+
 /**
  * Parse attributes from string like {.class key:value}
  */
@@ -1460,8 +1813,7 @@ function parseAttributes(attrString: string): any {
     return props;
   }
 
-  // Split by spaces (simple parser for now)
-  const parts = inner.split(/\s+/);
+  const parts = splitAttributeParts(inner);
 
   for (const part of parts) {
     // Class: .classname
@@ -1475,7 +1827,16 @@ function parseAttributes(attrString: string): any {
     // Key-value: key:value
     else if (part.includes(':')) {
       const [key, value] = part.split(':', 2);
-      props[key] = value || true;
+      if (!value) {
+        props[key] = true;
+      } else {
+        const unquoted = value.replace(/^"(.*)"$/, '$1');
+        if (/^-?\d+(?:\.\d+)?$/.test(unquoted)) {
+          props[key] = Number(unquoted);
+        } else {
+          props[key] = unquoted;
+        }
+      }
     }
     // Boolean: required, disabled, etc.
     else {

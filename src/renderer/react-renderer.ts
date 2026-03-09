@@ -540,14 +540,17 @@ function renderSeparator(node: any, context: ReactRenderContext, indent: number)
 function buildClasses(prefix: string, baseClass: string, props: any): string {
   const classes = [`${prefix}${baseClass}`];
 
-  if (props.classes && Array.isArray(props.classes)) {
-    props.classes.forEach((cls: string) => {
-      classes.push(`${prefix}${cls}`);
-    });
-  }
-
   if (props.variant) {
     classes.push(`${prefix}${baseClass}-${props.variant}`);
+  }
+
+  if (props.classes && Array.isArray(props.classes)) {
+    props.classes.forEach((cls: string) => {
+      if (props.variant && cls === props.variant) {
+        return;
+      }
+      classes.push(`${prefix}${cls}`);
+    });
   }
 
   if (props.state) {
