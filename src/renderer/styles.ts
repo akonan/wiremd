@@ -3294,6 +3294,14 @@ em, i {
   border: 1px solid #262626;
 }
 
+.${prefix}container-compact {
+  background: #171717;
+  border: 1px solid #525252;
+  border-radius: 4px;
+  padding: 12px 16px;
+  margin: 8px 0;
+}
+
 .${prefix}container-modal {
   background: #171717;
   border: 1px solid #404040;
