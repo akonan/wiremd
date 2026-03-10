@@ -157,7 +157,7 @@ export interface ParseOptions {
 
 export interface RenderOptions {
   format?: 'html' | 'json' | 'react' | 'tailwind';
-  style?: 'sketch' | 'clean' | 'wireframe' | 'none' | 'tailwind' | 'material' | 'brutal';
+  style?: 'sketch' | 'clean' | 'wireframe' | 'none' | 'tailwind' | 'material' | 'brutal' | 'dark';
   inlineStyles?: boolean;
   pretty?: boolean;
   classPrefix?: string;
