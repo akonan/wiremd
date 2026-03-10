@@ -22,7 +22,7 @@ export interface CLIOptions {
   input: string;
   output?: string;
   format?: 'html' | 'json';
-  style?: 'sketch' | 'clean' | 'wireframe' | 'none';
+  style?: 'sketch' | 'clean' | 'wireframe' | 'none' | 'tailwind' | 'material' | 'brutal' | 'dark';
   watch?: boolean;
   serve?: number;
   pretty?: boolean;
@@ -43,7 +43,7 @@ USAGE:
 OPTIONS:
   -o, --output <file>        Output file path (default: <input>.html)
   -f, --format <format>      Output format: html, json (default: html)
-  -s, --style <style>        Visual style: sketch, clean, wireframe, none, tailwind, material, brutal (default: sketch)
+  -s, --style <style>        Visual style: sketch, clean, wireframe, none, tailwind, material, brutal, dark (default: sketch)
   -w, --watch                Watch for changes and regenerate
   --serve <port>             Start dev server with live-reload (default: 3000)
   --watch-pattern <pattern>  Glob pattern for files to watch (e.g., "**/*.md")
@@ -79,6 +79,7 @@ STYLES:
   tailwind   - Modern utility-first design with purple accents
   material   - Google Material Design with elevation system
   brutal     - Neo-brutalism with bold colors and thick borders
+  dark       - Professional dark theme for modern apps
 
 For more information: https://github.com/akonan/wiremd
 `);
@@ -138,8 +139,8 @@ export function parseArgs(args: string[]): CLIOptions | null {
       case '-s':
       case '--style': {
         const style = args[++i];
-        if (!['sketch', 'clean', 'wireframe', 'none', 'tailwind', 'material', 'brutal'].includes(style)) {
-          console.error(`Error: Invalid style "${style}". Must be sketch, clean, wireframe, none, tailwind, material, or brutal.`);
+        if (!['sketch', 'clean', 'wireframe', 'none', 'tailwind', 'material', 'brutal', 'dark'].includes(style)) {
+          console.error(`Error: Invalid style "${style}". Must be sketch, clean, wireframe, none, tailwind, material, brutal, or dark.`);
           process.exit(1);
         }
         options.style = style as any;
