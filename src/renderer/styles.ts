@@ -642,6 +642,14 @@ body.${prefix}root {
   box-shadow: 0 2px 8px rgba(0,0,0,0.08);
 }
 
+.${prefix}container-compact {
+  background: #fff;
+  border: 1px solid #bdbdbd;
+  border-radius: 4px;
+  padding: 12px 16px;
+  margin: 8px 0;
+}
+
 .${prefix}container-modal {
   max-width: 500px;
   margin: 40px auto;
@@ -2086,6 +2094,14 @@ body {
   box-shadow: 0px 3px 3px -2px rgba(0,0,0,0.2),
               0px 3px 4px 0px rgba(0,0,0,0.14),
               0px 1px 8px 0px rgba(0,0,0,0.12);
+}
+
+.${prefix}container-compact {
+  background: white;
+  border: 1px solid #9e9e9e;
+  border-radius: 4px;
+  padding: 12px 16px;
+  margin: 8px 0;
 }
 
 .${prefix}container-hero {
