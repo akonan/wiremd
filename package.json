@@ -44,7 +44,8 @@
     "clean": "rm -rf dist node_modules",
     "docs:dev": "vitepress dev docs",
     "docs:build": "vitepress build docs",
-    "docs:preview": "vitepress preview docs"
+    "docs:preview": "vitepress preview docs",
+    "playground": "npm run build && cd playground && npm install && npm run dev"
   },
   "dependencies": {
     "chalk": "^5.6.2",
