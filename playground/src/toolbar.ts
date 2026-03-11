@@ -5,11 +5,10 @@ import { examples, type Example } from './examples.js';
 const toastTimers = new WeakMap<HTMLElement, ReturnType<typeof setTimeout>>();
 
 export function initToolbar(opts: {
-  headerActions: HTMLElement;
   examplesContainer: HTMLElement;
   styleSelect: HTMLSelectElement;
   tabs: HTMLElement;
-  copyBtn: HTMLElement;
+  copyBtn: HTMLButtonElement;
   onExampleSelect: (example: Example) => void;
   onStyleChange: (style: string) => void;
   onTabChange: (tab: 'preview' | 'html') => void;

@@ -1,11 +1,8 @@
 /** wiremd Playground - Preview Panel */
 
-import * as monaco from 'monaco-editor/esm/vs/editor/editor.api.js';
-import 'monaco-editor/esm/vs/basic-languages/html/html.contribution.js';
-import { parse, renderToHTML } from 'wiremd';
-import type { RenderOptions } from 'wiremd';
-
-export type StyleName = 'sketch' | 'clean' | 'wireframe' | 'none' | 'tailwind' | 'material' | 'brutal';
+import type * as MonacoEditor from 'monaco-editor/esm/vs/editor/editor.api.js';
+import { ensurePlaygroundMonacoSetup, getSharedMonacoOptions } from './monaco.js';
+import { renderMarkup, type StyleName } from './renderMarkup.js';
 
 export interface PreviewState {
   style: StyleName;
@@ -26,75 +23,70 @@ export function createPreview(elements: {
     lastHTML: '',
     lastError: null,
   };
-
-  // Create a read-only Monaco editor for the HTML output
-  const htmlEditor = monaco.editor.create(elements.htmlOutputContainer, {
-    value: '',
-    language: 'html',
-    theme: 'wiremd-dark',
-    readOnly: true,
-    fontSize: 12,
-    lineHeight: 20,
-    fontFamily: "'JetBrains Mono', 'Fira Code', 'Cascadia Code', monospace",
-    minimap: { enabled: false },
-    scrollBeyondLastLine: false,
-    padding: { top: 12, bottom: 12 },
-    renderLineHighlight: 'none',
-    smoothScrolling: true,
-    wordWrap: 'on',
-    lineNumbers: 'on',
-    glyphMargin: false,
-    folding: true,
-    lineDecorationsWidth: 8,
-    lineNumbersMinChars: 3,
-    overviewRulerLanes: 0,
-    hideCursorInOverviewRuler: true,
-    overviewRulerBorder: false,
-    scrollbar: {
-      verticalScrollbarSize: 6,
-      horizontalScrollbarSize: 6,
-      useShadows: false,
-    },
-    automaticLayout: true,
-  });
+  let htmlEditor: MonacoEditor.editor.IStandaloneCodeEditor | null = null;
+  let htmlEditorPromise: Promise<MonacoEditor.editor.IStandaloneCodeEditor> | null = null;
 
   function render(markdown: string) {
-    try {
-      const ast = parse(markdown);
-      const options: RenderOptions = {
-        style: state.style,
-        inlineStyles: true,
-        pretty: true,
-      };
-      const html = renderToHTML(ast, options);
+    const result = renderMarkup(markdown, state.style);
+
+    if (result.error === null) {
+      const { html } = result;
       state.lastHTML = html;
       state.lastError = null;
 
-      // Update iframe
       updateIframe(html);
-
-      // Update HTML Monaco editor
-      htmlEditor.setValue(html);
-
-      // Hide error
+      htmlEditor?.setValue(html);
       elements.errorBar.classList.remove('pg-error--visible');
-    } catch (err) {
-      const message = err instanceof Error ? err.message : String(err);
-      state.lastHTML = '';
-      state.lastError = message;
-      updateIframe('');
-      htmlEditor.setValue('');
-      elements.errorMessage.textContent = message;
-      elements.errorBar.classList.add('pg-error--visible');
+      return;
     }
+
+    state.lastHTML = '';
+    state.lastError = result.error;
+    updateIframe('');
+    htmlEditor?.setValue('');
+    elements.errorMessage.textContent = result.error;
+    elements.errorBar.classList.add('pg-error--visible');
   }
 
   function updateIframe(html: string) {
-    const doc = elements.iframe.contentDocument;
-    if (doc) {
-      doc.open();
-      doc.write(html);
-      doc.close();
+    elements.iframe.srcdoc = html;
+  }
+
+  async function ensureHtmlEditor() {
+    if (htmlEditor) {
+      return htmlEditor;
+    }
+
+    if (htmlEditorPromise) {
+      return htmlEditorPromise;
+    }
+
+    htmlEditorPromise = (async () => {
+      const [monaco] = await Promise.all([
+        import('monaco-editor/esm/vs/editor/editor.api.js'),
+        import('monaco-editor/esm/vs/basic-languages/html/html.contribution.js'),
+      ]);
+
+      ensurePlaygroundMonacoSetup();
+
+      htmlEditor = monaco.editor.create(elements.htmlOutputContainer, {
+        ...getSharedMonacoOptions(),
+        value: state.lastHTML,
+        language: 'html',
+        readOnly: true,
+        fontSize: 12,
+        lineHeight: 20,
+        renderLineHighlight: 'none',
+        folding: true,
+      });
+
+      return htmlEditor;
+    })();
+
+    try {
+      return await htmlEditorPromise;
+    } finally {
+      htmlEditorPromise = null;
     }
   }
 
@@ -110,8 +102,11 @@ export function createPreview(elements: {
     } else {
       elements.iframe.style.display = 'none';
       elements.htmlOutputContainer.style.display = 'block';
-      // Trigger layout so Monaco renders correctly when shown
-      htmlEditor.layout();
+      void ensureHtmlEditor().then((editor) => {
+        if (state.activeTab === 'html') {
+          editor.layout();
+        }
+      });
     }
   }
 

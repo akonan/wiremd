@@ -1,20 +1,8 @@
 /** wiremd Playground - Monaco Editor Panel */
 
 import * as monaco from 'monaco-editor/esm/vs/editor/editor.api.js';
-
-// Configure Monaco workers
-(self as typeof globalThis & {
-  MonacoEnvironment?: {
-    getWorker: (_workerId: string, _label: string) => Worker;
-  };
-}).MonacoEnvironment = {
-  getWorker(_workerId: string, _label: string) {
-    return new Worker(
-      new URL('monaco-editor/esm/vs/editor/editor.worker.js', import.meta.url),
-      { type: 'module' }
-    );
-  },
-};
+import { createDebouncedChangeController } from './debouncedChange.js';
+import { ensurePlaygroundMonacoSetup, getSharedMonacoOptions } from './monaco.js';
 
 /** Register a custom wiremd language for basic syntax highlighting */
 function registerWiremdLanguage() {
@@ -60,42 +48,6 @@ function registerWiremdLanguage() {
     },
   });
 
-  // Dark theme matching our playground design
-  monaco.editor.defineTheme('wiremd-dark', {
-    base: 'vs-dark',
-    inherit: true,
-    rules: [
-      { token: 'keyword', foreground: '818cf8', fontStyle: 'bold' },
-      { token: 'type.identifier', foreground: '6366f1' },
-      { token: 'string', foreground: '22c55e' },
-      { token: 'variable', foreground: '38bdf8' },
-      { token: 'number', foreground: 'f59e0b' },
-      { token: 'annotation', foreground: '94a3b8' },
-      { token: 'comment', foreground: '64748b', fontStyle: 'italic' },
-      { token: 'delimiter', foreground: '475569' },
-      { token: 'keyword.control', foreground: 'a78bfa', fontStyle: 'bold' },
-      { token: 'strong', foreground: 'e2e8f0', fontStyle: 'bold' },
-      { token: 'emphasis', foreground: 'cbd5e1', fontStyle: 'italic' },
-      { token: 'tag', foreground: 'fb923c' },
-    ],
-    colors: {
-      'editor.background': '#0d1017',
-      'editor.foreground': '#cbd5e1',
-      'editor.lineHighlightBackground': '#1a1d2640',
-      'editor.selectionBackground': '#6366f130',
-      'editorCursor.foreground': '#818cf8',
-      'editorLineNumber.foreground': '#334155',
-      'editorLineNumber.activeForeground': '#6366f1',
-      'editor.selectionHighlightBackground': '#6366f115',
-      'editorIndentGuide.background': '#1e293b',
-      'editorIndentGuide.activeBackground': '#334155',
-      'editorWidget.background': '#12151c',
-      'editorWidget.border': '#1e293b',
-      'editorSuggestWidget.background': '#12151c',
-      'scrollbarSlider.background': '#ffffff10',
-      'scrollbarSlider.hoverBackground': '#ffffff20',
-    },
-  });
 }
 
 export interface EditorInstance {
@@ -103,6 +55,7 @@ export interface EditorInstance {
   setValue: (v: string) => void;
   getEditor: () => monaco.editor.IStandaloneCodeEditor;
   layout: () => void;
+  flushPendingChange: () => void;
 }
 
 export function initEditor(opts: {
@@ -110,66 +63,51 @@ export function initEditor(opts: {
   onChange: (value: string) => void;
   initialValue?: string;
 }): EditorInstance {
+  ensurePlaygroundMonacoSetup();
   registerWiremdLanguage();
 
   const monacoEditor = monaco.editor.create(opts.container, {
+    ...getSharedMonacoOptions(),
     value: opts.initialValue ?? '',
     language: 'wiremd',
-    theme: 'wiremd-dark',
     fontSize: 13,
     lineHeight: 22,
-    fontFamily: "'JetBrains Mono', 'Fira Code', 'Cascadia Code', monospace",
     fontLigatures: true,
-    minimap: { enabled: false },
-    scrollBeyondLastLine: false,
-    padding: { top: 12, bottom: 12 },
     renderLineHighlight: 'line',
-    smoothScrolling: true,
     cursorBlinking: 'smooth',
     cursorSmoothCaretAnimation: 'on',
     bracketPairColorization: { enabled: false },
-    wordWrap: 'on',
-    lineNumbers: 'on',
-    glyphMargin: false,
     folding: false,
-    lineDecorationsWidth: 8,
-    lineNumbersMinChars: 3,
-    overviewRulerLanes: 0,
-    hideCursorInOverviewRuler: true,
-    overviewRulerBorder: false,
-    scrollbar: {
-      verticalScrollbarSize: 6,
-      horizontalScrollbarSize: 6,
-      useShadows: false,
-    },
     tabSize: 2,
     insertSpaces: true,
-    automaticLayout: true,
   });
 
-  // Debounced onChange
-  let debounceTimer: ReturnType<typeof setTimeout> | undefined;
+  const debouncedChange = createDebouncedChangeController({
+    delayMs: 200,
+    onChange: opts.onChange,
+  });
+
   let suppressNextChange = false;
   monacoEditor.onDidChangeModelContent(() => {
     if (suppressNextChange) {
       suppressNextChange = false;
       return;
     }
-    if (debounceTimer) clearTimeout(debounceTimer);
-    debounceTimer = setTimeout(() => {
-      opts.onChange(monacoEditor.getValue());
-    }, 200);
+    debouncedChange.schedule(monacoEditor.getValue());
   });
 
   return {
     getValue: () => monacoEditor.getValue(),
     setValue: (v: string) => {
       suppressNextChange = true;
-      if (debounceTimer) clearTimeout(debounceTimer);
+      debouncedChange.cancel();
       monacoEditor.setValue(v);
       opts.onChange(v);
     },
     getEditor: () => monacoEditor,
     layout: () => monacoEditor.layout(),
+    flushPendingChange: () => {
+      debouncedChange.flush();
+    },
   };
 }

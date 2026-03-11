@@ -6,6 +6,9 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
+    "test": "vitest run --config vitest.config.ts",
+    "test:coverage": "vitest run --config vitest.config.ts --coverage",
+    "check-bundle-size": "node ./scripts/check-bundle-size.mjs",
     "preview": "vite preview"
   },
   "dependencies": {

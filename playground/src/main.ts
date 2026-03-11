@@ -2,7 +2,13 @@
 
 import './styles/playground.css';
 import { initEditor } from './editor.js';
-import { createPreview, type StyleName } from './preview.js';
+import { createPreview } from './preview.js';
+import type { StyleName } from './renderMarkup.js';
+import {
+  calculateSplitPercent,
+  getEditorPanelStyle,
+  getSplitLayout,
+} from './splitter.js';
 import { initToolbar, showToast } from './toolbar.js';
 import { examples } from './examples.js';
 
@@ -16,13 +22,50 @@ const errorBar = $('error-bar');
 const errorMessage = $('error-message');
 const styleSelect = $<HTMLSelectElement>('style-select');
 const previewTabs = $('preview-tabs');
-const copyBtn = $('copy-html-btn');
-const headerActions = $('header-actions');
+const copyBtn = $<HTMLButtonElement>('copy-html-btn');
 const examplesDropdown = $('examples-dropdown');
 const toast = $('toast');
 const divider = $('divider');
 const editorPanel = $('editor-panel');
 
+function updateCopyButtonState() {
+  copyBtn.disabled = preview.getHTML() === '';
+}
+
+function renderMarkdown(markdown: string) {
+  preview.render(markdown);
+  updateCopyButtonState();
+}
+
+async function copyHTML(html: string): Promise<boolean> {
+  if (navigator.clipboard?.writeText) {
+    try {
+      await navigator.clipboard.writeText(html);
+      return true;
+    } catch {
+      // Fall back to the legacy copy path below.
+    }
+  }
+
+  const textarea = document.createElement('textarea');
+  textarea.value = html;
+  textarea.setAttribute('readonly', 'true');
+  textarea.style.position = 'fixed';
+  textarea.style.opacity = '0';
+  textarea.style.pointerEvents = 'none';
+  document.body.appendChild(textarea);
+  textarea.select();
+
+  let copied = false;
+  try {
+    copied = document.execCommand('copy');
+  } finally {
+    document.body.removeChild(textarea);
+  }
+
+  return copied;
+}
+	
 // --- Preview ---
 const preview = createPreview({
   iframe: previewIframe,
@@ -35,13 +78,12 @@ const preview = createPreview({
 const editor = initEditor({
   container: monacoContainer,
   onChange: (value) => {
-    preview.render(value);
+    renderMarkdown(value);
   },
 });
 
 // --- Toolbar ---
 initToolbar({
-  headerActions,
   examplesContainer: examplesDropdown,
   styleSelect,
   tabs: previewTabs,
@@ -51,28 +93,22 @@ initToolbar({
   },
   onStyleChange: (style) => {
     preview.setStyle(style as StyleName);
-    // Re-render with new style
-    preview.render(editor.getValue());
+    renderMarkdown(editor.getValue());
   },
   onTabChange: (tab) => {
     preview.setTab(tab);
   },
-  onCopy: () => {
+  onCopy: async () => {
+    editor.flushPendingChange();
     const html = preview.getHTML();
-    if (html) {
-      navigator.clipboard.writeText(html).then(() => {
-        showToast(toast, 'Copied to clipboard!');
-      }).catch(() => {
-        // Fallback
-        const ta = document.createElement('textarea');
-        ta.value = html;
-        document.body.appendChild(ta);
-        ta.select();
-        document.execCommand('copy');
-        document.body.removeChild(ta);
-        showToast(toast, 'Copied to clipboard!');
-      });
+
+    if (!html) {
+      showToast(toast, 'Nothing to copy');
+      return;
     }
+
+    const copied = await copyHTML(html);
+    showToast(toast, copied ? 'Copied to clipboard!' : 'Copy failed');
   },
 });
 
@@ -82,16 +118,11 @@ let activePointerId: number | null = null;
 let horizontalSplit = 50;
 let verticalSplit = 50;
 
-const isVerticalLayout = () => window.matchMedia('(max-width: 768px)').matches;
-
 function applySplit() {
-  if (isVerticalLayout()) {
-    editorPanel.style.width = '100%';
-    editorPanel.style.height = `${verticalSplit}%`;
-  } else {
-    editorPanel.style.width = `${horizontalSplit}%`;
-    editorPanel.style.height = '';
-  }
+  const layout = getSplitLayout(window.innerWidth);
+  const editorPanelStyle = getEditorPanelStyle(layout, horizontalSplit, verticalSplit);
+  editorPanel.style.width = editorPanelStyle.width;
+  editorPanel.style.height = editorPanelStyle.height;
   editor.layout();
 }
 
@@ -100,7 +131,9 @@ divider.addEventListener('pointerdown', (e) => {
   activePointerId = e.pointerId;
   divider.setPointerCapture(e.pointerId);
   divider.classList.add('pg-divider--active');
-  document.body.style.cursor = isVerticalLayout() ? 'row-resize' : 'col-resize';
+  document.body.style.cursor = getSplitLayout(window.innerWidth) === 'vertical'
+    ? 'row-resize'
+    : 'col-resize';
   document.body.style.userSelect = 'none';
   document.body.style.touchAction = 'none';
   e.preventDefault();
@@ -113,13 +146,12 @@ document.addEventListener('pointermove', (e) => {
   const main = editorPanel.parentElement;
   if (!main) return;
   const mainRect = main.getBoundingClientRect();
+  const layout = getSplitLayout(window.innerWidth);
 
-  if (isVerticalLayout()) {
-    const percent = ((e.clientY - mainRect.top) / mainRect.height) * 100;
-    verticalSplit = Math.min(Math.max(percent, 20), 80);
+  if (layout === 'vertical') {
+    verticalSplit = calculateSplitPercent(layout, e, mainRect, verticalSplit);
   } else {
-    const percent = ((e.clientX - mainRect.left) / mainRect.width) * 100;
-    horizontalSplit = Math.min(Math.max(percent, 20), 80);
+    horizontalSplit = calculateSplitPercent(layout, e, mainRect, horizontalSplit);
   }
 
   applySplit();
@@ -145,6 +177,7 @@ document.addEventListener('pointercancel', stopDragging);
 window.addEventListener('resize', applySplit);
 
 applySplit();
+updateCopyButtonState();
 
 // --- Load first example on start ---
 if (examples.length > 0) {
