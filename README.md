@@ -79,11 +79,11 @@ This creates a responsive 3-column grid layout with icons and descriptions.
 - ✅ **Visual syntax** - Looks like what it renders
 - ✅ **Fast to write** - Intuitive shortcuts for common patterns
 - ✅ **Extensible** - Add classes and attributes as needed
-- ✅ **Multiple outputs** - HTML, JSON, React (JSX/TSX), Tailwind CSS, Figma (via plugin)
+- ✅ **Multiple outputs** - HTML, JSON, React (JSX/TSX), Tailwind CSS, Vue, Svelte, Angular, Figma
 - ✅ **7 visual styles** - sketch (Balsamiq-inspired), clean, wireframe, tailwind, material, brutal, none
 - ✅ **Full CLI tool** - Watch mode, live-reload dev server, style switching
 - ✅ **Rich examples** - Showcase files demonstrating all styles
-- ✅ **Framework renderers** - React, Tailwind CSS classes (Vue, Svelte coming soon)
+- ✅ **Framework renderers** - React, Tailwind CSS classes, Vue, Svelte, Angular
 - ✅ **VS Code extension** - Live preview with real-time updates and style switching
 
 ## Project Structure
@@ -261,7 +261,18 @@ See the [wiremd-obsidian repository](https://github.com/akonan/wiremd-obsidian) 
 ## Programmatic API
 
 ```typescript
-import { parse, renderToHTML, renderToJSON, renderToReact, renderToTailwind } from 'wiremd';
+import {
+  createPluginRegistry,
+  parse,
+  renderArtifacts,
+  renderToAngular,
+  renderToHTML,
+  renderToJSON,
+  renderToReact,
+  renderToSvelte,
+  renderToTailwind,
+  renderToVue,
+} from 'wiremd';
 
 // Parse markdown to AST
 const ast = parse(`
@@ -288,6 +299,33 @@ const reactComponent = renderToReact(ast, {
 
 // Render to HTML with Tailwind CSS classes
 const tailwindHTML = renderToTailwind(ast, { pretty: true });
+
+// Render to Vue / Svelte components
+const vueComponent = renderToVue(ast, { componentName: 'ContactForm' });
+const svelteComponent = renderToSvelte(ast, { componentName: 'ContactForm' });
+
+// Render multi-file Angular output
+const angularFiles = renderToAngular(ast, { componentName: 'ContactForm' });
+
+// Use an isolated plugin registry for custom renderers
+const registry = createPluginRegistry();
+registry.registerPlugin({
+  name: 'wiremd-fixture',
+  version: '1.0.0',
+  renderers: {
+    fixture: {
+      format: 'fixture',
+      render(currentAst) {
+        return {
+          format: 'fixture',
+          artifacts: [{ filename: 'fixture.txt', content: JSON.stringify(currentAst) }],
+        };
+      },
+    },
+  },
+});
+
+const customArtifacts = renderArtifacts(ast, { format: 'fixture' });
 ```
 
 ## Documentation

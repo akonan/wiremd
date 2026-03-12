@@ -1,13 +1,13 @@
 # API Documentation
 
-wiremd provides a powerful programmatic API for parsing and rendering wireframes.
+wiremd provides a powerful programmatic API for parsing, rendering, and extending wireframes through runtime plugins.
 
 ## Quick Links
 
 - **[Parser API](./parser.md)** - Parse markdown to AST
-- **[Renderer APIs](./renderer.md)** - Render to HTML, JSON, React, and Tailwind
+- **[Renderer APIs](./renderer.md)** - Render to HTML, JSON, React, Tailwind, Vue, Svelte, and Angular
 - **[Type Definitions](./types.md)** - Complete TypeScript type reference
-- **[Plugin API](./plugins.md)** - Create custom renderers
+- **[Plugin API](./plugins.md)** - Create custom renderers and transformers
 - **[Error Handling](./errors.md)** - Error handling guide
 - **[Migration Guides](./migration.md)** - Version migration guides
 

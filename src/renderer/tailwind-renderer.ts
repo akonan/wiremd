@@ -11,6 +11,7 @@ import type { WiremdNode } from '../types.js';
 
 export interface TailwindRenderContext {
   pretty: boolean;
+  nextId(prefix?: string): string;
 }
 
 /**
@@ -220,7 +221,7 @@ function renderRadioGroup(node: any, context: TailwindRenderContext): string {
   const isInline = node.props?.inline;
   const classes = isInline ? 'flex flex-wrap gap-4' : 'flex flex-col gap-2';
 
-  const groupName = `radio-${Math.random().toString(36).substr(2, 9)}`;
+  const groupName = context.nextId('radio');
 
   const radios = (node.children || []).map((child: any) => {
     if (child.type === 'radio') {

@@ -1,53 +1,108 @@
 # Plugin API
 
-Create custom renderers and extend wiremd's functionality.
+Create custom renderers and AST transformers, register them at runtime, and render through the shared registry.
 
-## Overview
+## Runtime API
 
-While wiremd provides built-in renderers for HTML, JSON, React, and Tailwind, you can create custom renderers for other frameworks, formats, or use cases.
+wiremd ships a real plugin registry:
 
-## Custom Renderer Architecture
+- `registerPlugin(plugin)` registers renderers and transformers in the default registry
+- `createPluginRegistry()` creates an isolated registry preloaded with first-party renderers
+- `render(ast, { format })` renders single-file formats through the registry
+- `renderArtifacts(ast, { format })` renders single-file or multi-file outputs
 
-A custom renderer is a function that traverses the wiremd AST and produces output in your desired format.
+Built-in first-party formats include `html`, `json`, `react`, `tailwind`, `vue`, `svelte`, and `angular`.
 
-### Basic Structure
+## Core Types
 
 ```typescript
-import type { DocumentNode, WiremdNode } from 'wiremd';
+import type {
+  DocumentNode,
+  RenderResult,
+  RendererPlugin,
+  TransformerPlugin,
+  WiremdPlugin,
+} from 'wiremd';
 
-interface CustomRenderContext {
-  // Your custom options
-  [key: string]: any;
+interface RenderArtifact {
+  filename: string;
+  content: string;
 }
 
-function renderNode(node: WiremdNode, context: CustomRenderContext): string {
-  // Handle different node types
-  switch (node.type) {
-    case 'button':
-      return renderButton(node, context);
-    case 'input':
-      return renderInput(node, context);
-    case 'heading':
-      return renderHeading(node, context);
-    // ... handle all node types
-    default:
-      return '';
-  }
+interface RenderResult {
+  format: string;
+  artifacts: RenderArtifact[];
 }
 
-export function renderToCustomFormat(
-  ast: DocumentNode,
-  options: CustomRenderContext = {}
-): string {
-  const context = { ...options };
+interface RendererPlugin {
+  format: string;
+  outputType?: 'single' | 'multi';
+  render(ast: DocumentNode, context: RendererExecutionContext): RenderResult;
+}
 
-  // Render all children
-  const content = ast.children
-    .map(child => renderNode(child, context))
-    .join('\n');
+interface TransformerPlugin {
+  name: string;
+  transform(ast: DocumentNode, context: TransformerExecutionContext): DocumentNode;
+}
 
-  // Wrap in document structure
-  return wrapDocument(content, context);
+interface WiremdPlugin {
+  name: string;
+  version: string;
+  renderers?: Record<string, RendererPlugin>;
+  transformers?: Record<string, TransformerPlugin>;
+}
+```
+
+## Registering a Custom Renderer
+
+```typescript
+import { createPluginRegistry, parse } from 'wiremd';
+
+const registry = createPluginRegistry();
+
+registry.registerPlugin({
+  name: 'wiremd-fixture',
+  version: '1.0.0',
+  renderers: {
+    fixture: {
+      format: 'fixture',
+      outputType: 'single',
+      render(ast) {
+        return {
+          format: 'fixture',
+          artifacts: [
+            {
+              filename: 'fixture.txt',
+              content: JSON.stringify(ast, null, 2),
+            },
+          ],
+        };
+      },
+    },
+  },
+});
+
+const ast = parse('## Contact Form\n[Submit]*');
+const output = registry.render(ast, { format: 'fixture' });
+```
+
+## Multi-file Renderers
+
+Use `renderArtifacts()` when the renderer produces more than one file, such as Angular:
+
+```typescript
+import { parse, renderArtifacts } from 'wiremd';
+
+const ast = parse('## Profile\n[Save]*');
+const result = renderArtifacts(ast, {
+  format: 'angular',
+  rendererOptions: {
+    componentName: 'ProfileForm',
+  },
+});
+
+for (const artifact of result.artifacts) {
+  console.log(artifact.filename);
 }
 ```
 

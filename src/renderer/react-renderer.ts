@@ -14,6 +14,7 @@ export interface ReactRenderContext {
   typescript: boolean;
   useClassName: boolean; // true = className, false = class
   componentName?: string;
+  nextId(prefix?: string): string;
 }
 
 /**
@@ -243,7 +244,7 @@ function renderRadioGroup(node: any, context: ReactRenderContext, indent: number
   const inlineClass = isInline ? ` ${prefix}radio-group-inline` : '';
   const classAttr = context.useClassName ? 'className' : 'class';
 
-  const groupName = `radio-${Math.random().toString(36).substr(2, 9)}`;
+  const groupName = context.nextId('radio');
 
   const radios = (node.children || []).map((child: any) => {
     if (child.type === 'radio') {

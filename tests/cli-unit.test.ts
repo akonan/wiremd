@@ -10,6 +10,7 @@ import {
   showHelp,
   showVersion,
   checkFileSize,
+  generateArtifacts,
   generateOutput,
   type CLIOptions,
 } from '../src/cli/index.js';
@@ -138,11 +139,9 @@ describe('CLI Unit Tests', () => {
         processExitSpy.mockRestore();
       });
 
-      it('should error on invalid format', () => {
-        expect(() => parseArgs(['test.md', '--format', 'xml'])).toThrow('process.exit(1)');
-        expect(consoleErrorSpy).toHaveBeenCalledWith(
-          expect.stringContaining('Invalid format "xml"')
-        );
+      it('should accept custom formats for plugin renderers', () => {
+        const result = parseArgs(['test.md', '--format', 'xml']);
+        expect(result?.format).toBe('xml');
       });
 
       it('should error on invalid style', () => {
@@ -239,7 +238,11 @@ describe('CLI Unit Tests', () => {
       const output = consoleLogSpy.mock.calls[0][0];
 
       expect(output).toContain('--output');
+      expect(output).toContain('--output-dir');
       expect(output).toContain('--format');
+      expect(output).toContain('--plugin');
+      expect(output).toContain('--renderer-option');
+      expect(output).toContain('--list-renderers');
       expect(output).toContain('--style');
       expect(output).toContain('--watch');
       expect(output).toContain('--serve');
@@ -394,6 +397,41 @@ describe('CLI Unit Tests', () => {
       const json = JSON.parse(output);
       expect(json).toHaveProperty('type');
       expect(json).toHaveProperty('children');
+    });
+
+    it('should generate Vue output', () => {
+      const options: CLIOptions = {
+        input: TEST_FILE,
+        format: 'vue',
+        pretty: true,
+        rendererOptions: {
+          componentName: 'CliVueComponent',
+        },
+      };
+
+      const output = generateOutput(options);
+
+      expect(output).toContain('<template>');
+      expect(output).toContain('<script setup');
+      expect(output).toContain("const componentName = 'CliVueComponent'");
+    });
+
+    it('should generate multiple Angular artifacts', () => {
+      const options: CLIOptions = {
+        input: TEST_FILE,
+        format: 'angular',
+        pretty: true,
+        rendererOptions: {
+          componentName: 'CliAngularComponent',
+        },
+      };
+
+      const result = generateArtifacts(options);
+
+      expect(result.artifacts).toHaveLength(3);
+      expect(result.artifacts.some((artifact) => artifact.filename.endsWith('.ts'))).toBe(true);
+      expect(result.artifacts.some((artifact) => artifact.filename.endsWith('.html'))).toBe(true);
+      expect(result.artifacts.some((artifact) => artifact.filename.endsWith('.css'))).toBe(true);
     });
 
     it('should apply sketch style', () => {

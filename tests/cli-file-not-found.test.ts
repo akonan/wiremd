@@ -1,58 +1,58 @@
-/**
- * Test for file not found error handling
- * This test verifies that the CLI returns a non-zero exit code
- * when attempting to process a non-existent file
- */
-
-import { describe, it, expect } from 'vitest';
-import { execSync } from 'child_process';
+import { describe, expect, it, vi } from 'vitest';
+import { main } from '../src/cli/index.js';
 
 describe('CLI File Not Found Error Handling', () => {
-  it('should exit with non-zero exit code when input file does not exist', () => {
-    let exitCode = 0;
-    let stdout = '';
-    let stderr = '';
+  it('should exit with code 1 when the input file does not exist', async () => {
+    const result = await runMissingFileCli(['nonexistent.md', '-o', 'output.html']);
 
-    try {
-      stdout = execSync('node dist/cli/index.js nonexistent.md -o output.html', {
-        encoding: 'utf-8',
-        stdio: 'pipe',
-      });
-    } catch (error: any) {
-      exitCode = error.status || 1;
-      stdout = error.stdout?.toString() || '';
-      stderr = error.stderr?.toString() || '';
-    }
-
-    // Should exit with non-zero exit code
-    expect(exitCode).not.toBe(0);
-
-    // Should show error message about file not found
-    const output = stdout + stderr;
-    expect(output).toMatch(/File not found|not found|does not exist|ENOENT/i);
+    expect(result.exitCode).toBe(1);
+    expect(result.output).toMatch(/File not found|not found|does not exist|ENOENT/i);
   });
 
-  it('should show error message when file does not exist', () => {
-    expect(() => {
-      execSync('node dist/cli/index.js definitely-does-not-exist-file.md -o output.html', {
-        encoding: 'utf-8',
-        stdio: 'pipe',
-      });
-    }).toThrow();
+  it('should surface an error for a definitely missing file', async () => {
+    const result = await runMissingFileCli(['definitely-does-not-exist-file.md', '-o', 'output.html']);
+
+    expect(result.exitCode).toBe(1);
   });
 
-  it('should exit with code 1 specifically for file not found errors', () => {
-    let exitCode = 0;
+  it('should exit with code 1 specifically for file not found errors', async () => {
+    const result = await runMissingFileCli(['missing-file.md']);
 
-    try {
-      execSync('node dist/cli/index.js missing-file.md', {
-        encoding: 'utf-8',
-        stdio: 'pipe',
-      });
-    } catch (error: any) {
-      exitCode = error.status;
-    }
-
-    expect(exitCode).toBe(1);
+    expect(result.exitCode).toBe(1);
   });
 });
+
+async function runMissingFileCli(args: string[]) {
+  const logs: string[] = [];
+  const errors: string[] = [];
+  const originalArgv = [...process.argv];
+  const logSpy = vi.spyOn(console, 'log').mockImplementation((...values) => {
+    logs.push(values.map(String).join(' '));
+  });
+  const errorSpy = vi.spyOn(console, 'error').mockImplementation((...values) => {
+    errors.push(values.map(String).join(' '));
+  });
+  const exitSpy = vi.spyOn(process, 'exit').mockImplementation(((code?: number) => {
+    throw new Error(`__EXIT__${code ?? 0}`);
+  }) as never);
+
+  process.argv = ['node', 'dist/cli/index.js', ...args];
+
+  try {
+    await main();
+    return { exitCode: 0, output: logs.join('\n') + errors.join('\n') };
+  } catch (error: any) {
+    if (typeof error?.message === 'string' && error.message.startsWith('__EXIT__')) {
+      return {
+        exitCode: Number(error.message.replace('__EXIT__', '')),
+        output: `${logs.join('\n')}\n${errors.join('\n')}`,
+      };
+    }
+    throw error;
+  } finally {
+    process.argv = originalArgv;
+    logSpy.mockRestore();
+    errorSpy.mockRestore();
+    exitSpy.mockRestore();
+  }
+}
