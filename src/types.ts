@@ -36,7 +36,7 @@ export interface DocumentMeta {
   title?: string;
   description?: string;
   viewport?: 'mobile' | 'tablet' | 'desktop' | 'auto';
-  theme?: 'sketch' | 'clean' | 'wireframe' | 'none';
+  theme?: 'sketch' | 'clean' | 'wireframe' | 'none' | 'tailwind' | 'material' | 'brutal';
   version?: string;
 }
 
@@ -104,6 +104,31 @@ export type WiremdNode =
   | { type: 'empty-state'; icon?: string; title?: string; props: ComponentProps; children: WiremdNode[]; position?: Location }
   | { type: 'error-state'; icon?: string; title?: string; props: ComponentProps; children: WiremdNode[]; position?: Location };
 
+export type WiremdNodeType = WiremdNode['type'];
+export type NodeOf<TType extends WiremdNodeType> = Extract<WiremdNode, { type: TType }>;
+export type WiremdNodeMap = {
+  [TType in WiremdNodeType]: NodeOf<TType>;
+};
+
+export type ContainerNode = NodeOf<'container'>;
+export type ButtonNode = NodeOf<'button'>;
+export type InputNode = NodeOf<'input'>;
+export type TextareaNode = NodeOf<'textarea'>;
+export type SelectNode = NodeOf<'select'>;
+export type CheckboxNode = NodeOf<'checkbox'>;
+export type RadioNode = NodeOf<'radio'>;
+export type FormNode = NodeOf<'form'>;
+export type HeadingNode = NodeOf<'heading'>;
+export type ParagraphNode = NodeOf<'paragraph'>;
+export type TextNode = NodeOf<'text'>;
+export type ImageNode = NodeOf<'image'>;
+export type LinkNode = NodeOf<'link'>;
+export type ListNode = NodeOf<'list'>;
+export type ListItemNode = NodeOf<'list-item'>;
+export type TableNode = NodeOf<'table'>;
+export type CodeNode = NodeOf<'code'>;
+export type IconNode = NodeOf<'icon'>;
+
 // ============================================================================
 // Type Guards
 // ============================================================================
@@ -155,14 +180,95 @@ export interface ParseOptions {
   icons?: Record<string, string>;
 }
 
+export type TransformerReference =
+  | string
+  | {
+    name: string;
+    options?: Record<string, unknown>;
+  };
+
 export interface RenderOptions {
-  format?: 'html' | 'json' | 'react' | 'tailwind';
+  format?: string;
   style?: 'sketch' | 'clean' | 'wireframe' | 'none' | 'tailwind' | 'material' | 'brutal';
   inlineStyles?: boolean;
   pretty?: boolean;
   classPrefix?: string;
   typescript?: boolean; // For React renderer
   componentName?: string; // For React renderer
+  rendererOptions?: Record<string, unknown>;
+  transformers?: TransformerReference[];
+}
+
+export interface RenderArtifact {
+  filename: string;
+  content: string;
+}
+
+export interface RenderResult {
+  format: string;
+  artifacts: RenderArtifact[];
+}
+
+export interface RenderHelpers {
+  nextId(prefix?: string): string;
+  toIdentifier(value: string, fallbackPrefix?: string): string;
+  toKebabCase(value: string, fallbackPrefix?: string): string;
+}
+
+export interface RegisteredRendererInfo {
+  pluginName: string;
+  format: string;
+  outputType: 'single' | 'multi';
+  description?: string;
+}
+
+export interface RegisteredTransformerInfo {
+  pluginName: string;
+  name: string;
+  description?: string;
+}
+
+export interface RendererExecutionContext {
+  registry: PluginRegistry;
+  options: RenderOptions;
+  rendererOptions: Record<string, unknown>;
+  helpers: RenderHelpers;
+}
+
+export interface TransformerExecutionContext {
+  registry: PluginRegistry;
+  options: Record<string, unknown>;
+  helpers: RenderHelpers;
+}
+
+export interface RendererPlugin {
+  format: string;
+  description?: string;
+  outputType?: 'single' | 'multi';
+  render(ast: DocumentNode, context: RendererExecutionContext): RenderResult;
+}
+
+export interface TransformerPlugin {
+  name: string;
+  description?: string;
+  transform(ast: DocumentNode, context: TransformerExecutionContext): DocumentNode;
+}
+
+export interface WiremdPlugin {
+  name: string;
+  version: string;
+  renderers?: Record<string, RendererPlugin>;
+  transformers?: Record<string, TransformerPlugin>;
+}
+
+export interface PluginRegistry {
+  registerPlugin(plugin: WiremdPlugin): void;
+  render(ast: DocumentNode, options?: RenderOptions): string;
+  renderArtifacts(ast: DocumentNode, options?: RenderOptions): RenderResult;
+  getRenderer(format: string): RendererPlugin | undefined;
+  getTransformer(name: string): TransformerPlugin | undefined;
+  listRenderers(): RegisteredRendererInfo[];
+  listTransformers(): RegisteredTransformerInfo[];
 }
 
 // ============================================================================

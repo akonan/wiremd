@@ -14,7 +14,7 @@ import type {
   ParseOptions,
   DocumentMeta,
 } from '../types.js';
-import { SYNTAX_VERSION } from '../index.js';
+import { SYNTAX_VERSION } from '../constants.js';
 
 /**
  * Transform MDAST to wiremd AST

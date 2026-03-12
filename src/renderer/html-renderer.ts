@@ -14,6 +14,7 @@ export interface RenderContext {
   classPrefix: string;
   inlineStyles: boolean;
   pretty: boolean;
+  nextId(prefix?: string): string;
 }
 
 /**
@@ -238,7 +239,7 @@ function renderRadioGroup(node: any, context: RenderContext): string {
   const inlineClass = isInline ? ` ${prefix}radio-group-inline` : '';
 
   // Generate a unique name for this radio group
-  const groupName = `radio-${Math.random().toString(36).substr(2, 9)}`;
+  const groupName = context.nextId('radio');
 
   const radios = (node.children || []).map((child: any) => {
     // Add the group name to each radio button
