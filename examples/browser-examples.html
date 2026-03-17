@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>wiremd - Simple Browser Example</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 20px;
+      background: #f5f5f5;
+    }
+    
+    .example {
+      background: white;
+      padding: 20px;
+      margin: 20px 0;
+      border-radius: 8px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    
+    h1 { color: #333; }
+    h2 { color: #666; margin-top: 30px; }
+    
+    .example > div {
+      margin-top: 15px;
+      padding: 15px;
+      background: #fafafa;
+      border-left: 4px solid #007acc;
+      border-radius: 4px;
+    }
+    
+    code {
+      background: #f0f0f0;
+      padding: 2px 6px;
+      border-radius: 3px;
+      font-family: 'Monaco', monospace;
+      font-size: 12px;
+    }
+    
+    pre {
+      background: #f0f0f0;
+      padding: 15px;
+      border-radius: 4px;
+      overflow-x: auto;
+      font-size: 12px;
+    }
+  </style>
+</head>
+<body>
+  <h1>🎨 wiremd - Simple Browser Examples</h1>
+  <p>wiremd can now run entirely in your browser! Below are copy-ready examples using UMD so they also work when opened directly via <code>file://</code>.</p>
+
+  <div class="example">
+    <h2>Example 1: File-safe UMD Import</h2>
+    <p>The simplest way to run locally without a dev server:</p>
+    <pre><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+  &lt;title&gt;wiremd Example&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;iframe id="preview" style="width:100%;height:420px;border:1px solid #ddd;"&gt;&lt;/iframe&gt;
+
+  &lt;script src="./dist/wiremd.umd.js"&gt;&lt;/script&gt;
+  &lt;script&gt;
+    const { parse, renderToHTML } = window.wiremd;
+
+    const markdown = `
+# Login Form
+
+Username
+[_____________________]
+
+Password  
+[_____________________]
+
+[Sign In]{.primary} [Forgot Password?]
+`;
+
+    const ast = parse(markdown);
+    const html = renderToHTML(ast, { style: 'clean', inlineStyles: true });
+    document.getElementById('preview').srcdoc = html;
+  &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+    <div>
+      <strong>Steps:</strong>
+      <ol>
+        <li><code>npm run build:browser</code></li>
+        <li>Save the code above as <code>example.html</code></li>
+        <li>Open in your browser</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="example">
+    <h2>Example 2: Live Rendering with Real-time Updates</h2>
+    <p>Create a markdown editor with live preview:</p>
+    <pre><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+  &lt;title&gt;wiremd Editor&lt;/title&gt;
+  &lt;style&gt;
+    body { font-family: sans-serif; margin: 0; }
+    .container { display: grid; grid-template-columns: 1fr 1fr; height: 100vh; }
+    textarea { padding: 20px; font-family: monospace; resize: none; }
+    #preview { width: 100%; height: 100%; border: 0; background: white; }
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;div class="container"&gt;
+    &lt;textarea id="markdown" placeholder="Enter wiremd markdown..."&gt;&lt;/textarea&gt;
+    &lt;iframe id="preview" title="wiremd preview"&gt;&lt;/iframe&gt;
+  &lt;/div&gt;
+
+  &lt;script src="./dist/wiremd.umd.js"&gt;&lt;/script&gt;
+  &lt;script&gt;
+    const { parse, renderToHTML } = window.wiremd;
+
+    const textArea = document.getElementById('markdown');
+    const preview = document.getElementById('preview');
+
+    function render() {
+      try {
+        const ast = parse(textArea.value);
+        const html = renderToHTML(ast, { inlineStyles: true });
+        preview.srcdoc = html;
+      } catch (e) {
+        preview.srcdoc = `&lt;p style="font-family:sans-serif;color:red;padding:12px;"&gt;Error: ${e.message}&lt;/p&gt;`;
+      }
+    }
+
+    textArea.addEventListener('input', render);
+    textArea.value = `# Hello
+
+## Welcome to wiremd
+
+Create wireframes with Markdown!
+
+[Get Started]{.primary}`;
+    render();
+  &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+  </div>
+
+  <div class="example">
+    <h2>Example 3: React/JSX Export</h2>
+    <p>Generate React components from wiremd markdown:</p>
+    <pre><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+  &lt;title&gt;wiremd React Export&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;textarea id="markdown" style="width:400px; height:300px;"&gt;&lt;/textarea&gt;
+  &lt;pre id="output" style="width:400px; height:300px; overflow:auto; background:#f0f0f0;"&gt;&lt;/pre&gt;
+
+  &lt;script src="./dist/wiremd.umd.js"&gt;&lt;/script&gt;
+  &lt;script&gt;
+    const { parse, renderToReact } = window.wiremd;
+
+    const textArea = document.getElementById('markdown');
+    const output = document.getElementById('output');
+
+    textArea.value = `## User Profile
+
+Name: [John Doe]
+Email: john@example.com
+
+[Edit Profile]{.primary} [Sign Out]`;
+
+    function generate() {
+      try {
+        const ast = parse(textArea.value);
+        const jsx = renderToReact(ast);
+        output.textContent = jsx;
+      } catch (e) {
+        output.textContent = `Error: ${e.message}`;
+      }
+    }
+
+    textArea.addEventListener('input', generate);
+    generate();
+  &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+  </div>
+
+  <div class="example">
+    <h2>Example 4: Different Styles</h2>
+    <p>Try all the available wireframe styles:</p>
+    <pre><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+  &lt;title&gt;wiremd Styles&lt;/title&gt;
+  &lt;style&gt;
+    body { font-family: sans-serif; padding: 20px; }
+    .gallery { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+    .item { border: 1px solid #ddd; padding: 10px; border-radius: 4px; }
+    h3 { margin-top: 0; }
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;h1&gt;wiremd Styles Gallery&lt;/h1&gt;
+  &lt;div class="gallery" id="gallery"&gt;&lt;/div&gt;
+
+  &lt;script src="./dist/wiremd.umd.js"&gt;&lt;/script&gt;
+  &lt;script&gt;
+    const { parse, renderToHTML } = window.wiremd;
+
+    const markdown = `
+## Contact Form
+
+Email
+[_____________________]
+
+[Subscribe]{.primary}
+`;
+
+    const styles = ['sketch', 'clean', 'wireframe', 'material', 'tailwind'];
+    const gallery = document.getElementById('gallery');
+
+    styles.forEach(style => {
+      const ast = parse(markdown);
+      const html = renderToHTML(ast, { style, inlineStyles: true });
+      
+      const div = document.createElement('div');
+      div.className = 'item';
+      div.innerHTML = `&lt;h3&gt;${style}&lt;/h3&gt;&lt;iframe style="width:100%;height:260px;border:0;" title="${style} preview"&gt;&lt;/iframe&gt;`;
+      div.querySelector('iframe').srcdoc = html;
+      gallery.appendChild(div);
+    });
+  &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+  </div>
+
+  <div class="example">
+    <h2>Full-Featured Browser Editor</h2>
+    <p>We've created a complete, production-ready browser editor for you:</p>
+    <div>
+      📖 <strong><a href="browser-editor.html">Open the Full Editor →</a></strong>
+      <p>Features:</p>
+      <ul>
+        <li>Real-time markdown preview</li>
+        <li>Multiple output formats (HTML, JSON, React/JSX)</li>
+        <li>Style selector</li>
+        <li>Template library</li>
+        <li>Copy to clipboard</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="example">
+    <h2>Browser Build Commands</h2>
+    <pre><code># Build browser bundles
+npm run build:browser
+
+# Watch and rebuild on changes
+npm run dev:browser
+
+# Build Node.js version (default)
+npm run build
+
+# Build everything
+npm run build && npm run build:browser</code></pre>
+  </div>
+
+  <div class="example">
+    <h2>Output Files</h2>
+    <pre><code>dist/
+├── wiremd.es.js       # ES module (recommended)
+├── wiremd.es.js.map   # Source map
+├── wiremd.umd.js      # UMD bundle
+├── wiremd.umd.js.map  # Source map
+└── browser.d.ts       # TypeScript definitions</code></pre>
+  </div>
+
+  <div class="example">
+    <h2>Learn More</h2>
+    <p>📚 <a href="BROWSER-USAGE.md">Browser Usage Guide</a></p>
+    <p>📖 <a href="README.md">Main Documentation</a></p>
+    <p>🐙 <a href="https://github.com/akonan/wiremd">GitHub Repository</a></p>
+  </div>
+</body>
+</html>

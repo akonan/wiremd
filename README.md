@@ -75,6 +75,7 @@ This creates a responsive 3-column grid layout with icons and descriptions.
 
 - ✅ **Markdown-first** - Valid markdown that degrades gracefully
 - ✅ **Full markdown support** - Headings, text formatting, lists, links, images, blockquotes, code blocks, tables
+- ✅ **Run in browser** - Use entirely in the browser with no server or Node.js required
 - ✅ **Grid layouts** - Responsive multi-column grids (2, 3, 4+ columns) with simple `.grid-N` syntax
 - ✅ **Visual syntax** - Looks like what it renders
 - ✅ **Fast to write** - Intuitive shortcuts for common patterns
@@ -97,7 +98,27 @@ This is an open-source MIT-licensed project containing:
 - **`figma-plugin/`** - Figma plugin for importing wiremd designs
 - **`obsidian-plugin/`** - Obsidian plugin for live wireframe previews
 - **`vscode-extension/`** - VS Code extension with live preview and style switching
+## 🌐 Browser Support
 
+wiremd now runs **entirely in the browser** with no server or Node.js required!
+
+### Quick Start
+- **[Interactive Browser Editor](examples/browser-editor.html)** - Full-featured editor with real-time preview
+- **[Code Examples](examples/browser-examples.html)** - Simple copy-paste examples
+
+### Embed in Your App
+
+```html
+<script type="module">
+  import { parse, renderToHTML } from './dist/wiremd.es.js';
+  
+  const ast = parse('# Hello\n[Click Me]{.primary}');
+  const html = renderToHTML(ast, { style: 'clean' });
+  document.body.innerHTML = html;
+</script>
+```
+
+📖 [**BROWSER-USAGE.md**](BROWSER-USAGE.md) - Complete guide with more examples.
 ## Installation
 
 ### npm
