@@ -29,7 +29,7 @@ Stay organized, focused, and on top of your tasks with the #1 rated productivity
 
 ---
 
-## Everything You Need to Stay Productive {.grid-3}
+## Everything You Need to Stay Productive {.grid-3 card}
 
 ### :check: Smart Task Management
 Create, organize, and prioritize tasks with intelligent categorization and due dates.
@@ -87,7 +87,7 @@ TaskMaster combines elegant design with powerful productivity features. Manage y
 
 ## Loved by Millions
 
-## User Testimonials {.grid-2}
+## User Testimonials {.grid-2 card}
 
 ### :star::star::star::star::star:
 *"This app changed my life. I've never been this organized. The natural language input is a game changer!"*
@@ -117,7 +117,7 @@ TaskMaster combines elegant design with powerful productivity features. Manage y
 
 ---
 
-## Stats That Matter {.grid-4}
+## Stats That Matter {.grid-4 card}
 
 ### 5M+
 Downloads
@@ -135,7 +135,7 @@ Uptime
 
 ---
 
-## Pricing Plans {.grid-3}
+## Pricing Plans {.grid-3 card}
 
 ### Free
 **$0** forever
@@ -250,7 +250,7 @@ Join 5 million users who trust TaskMaster for their daily productivity.
 
 ::: footer
 
-## Links {.grid-4}
+## Links {.grid-4 card}
 
 ### Product
 - Features

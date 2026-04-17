@@ -7,6 +7,8 @@
  * https://github.com/akonan/wiremd/blob/main/LICENSE
  */
 
+import { readFileSync, existsSync } from 'fs';
+import { resolve, dirname } from 'path';
 import { unified } from 'unified';
 import remarkParse from 'remark-parse';
 import remarkGfm from 'remark-gfm';
@@ -14,6 +16,23 @@ import type { DocumentNode, ParseOptions, ValidationError } from '../types.js';
 import { transformToWiremdAST } from './transformer.js';
 import { remarkWiremdContainers } from './remark-containers.js';
 import { remarkWiremdInlineContainers } from './remark-inline-containers.js';
+
+const INCLUDE_PATTERN = /!\[\[([^\]]+\.md)\]\]/g;
+
+export function resolveIncludes(markdown: string, basePath: string): string {
+  const dir = dirname(resolve(basePath));
+  return markdown.replace(INCLUDE_PATTERN, (_match, relPath: string) => {
+    const targetPath = resolve(dir, relPath.trim());
+    if (!existsSync(targetPath)) {
+      return `> ⚠️ Could not include: ${relPath}`;
+    }
+    try {
+      return readFileSync(targetPath, 'utf-8');
+    } catch {
+      return `> ⚠️ Could not include: ${relPath}`;
+    }
+  });
+}
 
 /**
  * Parse markdown with wiremd syntax into AST

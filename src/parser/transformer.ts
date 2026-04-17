@@ -97,14 +97,32 @@ export function transformToWiremdAST(
               i++;
             }
 
+            // Hoist col-span from heading text to grid-item wrapper
+            const headingContent = extractTextContent(childNode);
+            const colSpanMatch = headingContent.match(/\{[^}]*\.col-span-(\d+)[^}]*\}/);
+            const gridItemProps: any = { classes: [] };
+            if (colSpanMatch) {
+              gridItemProps.classes.push(`col-span-${colSpanMatch[1]}`);
+            }
+
             // Add as grid item
             gridItems.push({
               type: 'grid-item',
-              props: {},
+              props: gridItemProps,
               children: gridItem,
             });
+          } else if (
+            childNode.type === 'heading' &&
+            childNode.depth <= gridHeadingLevel
+          ) {
+            // Same or higher level heading — end of grid section
+            break;
+          } else if (gridItems.length === 0) {
+            // Non-heading content before any items — silently skip
+            i++;
+            continue;
           } else {
-            // Not a grid item heading, stop collecting
+            // Non-heading content after items — end of grid section
             break;
           }
         }
@@ -260,10 +278,11 @@ function transformContainer(node: any, options: ParseOptions): WiremdNode {
   }
 
   const props = parseAttributes(node.attributes || '');
+  const containerType: string = (node.containerType || '').trim();
 
   return {
     type: 'container',
-    containerType: node.containerType as any,
+    containerType: containerType as any,
     props,
     children,
   };
@@ -280,6 +299,29 @@ function transformInlineContainer(node: any, _options: ParseOptions): WiremdNode
   // Parse each item - could be text, icon, or button
   for (const item of items) {
     const trimmed = item.trim();
+
+    // Check if it's an active/emphasized item: *Text* or **Text**
+    const activeMatch = trimmed.match(/^\*\*?([^*]+)\*\*?$/);
+    if (activeMatch) {
+      children.push({
+        type: 'nav-item',
+        content: activeMatch[1],
+        props: { classes: ['active'] },
+      });
+      continue;
+    }
+
+    // Check if it's a link nav-item: [Text](url) or [Text](url)*
+    const linkMatch = trimmed.match(/^\[([^\]]+)\]\(([^)]+)\)(\*)?$/);
+    if (linkMatch) {
+      children.push({
+        type: 'nav-item',
+        content: linkMatch[1],
+        href: linkMatch[2],
+        props: { variant: linkMatch[3] ? 'primary' : undefined },
+      });
+      continue;
+    }
 
     // Check if it's a button: [Text] or [Text]*
     const buttonMatch = trimmed.match(/^\[([^\]]+)\](\*)?$/);
@@ -396,6 +438,50 @@ function transformHeading(node: any, _options: ParseOptions): WiremdNode {
 }
 
 /**
+ * Detect one or more [[Text](url)]* patterns in a paragraph's children.
+ * Remark produces alternating text/link nodes because CommonMark forbids nested links:
+ *   "[", link, "]*[", link, "]"
+ * Returns button nodes, or null if the children don't match this pattern at all.
+ */
+function tryParseButtonLinkSequence(children: any[]): WiremdNode[] | null {
+  if (!children || children.length < 3 || children.length % 2 === 0) return null;
+
+  // Must alternate: text, link, text, link, text, ...
+  for (let i = 0; i < children.length; i++) {
+    if (i % 2 === 0 && children[i].type !== 'text') return null;
+    if (i % 2 === 1 && children[i].type !== 'link') return null;
+  }
+
+  // First text must be exactly "[" (optionally with leading whitespace)
+  if (!/^\s*\[$/.test(children[0].value)) return null;
+
+  // Last text must be "]" + optional "*" + optional "{attrs}" + nothing else
+  const lastText: string = children[children.length - 1].value;
+  if (!/^\](\*)?\s*(\{[^}]*\})?\s*$/.test(lastText)) return null;
+
+  // Each middle text (between two links) must be "]...[" — closes previous, opens next
+  for (let i = 2; i <= children.length - 3; i += 2) {
+    if (!/^\](\*)?\s*(\{[^}]*\})?\s*\[$/.test(children[i].value)) return null;
+  }
+
+  return children
+    .filter((_: any, i: number) => i % 2 === 1) // keep only link nodes
+    .map((linkNode: any, idx: number) => {
+      const closingText: string = children[idx * 2 + 2].value;
+      const closeMatch = closingText.match(/^\](\*)?\s*(\{[^}]*\})?/);
+      const isPrimary = !!(closeMatch && closeMatch[1]);
+      const attrStr = (closeMatch && closeMatch[2]) || '';
+      const attrs = attrStr ? parseAttributes(attrStr) : {};
+      return {
+        type: 'button' as const,
+        content: extractTextContent(linkNode),
+        href: linkNode.url || '#',
+        props: { ...attrs, variant: isPrimary ? 'primary' : (attrs as any).variant },
+      };
+    });
+}
+
+/**
  * Transform paragraph node
  * This is where we'll detect buttons, inputs, etc.
  */
@@ -404,6 +490,20 @@ function transformParagraph(node: any, _options: ParseOptions, nextNode?: any): 
   const hasRichContent = node.children && node.children.some((child: any) =>
     child.type === 'strong' || child.type === 'emphasis' || child.type === 'link' || child.type === 'code' || child.type === 'image'
   );
+
+  // [[Button](url)]* — one or more linked-button patterns on the same line.
+  // CommonMark forbids nested links so remark produces alternating text/link children:
+  //   "[", link, "]*", "[", link, "]"  for two buttons, etc.
+  const buttonLinks = tryParseButtonLinkSequence(node.children);
+  if (buttonLinks !== null) {
+    if (buttonLinks.length === 1) return buttonLinks[0];
+    return {
+      type: 'container',
+      containerType: 'button-group',
+      children: buttonLinks as any,
+      props: {},
+    };
+  }
 
   // If it has rich content and is not a special pattern, return as a rich text paragraph
   if (hasRichContent) {

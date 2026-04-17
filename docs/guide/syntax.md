@@ -100,10 +100,26 @@ Try our product today
 
 ### Grid Layouts
 
-Create grids with heading modifiers:
+`{.grid-N}` on a heading creates an N-column layout. Child `###` headings become grid items. The heading label itself is **declaration-only** — it is never rendered in the output; it only names the grid for the author.
+
+**Pure layout grid** — no visual styling on items, useful for form columns or multi-column text:
 
 ```markdown
-## Features {.grid-3}
+## Contact {.grid-2}
+
+### Details
+Name
+[_____________________________]{required}
+
+### Address
+Street
+[_____________________________]{required}
+```
+
+**Card grid** — add `card` to render items with card chrome:
+
+```markdown
+## Features {.grid-3 card}
 
 ### Fast
 Lightning quick performance
@@ -113,6 +129,88 @@ Enterprise-grade security
 
 ### Scalable
 Grows with your needs
+```
+
+### File Includes
+
+Embed the contents of another `.md` file inline using the wikilink `![[...]]` syntax:
+
+```markdown
+![[shared/_nav.md]]
+```
+
+The path is resolved relative to the file containing the include — the same convention as Obsidian transclusion. Subdirectories and parent paths both work:
+
+```markdown
+![[shared/_nav.md]]       <!-- subdirectory -->
+![[../shared/_nav.md]]    <!-- parent directory -->
+```
+
+**Common pattern — sidebar nav shared across pages:**
+
+```
+my-prototype/
+├── shared/
+│   ├── _nav.md       ← write once
+│   └── _footer.md    ← write once
+├── home.md
+├── about.md
+└── pricing.md
+```
+
+```markdown
+<!-- shared/_nav.md — written once, included on every page -->
+[[ Acme | [Home](../home.md) | [About](../about.md) | [Pricing](../pricing.md) | [Sign In](../home.md) ]]
+```
+
+```markdown
+<!-- home.md -->
+![[shared/_nav.md]]
+
+::: hero
+# Welcome
+:::
+
+![[shared/_footer.md]]
+```
+
+Update `_nav.md` once and every page reflects the change instantly.
+
+**Missing file** — if the target file does not exist, a visible warning is rendered instead of silently failing:
+
+```
+> ⚠️ Could not include: shared/_nav.md
+```
+
+**Note:** only `.md` files are supported. `![[image.png]]` and standard image syntax `![alt](img.png)` are left untouched.
+
+### Button Links
+
+Wrap a Markdown link inside button brackets to make a clickable button that navigates:
+
+```markdown
+[[Go to Docs](./docs.md)]
+[[Get Started](./start.md)]*
+```
+
+The `*` suffix makes it a primary button. Attributes work too:
+
+```markdown
+[[Sign Up](./signup.md)]{.secondary}
+```
+
+When using `wiremd --serve`, clicking a button link renders the target `.md` file in the same browser tab — no build step required. This is the recommended way to wire up multi-page navigation in prototypes.
+
+**Column spanning** — `{.col-span-N}` on a child heading spans multiple columns:
+
+```markdown
+## Pricing {.grid-3 card}
+
+### Starter {.col-span-1}
+$9/mo
+
+### Pro {.col-span-2}
+$29/mo — most popular, spans two columns
 ```
 
 ## Component Examples

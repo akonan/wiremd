@@ -42,7 +42,7 @@
 
 ---
 
-## System Stats {.grid-5}
+## System Stats {.grid-5 card}
 
 ### Total Users
 **24,567**
@@ -68,7 +68,7 @@ Normal
 
 ---
 
-## Recent Activity {.grid-2}
+## Recent Activity {.grid-2 card}
 
 ### Latest Users
 
@@ -137,7 +137,7 @@ Showing 1-5 of 24,567 users
 
 ---
 
-## Content Management {.grid-2}
+## Content Management {.grid-2 card}
 
 ### Published Content
 
@@ -263,7 +263,7 @@ Event Type: [All Events...v] | User: [All Users...v] | Date: [Today...v]
 
 ---
 
-## Database & Storage {.grid-2}
+## Database & Storage {.grid-2 card}
 
 ### Database Stats
 
@@ -299,7 +299,7 @@ Event Type: [All Events...v] | User: [All Users...v] | Date: [Today...v]
 
 ---
 
-## Support Tickets {.grid-3}
+## Support Tickets {.grid-3 card}
 
 ### Open Tickets
 **23** new
@@ -333,7 +333,7 @@ Customer satisfaction:
 
 ## Quick Actions
 
-## Administrative Tools {.grid-4}
+## Administrative Tools {.grid-4 card}
 
 ### :user: Create User
 Add new user account

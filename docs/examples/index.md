@@ -60,7 +60,7 @@ Message
 ### Dashboard Layout
 
 ```markdown
-## Dashboard {.grid-3}
+## Dashboard {.grid-3 card}
 
 ### Active Users
 **1,234**
@@ -184,6 +184,39 @@ This is an amazing product that will solve all your problems.
 :::
 ```
 
+### Multi-page prototype with shared fragments
+
+Use `![[file.md]]` to share a nav and footer across every page — write once, update everywhere.
+
+```
+my-prototype/
+├── shared/
+│   ├── _nav.md
+│   └── _footer.md
+├── home.md
+├── about.md
+└── pricing.md
+```
+
+```markdown
+<!-- shared/_nav.md — written once, included on every page -->
+[[ Acme | [Home](../home.md) | [About](../about.md) | [Pricing](../pricing.md) | [Sign In](../home.md) ]]
+```
+
+```markdown
+<!-- home.md -->
+![[shared/_nav.md]]
+
+::: hero
+# Build faster with Acme
+[[Get Started](./pricing.md)]* [[Learn more](./about.md)]
+:::
+
+![[shared/_footer.md]]
+```
+
+Run with `wiremd home.md --serve` and clicking nav links will route between pages — no build step needed. See the full example at [`examples/gallery/multi-page-includes/`](../../examples/gallery/multi-page-includes/).
+
 ### Hero Section
 
 ```markdown
@@ -201,7 +234,7 @@ The best tool for modern teams to collaborate and build amazing products.
 ### Pricing Table
 
 ```markdown
-## Pricing {.grid-3}
+## Pricing {.grid-3 card}
 
 ### Basic
 **$9/month**

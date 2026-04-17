@@ -48,7 +48,7 @@
 
 ---
 
-## Sprint Progress {.grid-4}
+## Sprint Progress {.grid-4 card}
 
 ### Total Tasks
 **48** tasks
@@ -227,7 +227,7 @@ Needs attention
 
 ---
 
-## Team Performance {.grid-3}
+## Team Performance {.grid-3 card}
 
 ### Task Completion
 
@@ -343,7 +343,7 @@ I can help with the Redis setup if needed.
 
 ## Milestones & Deadlines
 
-## Project Timeline {.grid-3}
+## Project Timeline {.grid-3 card}
 
 ### Milestone 1: Alpha Release ✅
 **Completed:** Mar 1, 2025
@@ -441,7 +441,7 @@ I can help with the Redis setup if needed.
 
 ## Team Members
 
-## Project Team {.grid-5}
+## Project Team {.grid-5 card}
 
 ### Jane Doe
 ![Avatar](https://via.placeholder.com/100)
@@ -489,7 +489,7 @@ I can help with the Redis setup if needed.
 
 ## Reports & Analytics
 
-## Sprint Metrics {.grid-4}
+## Sprint Metrics {.grid-4 card}
 
 ### Completed Story Points
 **46** / 50 points

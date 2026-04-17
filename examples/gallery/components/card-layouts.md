@@ -65,7 +65,7 @@ Cards can include images, text, and buttons for rich content presentation.
 ### Three Column Feature Grid
 
 ```markdown
-## Our Features {.grid-3}
+## Our Features {.grid-3 card}
 
 ### :rocket: Fast Performance
 Lightning-quick loading times and optimized rendering for the best user experience.
@@ -87,7 +87,7 @@ Flexible configuration options and extensive API for complete control.
 
 **Rendered:**
 
-## Our Features {.grid-3}
+## Our Features {.grid-3 card}
 
 ### :rocket: Fast Performance
 Lightning-quick loading times and optimized rendering for the best user experience.
@@ -113,7 +113,7 @@ Flexible configuration options and extensive API for complete control.
 ### Pricing Tiers
 
 ```markdown
-## Choose Your Plan {.grid-3}
+## Choose Your Plan {.grid-3 card}
 
 ### Starter
 **$9** /month
@@ -160,7 +160,7 @@ For large organizations
 
 **Rendered:**
 
-## Choose Your Plan {.grid-3}
+## Choose Your Plan {.grid-3 card}
 
 ### Starter
 **$9** /month
@@ -211,7 +211,7 @@ For large organizations
 ### Product Grid
 
 ```markdown
-## Featured Products {.grid-4}
+## Featured Products {.grid-4 card}
 
 ### Wireless Headphones
 ![Product](https://via.placeholder.com/250x250)
@@ -254,7 +254,7 @@ For large organizations
 
 **Rendered:**
 
-## Featured Products {.grid-4}
+## Featured Products {.grid-4 card}
 
 ### Wireless Headphones
 ![Product](https://via.placeholder.com/250x250)
@@ -301,7 +301,7 @@ For large organizations
 ### Team Member Grid
 
 ```markdown
-## Meet Our Team {.grid-4}
+## Meet Our Team {.grid-4 card}
 
 ### Sarah Johnson
 ![Profile](https://via.placeholder.com/200x200)
@@ -344,7 +344,7 @@ For large organizations
 
 **Rendered:**
 
-## Meet Our Team {.grid-4}
+## Meet Our Team {.grid-4 card}
 
 ### Sarah Johnson
 ![Profile](https://via.placeholder.com/200x200)
@@ -391,7 +391,7 @@ For large organizations
 ### Blog Post Grid
 
 ```markdown
-## Latest Articles {.grid-3}
+## Latest Articles {.grid-3 card}
 
 ### Getting Started with Wireframing
 ![Blog Post](https://via.placeholder.com/350x200)
@@ -425,7 +425,7 @@ Make your designs inclusive and accessible to all users with these proven techni
 
 **Rendered:**
 
-## Latest Articles {.grid-3}
+## Latest Articles {.grid-3 card}
 
 ### Getting Started with Wireframing
 ![Blog Post](https://via.placeholder.com/350x200)
@@ -463,7 +463,7 @@ Make your designs inclusive and accessible to all users with these proven techni
 ### Customer Testimonials
 
 ```markdown
-## What Our Customers Say {.grid-3}
+## What Our Customers Say {.grid-3 card}
 
 ### :star::star::star::star::star:
 *"This product completely transformed how we work. Best decision we made this year!"*
@@ -488,7 +488,7 @@ Operations Director
 
 **Rendered:**
 
-## What Our Customers Say {.grid-3}
+## What Our Customers Say {.grid-3 card}
 
 ### :star::star::star::star::star:
 *"This product completely transformed how we work. Best decision we made this year!"*
@@ -517,7 +517,7 @@ Operations Director
 ### Key Metrics Dashboard
 
 ```markdown
-## Performance Metrics {.grid-4}
+## Performance Metrics {.grid-4 card}
 
 ### Total Users
 **124,567**
@@ -540,7 +540,7 @@ Operations Director
 
 **Rendered:**
 
-## Performance Metrics {.grid-4}
+## Performance Metrics {.grid-4 card}
 
 ### Total Users
 **124,567**
@@ -567,7 +567,7 @@ Operations Director
 ### Card States
 
 ```markdown
-## Card States {.grid-2}
+## Card States {.grid-2 card}
 
 ### Normal Card
 ::: card
@@ -590,7 +590,7 @@ This card has special emphasis
 
 **Rendered:**
 
-## Card States {.grid-2}
+## Card States {.grid-2 card}
 
 ### Normal Card
 ::: card
@@ -713,6 +713,106 @@ Expected Delivery: Mar 20, 2025
 
 [Track Order →] [View Invoice]
 :::
+
+---
+
+## 12. Grid Layout vs Card Grid
+
+### Pure Layout Grid (no card chrome)
+
+Use `{.grid-N}` alone when items are form fields, text columns, or anything that shouldn't have card borders/backgrounds.
+
+```markdown
+## Contact {.grid-2}
+
+### Your Details
+Name
+[_____________________________]{required}
+
+Email
+[_____________________________]{type:email required}
+
+### Message
+Subject
+[_____________________________]{required}
+
+[Send Message]*
+```
+
+**Rendered:**
+
+## Contact {.grid-2}
+
+### Your Details
+Name
+[_____________________________]{required}
+
+Email
+[_____________________________]{type:email required}
+
+### Message
+Subject
+[_____________________________]{required}
+
+[Send Message]*
+
+---
+
+### Card Grid (with card chrome)
+
+Add `card` to apply card borders and backgrounds to each item.
+
+```markdown
+## Why Choose Us {.grid-3 card}
+
+### :rocket: Fast
+Renders in milliseconds.
+
+### :shield: Secure
+Enterprise-grade by default.
+
+### :gear: Flexible
+Works with any stack.
+```
+
+**Rendered:**
+
+## Why Choose Us {.grid-3 card}
+
+### :rocket: Fast
+Renders in milliseconds.
+
+### :shield: Secure
+Enterprise-grade by default.
+
+### :gear: Flexible
+Works with any stack.
+
+---
+
+### Column Spanning
+
+Add `{.col-span-N}` to a child heading to span multiple columns.
+
+```markdown
+## Pricing {.grid-3 card}
+
+### Starter
+$9/month — up to 3 projects.
+
+### Pro {.col-span-2}
+$29/month — unlimited projects, priority support, spans two columns.
+```
+
+**Rendered:**
+
+## Pricing {.grid-3 card}
+
+### Starter
+$9/month — up to 3 projects.
+
+### Pro {.col-span-2}
+$29/month — unlimited projects, priority support, spans two columns.
 
 ---
 

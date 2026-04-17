@@ -10,9 +10,9 @@
  */
 
 import { readFileSync, writeFileSync, existsSync, statSync } from 'fs';
-import { resolve, dirname, join } from 'path';
+import { resolve, dirname, join, basename } from 'path';
 import { pathToFileURL } from 'url';
-import { parse } from '../parser/index.js';
+import { parse, resolveIncludes } from '../parser/index.js';
 import { renderToHTML, renderToJSON } from '../renderer/index.js';
 import { startServer, notifyReload, notifyError } from './server.js';
 import chokidar from 'chokidar';
@@ -234,8 +234,9 @@ export function generateOutput(options: CLIOptions): string {
   // Check file size for performance warning
   checkFileSize(input);
 
-  // Read input file
-  const markdown = readFileSync(input, 'utf-8');
+  // Read input file and resolve ![[file.md]] includes
+  const raw = readFileSync(input, 'utf-8');
+  const markdown = resolveIncludes(raw, resolve(input));
 
   // Parse to AST
   const ast = parse(markdown);
@@ -288,7 +289,13 @@ export function main(): void {
     // Start dev server if requested
     if (options.serve) {
       const port = options.serve;
-      startServer({ port, outputPath: options.output });
+      startServer({
+        port,
+        outputPath: options.output,
+        renderFile: (mdPath: string) => generateOutput({ ...options, input: mdPath }),
+        rootDir: dirname(options.input),
+        inputFile: basename(options.input),
+      });
       console.log('');
     }
 

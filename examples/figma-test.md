@@ -16,7 +16,7 @@ This mockup demonstrates all wiremd features that can be imported to Figma.
 
 ---
 
-## Features Grid {.grid-3}
+## Features Grid {.grid-3 card}
 
 ### ⚡ Fast
 Lightning-quick wireframing with markdown syntax
