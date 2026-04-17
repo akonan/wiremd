@@ -546,7 +546,7 @@ Are you sure you want to delete this item?
 ### 2-Column Grid
 
 ```markdown
-## Pricing {.grid-2}
+## Pricing {.grid-2 card}
 
 ### Free Plan
 - 10 GB Storage
@@ -565,7 +565,7 @@ Are you sure you want to delete this item?
 
 **Rendered:**
 
-## Pricing {.grid-2}
+## Pricing {.grid-2 card}
 
 ### Free Plan
 - 10 GB Storage
@@ -584,7 +584,7 @@ Are you sure you want to delete this item?
 ### 3-Column Grid
 
 ```markdown
-## Features {.grid-3}
+## Features {.grid-3 card}
 
 ### :rocket: Fast
 Lightning quick performance
@@ -598,7 +598,7 @@ Fully customizable
 
 **Rendered:**
 
-## Features {.grid-3}
+## Features {.grid-3 card}
 
 ### :rocket: Fast
 Lightning quick performance
@@ -614,7 +614,7 @@ Fully customizable
 ### 4-Column Grid
 
 ```markdown
-## Stats {.grid-4}
+## Stats {.grid-4 card}
 
 ### Users
 10,000+
@@ -631,7 +631,7 @@ Fully customizable
 
 **Rendered:**
 
-## Stats {.grid-4}
+## Stats {.grid-4 card}
 
 ### Users
 10,000+
@@ -847,7 +847,7 @@ Terms
 
 [[ :logo: Dashboard | Overview | *Analytics* | Reports | Settings | :user: User ]]
 
-## Quick Stats {.grid-4}
+## Quick Stats {.grid-4 card}
 
 ### Revenue
 $45,231
@@ -885,7 +885,7 @@ $45,231
 >
 > [New Project]* [Import] [Export]
 
-## Project Stats {.grid-4}
+## Project Stats {.grid-4 card}
 ### Total
 42
 
@@ -914,7 +914,7 @@ Sprint 23 Progress
 
 [View All Tasks]
 
-## Quick Actions {.grid-3}
+## Quick Actions {.grid-3 card}
 
 ### :plus: Create
 New Task

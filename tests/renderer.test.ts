@@ -121,6 +121,36 @@ Content
       expect(html).toContain('Sign In');
     });
 
+    it('should render *active* nav items without literal asterisks', () => {
+      const input = `[[ Home | *About* | Contact ]]`;
+      const ast = parse(input);
+      const html = renderToHTML(ast, { style: 'sketch' });
+
+      expect(html).not.toContain('*About*');
+      expect(html).toContain('About');
+      expect(html).toContain('wmd-nav-item');
+    });
+
+    it('should render [Link](url)* nav item as primary button', () => {
+      const input = `[[ Home | [Get Started](./start.md)* ]]`;
+      const ast = parse(input);
+      const html = renderToHTML(ast, { style: 'sketch' });
+
+      expect(html).toContain('href="./start.md"');
+      expect(html).toContain('wmd-button-primary');
+    });
+
+    it('should render nav items with links as <a> tags with href', () => {
+      const input = `[[ :logo: MyApp | Home | [About](./about.md) | [Contact](./contact.md) ]]`;
+      const ast = parse(input);
+      const html = renderToHTML(ast, { style: 'sketch' });
+
+      expect(html).toContain('href="./about.md"');
+      expect(html).toContain('href="./contact.md"');
+      expect(html).toContain('About');
+      expect(html).toContain('Contact');
+    });
+
     it('should render navigation items with button styling', () => {
       const input = `[[ Logo | Sign In | Help ]]`;
       const ast = parse(input);
@@ -166,6 +196,139 @@ Powerful
       expect(html).toContain('Feature One');
       expect(html).toContain('Feature Two');
       expect(html).toContain('Feature Three');
+    });
+
+    it('should render wmd-grid-item-card class when card modifier is set', () => {
+      const input = `
+## Features {.grid-3 card}
+
+### Fast
+Quick
+
+### Secure
+Safe
+      `.trim();
+
+      const ast = parse(input);
+      const html = renderToHTML(ast, { style: 'sketch' });
+      expect(html).toMatch(/class="[^"]*wmd-grid-item-card/);
+    });
+
+    it('should NOT render wmd-grid-item-card class without card modifier', () => {
+      const input = `
+## Features {.grid-3}
+
+### Fast
+Quick
+      `.trim();
+
+      const ast = parse(input);
+      const html = renderToHTML(ast, { style: 'sketch' });
+      expect(html).not.toMatch(/class="[^"]*wmd-grid-item-card/);
+    });
+
+    it('should NOT render grid heading label text in output', () => {
+      const input = `
+## MyGridLabel {.grid-3}
+
+### Item One
+Content
+      `.trim();
+
+      const ast = parse(input);
+      const html = renderToHTML(ast, { style: 'sketch' });
+      expect(html).not.toContain('MyGridLabel');
+    });
+
+    it('should render col-span class on grid item', () => {
+      const input = `
+## Pricing {.grid-3}
+
+### Wide {.col-span-2}
+Spans two columns
+      `.trim();
+
+      const ast = parse(input);
+      const html = renderToHTML(ast, { style: 'sketch' });
+      expect(html).toMatch(/class="[^"]*wmd-col-span-2/);
+    });
+
+    it('should include col-span mobile reset in CSS', () => {
+      const ast = parse('## G {.grid-3}\n\n### Item\nContent');
+      const html = renderToHTML(ast, { style: 'sketch' });
+      expect(html).toMatch(/max-width:\s*768px[\s\S]*?col-span-2[\s\S]*?grid-column:\s*span 1/);
+    });
+
+    it('should render col-span combined with card modifier', () => {
+      const input = `
+## Pricing {.grid-3 card}
+
+### Wide {.col-span-2}
+Spans two
+      `.trim();
+
+      const ast = parse(input);
+      const html = renderToHTML(ast, { style: 'sketch' });
+      expect(html).toMatch(/class="[^"]*wmd-grid-item-card/);
+      expect(html).toMatch(/class="[^"]*wmd-col-span-2/);
+    });
+  });
+
+  describe('Multiple inline button-links', () => {
+    it('should render two [[btn](url)] on one line as button elements (not a paragraph)', () => {
+      const ast = parse('[[Get Started](./about.md)]* [[See Features](./about.md)]');
+      const html = renderToHTML(ast, { style: 'sketch' });
+      // Must render as <a class="wmd-button..."> — not as a <p> wrapping raw links
+      expect(html).toMatch(/<a href="\.\/about\.md" class="[^"]*wmd-button-primary[^"]*">Get Started<\/a>/);
+      expect(html).toMatch(/<a href="\.\/about\.md" class="[^"]*wmd-button[^"]*">See Features<\/a>/);
+      // Must not wrap in a <p> paragraph element with literal brackets
+      expect(html).not.toMatch(/<p[^>]*wmd-paragraph/);
+    });
+
+    it('should render two [[btn](url)] on one line without literal bracket text', () => {
+      const ast = parse('[[Docs](./docs.md)] [[API](./api.md)]');
+      const html = renderToHTML(ast, { style: 'sketch' });
+      // No literal ][ in the output (would appear between two paragraph-rendered links)
+      expect(html).not.toMatch(/\].*\[/);
+      expect(html).toMatch(/<a href="\.\/docs\.md" class="[^"]*wmd-button[^"]*">Docs<\/a>/);
+      expect(html).toMatch(/<a href="\.\/api\.md" class="[^"]*wmd-button[^"]*">API<\/a>/);
+    });
+  });
+
+  describe('Button links', () => {
+    it('should render button with href as <a> tag', () => {
+      const ast = parse('[Go to Docs]{href:./docs.md}');
+      const html = renderToHTML(ast, { style: 'sketch' });
+      expect(html).toMatch(/<a href="\.\/docs\.md" class="[^"]*wmd-button[^"]*">/);
+      expect(html).not.toContain('<button');
+    });
+
+    it('should render primary button with href as <a> tag', () => {
+      const ast = parse('[Get Started]*{href:./start.md}');
+      const html = renderToHTML(ast, { style: 'sketch' });
+      expect(html).toMatch(/<a href="\.\/start\.md"/);
+      expect(html).toContain('wmd-button-primary');
+    });
+
+    it('should render [[Button](url)] as a clickable <a> button', () => {
+      const ast = parse('[[Go to Docs](./docs.md)]');
+      const html = renderToHTML(ast, { style: 'sketch' });
+      expect(html).toMatch(/<a href="\.\/docs\.md" class="[^"]*wmd-button[^"]*">/);
+      expect(html).not.toContain('<button');
+    });
+
+    it('should reset link styling on button <a> tags', () => {
+      const ast = parse('[[Docs](./docs.md)]');
+      const html = renderToHTML(ast, { style: 'sketch' });
+      expect(html).toContain('text-decoration: none');
+      expect(html).toContain('color: inherit');
+    });
+
+    it('should render [[Button]*(url)] as primary <a> button', () => {
+      const ast = parse('[[Get Started](./start.md)]*');
+      const html = renderToHTML(ast, { style: 'sketch' });
+      expect(html).toMatch(/<a href="\.\/start\.md"/);
+      expect(html).toContain('wmd-button-primary');
     });
   });
 
@@ -250,6 +413,141 @@ Email
 
       expect(html).toContain('wmd-none');
       expect(html).toContain('<button');
+    });
+  });
+
+  describe('Grid inside container', () => {
+    it('should render a grid nested inside a card container', () => {
+      const input = `
+::: card
+
+## Features {.grid-3}
+
+### Fast
+Quick
+
+### Secure
+Safe
+
+### Powerful
+Strong
+
+:::
+      `.trim();
+      const ast = parse(input);
+      const html = renderToHTML(ast, { style: 'sketch' });
+      // Must produce an actual grid div, not just CSS class strings
+      expect(html).toMatch(/<div class="[^"]*wmd-grid[^"]*wmd-grid-3[^"]*"/);
+      expect(html).toMatch(/<div class="[^"]*wmd-grid-item[^"]*">/);
+      expect(html).toContain('Fast');
+      expect(html).toContain('Secure');
+      expect(html).toContain('Powerful');
+    });
+
+    it('should render a grid nested inside sidebar-main layout main section', () => {
+      const input = `
+::: layout {.sidebar-main}
+
+## Sidebar {.sidebar}
+Nav
+
+## Main {.main}
+
+## Stats {.grid-3}
+
+### Done
+48
+
+### Active
+12
+
+### Pending
+5
+
+:::
+      `.trim();
+      const ast = parse(input);
+      const html = renderToHTML(ast, { style: 'sketch' });
+      expect(html).toMatch(/<div class="[^"]*wmd-grid[^"]*wmd-grid-3[^"]*"/);
+      expect(html).toMatch(/<div class="[^"]*wmd-grid-item[^"]*">/);
+      expect(html).toContain('Done');
+      expect(html).toContain('Active');
+      expect(html).toContain('Pending');
+    });
+  });
+
+  describe('Sidebar Layout', () => {
+    const sidebarInput = `
+::: layout {.sidebar-main}
+
+## Sidebar {.sidebar}
+- [Home](#)
+- [Settings](#)
+
+## Main {.main}
+### Dashboard
+Content here
+
+:::
+    `.trim();
+
+    it('should render sidebar-main layout with correct wrapper class', () => {
+      const ast = parse(sidebarInput);
+      const html = renderToHTML(ast, { style: 'sketch' });
+      expect(html).toContain('wmd-container-layout');
+      expect(html).toContain('wmd-sidebar-main');
+    });
+
+    it('should render sidebar and main sections as separate divs', () => {
+      const ast = parse(sidebarInput);
+      const html = renderToHTML(ast, { style: 'sketch' });
+      expect(html).toContain('wmd-layout-sidebar');
+      expect(html).toContain('wmd-layout-main');
+    });
+
+    it('should NOT render the section heading labels as visible text', () => {
+      const ast = parse(sidebarInput);
+      const html = renderToHTML(ast, { style: 'sketch' });
+      // Heading text "Sidebar" and "Main" used as structural markers should not appear in output
+      expect(html).not.toMatch(/<h\d[^>]*>[^<]*\bSidebar\b/);
+      expect(html).not.toMatch(/<h\d[^>]*>[^<]*\bMain\b/);
+    });
+
+    it('should place sidebar content inside layout-sidebar div', () => {
+      const ast = parse(sidebarInput);
+      const html = renderToHTML(ast, { style: 'sketch' });
+      // Extract just the body content (after </style>) to avoid CSS false positives
+      const bodyStart = html.indexOf('</style>');
+      const body = html.slice(bodyStart);
+      const sidebarDivPos = body.indexOf('class="wmd-layout-sidebar"');
+      const mainDivPos = body.indexOf('class="wmd-layout-main"');
+      const homePos = body.indexOf('>Home<');
+      expect(sidebarDivPos).toBeGreaterThan(-1);
+      expect(homePos).toBeGreaterThan(sidebarDivPos);
+      expect(homePos).toBeLessThan(mainDivPos);
+    });
+
+    it('should place main content inside layout-main div', () => {
+      const ast = parse(sidebarInput);
+      const html = renderToHTML(ast, { style: 'sketch' });
+      const bodyStart = html.indexOf('</style>');
+      const body = html.slice(bodyStart);
+      const mainDivPos = body.indexOf('class="wmd-layout-main"');
+      const dashPos = body.indexOf('Dashboard');
+      expect(dashPos).toBeGreaterThan(mainDivPos);
+    });
+
+    it('should include sidebar-main grid CSS', () => {
+      const ast = parse(sidebarInput);
+      const html = renderToHTML(ast, { style: 'sketch' });
+      expect(html).toMatch(/grid-template-columns:\s*\d+px\s+1fr/);
+    });
+
+    it('should include container-sidebar CSS', () => {
+      const ast = parse('::: sidebar\n- [Home](#)\n:::\n');
+      const html = renderToHTML(ast, { style: 'sketch' });
+      expect(html).toContain('wmd-container-sidebar');
+      expect(html).toMatch(/\.wmd-container-sidebar\s*\{/);
     });
   });
 

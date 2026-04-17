@@ -191,7 +191,7 @@ Content goes here
 ### 4.1 Grid Layouts
 
 ```markdown
-## Features {.grid-3}
+## Features {.grid-3 card}
 
 ### Feature One
 Content
@@ -489,7 +489,7 @@ We couldn't load this page
 | Class | `{.class}` | `{.primary}` |
 | Attribute | `{key:value}` | `{type:email}` |
 | State | `{:state}` | `{:disabled}` |
-| Grid | `{.grid-N}` | `{.grid-3}` |
+| Grid | `{.grid-N}` | `{.grid-3 card}` |
 
 ---
 
@@ -715,7 +715,7 @@ Email
 
 **Input:**
 ```markdown
-## Features {.grid-3}
+## Features {.grid-3 card}
 
 ### :rocket: Fast
 Quick rendering

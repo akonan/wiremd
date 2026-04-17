@@ -22,7 +22,7 @@
 - :error: Failed task
 - :info: Information item
 
-## Icon Grid {.grid-4}
+## Icon Grid {.grid-4 card}
 ### :chart:
 Analytics
 

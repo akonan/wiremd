@@ -100,10 +100,26 @@ Try our product today
 
 ### Grid Layouts
 
-Create grids with heading modifiers:
+`{.grid-N}` on a heading creates an N-column layout. Child `###` headings become grid items. The heading label itself is **declaration-only** — it is never rendered in the output; it only names the grid for the author.
+
+**Pure layout grid** — no visual styling on items, useful for form columns or multi-column text:
 
 ```markdown
-## Features {.grid-3}
+## Contact {.grid-2}
+
+### Details
+Name
+[_____________________________]{required}
+
+### Address
+Street
+[_____________________________]{required}
+```
+
+**Card grid** — add `card` to render items with card chrome:
+
+```markdown
+## Features {.grid-3 card}
 
 ### Fast
 Lightning quick performance
@@ -113,6 +129,35 @@ Enterprise-grade security
 
 ### Scalable
 Grows with your needs
+```
+
+### Button Links
+
+Wrap a Markdown link inside button brackets to make a clickable button that navigates:
+
+```markdown
+[[Go to Docs](./docs.md)]
+[[Get Started](./start.md)]*
+```
+
+The `*` suffix makes it a primary button. Attributes work too:
+
+```markdown
+[[Sign Up](./signup.md)]{.secondary}
+```
+
+When using `wiremd --serve`, clicking a button link renders the target `.md` file in the same browser tab — no build step required. This is the recommended way to wire up multi-page navigation in prototypes.
+
+**Column spanning** — `{.col-span-N}` on a child heading spans multiple columns:
+
+```markdown
+## Pricing {.grid-3 card}
+
+### Starter {.col-span-1}
+$9/mo
+
+### Pro {.col-span-2}
+$29/mo — most popular, spans two columns
 ```
 
 ## Component Examples

@@ -16,7 +16,7 @@
 
 ---
 
-## Key Metrics {.grid-4}
+## Key Metrics {.grid-4 card}
 
 ### Total Revenue
 **$124,567**
@@ -38,7 +38,7 @@
 
 ---
 
-## Sales Overview {.grid-2}
+## Sales Overview {.grid-2 card}
 
 ### Revenue Chart (30 Days)
 
@@ -89,7 +89,7 @@ Filter: [All Statuses...v] | Search: [Order # or customer...___________]
 
 ---
 
-## Inventory Management {.grid-2}
+## Inventory Management {.grid-2 card}
 
 ### Low Stock Alerts
 
@@ -123,7 +123,7 @@ Filter: [All Statuses...v] | Search: [Order # or customer...___________]
 
 ---
 
-## Customer Insights {.grid-3}
+## Customer Insights {.grid-3 card}
 
 ### Total Customers
 **8,234**
@@ -160,7 +160,7 @@ Based on 1,234 reviews
 
 ## Order Status Overview
 
-## Current Orders {.grid-5}
+## Current Orders {.grid-5 card}
 
 ### Pending
 **45** orders
@@ -211,7 +211,7 @@ Based on 1,234 reviews
 
 ---
 
-## Marketing Performance {.grid-2}
+## Marketing Performance {.grid-2 card}
 
 ### Active Campaigns
 
@@ -281,7 +281,7 @@ Based on 1,234 reviews
 
 ---
 
-## Shipping & Fulfillment {.grid-2}
+## Shipping & Fulfillment {.grid-2 card}
 
 ### Shipping Methods
 
@@ -335,7 +335,7 @@ Based on 1,234 reviews
 
 ## Customer Support
 
-## Support Metrics {.grid-4}
+## Support Metrics {.grid-4 card}
 
 ### Open Tickets
 **23**

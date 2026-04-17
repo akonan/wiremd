@@ -27,7 +27,7 @@ I design beautiful, functional digital experiences that users love.
 
 ## Featured Work
 
-## Recent Projects {.grid-2}
+## Recent Projects {.grid-2 card}
 
 ### E-Commerce Redesign
 ![Project Screenshot](https://via.placeholder.com/500x350)
@@ -94,7 +94,7 @@ Secure, accessible banking app serving 500K+ users with 4.8★ rating.
 
 ## Skills & Expertise
 
-## Design {.grid-3}
+## Design {.grid-3 card}
 
 ### UI/UX Design
 - User Research
@@ -159,7 +159,7 @@ I'm a product designer with 8+ years of experience creating digital experiences 
 
 ## Recognition & Awards
 
-## Achievements {.grid-4}
+## Achievements {.grid-4 card}
 
 ### Awwwards
 3x Site of the Day
@@ -231,7 +231,7 @@ Message
 
 ::: footer
 
-## Connect {.grid-3}
+## Connect {.grid-3 card}
 
 ### Work
 - [Portfolio](https://janedoe.design)
