@@ -62,7 +62,7 @@ export type WiremdNode =
   | { type: 'grid-item'; props: ComponentProps; children: WiremdNode[]; position?: Location }
 
   // Forms
-  | { type: 'button'; content?: string; children?: WiremdNode[]; props: ComponentProps & { variant?: 'primary' | 'secondary' | 'danger'; type?: 'button' | 'submit' | 'reset' }; position?: Location }
+  | { type: 'button'; content?: string; children?: WiremdNode[]; href?: string; props: ComponentProps & { variant?: 'primary' | 'secondary' | 'danger'; type?: 'button' | 'submit' | 'reset' }; position?: Location }
   | { type: 'input'; props: ComponentProps & { inputType?: 'text' | 'email' | 'password' | 'tel' | 'url' | 'number' | 'date' | 'time' | 'datetime-local' | 'search'; placeholder?: string; value?: string; required?: boolean; disabled?: boolean; pattern?: string; min?: number | string; max?: number | string; step?: number | string; width?: number }; position?: Location }
   | { type: 'textarea'; props: ComponentProps & { placeholder?: string; rows?: number; cols?: number; required?: boolean; disabled?: boolean; value?: string }; position?: Location }
   | { type: 'select'; props: ComponentProps & { placeholder?: string; required?: boolean; disabled?: boolean; multiple?: boolean; value?: string }; options: Array<{ type: 'option'; value: string; label: string; selected?: boolean; position?: Location }>; position?: Location }

@@ -310,7 +310,7 @@ Email
 ```markdown
 ::: footer
 
-## Links {.grid-4}
+## Links {.grid-4 card}
 
 ### Product
 - Features
@@ -351,7 +351,7 @@ Email
 
 ::: footer
 
-## Links {.grid-4}
+## Links {.grid-4 card}
 
 ### Product
 - Features

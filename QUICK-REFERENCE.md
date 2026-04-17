@@ -19,7 +19,10 @@
 | **Radio** | `- ( )` / `- (*)` | `- (*) Option 1` |
 | **Icon** | `:name:` | `:home: :user: :gear:` |
 | **Nav Bar** | `[[ A \| B \| C ]]` | `[[ Home \| About \| [Login] ]]` |
+| **Nav Link** | `[[ [Text](url) \| ... ]]` | `[[ [About](./about.md) \| ... ]]` |
 | **Breadcrumbs** | `[[ A > B > C ]]` | `[[ Home > Products > Item ]]` |
+| **Button Link** | `[[Text](url)]` | `[[About](./about.md)]` |
+| **Primary Button Link** | `[[Text](url)]*` | `[[Get Started](./start.md)]*` |
 
 ## Containers
 
@@ -35,14 +38,18 @@
 
 ## Layouts
 
-| Layout | Syntax | Example |
-|--------|--------|---------|
-| **2-Column Grid** | `## Title {.grid-2}` | Section with 2 columns |
-| **3-Column Grid** | `## Title {.grid-3}` | Section with 3 columns |
-| **4-Column Grid** | `## Title {.grid-4}` | Section with 4 columns |
-| **Auto Grid** | `## Title {.grid-auto}` | Auto-fit columns |
+| Layout | Syntax | Notes |
+|--------|--------|-------|
+| **Grid (layout only)** | `## Title {.grid-3}` | Equal columns, no styling on items |
+| **Grid (card chrome)** | `## Title {.grid-3 card}` | Items rendered as styled cards |
+| **2-Column Grid** | `## Title {.grid-2}` | |
+| **3-Column Grid** | `## Title {.grid-3}` | |
+| **4-Column Grid** | `## Title {.grid-4}` | |
+| **Col span** | `### Item {.col-span-2}` | Item spans 2 columns |
 
-Grid items are defined by `###` headings under the grid heading.
+Grid items are defined by `###` headings under the grid heading. The grid heading label (e.g., "Features") is a **declaration-only** author comment — it is never rendered in the output.
+
+`{.grid-N}` is pure layout — use it for form columns, multi-column text, etc. Add `card` when items should have card chrome (features, pricing, team members).
 
 ## Attributes
 
@@ -128,10 +135,21 @@ Message
 [[ Home > Products > Category > Item ]]
 ```
 
+### Multi-file Navigation
+
+When running `wiremd --serve`, clicking a button link navigates to and renders that `.md` file:
+
+```markdown
+# Shared navbar (paste in each page)
+[[ :logo: MyApp | [Home](./home.md) | [About](./about.md) | [Contact](./contact.md)* ]]
+```
+
+The dev server (`--serve <port>`) redirects `/` to the entry file and renders any `.md` on demand — no build step needed between page navigations.
+
 ## Grid Pattern
 
 ```markdown
-## Features {.grid-3}
+## Features {.grid-3 card}
 
 ### Feature 1
 Description here
@@ -180,7 +198,7 @@ Password
 
 ### Stats Grid
 ```markdown
-## Metrics {.grid-4}
+## Metrics {.grid-4 card}
 
 ### Users
 10,000+

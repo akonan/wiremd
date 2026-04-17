@@ -7,6 +7,62 @@ import { createServer } from 'http';
 import { readFileSync, writeFileSync, unlinkSync } from 'fs';
 import { startServer, notifyReload, notifyError } from '../src/cli/server.js';
 
+describe('Multi-file routing', () => {
+  const TEST_PORT = 3457;
+  const TEST_OUTPUT = './test-main.html';
+  const TEST_OTHER_MD = './test-other.md';
+  let server: any;
+
+  beforeEach(() => {
+    writeFileSync(TEST_OUTPUT, '<html><body>Main Page</body></html>', 'utf-8');
+    writeFileSync(TEST_OTHER_MD, '# Other Page', 'utf-8');
+  });
+
+  afterEach(async () => {
+    if (server?.close) await new Promise<void>(r => server.close(() => r()));
+    try { unlinkSync(TEST_OUTPUT); } catch {}
+    try { unlinkSync(TEST_OTHER_MD); } catch {}
+  });
+
+  it('should return the server instance from startServer', () => {
+    server = startServer({ port: TEST_PORT, outputPath: TEST_OUTPUT });
+    expect(server).toBeDefined();
+    expect(typeof server.close).toBe('function');
+  });
+
+  it('should redirect / to the entry file when inputFile is provided', async () => {
+    const renderFile = vi.fn().mockReturnValue('<html><body>Main Page</body></html>');
+    server = startServer({ port: TEST_PORT, outputPath: TEST_OUTPUT, renderFile, rootDir: '.', inputFile: 'test-other.md' });
+    const res = await fetch(`http://localhost:${TEST_PORT}/`, { redirect: 'manual' });
+    expect(res.status).toBe(302);
+    expect(res.headers.get('location')).toBe('/test-other.md');
+  });
+
+  it('should serve main file at / when no inputFile provided (fallback)', async () => {
+    server = startServer({ port: TEST_PORT, outputPath: TEST_OUTPUT });
+    const res = await fetch(`http://localhost:${TEST_PORT}/`);
+    expect(res.status).toBe(200);
+    const html = await res.text();
+    expect(html).toContain('Main Page');
+  });
+
+  it('should call renderFile for .md requests and serve result', async () => {
+    const renderFile = vi.fn().mockReturnValue('<html><body>Rendered Other</body></html>');
+    server = startServer({ port: TEST_PORT, outputPath: TEST_OUTPUT, renderFile, rootDir: '.' });
+    const res = await fetch(`http://localhost:${TEST_PORT}/test-other.md`);
+    expect(res.status).toBe(200);
+    expect(renderFile).toHaveBeenCalledWith(expect.stringContaining('test-other.md'));
+    const html = await res.text();
+    expect(html).toContain('Rendered Other');
+  });
+
+  it('should return 404 for unknown paths', async () => {
+    server = startServer({ port: TEST_PORT, outputPath: TEST_OUTPUT, rootDir: '.' });
+    const res = await fetch(`http://localhost:${TEST_PORT}/nonexistent.md`);
+    expect(res.status).toBe(404);
+  });
+});
+
 describe('Dev Server', () => {
   const TEST_PORT = 3456;
   const TEST_OUTPUT = './test-output.html';

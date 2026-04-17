@@ -105,13 +105,13 @@ Three ways:
 
 **Check these:**
 
-1. Grid class is on the parent heading: `## Title {.grid-3}`
+1. Grid class is on the parent heading: `## Title {.grid-3 card}`
 2. Grid items are `###` headings (one level deeper)
 3. Each grid item starts with `###`
 
 ```markdown
 ✅ Correct:
-## Features {.grid-3}
+## Features {.grid-3 card}
 
 ### Feature 1
 Content
@@ -120,7 +120,7 @@ Content
 Content
 
 ❌ Wrong (missing ### for items):
-## Features {.grid-3}
+## Features {.grid-3 card}
 Feature 1
 Feature 2
 ```
@@ -273,9 +273,9 @@ Use state attributes:
 ### What grid sizes are supported?
 
 Built-in grid classes:
-- `{.grid-2}` - 2 columns
-- `{.grid-3}` - 3 columns
-- `{.grid-4}` - 4 columns
+- `{.grid-2 card}` - 2 columns
+- `{.grid-3 card}` - 3 columns
+- `{.grid-4 card}` - 4 columns
 - `{.grid-auto}` - Auto-fit columns
 
 ### Can I nest containers?
