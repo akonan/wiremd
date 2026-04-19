@@ -30,12 +30,14 @@
   "files": [
     "dist",
     "bin",
+    "claude-skill",
     "README.md",
     "LICENSE"
   ],
   "scripts": {
     "dev": "vite build --watch",
     "build": "tsc && vite build",
+    "build:skill": "cp QUICK-REFERENCE.md claude-skill/references/quick-reference.md",
     "test": "vitest run --config vitest.config.ts",
     "test:watch": "vitest --config vitest.config.ts",
     "test:coverage": "vitest run --config vitest.config.ts --coverage",
