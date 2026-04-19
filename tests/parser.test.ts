@@ -328,6 +328,46 @@ Are you sure?
       expect(result.children[0].type).toBe('container');
       expect(result.children[0].children).toHaveLength(3);
     });
+
+    it('should nest a container inside another container', () => {
+      const input = `
+::: modal
+
+::: card
+
+Nested content
+
+:::
+
+:::
+      `.trim();
+
+      const result = parse(input);
+      const modal = result.children[0];
+      expect(modal.type).toBe('container');
+      expect(modal.containerType).toBe('modal');
+      const card = modal.children[0];
+      expect(card.type).toBe('container');
+      expect(card.containerType).toBe('card');
+      expect(card.children[0].type).toBe('paragraph');
+    });
+
+    it('should extract inline content from the opener line', () => {
+      const input = `
+::: alert Warning: this action is irreversible
+
+[Cancel] [Confirm]{.danger}
+
+:::
+      `.trim();
+
+      const result = parse(input);
+      const alert = result.children[0];
+      expect(alert.type).toBe('container');
+      expect(alert.containerType).toBe('alert');
+      expect(alert.children[0].type).toBe('paragraph');
+      expect(alert.children[0].content).toBe('Warning: this action is irreversible');
+    });
   });
 
   describe('Inline Container Syntax (Navigation)', () => {
@@ -484,6 +524,207 @@ Advanced features included
         columns: 4,
       });
       expect(result.children[0].children).toHaveLength(4);
+    });
+
+    it('should set card prop on grid node when card modifier is present', () => {
+      const input = `
+## Features {.grid-3 card}
+
+### Fast
+Quick
+
+### Secure
+Safe
+
+### Scalable
+Grows
+      `.trim();
+
+      const result = parse(input);
+      expect(result.children[0]).toMatchObject({ type: 'grid', columns: 3 });
+      expect((result.children[0] as any).props.card).toBe(true);
+    });
+
+    it('should not set card prop on grid node without card modifier', () => {
+      const input = `
+## Features {.grid-3}
+
+### Fast
+Quick
+      `.trim();
+
+      const result = parse(input);
+      expect((result.children[0] as any).props.card).toBeFalsy();
+    });
+
+    it('should parse a grid nested inside a container as a grid node', () => {
+      const input = `
+::: card
+
+## Features {.grid-3}
+
+### Fast
+Quick
+
+### Secure
+Safe
+
+### Powerful
+Strong
+
+:::
+      `.trim();
+
+      const result = parse(input);
+      const card = result.children[0] as any;
+      expect(card.type).toBe('container');
+      expect(card.containerType).toBe('card');
+      // The grid must be a grid node, not a plain heading
+      const grid = card.children[0];
+      expect(grid.type).toBe('grid');
+      expect(grid.columns).toBe(3);
+      expect(grid.children).toHaveLength(3);
+      expect(grid.children[0].type).toBe('grid-item');
+    });
+  });
+
+  describe('Sidebar layout', () => {
+    it('should parse :::layout {.sidebar-main} as a layout container', () => {
+      const input = `
+::: layout {.sidebar-main}
+
+## Sidebar {.sidebar}
+Nav here
+
+## Main {.main}
+Content here
+
+:::
+      `.trim();
+
+      const result = parse(input);
+      const layout = result.children[0] as any;
+      expect(layout.type).toBe('container');
+      expect(layout.containerType).toBe('layout');
+      expect(layout.props.classes).toContain('sidebar-main');
+    });
+
+    it('should parse grid inside sidebar-main layout as a grid node', () => {
+      const input = `
+::: layout {.sidebar-main}
+
+## Sidebar {.sidebar}
+Nav
+
+## Main {.main}
+
+## Stats {.grid-3}
+
+### Done
+48
+
+### Active
+12
+
+### Pending
+5
+
+:::
+      `.trim();
+
+      const result = parse(input);
+      const layout = result.children[0] as any;
+      // Find the grid in the layout's children
+      const grid = layout.children.find((c: any) => c.type === 'grid');
+      expect(grid).toBeDefined();
+      expect(grid.columns).toBe(3);
+      expect(grid.children).toHaveLength(3);
+    });
+  });
+
+  describe('Button link syntax [[text](url)]', () => {
+    it('should parse [[Button](url)] as button with href', () => {
+      const result = parse('[[Go to Docs](./docs.md)]');
+      expect(result.children[0]).toMatchObject({
+        type: 'button',
+        content: 'Go to Docs',
+        href: './docs.md',
+      });
+    });
+
+    it('should parse [[Button]*(url)] as primary button with href', () => {
+      const result = parse('[[Get Started](./start.md)]*');
+      expect(result.children[0]).toMatchObject({
+        type: 'button',
+        href: './start.md',
+        props: { variant: 'primary' },
+      });
+    });
+
+    it('should parse [[Button](url)] with attributes', () => {
+      const result = parse('[[Sign Up](./signup.md)]{.secondary}');
+      expect(result.children[0]).toMatchObject({
+        type: 'button',
+        href: './signup.md',
+        props: { classes: ['secondary'] },
+      });
+    });
+
+    it('should parse [[Button](url)] with external URL', () => {
+      const result = parse('[[Google](https://www.google.com)]');
+      expect(result.children[0]).toMatchObject({
+        type: 'button',
+        href: 'https://www.google.com',
+      });
+    });
+  });
+
+  describe('Grid col-span', () => {
+    it('should hoist col-span class from heading to grid-item', () => {
+      const input = `
+## Pricing {.grid-3}
+
+### Starter {.col-span-1}
+$9/mo
+
+### Pro {.col-span-2}
+$29/mo
+      `.trim();
+
+      const result = parse(input);
+      const grid = result.children[0] as any;
+      expect(grid.type).toBe('grid');
+      expect(grid.children[0].props.classes).toContain('col-span-1');
+      expect(grid.children[1].props.classes).toContain('col-span-2');
+    });
+
+    it('should leave grid-item without col-span when not specified', () => {
+      const input = `
+## Layout {.grid-3}
+
+### Item One
+Content
+      `.trim();
+
+      const result = parse(input);
+      const item = (result.children[0] as any).children[0];
+      expect(item.props.classes).not.toContain('col-span-1');
+      expect(item.props.classes).not.toContain('col-span-2');
+    });
+
+    it('should not render grid heading label text as a child node', () => {
+      const input = `
+## Features {.grid-3}
+
+### Fast
+Quick
+      `.trim();
+
+      const result = parse(input);
+      const grid = result.children[0] as any;
+      const types = grid.children.map((c: any) => c.type);
+      expect(types).not.toContain('heading');
+      expect(types.every((t: string) => t === 'grid-item')).toBe(true);
     });
   });
 });

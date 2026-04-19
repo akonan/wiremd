@@ -71,6 +71,10 @@ export class WiremdPreviewProvider implements vscode.WebviewPanelSerializer {
       this.disposables
     );
 
+    this.panel.onDidDispose(() => {
+      this.panel = undefined;
+    }, null, this.disposables);
+
     this.refresh();
   }
 
@@ -261,7 +265,47 @@ export class WiremdPreviewProvider implements vscode.WebviewPanelSerializer {
       case 'info':
         vscode.window.showInformationMessage(`Wiremd: ${message.message}`);
         break;
+
+      case 'navigate':
+        if (this.currentEditor) {
+          this.resolveLink(message.href).then((targetUri) => {
+            if (!targetUri) {
+              vscode.window.showErrorMessage(`Wiremd: Cannot resolve ${message.href}`);
+              return;
+            }
+            vscode.workspace.openTextDocument(targetUri).then(
+              (doc) => { vscode.window.showTextDocument(doc, this.currentEditor!.viewColumn); },
+              (err) => { vscode.window.showErrorMessage(`Wiremd: Cannot open ${message.href}: ${err.message}`); }
+            );
+          });
+        }
+        break;
     }
+  }
+
+  private async resolveLink(href: string): Promise<vscode.Uri | undefined> {
+    if (!this.currentEditor) return undefined;
+
+    if (!href.startsWith('/')) {
+      const currentDir = vscode.Uri.joinPath(this.currentEditor.document.uri, '..');
+      return vscode.Uri.joinPath(currentDir, href);
+    }
+
+    // Absolute path: walk up directory tree until the file is found
+    const relative = href.slice(1);
+    let dir = vscode.Uri.joinPath(this.currentEditor.document.uri, '..');
+    for (let i = 0; i < 10; i++) {
+      const candidate = vscode.Uri.joinPath(dir, relative);
+      try {
+        await vscode.workspace.fs.stat(candidate);
+        return candidate;
+      } catch {
+        const parent = vscode.Uri.joinPath(dir, '..');
+        if (parent.fsPath === dir.fsPath) break;
+        dir = parent;
+      }
+    }
+    return undefined;
   }
 
   /**
@@ -566,6 +610,17 @@ export class WiremdPreviewProvider implements vscode.WebviewPanelSerializer {
         overlay.classList.remove('show');
       }, 5000);
     }
+
+    // Intercept .md link clicks and navigate in preview
+    document.addEventListener('click', (e) => {
+      const a = e.target.closest('a');
+      if (!a) return;
+      const href = a.getAttribute('href');
+      if (href && href.endsWith('.md')) {
+        e.preventDefault();
+        vscode.postMessage({ type: 'navigate', href });
+      }
+    });
 
     // Notify ready
     vscode.postMessage({ type: 'ready' });

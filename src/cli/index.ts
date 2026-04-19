@@ -10,7 +10,7 @@
  */
 
 import { readFileSync, writeFileSync, existsSync, statSync } from 'fs';
-import { resolve, dirname, join } from 'path';
+import { resolve, dirname, join, basename } from 'path';
 import { pathToFileURL } from 'url';
 import { parse } from '../parser/index.js';
 import { renderToHTML, renderToJSON } from '../renderer/index.js';
@@ -288,7 +288,13 @@ export function main(): void {
     // Start dev server if requested
     if (options.serve) {
       const port = options.serve;
-      startServer({ port, outputPath: options.output });
+      startServer({
+        port,
+        outputPath: options.output,
+        renderFile: (mdPath: string) => generateOutput({ ...options, input: mdPath }),
+        rootDir: dirname(options.input),
+        inputFile: basename(options.input),
+      });
       console.log('');
     }
 

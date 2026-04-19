@@ -29,125 +29,11 @@ export function transformToWiremdAST(
     theme: 'sketch',
   };
 
-  const children: WiremdNode[] = [];
-
-  // Visit all nodes in the MDAST with context for dropdown options and grid layouts
-  let i = 0;
-  while (i < mdast.children.length) {
-    const node = mdast.children[i];
-    const nextNode = mdast.children[i + 1];
-
-    // Check if this is a heading with grid class
-    if (node.type === 'heading') {
-      const content = extractTextContent(node);
-      const gridMatch = content.match(/\{[^}]*\.grid-(\d+)[^}]*\}/);
-
-      if (gridMatch) {
-        const columns = parseInt(gridMatch[1], 10);
-        const gridHeadingLevel = node.depth;
-
-        // This is a grid container - collect grid items
-        const gridItems: WiremdNode[] = [];
-        const headingTransformed = transformHeading(node, options);
-
-        i++; // Move to next node
-
-        // Collect child headings as grid items
-        while (i < mdast.children.length) {
-          const childNode = mdast.children[i];
-
-          // Grid items are headings one level deeper
-          if (
-            childNode.type === 'heading' &&
-            childNode.depth === gridHeadingLevel + 1
-          ) {
-            const gridItem: WiremdNode[] = [];
-
-            // Add the heading
-            const childNextNode = mdast.children[i + 1];
-            const headingNode = transformNode(childNode, options, childNextNode);
-            if (headingNode) {
-              gridItem.push(headingNode);
-            }
-
-            i++;
-
-            // Collect content until next heading at same or higher level
-            while (i < mdast.children.length) {
-              const contentNode = mdast.children[i];
-
-              if (
-                contentNode.type === 'heading' &&
-                contentNode.depth <= gridHeadingLevel + 1
-              ) {
-                break; // Stop at next grid item or parent level
-              }
-
-              const contentNextNode = mdast.children[i + 1];
-              const contentTransformed = transformNode(contentNode, options, contentNextNode);
-              if (contentTransformed) {
-                gridItem.push(contentTransformed);
-
-                // Skip consumed nodes
-                if (contentTransformed.type === 'select' && contentNextNode?.type === 'list') {
-                  i++;
-                }
-              }
-
-              i++;
-            }
-
-            // Add as grid item
-            gridItems.push({
-              type: 'grid-item',
-              props: {},
-              children: gridItem,
-            });
-          } else {
-            // Not a grid item heading, stop collecting
-            break;
-          }
-        }
-
-        // Create grid node
-        children.push({
-          type: 'grid',
-          columns,
-          props: (headingTransformed as any).props || {},
-          children: gridItems,
-        });
-
-        continue;
-      }
-    }
-
-    const transformed = transformNode(node, options, nextNode);
-    if (transformed) {
-      children.push(transformed);
-
-      // If this was a select node and we consumed the next list, skip it
-      if (transformed.type === 'select' && nextNode && nextNode.type === 'list') {
-        i++; // Skip the next node (list) as it was consumed
-      }
-      // Also check if it's a container with a select child that has consumed the list
-      if (transformed.type === 'container' && nextNode && nextNode.type === 'list') {
-        const hasSelectWithOptions = (transformed.children || []).some((child: any) =>
-          child.type === 'select' && child.options && child.options.length > 0
-        );
-        if (hasSelectWithOptions) {
-          i++; // Skip the next node (list) as it was consumed by the select
-        }
-      }
-    }
-
-    i++;
-  }
-
   return {
     type: 'document',
     version: SYNTAX_VERSION,
     meta,
-    children,
+    children: processNodeList(mdast.children as any[], options),
   };
 }
 
@@ -238,34 +124,106 @@ function transformNode(
 }
 
 /**
+ * Process a list of MDAST nodes into wiremd nodes, detecting grid layouts.
+ * Shared by both the top-level document pass and container children.
+ */
+function processNodeList(nodeChildren: any[], options: ParseOptions): WiremdNode[] {
+  const result: WiremdNode[] = [];
+  let i = 0;
+
+  while (i < nodeChildren.length) {
+    const node = nodeChildren[i];
+    const nextNode = nodeChildren[i + 1];
+
+    if (node.type === 'heading') {
+      const content = extractTextContent(node);
+      const gridMatch = content.match(/\{[^}]*\.grid-(\d+)[^}]*\}/);
+
+      if (gridMatch) {
+        const columns = parseInt(gridMatch[1], 10);
+        const gridHeadingLevel = node.depth;
+        const gridItems: WiremdNode[] = [];
+        const headingTransformed = transformHeading(node, options);
+
+        i++;
+
+        while (i < nodeChildren.length) {
+          const childNode = nodeChildren[i];
+
+          if (childNode.type === 'heading' && childNode.depth === gridHeadingLevel + 1) {
+            const gridItem: WiremdNode[] = [];
+            const childNextNode = nodeChildren[i + 1];
+            const headingNode = transformNode(childNode, options, childNextNode);
+            if (headingNode) gridItem.push(headingNode);
+            i++;
+
+            while (i < nodeChildren.length) {
+              const contentNode = nodeChildren[i];
+              if (contentNode.type === 'heading' && contentNode.depth <= gridHeadingLevel + 1) break;
+              const contentNextNode = nodeChildren[i + 1];
+              const contentTransformed = transformNode(contentNode, options, contentNextNode);
+              if (contentTransformed) {
+                gridItem.push(contentTransformed);
+                if (contentTransformed.type === 'select' && contentNextNode?.type === 'list') i++;
+              }
+              i++;
+            }
+
+            const headingContent = extractTextContent(childNode);
+            const colSpanMatch = headingContent.match(/\{[^}]*\.col-span-(\d+)[^}]*\}/);
+            const gridItemProps: any = { classes: [] };
+            if (colSpanMatch) gridItemProps.classes.push(`col-span-${colSpanMatch[1]}`);
+
+            gridItems.push({ type: 'grid-item', props: gridItemProps, children: gridItem });
+          } else if (childNode.type === 'heading' && childNode.depth <= gridHeadingLevel) {
+            break;
+          } else if (gridItems.length === 0) {
+            i++;
+            continue;
+          } else {
+            break;
+          }
+        }
+
+        result.push({
+          type: 'grid',
+          columns,
+          props: (headingTransformed as any).props || {},
+          children: gridItems,
+        });
+        continue;
+      }
+    }
+
+    const transformed = transformNode(node, options, nextNode);
+    if (transformed) {
+      result.push(transformed);
+      if (transformed.type === 'select' && nextNode && nextNode.type === 'list') i++;
+      if (transformed.type === 'container' && nextNode && nextNode.type === 'list') {
+        const hasSelectWithOptions = (transformed.children || []).some((child: any) =>
+          child.type === 'select' && child.options && child.options.length > 0
+        );
+        if (hasSelectWithOptions) i++;
+      }
+    }
+    i++;
+  }
+
+  return result;
+}
+
+/**
  * Transform container node (:::)
  */
 function transformContainer(node: any, options: ParseOptions): WiremdNode {
-  const children: WiremdNode[] = [];
-  const nodeChildren = node.children || [];
-
-  for (let i = 0; i < nodeChildren.length; i++) {
-    const child = nodeChildren[i];
-    const nextChild = nodeChildren[i + 1];
-    const transformed = transformNode(child, options, nextChild);
-
-    if (transformed) {
-      children.push(transformed);
-
-      // Skip next node if it was consumed (dropdown options)
-      if (transformed.type === 'select' && nextChild && nextChild.type === 'list') {
-        i++;
-      }
-    }
-  }
-
   const props = parseAttributes(node.attributes || '');
+  const containerType: string = (node.containerType || '').trim();
 
   return {
     type: 'container',
-    containerType: node.containerType as any,
+    containerType: containerType as any,
     props,
-    children,
+    children: processNodeList(node.children || [], options) as any,
   };
 }
 
@@ -280,6 +238,29 @@ function transformInlineContainer(node: any, _options: ParseOptions): WiremdNode
   // Parse each item - could be text, icon, or button
   for (const item of items) {
     const trimmed = item.trim();
+
+    // Check if it's an active/emphasized item: *Text* or **Text**
+    const activeMatch = trimmed.match(/^\*\*?([^*]+)\*\*?$/);
+    if (activeMatch) {
+      children.push({
+        type: 'nav-item',
+        content: activeMatch[1],
+        props: { classes: ['active'] },
+      });
+      continue;
+    }
+
+    // Check if it's a link nav-item: [Text](url) or [Text](url)*
+    const linkMatch = trimmed.match(/^\[([^\]]+)\]\(([^)]+)\)(\*)?$/);
+    if (linkMatch) {
+      children.push({
+        type: 'nav-item',
+        content: linkMatch[1],
+        href: linkMatch[2],
+        props: { variant: linkMatch[3] ? 'primary' : undefined },
+      });
+      continue;
+    }
 
     // Check if it's a button: [Text] or [Text]*
     const buttonMatch = trimmed.match(/^\[([^\]]+)\](\*)?$/);
@@ -396,6 +377,50 @@ function transformHeading(node: any, _options: ParseOptions): WiremdNode {
 }
 
 /**
+ * Detect one or more [[Text](url)]* patterns in a paragraph's children.
+ * Remark produces alternating text/link nodes because CommonMark forbids nested links:
+ *   "[", link, "]*[", link, "]"
+ * Returns button nodes, or null if the children don't match this pattern at all.
+ */
+function tryParseButtonLinkSequence(children: any[]): WiremdNode[] | null {
+  if (!children || children.length < 3 || children.length % 2 === 0) return null;
+
+  // Must alternate: text, link, text, link, text, ...
+  for (let i = 0; i < children.length; i++) {
+    if (i % 2 === 0 && children[i].type !== 'text') return null;
+    if (i % 2 === 1 && children[i].type !== 'link') return null;
+  }
+
+  // First text must be exactly "[" (optionally with leading whitespace)
+  if (!/^\s*\[$/.test(children[0].value)) return null;
+
+  // Last text must be "]" + optional "*" + optional "{attrs}" + nothing else
+  const lastText: string = children[children.length - 1].value;
+  if (!/^\](\*)?\s*(\{[^}]*\})?\s*$/.test(lastText)) return null;
+
+  // Each middle text (between two links) must be "]...[" — closes previous, opens next
+  for (let i = 2; i <= children.length - 3; i += 2) {
+    if (!/^\](\*)?\s*(\{[^}]*\})?\s*\[$/.test(children[i].value)) return null;
+  }
+
+  return children
+    .filter((_: any, i: number) => i % 2 === 1) // keep only link nodes
+    .map((linkNode: any, idx: number) => {
+      const closingText: string = children[idx * 2 + 2].value;
+      const closeMatch = closingText.match(/^\](\*)?\s*(\{[^}]*\})?/);
+      const isPrimary = !!(closeMatch && closeMatch[1]);
+      const attrStr = (closeMatch && closeMatch[2]) || '';
+      const attrs = attrStr ? parseAttributes(attrStr) : {};
+      return {
+        type: 'button' as const,
+        content: extractTextContent(linkNode),
+        href: linkNode.url || '#',
+        props: { ...attrs, variant: isPrimary ? 'primary' : (attrs as any).variant },
+      };
+    });
+}
+
+/**
  * Transform paragraph node
  * This is where we'll detect buttons, inputs, etc.
  */
@@ -404,6 +429,20 @@ function transformParagraph(node: any, _options: ParseOptions, nextNode?: any): 
   const hasRichContent = node.children && node.children.some((child: any) =>
     child.type === 'strong' || child.type === 'emphasis' || child.type === 'link' || child.type === 'code' || child.type === 'image'
   );
+
+  // [[Button](url)]* — one or more linked-button patterns on the same line.
+  // CommonMark forbids nested links so remark produces alternating text/link children:
+  //   "[", link, "]*", "[", link, "]"  for two buttons, etc.
+  const buttonLinks = tryParseButtonLinkSequence(node.children);
+  if (buttonLinks !== null) {
+    if (buttonLinks.length === 1) return buttonLinks[0];
+    return {
+      type: 'container',
+      containerType: 'button-group',
+      children: buttonLinks as any,
+      props: {},
+    };
+  }
 
   // If it has rich content and is not a special pattern, return as a rich text paragraph
   if (hasRichContent) {

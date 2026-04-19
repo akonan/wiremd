@@ -34,6 +34,9 @@ pnpm-debug.log*
 .env.local
 .env.*.local
 
+# Generated HTML output from CLI
+examples/**/*.html
+
 # Temporary
 tmp/
 temp/
