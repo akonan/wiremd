@@ -11,24 +11,28 @@
  * Get CSS for the specified style
  */
 export function getStyleCSS(style: string, prefix: string): string {
+  // Structural rules shared across themes — required for tabs visibility toggling
+  const tabsStructural = `
+.${prefix}tab-headers { display: flex; gap: 0; border-bottom: 2px solid #e0e0e0; margin-bottom: 12px; }
+.${prefix}tab-header { display: inline-block; padding: 8px 16px; border: none; border-bottom: 2px solid transparent; margin-bottom: -2px; font-size: 14px; font-weight: 500; color: #888; background: transparent; cursor: pointer; font-family: inherit; transition: color 0.15s; }
+.${prefix}tab-header:hover { color: #333; }
+.${prefix}tab-header.${prefix}active { border-bottom-color: currentColor; color: #333; font-weight: 600; }
+.${prefix}tab-panel[hidden] { display: none; }
+.${prefix}tab-panels { padding: 12px 0; }
+`;
+
+  let themeCSS: string;
   switch (style) {
-    case 'sketch':
-      return getSketchStyle(prefix);
-    case 'clean':
-      return getCleanStyle(prefix);
-    case 'wireframe':
-      return getWireframeStyle(prefix);
-    case 'none':
-      return getNoneStyle(prefix);
-    case 'tailwind':
-      return getTailwindStyle(prefix);
-    case 'material':
-      return getMaterialStyle(prefix);
-    case 'brutal':
-      return getBrutalStyle(prefix);
-    default:
-      return getSketchStyle(prefix);
+    case 'sketch':    themeCSS = getSketchStyle(prefix); break;
+    case 'clean':     themeCSS = getCleanStyle(prefix); break;
+    case 'wireframe': themeCSS = getWireframeStyle(prefix); break;
+    case 'none':      themeCSS = getNoneStyle(prefix); break;
+    case 'tailwind':  themeCSS = getTailwindStyle(prefix); break;
+    case 'material':  themeCSS = getMaterialStyle(prefix); break;
+    case 'brutal':    themeCSS = getBrutalStyle(prefix); break;
+    default:          themeCSS = getSketchStyle(prefix);
   }
+  return tabsStructural + themeCSS;
 }
 
 /**
@@ -468,6 +472,13 @@ body.${prefix}root {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }
+
+/* Tabs */
+.${prefix}tabs { margin: 12px 0; }
+.${prefix}tab-headers { border-bottom-color: #666; }
+.${prefix}tab-header { color: #666; }
+.${prefix}tab-header:hover { color: #000; }
+.${prefix}tab-header.${prefix}active { border-bottom-color: #000; color: #000; }
 `;
 }
 

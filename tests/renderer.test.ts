@@ -271,4 +271,64 @@ Email
       expect(json).toContain('"type":"document"');
     });
   });
+
+  describe('Tabs', () => {
+    const input = `
+## Product {.tabs}
+
+### Overview
+Overview panel
+
+### Details
+Details panel
+    `.trim();
+
+    it('should render a tabs container with headers and panels', () => {
+      const ast = parse(input);
+      const html = renderToHTML(ast, { style: 'sketch' });
+      expect(html).toContain('wmd-tabs');
+      expect(html).toContain('wmd-tab-header');
+      expect(html).toContain('wmd-tab-panel');
+    });
+
+    it('should render tab labels as header buttons', () => {
+      const ast = parse(input);
+      const html = renderToHTML(ast, { style: 'sketch' });
+      expect(html).toMatch(/<button[^>]*wmd-tab-header[^>]*>Overview<\/button>/);
+      expect(html).toMatch(/<button[^>]*wmd-tab-header[^>]*>Details<\/button>/);
+    });
+
+    it('should mark the active header with wmd-active', () => {
+      const ast = parse(input);
+      const html = renderToHTML(ast, { style: 'sketch' });
+      const headerMatches = [...html.matchAll(/<button[^>]*class="([^"]*)"[^>]*>(Overview|Details)<\/button>/g)];
+      expect(headerMatches).toHaveLength(2);
+      const overviewClasses = headerMatches.find((m) => m[2] === 'Overview')![1];
+      const detailsClasses = headerMatches.find((m) => m[2] === 'Details')![1];
+      expect(overviewClasses).toContain('wmd-active');
+      expect(detailsClasses).not.toContain('wmd-active');
+    });
+
+    it('should hide inactive panels via the hidden attribute', () => {
+      const ast = parse(input);
+      const html = renderToHTML(ast, { style: 'sketch' });
+      const panels = [...html.matchAll(/<div[^>]*data-wmd-tab-panel="\d+"[^>]*>/g)].map((m) => m[0]);
+      expect(panels).toHaveLength(2);
+      expect(panels[0]).not.toContain('hidden');
+      expect(panels[1]).toContain('hidden');
+    });
+
+    it('should render panel children', () => {
+      const ast = parse(input);
+      const html = renderToHTML(ast, { style: 'sketch' });
+      expect(html).toContain('Overview panel');
+      expect(html).toContain('Details panel');
+    });
+
+    it('should inject a tabs interactivity script', () => {
+      const ast = parse(input);
+      const html = renderToHTML(ast, { style: 'sketch' });
+      expect(html).toMatch(/<script>[\s\S]*wmd-tab-header[\s\S]*<\/script>/);
+    });
+  });
 });

@@ -486,4 +486,75 @@ Advanced features included
       expect(result.children[0].children).toHaveLength(4);
     });
   });
+
+  describe('Tabs Syntax', () => {
+    const input = `
+## Product {.tabs}
+
+### Overview
+Overview panel text.
+
+### Details
+[Buy Now]*
+
+### Reviews
+Review content
+    `.trim();
+
+    it('should parse heading with .tabs class into a tabs node', () => {
+      const result = parse(input);
+      expect(result.children).toHaveLength(1);
+      expect(result.children[0].type).toBe('tabs');
+    });
+
+    it('should produce one tab child per sub-heading', () => {
+      const result = parse(input);
+      const tabs = result.children[0] as any;
+      expect(tabs.children).toHaveLength(3);
+      expect(tabs.children.every((c: any) => c.type === 'tab')).toBe(true);
+    });
+
+    it('should use sub-heading text as the tab label', () => {
+      const result = parse(input);
+      const tabs = result.children[0] as any;
+      expect(tabs.children.map((t: any) => t.label)).toEqual(['Overview', 'Details', 'Reviews']);
+    });
+
+    it('should mark the first tab active by default', () => {
+      const result = parse(input);
+      const tabs = result.children[0] as any;
+      expect(tabs.children[0].active).toBe(true);
+      expect(tabs.children[1].active).toBe(false);
+      expect(tabs.children[2].active).toBe(false);
+    });
+
+    it('should let {.active} on a sub-heading override the default active tab', () => {
+      const result = parse(`
+## Product {.tabs}
+
+### Overview
+a
+
+### Details {.active}
+b
+      `.trim());
+      const tabs = result.children[0] as any;
+      expect(tabs.children[0].active).toBe(false);
+      expect(tabs.children[1].active).toBe(true);
+    });
+
+    it('should put panel content as tab children', () => {
+      const result = parse(input);
+      const tabs = result.children[0] as any;
+      const detailsTab = tabs.children[1];
+      const types = detailsTab.children.map((c: any) => c.type);
+      expect(types).toContain('button');
+    });
+
+    it('should not emit the parent heading as a separate node', () => {
+      const result = parse(input);
+      const topTypes = result.children.map((c: any) => c.type);
+      expect(topTypes).not.toContain('heading');
+    });
+  });
 });

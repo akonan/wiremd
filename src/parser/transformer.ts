@@ -41,6 +41,72 @@ export function transformToWiremdAST(
     if (node.type === 'heading') {
       const content = extractTextContent(node);
       const gridMatch = content.match(/\{[^}]*\.grid-(\d+)[^}]*\}/);
+      const tabsMatch = !gridMatch && /\{[^}]*\.tabs\b[^}]*\}/.test(content);
+
+      if (tabsMatch) {
+        const tabsHeadingLevel = node.depth;
+        const tabs: WiremdNode[] = [];
+        const headingTransformed = transformHeading(node, options);
+
+        i++;
+
+        while (i < mdast.children.length) {
+          const childNode = mdast.children[i];
+
+          if (childNode.type === 'heading' && childNode.depth === tabsHeadingLevel + 1) {
+            const tabPanelChildren: WiremdNode[] = [];
+            const tabHeadingContent = extractTextContent(childNode);
+            const tabAttrMatch = tabHeadingContent.match(/^(.+?)(\{[^}]+\})$/);
+            let tabLabel = tabHeadingContent;
+            let tabProps: any = { classes: [] };
+            if (tabAttrMatch) {
+              tabLabel = tabAttrMatch[1].trim();
+              tabProps = parseAttributes(tabAttrMatch[2]);
+            }
+            const isActive = (tabProps.classes || []).includes('active');
+
+            i++;
+
+            while (i < mdast.children.length) {
+              const contentNode = mdast.children[i];
+              if (contentNode.type === 'heading' && contentNode.depth <= tabsHeadingLevel + 1) break;
+              const contentNextNode = mdast.children[i + 1];
+              const contentTransformed = transformNode(contentNode, options, contentNextNode);
+              if (contentTransformed) {
+                tabPanelChildren.push(contentTransformed);
+                if (contentTransformed.type === 'select' && contentNextNode?.type === 'list') i++;
+              }
+              i++;
+            }
+
+            tabs.push({
+              type: 'tab',
+              label: tabLabel,
+              active: isActive,
+              props: tabProps,
+              children: tabPanelChildren as any,
+            });
+          } else if (childNode.type === 'heading' && childNode.depth <= tabsHeadingLevel) {
+            break;
+          } else if (tabs.length === 0) {
+            i++;
+            continue;
+          } else {
+            break;
+          }
+        }
+
+        if (tabs.length > 0 && !tabs.some((t: any) => t.active)) {
+          (tabs[0] as any).active = true;
+        }
+
+        children.push({
+          type: 'tabs',
+          props: (headingTransformed as any).props || {},
+          children: tabs as any,
+        });
+        continue;
+      }
 
       if (gridMatch) {
         const columns = parseInt(gridMatch[1], 10);

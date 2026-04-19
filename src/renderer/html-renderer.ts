@@ -57,6 +57,12 @@ export function renderNode(node: WiremdNode, context: RenderContext): string {
     case 'brand':
       return renderBrand(node, context);
 
+    case 'tabs':
+      return renderTabs(node, context);
+
+    case 'tab':
+      return renderTab(node, context);
+
     case 'grid':
       return renderGrid(node, context);
 
@@ -624,6 +630,43 @@ function buildClasses(prefix: string, baseClass: string, props: any): string {
   }
 
   return classes.join(' ');
+}
+
+function renderTabs(node: any, context: RenderContext): string {
+  const { classPrefix: prefix } = context;
+  const classes = buildClasses(prefix, 'tabs', node.props);
+  const tabs: any[] = node.children || [];
+
+  const headers = tabs.map((tab: any, i: number) => {
+    const activeClass = tab.active ? ` ${prefix}active` : '';
+    return `<button type="button" role="tab" class="${prefix}tab-header${activeClass}" data-wmd-tab="${i}">${escapeHtml(tab.label || '')}</button>`;
+  }).join('');
+
+  const panels = tabs.map((tab: any, i: number) => {
+    const panelChildren = (tab.children || []).map((c: any) => renderNode(c, context)).join('\n    ');
+    const hidden = tab.active ? '' : ' hidden';
+    return `<div class="${prefix}tab-panel" role="tabpanel" data-wmd-tab-panel="${i}"${hidden}>
+    ${panelChildren}
+  </div>`;
+  }).join('\n  ');
+
+  return `<div class="${classes}" data-wmd-tabs>
+  <div class="${prefix}tab-headers" role="tablist">${headers}</div>
+  <div class="${prefix}tab-panels">
+  ${panels}
+  </div>
+</div>${getTabsScript(prefix)}`;
+}
+
+function renderTab(node: any, context: RenderContext): string {
+  const { classPrefix: prefix } = context;
+  const hidden = node.active ? '' : ' hidden';
+  const childrenHTML = (node.children || []).map((c: any) => renderNode(c, context)).join('');
+  return `<div class="${prefix}tab-panel" role="tabpanel"${hidden}>${childrenHTML}</div>`;
+}
+
+function getTabsScript(prefix: string): string {
+  return `<script>(function(){if(window.__wmdTabsInit)return;window.__wmdTabsInit=true;document.addEventListener('click',function(e){var btn=e.target.closest('.${prefix}tab-header');if(!btn)return;var root=btn.closest('[data-wmd-tabs]');if(!root)return;var idx=btn.getAttribute('data-wmd-tab');root.querySelectorAll('.${prefix}tab-header').forEach(function(b){b.classList.toggle('${prefix}active',b.getAttribute('data-wmd-tab')===idx);});root.querySelectorAll('[data-wmd-tab-panel]').forEach(function(p){if(p.getAttribute('data-wmd-tab-panel')===idx){p.removeAttribute('hidden');}else{p.setAttribute('hidden','');}});});})();</script>`;
 }
 
 /**
