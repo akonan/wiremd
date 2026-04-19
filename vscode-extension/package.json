@@ -125,7 +125,8 @@
     }
   },
   "scripts": {
-    "vscode:prepublish": "npm run compile",
+    "vscode:prepublish": "npm run bundle",
+    "bundle": "esbuild src/extension.ts --bundle --outfile=dist/extension.js --external:vscode --platform=node --format=cjs --minify && esbuild src/preview-provider.ts --bundle --outfile=dist/preview-provider.js --external:vscode --platform=node --format=cjs --minify",
     "compile": "tsc -p ./",
     "watch": "tsc -watch -p ./",
     "package": "vsce package",
@@ -141,7 +142,8 @@
     "@typescript-eslint/parser": "^6.0.0",
     "eslint": "^8.0.0",
     "typescript": "^5.0.0",
-    "@vscode/vsce": "^2.22.0"
+    "@vscode/vsce": "^2.22.0",
+    "esbuild": "^0.20.0"
   },
   "repository": {
     "type": "git",
