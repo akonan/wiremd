@@ -29,15 +29,27 @@ export function transformToWiremdAST(
     theme: 'sketch',
   };
 
+  return {
+    type: 'document',
+    version: SYNTAX_VERSION,
+    meta,
+    children: processNodeList(mdast.children as any[], options),
+  };
+}
+
+/**
+ * Process a list of MDAST nodes into wiremd nodes, detecting grid layouts.
+ * Used for both the top-level document and grid item children so that
+ * nested grids are correctly detected at any depth.
+ */
+function processNodeList(nodeChildren: any[], options: ParseOptions): WiremdNode[] {
   const children: WiremdNode[] = [];
-
-  // Visit all nodes in the MDAST with context for dropdown options and grid layouts
   let i = 0;
-  while (i < mdast.children.length) {
-    const node = mdast.children[i];
-    const nextNode = mdast.children[i + 1];
 
-    // Check if this is a heading with grid class
+  while (i < nodeChildren.length) {
+    const node = nodeChildren[i];
+    const nextNode = nodeChildren[i + 1];
+
     if (node.type === 'heading') {
       const content = extractTextContent(node);
       const gridMatch = content.match(/\{[^}]*\.grid-(\d+)[^}]*\}/);
@@ -46,70 +58,35 @@ export function transformToWiremdAST(
         const columns = parseInt(gridMatch[1], 10);
         const gridHeadingLevel = node.depth;
 
-        // This is a grid container - collect grid items
         const gridItems: WiremdNode[] = [];
         const headingTransformed = transformHeading(node, options);
 
-        i++; // Move to next node
+        i++;
 
-        // Collect child headings as grid items
-        while (i < mdast.children.length) {
-          const childNode = mdast.children[i];
+        while (i < nodeChildren.length) {
+          const childNode = nodeChildren[i];
 
-          // Grid items are headings one level deeper
-          if (
-            childNode.type === 'heading' &&
-            childNode.depth === gridHeadingLevel + 1
-          ) {
-            const gridItem: WiremdNode[] = [];
-
-            // Add the heading
-            const childNextNode = mdast.children[i + 1];
-            const headingNode = transformNode(childNode, options, childNextNode);
-            if (headingNode) {
-              gridItem.push(headingNode);
-            }
-
+          if (childNode.type === 'heading' && childNode.depth === gridHeadingLevel + 1) {
+            const rawItemNodes: any[] = [childNode];
             i++;
 
-            // Collect content until next heading at same or higher level
-            while (i < mdast.children.length) {
-              const contentNode = mdast.children[i];
-
-              if (
-                contentNode.type === 'heading' &&
-                contentNode.depth <= gridHeadingLevel + 1
-              ) {
-                break; // Stop at next grid item or parent level
-              }
-
-              const contentNextNode = mdast.children[i + 1];
-              const contentTransformed = transformNode(contentNode, options, contentNextNode);
-              if (contentTransformed) {
-                gridItem.push(contentTransformed);
-
-                // Skip consumed nodes
-                if (contentTransformed.type === 'select' && contentNextNode?.type === 'list') {
-                  i++;
-                }
-              }
-
+            while (i < nodeChildren.length) {
+              const contentNode = nodeChildren[i];
+              if (contentNode.type === 'heading' && contentNode.depth <= gridHeadingLevel + 1) break;
+              rawItemNodes.push(contentNode);
               i++;
             }
 
-            // Add as grid item
             gridItems.push({
               type: 'grid-item',
               props: {},
-              children: gridItem,
+              children: processNodeList(rawItemNodes, options),
             });
           } else {
-            // Not a grid item heading, stop collecting
             break;
           }
         }
 
-        // Create grid node
         children.push({
           type: 'grid',
           columns,
@@ -125,17 +102,15 @@ export function transformToWiremdAST(
     if (transformed) {
       children.push(transformed);
 
-      // If this was a select node and we consumed the next list, skip it
       if (transformed.type === 'select' && nextNode && nextNode.type === 'list') {
-        i++; // Skip the next node (list) as it was consumed
+        i++;
       }
-      // Also check if it's a container with a select child that has consumed the list
       if (transformed.type === 'container' && nextNode && nextNode.type === 'list') {
         const hasSelectWithOptions = (transformed.children || []).some((child: any) =>
           child.type === 'select' && child.options && child.options.length > 0
         );
         if (hasSelectWithOptions) {
-          i++; // Skip the next node (list) as it was consumed by the select
+          i++;
         }
       }
     }
@@ -143,12 +118,7 @@ export function transformToWiremdAST(
     i++;
   }
 
-  return {
-    type: 'document',
-    version: SYNTAX_VERSION,
-    meta,
-    children,
-  };
+  return children;
 }
 
 /**

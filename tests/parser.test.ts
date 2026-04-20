@@ -485,5 +485,59 @@ Advanced features included
       });
       expect(result.children[0].children).toHaveLength(4);
     });
+
+    it('should parse a nested grid inside a grid item as a grid node', () => {
+      const input = `
+## Outer {.grid-2}
+
+### Left
+
+#### Inner {.grid-2}
+
+##### A
+One
+
+##### B
+Two
+
+### Right
+Just text
+      `.trim();
+
+      const result = parse(input);
+      const outerGrid = result.children[0] as any;
+      expect(outerGrid.type).toBe('grid');
+      expect(outerGrid.columns).toBe(2);
+
+      const leftItem = outerGrid.children[0] as any;
+      expect(leftItem.type).toBe('grid-item');
+
+      const innerGrid = leftItem.children.find((c: any) => c.type === 'grid');
+      expect(innerGrid).toBeDefined();
+      expect(innerGrid.type).toBe('grid');
+      expect(innerGrid.columns).toBe(2);
+      expect(innerGrid.children).toHaveLength(2);
+    });
+
+    it('should parse a :::card inside a grid item (regression)', () => {
+      const input = `
+## Layout {.grid-2}
+
+### Left
+
+::: card
+Card content
+:::
+
+### Right
+Text
+      `.trim();
+
+      const result = parse(input);
+      const grid = result.children[0] as any;
+      const leftItem = grid.children[0] as any;
+      const card = leftItem.children.find((c: any) => c.type === 'container' && c.containerType === 'card');
+      expect(card).toBeDefined();
+    });
   });
 });
