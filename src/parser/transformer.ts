@@ -444,7 +444,7 @@ function transformParagraph(node: any, _options: ParseOptions, nextNode?: any): 
       if (child.type === 'text') {
         // Check for buttons and icons in text
         // Split on both button patterns and icon patterns
-        const textParts = child.value.split(/(\[[^\]]+\](?:\*)?(?:\s*\{[^}]*\})?|:[a-z-]+:)/);
+        const textParts = child.value.split(/(\[[^\]]+\](?:\*)?(?:\s*\{[^}]*\})?|:[a-z-]+:|\|[^|]+\|(?:\s*\{[^}]*\})?)/);
         for (const part of textParts) {
           // Check for button
           const buttonMatch = part.match(/^\[([^\]]+)\](\*)?(?:\s*(\{[^}]*\}))?$/);
@@ -469,6 +469,21 @@ function transformParagraph(node: any, _options: ParseOptions, nextNode?: any): 
                 type: 'icon',
                 props: { name: iconMatch[1] },
               });
+            }
+          } else if (part.match(/^\|([^|]+)\|(?:\s*(\{[^}]*\}))?$/)) {
+            // It's a pill/badge
+            flushText();
+            const pillMatch = part.match(/^\|([^|]+)\|(?:\s*(\{[^}]*\}))?$/);
+            if (pillMatch) {
+              const [, text, attrs] = pillMatch;
+              const props = parseAttributes(attrs || '');
+              const validVariants = ['default', 'primary', 'success', 'warning', 'error'];
+              const variantClass = props.classes?.find((c: string) => validVariants.includes(c));
+              if (variantClass) {
+                props.variant = variantClass;
+                props.classes = props.classes.filter((c: string) => c !== variantClass);
+              }
+              processedChildren.push({ type: 'badge', content: text.trim(), props });
             }
           } else if (part) {
             currentText += part;
@@ -950,6 +965,41 @@ function transformParagraph(node: any, _options: ParseOptions, nextNode?: any): 
         placeholder: placeholder.trim(),
       }
     };
+  }
+
+  // Check for pills: |Label| or |Label|{.variant}
+  if (/\|([^|]+)\|/.test(content)) {
+    const textParts = content.split(/(\|[^|]+\|(?:\s*\{[^}]*\})?)/);
+    const children: WiremdNode[] = [];
+    const validVariants = ['default', 'primary', 'success', 'warning', 'error'];
+
+    for (const part of textParts) {
+      const pillMatch = part.match(/^\|([^|]+)\|(?:\s*(\{[^}]*\}))?$/);
+      if (pillMatch) {
+        const [, text, attrs] = pillMatch;
+        const props = parseAttributes(attrs || '');
+        const variantClass = props.classes?.find((c: string) => validVariants.includes(c));
+        if (variantClass) {
+          props.variant = variantClass;
+          props.classes = props.classes.filter((c: string) => c !== variantClass);
+        }
+        children.push({ type: 'badge', content: text.trim(), props });
+      } else if (part.trim()) {
+        children.push({ type: 'text', content: part, props: {} });
+      }
+    }
+
+    if (children.length === 1 && children[0].type === 'badge') {
+      return children[0];
+    }
+
+    if (children.length > 0) {
+      return {
+        type: 'paragraph',
+        children: children as any,
+        props: {},
+      };
+    }
   }
 
   // Check for multiple buttons on the same line BEFORE icon check: [Submit] [Cancel]

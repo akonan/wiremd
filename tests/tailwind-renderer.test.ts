@@ -337,4 +337,44 @@ Email
       expect(html).toContain('text-gray-900');
     });
   });
+
+  describe('Badges', () => {
+    it('should render a basic badge with neutral Tailwind classes', () => {
+      const ast = parse('|Active|');
+      const html = renderToTailwind(ast);
+      expect(html).toContain('rounded-full');
+      expect(html).toContain('bg-gray-100');
+      expect(html).toContain('text-gray-800');
+      expect(html).toContain('Active');
+    });
+
+    it('should render a success badge', () => {
+      const ast = parse('|Active|{.success}');
+      const html = renderToTailwind(ast);
+      expect(html).toContain('bg-green-100');
+      expect(html).toContain('text-green-800');
+    });
+
+    it('should render a warning badge', () => {
+      const ast = parse('|Pending|{.warning}');
+      const html = renderToTailwind(ast);
+      expect(html).toContain('bg-yellow-100');
+      expect(html).toContain('text-yellow-800');
+    });
+
+    it('should render an error badge', () => {
+      const ast = parse('|Failed|{.error}');
+      const html = renderToTailwind(ast);
+      expect(html).toContain('bg-red-100');
+      expect(html).toContain('text-red-800');
+    });
+
+    it('should render a primary badge', () => {
+      const ast = parse('|New|{.primary}');
+      const html = renderToTailwind(ast);
+      expect(html).toContain('bg-blue-100');
+      expect(html).toContain('text-blue-800');
+    });
+  });
+
 });

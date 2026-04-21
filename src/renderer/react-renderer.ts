@@ -58,6 +58,9 @@ export function renderNode(node: WiremdNode, context: ReactRenderContext, indent
     case 'icon':
       return renderIcon(node, context, indent);
 
+    case 'badge':
+      return renderBadge(node, context, indent);
+
     case 'container':
       return renderContainer(node, context, indent);
 
@@ -135,6 +138,14 @@ function renderButton(node: any, context: ReactRenderContext, indent: number): s
     : escapeJSX(node.content);
 
   return `${indentStr}<button ${classAttr}="${classes}"${disabled ? ' disabled' : ''}>\n${indentStr}  ${contentJSX}\n${indentStr}</button>`;
+}
+
+function renderBadge(node: any, context: ReactRenderContext, indent: number): string {
+  const indentStr = repeatString('  ', indent);
+  const { classPrefix: prefix } = context;
+  const classes = buildClasses(prefix, 'badge', node.props);
+  const classAttr = context.useClassName ? 'className' : 'class';
+  return `${indentStr}<span ${classAttr}="${classes}">${escapeJSX(node.content)}</span>`;
 }
 
 function renderInput(node: any, context: ReactRenderContext, indent: number): string {

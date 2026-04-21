@@ -18,6 +18,7 @@
 | **Checkbox** | `- [ ]` / `- [x]` | `- [x] Agree` |
 | **Radio** | `- ( )` / `- (*)` | `- (*) Option 1` |
 | **Icon** | `:name:` | `:home: :user: :gear:` |
+| **Badge/Pill** | `\|Text\|` or `\|Text\|{.variant}` | `\|Active\|{.success}` |
 | **Nav Bar** | `[[ A \| B \| C ]]` | `[[ Home \| About \| [Login] ]]` |
 | **Breadcrumbs** | `[[ A > B > C ]]` | `[[ Home > Products > Item ]]` |
 
@@ -218,6 +219,7 @@ wiremd supports **all standard Markdown** syntax:
 [___]            # Input (has underscores)
 [***]            # Password input (has asterisks)
 [Text___v]       # Dropdown (has 'v' suffix)
+|Text|           # Badge/pill (pipe delimiters)
 ```
 
 ## Tips
@@ -226,6 +228,7 @@ wiremd supports **all standard Markdown** syntax:
 2. **Placeholder text**: Put text before underscores: `[Email___________]`
 3. **Button groups**: Put on same line: `[Save] [Cancel] [Reset]`
 4. **Icons in text**: Use anywhere: `### :rocket: Fast Performance`
+7. **Badges**: Use `|Label|{.variant}` inline — variants: `success`, `warning`, `error`, `primary`
 5. **Grid items**: Each `###` heading under `## {.grid-N}` is a grid item
 6. **Nested containers**: Containers can be nested inside each other
 

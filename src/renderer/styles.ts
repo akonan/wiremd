@@ -118,6 +118,24 @@ body.${prefix}root {
   animation: loading 1s infinite;
 }
 
+/* Pills / Badges */
+.${prefix}badge {
+  display: inline-block;
+  padding: 2px 10px;
+  margin: 0 2px;
+  border: 2px solid #000;
+  border-radius: 12px;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: bold;
+  background: #f0f0f0;
+  transform: rotate(-0.3deg);
+}
+.${prefix}badge-primary { background: #87CEEB; border-color: #4682B4; }
+.${prefix}badge-success { background: #90EE90; border-color: #228B22; }
+.${prefix}badge-warning { background: #FFE4B5; border-color: #DAA520; }
+.${prefix}badge-error { background: #FFB6C1; border-color: #DC143C; }
+
 /* Inputs */
 .${prefix}input, .${prefix}textarea, .${prefix}select {
   display: block;
@@ -557,6 +575,23 @@ body.${prefix}root {
   cursor: not-allowed;
 }
 
+/* Pills / Badges */
+.${prefix}badge {
+  display: inline-block;
+  padding: 2px 10px;
+  margin: 0 2px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  background: #e5e7eb;
+  color: #374151;
+}
+.${prefix}badge-primary { background: #dbeafe; color: #1d4ed8; }
+.${prefix}badge-success { background: #d1fae5; color: #065f46; }
+.${prefix}badge-warning { background: #fef3c7; color: #92400e; }
+.${prefix}badge-error { background: #fee2e2; color: #991b1b; }
+
 /* Inputs */
 .${prefix}input, .${prefix}textarea, .${prefix}select {
   display: block;
@@ -960,6 +995,23 @@ body.${prefix}root {
   cursor: not-allowed;
 }
 
+/* Pills / Badges */
+.${prefix}badge {
+  display: inline-block;
+  padding: 1px 8px;
+  margin: 0 2px;
+  border: 1px solid #666;
+  border-radius: 10px;
+  font-size: 11px;
+  font-weight: bold;
+  background: #e0e0e0;
+  color: #333;
+}
+.${prefix}badge-primary { background: #c8d8e8; border-color: #4a6a8a; }
+.${prefix}badge-success { background: #c8e8c8; border-color: #4a7a4a; }
+.${prefix}badge-warning { background: #e8e0c0; border-color: #8a7a40; }
+.${prefix}badge-error { background: #e8c8c8; border-color: #8a4a4a; }
+
 /* Inputs */
 .${prefix}input, .${prefix}textarea, .${prefix}select {
   display: block;
@@ -1258,6 +1310,19 @@ body.${prefix}root {
   margin: 4px;
 }
 
+.${prefix}badge {
+  display: inline-block;
+  padding: 2px 8px;
+  margin: 0 2px;
+  border-radius: 10px;
+  font-size: 12px;
+  background: #e0e0e0;
+}
+.${prefix}badge-primary { background: #c0d8f0; }
+.${prefix}badge-success { background: #c0e8c0; }
+.${prefix}badge-warning { background: #f0e0c0; }
+.${prefix}badge-error { background: #f0c0c0; }
+
 .${prefix}input, .${prefix}textarea, .${prefix}select {
   display: block;
   width: 100%;
@@ -1428,6 +1493,22 @@ body {
 @keyframes spin {
   to { transform: translateY(-50%) rotate(360deg); }
 }
+
+/* Pills / Badges */
+.${prefix}badge {
+  display: inline-block;
+  padding: 0.125rem 0.625rem;
+  margin: 0 0.125rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  background: #e5e7eb;
+  color: #374151;
+}
+.${prefix}badge-primary { background: #dbeafe; color: #1d4ed8; }
+.${prefix}badge-success { background: #d1fae5; color: #065f46; }
+.${prefix}badge-warning { background: #fef3c7; color: #92400e; }
+.${prefix}badge-error { background: #fee2e2; color: #991b1b; }
 
 /* Forms */
 .${prefix}input, .${prefix}textarea, .${prefix}select {
@@ -2001,6 +2082,23 @@ body {
 @keyframes spin {
   to { transform: translateY(-50%) rotate(360deg); }
 }
+
+/* Material Chips / Badges */
+.${prefix}badge {
+  display: inline-block;
+  padding: 2px 12px;
+  margin: 0 2px;
+  border-radius: 16px;
+  font-size: 0.8125rem;
+  font-weight: 400;
+  letter-spacing: 0.01786em;
+  background: #e0e0e0;
+  color: rgba(0, 0, 0, 0.87);
+}
+.${prefix}badge-primary { background: #e8eaf6; color: #6200ee; }
+.${prefix}badge-success { background: #e8f5e9; color: #1b5e20; }
+.${prefix}badge-warning { background: #fff8e1; color: #e65100; }
+.${prefix}badge-error { background: #fce4ec; color: #b00020; }
 
 /* Material Form Inputs */
 .${prefix}input, .${prefix}textarea, .${prefix}select {
@@ -2581,6 +2679,24 @@ body {
   background: #6bcf7f !important;
   color: #000000 !important;
 }
+
+/* Brutal Pills / Badges */
+.${prefix}badge {
+  display: inline-block;
+  padding: 2px 10px;
+  margin: 0 2px;
+  border: 2px solid #000000;
+  border-radius: 0;
+  font-size: 12px;
+  font-weight: 700;
+  background: #ffffff;
+  color: #000000;
+  box-shadow: 2px 2px 0 #000000;
+}
+.${prefix}badge-primary { background: #c0d8f0; }
+.${prefix}badge-success { background: #6bcf7f; }
+.${prefix}badge-warning { background: #ffd700; }
+.${prefix}badge-error { background: #ff6b6b; }
 
 /* Brutal Forms */
 .${prefix}input, .${prefix}textarea, .${prefix}select {

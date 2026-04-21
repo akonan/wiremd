@@ -414,13 +414,20 @@ Content for Overview tab...
 ### 7.4 Badges/Pills
 
 ```markdown
-Status `active`
-Notifications `3`
+|Active|
+|Active|{.success}
+|3|{.warning}
+|Failed|{.error}
+|New|{.primary}
+Status: |Active|{.success}
 ```
 
 **Parser Rules:**
-- Inline code backticks for badge/pill indicators
-- Typically numbers or status text
+- Pipe-delimited syntax: `|content|` with optional `{.variant}` attribute
+- Valid variants: `default`, `primary`, `success`, `warning`, `error`
+- Variant class (e.g. `.success`) is promoted to `props.variant`; unrecognised classes remain in `props.classes`
+- Standalone pill returns a `badge` node; pill mixed with text returns a `paragraph` with `badge` children
+- Pipe syntax conflicts with Markdown table delimiters — not supported inside table cells without escaping
 
 ---
 

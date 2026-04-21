@@ -78,6 +78,32 @@ Combine both:
 [Submit]{.primary type:submit disabled}
 ```
 
+### Badges / Pills
+
+Pipe delimiters create inline badges for status labels, counts, and tags:
+
+```markdown
+|Active|
+|Active|{.success}
+|3|{.warning}
+|Failed|{.error}
+|New|{.primary}
+```
+
+Variants: `success` (green), `warning` (yellow), `error` (red), `primary` (blue). No variant = neutral gray.
+
+Mix with surrounding text:
+
+```markdown
+Status: |Active|{.success}
+
+| Name  | Status              |
+|-------|---------------------|
+| Alice | \|Active\|{.success} |
+```
+
+> **Note:** Pipes conflict with Markdown table syntax. Inside a table cell, escape the pipe delimiters with backslashes: `\|Active\|`.
+
 ### Inline Containers
 
 Group elements inline with `[[...]]`:

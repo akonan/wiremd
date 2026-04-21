@@ -239,6 +239,31 @@ Email
     });
   });
 
+
+  describe('Badges', () => {
+    it('should render a basic badge', () => {
+      const ast = parse('|Active|');
+      const jsx = renderToReact(ast);
+      expect(jsx).toContain('<span className="wmd-badge"');
+      expect(jsx).toContain('Active');
+    });
+
+    it('should render a badge with variant', () => {
+      const ast = parse('|Active|{.success}');
+      const jsx = renderToReact(ast);
+      expect(jsx).toContain('className="wmd-badge wmd-badge-success"');
+      expect(jsx).toContain('Active');
+    });
+
+    it('should render a warning badge', () => {
+      const ast = parse('|3|{.warning}');
+      const jsx = renderToReact(ast);
+      expect(jsx).toContain('wmd-badge-warning');
+      expect(jsx).toContain('>3<');
+    });
+  });
+
+
   describe('Component Structure', () => {
     it('should wrap output in React component', () => {
       const ast = parse('## Title');

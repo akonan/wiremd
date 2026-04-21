@@ -271,4 +271,45 @@ Email
       expect(json).toContain('"type":"document"');
     });
   });
+
+  describe('Badge/Pill Components', () => {
+    it('should render a basic badge', () => {
+      const ast = parse('|Active|');
+      const html = renderToHTML(ast, { style: 'sketch' });
+      expect(html).toContain('<span');
+      expect(html).toContain('wmd-badge');
+      expect(html).toContain('Active');
+    });
+
+    it('should render a badge with success variant', () => {
+      const ast = parse('|Active|{.success}');
+      const html = renderToHTML(ast, { style: 'sketch' });
+      expect(html).toContain('wmd-badge-success');
+      expect(html).toContain('Active');
+    });
+
+    it('should render a warning badge', () => {
+      const ast = parse('|3|{.warning}');
+      const html = renderToHTML(ast, { style: 'clean' });
+      expect(html).toContain('wmd-badge-warning');
+      expect(html).toContain('>3<');
+    });
+
+    it('should render a badge in all styles', () => {
+      const ast = parse('|Beta|{.primary}');
+      for (const style of ['sketch', 'clean', 'wireframe', 'none', 'tailwind', 'material', 'brutal'] as const) {
+        const html = renderToHTML(ast, { style });
+        expect(html).toContain('wmd-badge');
+        expect(html).toContain('Beta');
+      }
+    });
+
+    it('should render badges mixed with text', () => {
+      const ast = parse('Status: |Active|{.success}');
+      const html = renderToHTML(ast, { style: 'clean' });
+      expect(html).toContain('Status:');
+      expect(html).toContain('wmd-badge-success');
+      expect(html).toContain('Active');
+    });
+  });
 });
