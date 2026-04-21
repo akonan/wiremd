@@ -43,7 +43,7 @@ Phone Number
 
 ---
 
-## Choose Your Plan {.grid-3}
+## Choose Your Plan {.grid-3 card}
 
 ### Free
 **$0** /month

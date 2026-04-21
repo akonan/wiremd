@@ -78,14 +78,14 @@ try {
 **Problem**: Grid syntax doesn't create columns
 
 ```markdown
-## Features {.grid-3}
+## Features {.grid-3 card}
 Content here...
 ```
 
 **Solution**: Ensure proper structure with level-3 headings:
 
 ```markdown
-## Features {.grid-3}
+## Features {.grid-3 card}
 
 ### Column 1
 Content for column 1
@@ -448,8 +448,8 @@ Common validation errors and fixes:
 
 // Error: INVALID_GRID_COLUMNS
 // Fix: Use 1 or more columns
-{.grid-3}            // ✓ Valid
-{.grid-0}            // ✗ Invalid
+{.grid-3 card}            // ✓ Valid
+{.grid-0 card}            // ✗ Invalid
 ```
 
 ## Performance Issues

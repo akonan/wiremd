@@ -60,7 +60,7 @@ Message
 ### Dashboard Layout
 
 ```markdown
-## Dashboard {.grid-3}
+## Dashboard {.grid-3 card}
 
 ### Active Users
 **1,234**
@@ -201,7 +201,7 @@ The best tool for modern teams to collaborate and build amazing products.
 ### Pricing Table
 
 ```markdown
-## Pricing {.grid-3}
+## Pricing {.grid-3 card}
 
 ### Basic
 **$9/month**

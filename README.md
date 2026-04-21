@@ -51,7 +51,7 @@ This renders into a styled HTML wireframe with a form, inputs, and buttons.
 Create a `features.md` file:
 
 ```markdown
-## Product Features {.grid-3}
+## Product Features {.grid-3 card}
 
 ### :rocket: Fast
 Lightning quick performance
