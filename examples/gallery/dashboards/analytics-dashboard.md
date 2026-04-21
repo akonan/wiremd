@@ -16,7 +16,7 @@ Date Range: [Last 30 days...v] [Custom Date Range] [Refresh]
 
 ---
 
-## Key Metrics {.grid-4}
+## Key Metrics {.grid-4 card}
 
 ### Total Visitors
 **458,234**
@@ -38,7 +38,7 @@ Date Range: [Last 30 days...v] [Custom Date Range] [Refresh]
 
 ---
 
-## Traffic Overview {.grid-2}
+## Traffic Overview {.grid-2 card}
 
 ### Visitors Over Time
 
@@ -96,7 +96,7 @@ Date Range: [Last 30 days...v] [Custom Date Range] [Refresh]
 
 ---
 
-## Geographic Distribution {.grid-2}
+## Geographic Distribution {.grid-2 card}
 
 ### Top Countries
 
@@ -124,7 +124,7 @@ Date Range: [Last 30 days...v] [Custom Date Range] [Refresh]
 
 ---
 
-## Device & Browser Stats {.grid-2}
+## Device & Browser Stats {.grid-2 card}
 
 ### Device Types
 
@@ -168,7 +168,7 @@ Date Range: [Last 30 days...v] [Custom Date Range] [Refresh]
 
 ---
 
-## Conversion Funnel {.grid-3}
+## Conversion Funnel {.grid-3 card}
 
 ### Step 1: Landing
 **100,000** visitors
@@ -196,7 +196,7 @@ Date Range: [Last 30 days...v] [Custom Date Range] [Refresh]
 
 ## Goals & Events
 
-## Tracking Performance {.grid-4}
+## Tracking Performance {.grid-4 card}
 
 ### Newsletter Signups
 **8,234**

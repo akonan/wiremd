@@ -60,6 +60,22 @@ Application dashboards for data visualization and management.
 
 ---
 
+### 🔗 Multi-Page Navigation (1 Example)
+
+A three-page prototype showing how button links and the dev server work together for real navigation.
+
+| Example | Description | Key Features |
+|---------|-------------|--------------|
+| **Multi-Page App** | Home → About → Contact prototype | Shared navbar, button links, live navigation between pages |
+
+**Run it:**
+```bash
+wiremd examples/gallery/multi-page/home.md --serve 3001
+# Open http://localhost:3001 and click the nav buttons
+```
+
+---
+
 ### 🧩 Components (5 Examples)
 
 Reusable UI component patterns and layouts.

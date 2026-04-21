@@ -17,6 +17,9 @@ Award-winning creative agency specializing in branding, web design, and digital 
 
 :::
 
+[View Our Work ↓] [Start a Project]* [Schedule Call] "hi there" | hello      [button]*
+
+
 ---
 
 ## Trusted by Industry Leaders
@@ -27,7 +30,7 @@ Award-winning creative agency specializing in branding, web design, and digital 
 
 ---
 
-## Our Services {.grid-3}
+## Our Services {.grid-3 card}
 
 ### :art: Brand Strategy & Design
 We craft compelling brand identities that resonate with your audience and stand out in the market.
@@ -71,7 +74,7 @@ Data-driven marketing strategies that drive growth and measurable results.
 
 ## Featured Work
 
-## Recent Projects {.grid-2}
+## Recent Projects {.grid-2 card}
 
 ### TechStart - Brand Redesign
 ![Case Study](https://via.placeholder.com/600x400)
@@ -109,7 +112,7 @@ Sustainable e-commerce platform serving 50K+ customers with 4.9★ rating.
 
 ## Our Process
 
-## How We Work {.grid-4}
+## How We Work {.grid-4 card}
 
 ### 1. Discovery
 **Week 1**
@@ -151,7 +154,7 @@ Sustainable e-commerce platform serving 50K+ customers with 4.9★ rating.
 
 ::: card
 
-## Results That Speak for Themselves {.grid-4}
+## Results That Speak for Themselves {.grid-4 card}
 
 ### 250+
 Projects Delivered
@@ -173,7 +176,7 @@ In Business
 
 ## Client Testimonials
 
-## What Our Clients Say {.grid-3}
+## What Our Clients Say {.grid-3 card}
 
 ### :star::star::star::star::star:
 *"CreativeCo transformed our brand. Their strategic approach and creative execution exceeded all expectations."*
@@ -199,7 +202,7 @@ Founder, EcoMarket
 
 ## Our Team
 
-## Meet the Creative Minds {.grid-4}
+## Meet the Creative Minds {.grid-4 card}
 
 ### John Doe
 ![Team Member](https://via.placeholder.com/250x250)
@@ -237,7 +240,7 @@ Founder, EcoMarket
 
 ## Recognition & Awards
 
-## Industry Recognition {.grid-6}
+## Industry Recognition {.grid-6 card}
 
 ### Awwwards
 5x Site of the Day
@@ -263,7 +266,7 @@ Innovation Award
 
 ## Our Expertise
 
-## Technologies We Love {.grid-3}
+## Technologies We Love {.grid-3 card}
 
 ### Design
 - Figma
@@ -386,7 +389,7 @@ Sunday: Closed
 
 ## Latest from Our Blog
 
-## Recent Articles {.grid-3}
+## Recent Articles {.grid-3 card}
 
 ### The Future of Web Design
 ![Blog Post](https://via.placeholder.com/350x200)
@@ -423,7 +426,7 @@ Latest strategies to improve your search rankings and organic traffic.
 
 ::: footer
 
-## Links {.grid-4}
+## Links {.grid-4 card}
 
 ### Services
 - Brand Strategy
