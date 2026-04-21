@@ -57,6 +57,9 @@ export function renderNode(node: WiremdNode, context: TailwindRenderContext): st
     case 'grid':
       return renderGrid(node, context);
 
+    case 'row':
+      return renderRow(node, context);
+
     case 'grid-item':
       return renderGridItem(node, context);
 
@@ -326,6 +329,19 @@ function renderBrand(node: any, context: TailwindRenderContext): string {
   const childrenHTML = (node.children || []).map((child: any) => renderNode(child, context)).join('');
 
   return `<div class="${classes}">${childrenHTML}</div>`;
+}
+
+function renderRow(node: any, context: TailwindRenderContext): string {
+  const classes = node.props?.classes?.includes('right')
+    ? 'flex items-center gap-3 flex-wrap justify-end'
+    : node.props?.classes?.includes('center')
+      ? 'flex items-center gap-3 flex-wrap justify-center'
+      : 'flex items-center gap-3 flex-wrap';
+  const childrenHTML = (node.children || []).map((child: any) => renderNode(child, context)).join('\n  ');
+
+  return `<div class="${classes}">
+  ${childrenHTML}
+</div>`;
 }
 
 function renderGrid(node: any, context: TailwindRenderContext): string {

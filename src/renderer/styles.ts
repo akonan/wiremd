@@ -11,24 +11,29 @@
  * Get CSS for the specified style
  */
 export function getStyleCSS(style: string, prefix: string): string {
+  const rowStructural = `
+.${prefix}row { display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap; }
+.${prefix}row > .${prefix}grid-item { flex: 0 1 auto; min-width: 0; }
+.${prefix}row.${prefix}right { justify-content: flex-end; }
+.${prefix}row.${prefix}center { justify-content: center; }
+.${prefix}align-left { margin-right: auto; }
+.${prefix}align-right { margin-left: auto; }
+.${prefix}align-center { margin: auto; }
+`;
+
+  let themeCSS: string;
   switch (style) {
-    case 'sketch':
-      return getSketchStyle(prefix);
-    case 'clean':
-      return getCleanStyle(prefix);
-    case 'wireframe':
-      return getWireframeStyle(prefix);
-    case 'none':
-      return getNoneStyle(prefix);
-    case 'tailwind':
-      return getTailwindStyle(prefix);
-    case 'material':
-      return getMaterialStyle(prefix);
-    case 'brutal':
-      return getBrutalStyle(prefix);
-    default:
-      return getSketchStyle(prefix);
+    case 'sketch':    themeCSS = getSketchStyle(prefix); break;
+    case 'clean':     themeCSS = getCleanStyle(prefix); break;
+    case 'wireframe': themeCSS = getWireframeStyle(prefix); break;
+    case 'none':      themeCSS = getNoneStyle(prefix); break;
+    case 'tailwind':  themeCSS = getTailwindStyle(prefix); break;
+    case 'material':  themeCSS = getMaterialStyle(prefix); break;
+    case 'brutal':    themeCSS = getBrutalStyle(prefix); break;
+    default:          themeCSS = getSketchStyle(prefix); break;
   }
+
+  return rowStructural + themeCSS;
 }
 
 /**

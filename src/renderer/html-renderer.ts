@@ -60,6 +60,9 @@ export function renderNode(node: WiremdNode, context: RenderContext): string {
     case 'grid':
       return renderGrid(node, context);
 
+    case 'row':
+      return renderRow(node, context);
+
     case 'grid-item':
       return renderGridItem(node, context);
 
@@ -403,6 +406,16 @@ function renderBrand(node: any, context: RenderContext): string {
   const childrenHTML = (node.children || []).map((child: any) => renderNode(child, context)).join('');
 
   return `<div class="${classes}">${childrenHTML}</div>`;
+}
+
+function renderRow(node: any, context: RenderContext): string {
+  const { classPrefix: prefix } = context;
+  const classes = buildClasses(prefix, 'row', node.props);
+  const childrenHTML = (node.children || []).map((child: any) => renderNode(child, context)).join('\n  ');
+
+  return `<div class="${classes}">
+  ${childrenHTML}
+</div>`;
 }
 
 function renderGrid(node: any, context: RenderContext): string {

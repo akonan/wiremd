@@ -235,6 +235,38 @@ Content here
 Content here
 ```
 
+### Row Layout
+
+`{.row}` creates a horizontal flex row. Content placed directly under `## {.row}` is auto-wrapped as flex items (no `###` needed):
+
+```markdown
+## Toolbar {.row}
+[All]* [Active] [Archived]
+```
+
+Use `###` children for per-item alignment control:
+
+```markdown
+## Toolbar {.row}
+
+### {.left}
+[All]* [Active] [Archived]
+
+### {.right}
+[+ New Item]*
+```
+
+Row-level alignment via `{.right}` or `{.center}` on the `##` heading:
+
+```markdown
+## Actions {.row .right}
+[Export] [+ New Item]*
+```
+
+- `{.right}` → `justify-content: flex-end`
+- `{.center}` → `justify-content: center`
+- default → `justify-content: flex-start`
+
 ## Next Steps
 
 - [Complete Syntax Specification](../../SYNTAX-SPEC-v0.1.md)

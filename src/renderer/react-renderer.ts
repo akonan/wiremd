@@ -73,6 +73,9 @@ export function renderNode(node: WiremdNode, context: ReactRenderContext, indent
     case 'grid':
       return renderGrid(node, context, indent);
 
+    case 'row':
+      return renderRow(node, context, indent);
+
     case 'grid-item':
       return renderGridItem(node, context, indent);
 
@@ -326,6 +329,18 @@ function renderBrand(node: any, context: ReactRenderContext, indent: number): st
   const childrenJSX = (node.children || []).map((child: any) => renderNode(child, context, 0)).join('');
 
   return `${indentStr}<div ${classAttr}="${classes}">${childrenJSX}</div>`;
+}
+
+function renderRow(node: any, context: ReactRenderContext, indent: number): string {
+  const indentStr = repeatString('  ', indent);
+  const { classPrefix: prefix } = context;
+  const classes = buildClasses(prefix, 'row', node.props);
+  const classAttr = context.useClassName ? 'className' : 'class';
+  const childrenJSX = (node.children || []).map((child: any) => renderNode(child, context, indent + 1)).join('\n');
+
+  return `${indentStr}<div ${classAttr}="${classes}">
+${childrenJSX}
+${indentStr}</div>`;
 }
 
 function renderGrid(node: any, context: ReactRenderContext, indent: number): string {

@@ -37,10 +37,11 @@ export function transformToWiremdAST(
     const node = mdast.children[i];
     const nextNode = mdast.children[i + 1];
 
-    // Check if this is a heading with grid class
+    // Check if this is a heading with grid or row class
     if (node.type === 'heading') {
       const content = extractTextContent(node);
       const gridMatch = content.match(/\{[^}]*\.grid-(\d+)[^}]*\}/);
+      const rowMatch = !gridMatch && /\{[^}]*\.row\b[^}]*\}/.test(content);
 
       if (gridMatch) {
         const columns = parseInt(gridMatch[1], 10);
@@ -115,6 +116,64 @@ export function transformToWiremdAST(
           columns,
           props: (headingTransformed as any).props || {},
           children: gridItems,
+        });
+
+        continue;
+      }
+
+      if (rowMatch) {
+        const rowHeadingLevel = node.depth;
+        const rowItems: WiremdNode[] = [];
+        const headingTransformed = transformHeading(node, options);
+        const rowProps = (headingTransformed as any).props || {};
+
+        i++;
+
+        while (i < mdast.children.length) {
+          const childNode = mdast.children[i];
+
+          // Stop at a heading at the same or higher level
+          if (childNode.type === 'heading' && childNode.depth <= rowHeadingLevel) {
+            break;
+          }
+
+          // Explicit item: heading one level deeper
+          if (childNode.type === 'heading' && childNode.depth === rowHeadingLevel + 1) {
+            const itemHeadingContent = extractTextContent(childNode);
+            const alignMatch = itemHeadingContent.match(/\{[^}]*\.(left|center|right)[^}]*\}/);
+            const itemProps: any = { classes: alignMatch ? [`align-${alignMatch[1]}`] : [] };
+            const itemChildren: WiremdNode[] = [];
+            i++;
+
+            while (i < mdast.children.length) {
+              const contentNode = mdast.children[i];
+              if (contentNode.type === 'heading' && contentNode.depth <= rowHeadingLevel + 1) break;
+              const contentNextNode = mdast.children[i + 1];
+              const contentTransformed = transformNode(contentNode, options, contentNextNode);
+              if (contentTransformed) {
+                itemChildren.push(contentTransformed);
+                if (contentTransformed.type === 'select' && contentNextNode?.type === 'list') i++;
+              }
+              i++;
+            }
+
+            rowItems.push({ type: 'grid-item', props: itemProps, children: itemChildren });
+          } else {
+            // Implicit item: wrap each non-heading child directly
+            const contentNextNode = mdast.children[i + 1];
+            const contentTransformed = transformNode(childNode, options, contentNextNode);
+            if (contentTransformed) {
+              rowItems.push({ type: 'grid-item', props: { classes: [] }, children: [contentTransformed] });
+              if (contentTransformed.type === 'select' && contentNextNode?.type === 'list') i++;
+            }
+            i++;
+          }
+        }
+
+        children.push({
+          type: 'row',
+          props: { ...rowProps, classes: (rowProps.classes || []).filter((c: string) => c !== 'row') },
+          children: rowItems,
         });
 
         continue;

@@ -60,6 +60,7 @@ export type WiremdNode =
   | { type: 'brand'; children: WiremdNode[]; props: ComponentProps; position?: Location }
   | { type: 'grid'; columns: number; props: ComponentProps; children: WiremdNode[]; position?: Location }
   | { type: 'grid-item'; props: ComponentProps; children: WiremdNode[]; position?: Location }
+  | { type: 'row'; props: ComponentProps; children: WiremdNode[]; position?: Location }
 
   // Forms
   | { type: 'button'; content?: string; children?: WiremdNode[]; props: ComponentProps & { variant?: 'primary' | 'secondary' | 'danger'; type?: 'button' | 'submit' | 'reset' }; position?: Location }

@@ -486,4 +486,69 @@ Advanced features included
       expect(result.children[0].children).toHaveLength(4);
     });
   });
+
+  describe('Row layout', () => {
+    it('should parse ## {.row} as a row node', () => {
+      const result = parse('## Toolbar {.row}\n[All]* [Active]');
+      expect(result.children[0]).toMatchObject({ type: 'row' });
+    });
+
+    it('should auto-wrap direct children as implicit grid-items', () => {
+      const result = parse('## Toolbar {.row}\n[Save]*\n\nSome text');
+      const row = result.children[0] as any;
+      expect(row.type).toBe('row');
+      expect(row.children.every((c: any) => c.type === 'grid-item')).toBe(true);
+    });
+
+    it('should not include the row class name in props.classes', () => {
+      const result = parse('## Toolbar {.row}');
+      const row = result.children[0] as any;
+      expect((row.props.classes || [])).not.toContain('row');
+    });
+
+    it('should collect explicit ### children with alignment', () => {
+      const input = `
+## Toolbar {.row}
+
+### {.left}
+[All]*
+
+### {.right}
+[+ New]*
+      `.trim();
+
+      const result = parse(input);
+      const row = result.children[0] as any;
+      expect(row.children).toHaveLength(2);
+      expect(row.children[0].props.classes).toContain('align-left');
+      expect(row.children[1].props.classes).toContain('align-right');
+    });
+
+    it('should support row-level right alignment', () => {
+      const result = parse('## Actions {.row .right}\n[+ New]*');
+      const row = result.children[0] as any;
+      expect(row.type).toBe('row');
+      expect(row.props.classes).toContain('right');
+    });
+
+    it('should support row-level center alignment', () => {
+      const result = parse('## Status {.row .center}\nAll systems go');
+      const row = result.children[0] as any;
+      expect(row.props.classes).toContain('center');
+    });
+
+    it('should stop at a heading at the same level', () => {
+      const input = `
+## Toolbar {.row}
+[Save]*
+
+## Next Section
+      `.trim();
+
+      const result = parse(input);
+      expect(result.children).toHaveLength(2);
+      expect(result.children[0].type).toBe('row');
+      expect(result.children[1].type).toBe('heading');
+    });
+  });
 });
