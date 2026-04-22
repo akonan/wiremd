@@ -63,15 +63,16 @@ mdmock your-mockup.md --format json -o mockup.json
 
 Example markdown:
 ```markdown
-## Navigation Bar {.nav}
 [[ Logo | Home | Products | About | [Sign In] ]]
 
-## Hero Section {.hero}
-> # Welcome to Our Product
-> Transform your workflow with powerful tools
-> [Get Started] [Learn More]{.outline}
+::: hero
+# Welcome to Our Product
+Transform your workflow with powerful tools
+[Get Started] [Learn More]{.outline}
+:::
 
-## Features Grid {.grid-3}
+::: grid-3 card
+
 ### Fast Performance
 Lightning-quick load times
 
@@ -80,6 +81,8 @@ Enterprise-grade security
 
 ### Scalable
 Grows with your needs
+
+:::
 ```
 
 ### Step 2: Open Plugin in Figma

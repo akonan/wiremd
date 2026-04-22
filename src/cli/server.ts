@@ -7,12 +7,18 @@
  */
 
 import { createServer, IncomingMessage, ServerResponse } from 'http';
-import { readFileSync } from 'fs';
+import { readFileSync, existsSync } from 'fs';
 import { createHash } from 'crypto';
+import { dirname, join } from 'path';
 
 interface ServerOptions {
   port: number;
   outputPath: string;
+  renderFile?: (mdPath: string) => string;
+  /** Root directory for resolving linked .md files. Defaults to dirname(outputPath). */
+  rootDir?: string;
+  /** Entry .md filename (e.g. "index.md"). When set, GET / redirects to /{inputFile}. */
+  inputFile?: string;
 }
 
 const liveReloadScript = `
@@ -356,35 +362,75 @@ const liveReloadScript = `
 
 const wsClients: Set<any> = new Set();
 
-export function startServer(options: ServerOptions): void {
-  const { port, outputPath } = options;
+export function startServer(options: ServerOptions): ReturnType<typeof createServer> {
+  const { port, outputPath, renderFile, inputFile } = options;
+  const rootDir = options.rootDir || dirname(outputPath);
 
-  // Simple WebSocket implementation without dependencies
+  const injectScript = (html: string) => {
+    const script = liveReloadScript.replace('__PORT__', String(port));
+    return html.replace('</body>', `${script}\n</body>`);
+  };
+
   const server = createServer((req: IncomingMessage, res: ServerResponse) => {
-    // Handle WebSocket upgrade
     if (req.url === '/__ws') {
       res.writeHead(426, { 'Content-Type': 'text/plain' });
       res.end('This endpoint requires WebSocket upgrade');
       return;
     }
 
-    // Serve the HTML file
-    try {
-      let html = readFileSync(outputPath, 'utf-8');
+    const urlPath = (req.url || '/').split('?')[0];
+    let html: string | null = null;
 
-      // Inject live-reload script before </body>
-      const script = liveReloadScript.replace('__PORT__', String(port));
-      html = html.replace('</body>', `${script}\n</body>`);
+    if (urlPath === '/' || urlPath === '') {
+      if (inputFile) {
+        res.writeHead(302, { Location: `/${inputFile}` });
+        res.end();
+        return;
+      }
+      try {
+        html = readFileSync(outputPath, 'utf-8');
+      } catch {
+        res.writeHead(500, { 'Content-Type': 'text/plain' });
+        res.end(`Error reading: ${outputPath}`);
+        return;
+      }
+    } else if (renderFile) {
+      const requestedFile = urlPath.replace(/^\//, '');
+      const targetPath = join(rootDir, requestedFile);
 
-      res.writeHead(200, {
-        'Content-Type': 'text/html',
-        'Cache-Control': 'no-cache, no-store, must-revalidate'
-      });
-      res.end(html);
-    } catch (error) {
-      res.writeHead(500, { 'Content-Type': 'text/plain' });
-      res.end(`Error reading file: ${outputPath}`);
+      if (targetPath.endsWith('.md') && existsSync(targetPath)) {
+        try {
+          html = renderFile(targetPath);
+        } catch (err: any) {
+          res.writeHead(500, { 'Content-Type': 'text/plain' });
+          res.end(`Error rendering ${targetPath}: ${err.message}`);
+          return;
+        }
+      } else if (targetPath.endsWith('.html')) {
+        if (existsSync(targetPath)) {
+          try { html = readFileSync(targetPath, 'utf-8'); } catch {}
+        }
+        if (!html) {
+          const mdPath = targetPath.replace(/\.html$/, '.md');
+          if (existsSync(mdPath)) {
+            try { html = renderFile(mdPath); } catch (err: any) {
+              res.writeHead(500, { 'Content-Type': 'text/plain' });
+              res.end(`Error rendering ${mdPath}: ${err.message}`);
+              return;
+            }
+          }
+        }
+      }
     }
+
+    if (!html) {
+      res.writeHead(404, { 'Content-Type': 'text/plain' });
+      res.end(`Not found: ${urlPath}`);
+      return;
+    }
+
+    res.writeHead(200, { 'Content-Type': 'text/html', 'Cache-Control': 'no-cache, no-store, must-revalidate' });
+    res.end(injectScript(html));
   });
 
   // Handle WebSocket upgrade manually
@@ -421,6 +467,8 @@ export function startServer(options: ServerOptions): void {
     console.log(`📡 Live-reload enabled`);
     console.log(`Press Ctrl+C to stop`);
   });
+
+  return server;
 }
 
 export function notifyReload(): void {

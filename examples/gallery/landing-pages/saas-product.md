@@ -29,7 +29,7 @@ The all-in-one platform for modern teams to collaborate, automate, and scale the
 
 ---
 
-## Why CloudFlow? {.grid-3}
+::: grid-3 card
 
 ### :rocket: Lightning Fast
 Deploy in seconds, not hours. Our infrastructure handles millions of requests with 99.99% uptime.
@@ -49,11 +49,11 @@ Built for teams with seamless sharing, commenting, and real-time updates.
 ### :support: 24/7 Support
 Expert support team available around the clock via chat, email, and phone.
 
-##
+:::
 
 ---
 
-## Core Features {.grid-2}
+::: grid-2 card
 
 ### Automation That Just Works
 
@@ -79,11 +79,11 @@ Expert support team available around the clock via chat, email, and phone.
 
 [See Examples →]
 
-##
+:::
 
 ---
 
-## Simple, Transparent Pricing {.grid-3}
+::: grid-3 card
 
 ### Starter
 **$29** /month
@@ -129,13 +129,13 @@ For large organizations
 
 [Contact Sales]*
 
-##
+:::
 
 ---
 
 ## What Our Customers Say
 
-## Testimonials {.grid-3}
+::: grid-3 card
 
 ### :star::star::star::star::star:
 *"CloudFlow transformed how our team works. We've saved 20 hours per week on manual tasks."*
@@ -155,7 +155,7 @@ CTO, DataCorp
 **Emily Rodriguez**
 Operations Director, GlobalTech
 
-##
+:::
 
 ---
 
@@ -210,7 +210,7 @@ Start your free trial today. No credit card required.
 
 ::: footer
 
-## Quick Links {.grid-4}
+::: grid-4 card
 
 ### Product
 - Features
@@ -240,7 +240,7 @@ Start your free trial today. No credit card required.
 - GDPR
 - Compliance
 
-##
+:::
 
 ---
 

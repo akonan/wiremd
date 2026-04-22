@@ -22,7 +22,8 @@
 - :error: Failed task
 - :info: Information item
 
-## Icon Grid {.grid-4}
+::: grid-4 card
+
 ### :chart:
 Analytics
 
@@ -34,3 +35,5 @@ Schedule
 
 ### :mail:
 Messages
+
+:::

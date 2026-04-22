@@ -42,7 +42,7 @@
 
 ---
 
-## System Stats {.grid-5}
+::: grid-5 card
 
 ### Total Users
 **24,567**
@@ -64,11 +64,11 @@ Current online
 **67%**
 Normal
 
-##
+:::
 
 ---
 
-## Recent Activity {.grid-2}
+::: grid-2 card
 
 ### Latest Users
 
@@ -94,7 +94,7 @@ Normal
 
 [View All Orders →]
 
-##
+:::
 
 ---
 
@@ -137,7 +137,7 @@ Showing 1-5 of 24,567 users
 
 ---
 
-## Content Management {.grid-2}
+::: grid-2 card
 
 ### Published Content
 
@@ -158,7 +158,7 @@ Showing 1-5 of 24,567 users
 
 [Review Drafts →]
 
-##
+:::
 
 ---
 
@@ -263,7 +263,7 @@ Event Type: [All Events...v] | User: [All Users...v] | Date: [Today...v]
 
 ---
 
-## Database & Storage {.grid-2}
+::: grid-2 card
 
 ### Database Stats
 
@@ -295,11 +295,11 @@ Event Type: [All Events...v] | User: [All Users...v] | Date: [Today...v]
 
 [Cleanup Storage]
 
-##
+:::
 
 ---
 
-## Support Tickets {.grid-3}
+::: grid-3 card
 
 ### Open Tickets
 **23** new
@@ -327,13 +327,13 @@ Customer satisfaction:
 
 [View Reports →]
 
-##
+:::
 
 ---
 
 ## Quick Actions
 
-## Administrative Tools {.grid-4}
+::: grid-4 card
 
 ### :user: Create User
 Add new user account
@@ -355,7 +355,7 @@ Download reports
 
 [Export]*
 
-##
+:::
 
 ---
 

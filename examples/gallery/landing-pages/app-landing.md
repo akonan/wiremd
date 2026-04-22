@@ -29,7 +29,7 @@ Stay organized, focused, and on top of your tasks with the #1 rated productivity
 
 ---
 
-## Everything You Need to Stay Productive {.grid-3}
+::: grid-3 card
 
 ### :check: Smart Task Management
 Create, organize, and prioritize tasks with intelligent categorization and due dates.
@@ -58,7 +58,7 @@ End-to-end encryption keeps your data safe and private.
 ### :palette: Customizable
 Themes, tags, and custom views let you personalize your experience.
 
-##
+:::
 
 ---
 
@@ -87,7 +87,7 @@ TaskMaster combines elegant design with powerful productivity features. Manage y
 
 ## Loved by Millions
 
-## User Testimonials {.grid-2}
+::: grid-2 card
 
 ### :star::star::star::star::star:
 *"This app changed my life. I've never been this organized. The natural language input is a game changer!"*
@@ -113,11 +113,11 @@ TaskMaster combines elegant design with powerful productivity features. Manage y
 **Emma Johnson** • Designer
 *Twitter*
 
-##
+:::
 
 ---
 
-## Stats That Matter {.grid-4}
+::: grid-4 card
 
 ### 5M+
 Downloads
@@ -131,11 +131,11 @@ Countries
 ### 99.9%
 Uptime
 
-##
+:::
 
 ---
 
-## Pricing Plans {.grid-3}
+::: grid-3 card
 
 ### Free
 **$0** forever
@@ -180,7 +180,7 @@ For businesses
 
 [Contact Sales]*
 
-##
+:::
 
 ---
 
@@ -250,7 +250,7 @@ Join 5 million users who trust TaskMaster for their daily productivity.
 
 ::: footer
 
-## Links {.grid-4}
+::: grid-4 card
 
 ### Product
 - Features
@@ -280,7 +280,7 @@ Join 5 million users who trust TaskMaster for their daily productivity.
 - Licenses
 - Cookies
 
-##
+:::
 
 ---
 

@@ -22,7 +22,7 @@
 
 ---
 
-## Performance Summary {.grid-5}
+::: grid-5 card
 
 ### Total Followers
 **458,234**
@@ -44,11 +44,11 @@
 **3.8%**
 :chart: +0.5% vs last month
 
-##
+:::
 
 ---
 
-## Platform Performance {.grid-3}
+::: grid-3 card
 
 ### :instagram: Instagram
 **Followers:** 234,567 (+2,345)
@@ -83,7 +83,7 @@
 
 [View Details →]
 
-##
+:::
 
 ---
 
@@ -109,7 +109,7 @@
 
 ## Content Calendar
 
-## This Week's Schedule {.grid-7}
+::: grid-7 card
 
 ### Mon, Mar 17
 **2 posts**
@@ -171,7 +171,7 @@ Lifestyle shot
 :twitter: 4:00 PM
 Weekly recap
 
-##
+:::
 
 [+ Schedule Post]* [View Full Calendar →]
 
@@ -179,7 +179,7 @@ Weekly recap
 
 ## Engagement Analytics
 
-## Engagement Breakdown {.grid-2}
+::: grid-2 card
 
 ### Engagement Over Time
 
@@ -201,11 +201,11 @@ Weekly recap
 | Shares/Retweets | 10,456 | 12% |
 | Saves | 4,088 | 4% |
 
-##
+:::
 
 ---
 
-## Audience Insights {.grid-3}
+::: grid-3 card
 
 ### Demographics
 
@@ -250,7 +250,7 @@ Weekly recap
 
 ![Heatmap](https://via.placeholder.com/350x200)
 
-##
+:::
 
 ---
 
@@ -314,7 +314,7 @@ Weekly recap
 
 ## Messages & Mentions
 
-## Inbox Overview {.grid-4}
+::: grid-4 card
 
 ### Unread Messages
 **45**
@@ -340,7 +340,7 @@ Auto-filtered
 
 [Review →]
 
-##
+:::
 
 ---
 
@@ -388,7 +388,7 @@ Auto-filtered
 
 ## Competitor Analysis
 
-## Competitive Insights {.grid-3}
+::: grid-3 card
 
 ### Competitor A
 **Followers:** 567K
@@ -417,7 +417,7 @@ Auto-filtered
 
 [Analyze →]
 
-##
+:::
 
 ---
 

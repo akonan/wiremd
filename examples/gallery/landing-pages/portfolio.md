@@ -27,7 +27,7 @@ I design beautiful, functional digital experiences that users love.
 
 ## Featured Work
 
-## Recent Projects {.grid-2}
+::: grid-2 card
 
 ### E-Commerce Redesign
 ![Project Screenshot](https://via.placeholder.com/500x350)
@@ -73,7 +73,7 @@ Secure, accessible banking app serving 500K+ users with 4.8★ rating.
 
 [View Case Study →]
 
-##
+:::
 
 ---
 
@@ -94,7 +94,7 @@ Secure, accessible banking app serving 500K+ users with 4.8★ rating.
 
 ## Skills & Expertise
 
-## Design {.grid-3}
+::: grid-3 card
 
 ### UI/UX Design
 - User Research
@@ -123,7 +123,7 @@ Secure, accessible banking app serving 500K+ users with 4.8★ rating.
 
 **Tools:** VS Code, Git, Tailwind
 
-##
+:::
 
 ---
 
@@ -159,7 +159,7 @@ I'm a product designer with 8+ years of experience creating digital experiences 
 
 ## Recognition & Awards
 
-## Achievements {.grid-4}
+::: grid-4 card
 
 ### Awwwards
 3x Site of the Day
@@ -177,7 +177,7 @@ Top 1% Designer
 10+ Conferences
 TEDx Speaker
 
-##
+:::
 
 ---
 
@@ -231,7 +231,7 @@ Message
 
 ::: footer
 
-## Connect {.grid-3}
+::: grid-3 card
 
 ### Work
 - [Portfolio](https://janedoe.design)
@@ -248,7 +248,7 @@ Message
 - [+1 (555) 123-4567](tel:+15551234567)
 - San Francisco, CA
 
-##
+:::
 
 © 2025 Jane Doe. All rights reserved.
 

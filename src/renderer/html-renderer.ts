@@ -45,6 +45,9 @@ export function renderNode(node: WiremdNode, context: RenderContext): string {
     case 'icon':
       return renderIcon(node, context);
 
+    case 'badge':
+      return renderBadge(node, context);
+
     case 'container':
       return renderContainer(node, context);
 
@@ -62,6 +65,10 @@ export function renderNode(node: WiremdNode, context: RenderContext): string {
 
     case 'grid-item':
       return renderGridItem(node, context);
+
+    case 'row':
+      return renderRow(node, context);
+
 
     case 'heading':
       return renderHeading(node, context);
@@ -105,6 +112,12 @@ export function renderNode(node: WiremdNode, context: RenderContext): string {
     case 'separator':
       return renderSeparator(node, context);
 
+    case 'tabs':
+      return renderTabs(node, context);
+
+    case 'tab':
+      return renderTab(node, context);
+
     default:
       return `<!-- Unknown node type: ${(node as any).type} -->`;
   }
@@ -121,7 +134,18 @@ function renderButton(node: any, context: RenderContext): string {
     ? node.children.map((child: any) => renderNode(child, context)).join('')
     : escapeHtml(node.content);
 
+  const href = node.href || node.props?.href;
+  if (href) {
+    return `<a href="${escapeHtml(href)}" class="${classes}${loading}">${contentHTML}</a>`;
+  }
+
   return `<button class="${classes}${loading}"${disabled}>${contentHTML}</button>`;
+}
+
+function renderBadge(node: any, context: RenderContext): string {
+  const { classPrefix: prefix } = context;
+  const classes = buildClasses(prefix, 'badge', node.props);
+  return `<span class="${classes}">${escapeHtml(node.content)}</span>`;
 }
 
 function renderInput(node: any, context: RenderContext): string {
@@ -365,10 +389,52 @@ function renderIcon(node: any, context: RenderContext): string {
 function renderContainer(node: any, context: RenderContext): string {
   const { classPrefix: prefix } = context;
   const classes = buildClasses(prefix, `container-${node.containerType}`, node.props);
+
+  const nodeClasses: string[] = node.props?.classes || [];
+  if (node.containerType === 'layout' && nodeClasses.includes('sidebar-main')) {
+    return renderSidebarMainLayout(node, context, classes);
+  }
+
   const childrenHTML = (node.children || []).map((child: any) => renderNode(child, context)).join('\n  ');
 
   return `<div class="${classes}">
   ${childrenHTML}
+</div>`;
+}
+
+function renderSidebarMainLayout(node: any, context: RenderContext, classes: string): string {
+  const { classPrefix: prefix } = context;
+  const children: any[] = node.children || [];
+
+  const sections: { name: string; nodes: any[] }[] = [];
+  let current: { name: string; nodes: any[] } | null = null;
+
+  for (const child of children) {
+    if (child.type === 'container' && (child.containerType === 'sidebar' || child.containerType === 'main')) {
+      if (current) sections.push(current);
+      sections.push({ name: child.containerType, nodes: child.children || [] });
+      current = null;
+    } else {
+      const childClasses: string[] = child.props?.classes || [];
+      if (child.type === 'heading' && (childClasses.includes('sidebar') || childClasses.includes('main'))) {
+        if (current) sections.push(current);
+        current = { name: childClasses.includes('sidebar') ? 'sidebar' : 'main', nodes: [] };
+      } else if (current) {
+        current.nodes.push(child);
+      }
+    }
+  }
+  if (current) sections.push(current);
+
+  const sectionsHTML = sections.map((s) => {
+    const contentHTML = s.nodes.map((child: any) => renderNode(child, context)).join('\n    ');
+    return `  <div class="${prefix}layout-${s.name}">
+    ${contentHTML}
+  </div>`;
+  }).join('\n');
+
+  return `<div class="${classes}">
+${sectionsHTML}
 </div>`;
 }
 
@@ -386,14 +452,18 @@ function renderNav(node: any, context: RenderContext): string {
 
 function renderNavItem(node: any, context: RenderContext): string {
   const { classPrefix: prefix } = context;
-  const classes = buildClasses(prefix, 'nav-item', node.props);
   const href = node.href || '#';
 
-  // Handle both content (string) and children (array of nodes)
   const contentHTML = node.children
     ? node.children.map((child: any) => renderNode(child, context)).join('')
     : escapeHtml(node.content);
 
+  if (node.props?.variant === 'primary') {
+    const classes = `${buildClasses(prefix, 'button', node.props)} ${prefix}button-primary`;
+    return `<a href="${href}" class="${classes.trim()}" style="text-decoration:none;color:inherit;">${contentHTML}</a>`;
+  }
+
+  const classes = buildClasses(prefix, 'nav-item', node.props);
   return `<a href="${href}" class="${classes}">${contentHTML}</a>`;
 }
 
@@ -410,16 +480,19 @@ function renderGrid(node: any, context: RenderContext): string {
   const classes = buildClasses(prefix, 'grid', node.props);
   const columns = node.columns || 3;
   const gridClass = `${classes} ${prefix}grid-${columns}`;
-  const childrenHTML = (node.children || []).map((child: any) => renderNode(child, context)).join('\n  ');
+  const isCard = !!node.props?.card;
+  const childrenHTML = (node.children || []).map((child: any) => renderGridItem(child, context, isCard)).join('\n  ');
 
   return `<div class="${gridClass}" style="--grid-columns: ${columns}">
   ${childrenHTML}
 </div>`;
 }
 
-function renderGridItem(node: any, context: RenderContext): string {
+function renderGridItem(node: any, context: RenderContext, isCard = false): string {
   const { classPrefix: prefix } = context;
-  const classes = buildClasses(prefix, 'grid-item', node.props);
+  const extraClasses = isCard ? [...(node.props?.classes || []), 'grid-item-card'] : (node.props?.classes || []);
+  const itemProps = { ...node.props, classes: extraClasses };
+  const classes = buildClasses(prefix, 'grid-item', itemProps);
   const childrenHTML = (node.children || []).map((child: any) => renderNode(child, context)).join('\n    ');
 
   return `<div class="${classes}">
@@ -427,13 +500,24 @@ function renderGridItem(node: any, context: RenderContext): string {
   </div>`;
 }
 
+function renderRow(node: any, context: RenderContext): string {
+  const { classPrefix: prefix } = context;
+  const classes = buildClasses(prefix, 'row', node.props);
+  const childrenHTML = (node.children || []).map((child: any) => renderGridItem(child, context)).join('\n  ');
+
+  return `<div class="${classes}">
+  ${childrenHTML}
+</div>`;
+}
+
 function renderHeading(node: any, context: RenderContext): string {
+  if (!node.content && !node.children?.length) return '';
+
   const { classPrefix: prefix } = context;
   const level = node.level || 1;
   const classes = buildClasses(prefix, `h${level}`, node.props);
   const content = node.content || '';
 
-  // Handle children (like icons in headings)
   const childrenHTML = node.children
     ? node.children.map((child: any) => renderNode(child, context)).join('')
     : escapeHtml(content);
@@ -598,6 +682,43 @@ function renderSeparator(node: any, context: RenderContext): string {
   const classes = buildClasses(prefix, 'separator', node.props);
 
   return `<hr class="${classes}" />`;
+}
+
+function renderTabs(node: any, context: RenderContext): string {
+  const { classPrefix: prefix } = context;
+  const classes = buildClasses(prefix, 'tabs', node.props);
+  const tabs: any[] = node.children || [];
+
+  const headers = tabs.map((tab: any, i: number) => {
+    const activeClass = tab.active ? ` ${prefix}active` : '';
+    return `<button type="button" role="tab" class="${prefix}tab-header${activeClass}" data-wmd-tab="${i}">${escapeHtml(tab.label || '')}</button>`;
+  }).join('');
+
+  const panels = tabs.map((tab: any, i: number) => {
+    const panelChildren = (tab.children || []).map((c: any) => renderNode(c, context)).join('\n    ');
+    const hidden = tab.active ? '' : ' hidden';
+    return `<div class="${prefix}tab-panel" role="tabpanel" data-wmd-tab-panel="${i}"${hidden}>
+    ${panelChildren}
+  </div>`;
+  }).join('\n  ');
+
+  return `<div class="${classes}" data-wmd-tabs>
+  <div class="${prefix}tab-headers" role="tablist">${headers}</div>
+  <div class="${prefix}tab-panels">
+  ${panels}
+  </div>
+</div>${getTabsScript(prefix)}`;
+}
+
+function renderTab(node: any, context: RenderContext): string {
+  const { classPrefix: prefix } = context;
+  const hidden = node.active ? '' : ' hidden';
+  const childrenHTML = (node.children || []).map((c: any) => renderNode(c, context)).join('');
+  return `<div class="${prefix}tab-panel" role="tabpanel"${hidden}>${childrenHTML}</div>`;
+}
+
+function getTabsScript(prefix: string): string {
+  return `<script>(function(){if(window.__wmdTabsInit)return;window.__wmdTabsInit=true;document.addEventListener('click',function(e){var btn=e.target.closest('.${prefix}tab-header');if(!btn)return;var root=btn.closest('[data-wmd-tabs]');if(!root)return;var idx=btn.getAttribute('data-wmd-tab');root.querySelectorAll('.${prefix}tab-header').forEach(function(b){b.classList.toggle('${prefix}active',b.getAttribute('data-wmd-tab')===idx);});root.querySelectorAll('[data-wmd-tab-panel]').forEach(function(p){if(p.getAttribute('data-wmd-tab-panel')===idx){p.removeAttribute('hidden');}else{p.setAttribute('hidden','');}});});})();</script>`;
 }
 
 /**

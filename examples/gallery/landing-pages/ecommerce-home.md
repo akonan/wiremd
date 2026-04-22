@@ -27,7 +27,7 @@ Discover our latest styles for the season
 
 ---
 
-## Shop by Category {.grid-6}
+::: grid-6 card
 
 ### :tshirt: Clothing
 2,450 items
@@ -39,7 +39,6 @@ Discover our latest styles for the season
 1,230 items
 
 ### :watch: Watches
-340 items
 
 ### :briefcase: Bags
 560 items
@@ -47,11 +46,11 @@ Discover our latest styles for the season
 ### :glasses: Eyewear
 280 items
 
-##
+:::
 
 ---
 
-## Featured Deals {.grid-4}
+::: grid-4 card
 
 ### Summer Dress
 ![Product](https://via.placeholder.com/250x300)
@@ -89,7 +88,7 @@ Discover our latest styles for the season
 
 [Add to Cart]*
 
-##
+:::
 
 [View All Deals →]
 
@@ -97,7 +96,7 @@ Discover our latest styles for the season
 
 ## New Arrivals
 
-## Just In {.grid-3}
+::: grid-3 card
 
 ### Designer Handbag
 ![Product](https://via.placeholder.com/300x350)
@@ -132,7 +131,7 @@ Fitness tracking & notifications
 
 [Quick View] [Add to Cart]*
 
-##
+:::
 
 [See All New Items →]
 
@@ -144,7 +143,7 @@ Fitness tracking & notifications
 
 ---
 
-## Why Shop with Us? {.grid-4}
+::: grid-4 card
 
 ### :truck: Free Shipping
 On orders over $50
@@ -158,13 +157,13 @@ SSL encrypted payment
 ### :support: 24/7 Support
 Always here to help
 
-##
+:::
 
 ---
 
 ## Customer Reviews
 
-## What Our Customers Say {.grid-3}
+::: grid-3 card
 
 ### :star::star::star::star::star:
 *"Best online shopping experience! Fast shipping and quality products."*
@@ -184,7 +183,7 @@ Verified Buyer
 **Sarah K.**
 Verified Buyer
 
-##
+:::
 
 ---
 
@@ -203,7 +202,7 @@ Verified Buyer
 
 ## Special Offers
 
-## Current Promotions {.grid-2}
+::: grid-2 card
 
 ### :gift: Summer Sale
 **Up to 50% Off**
@@ -223,7 +222,7 @@ Sign up and get instant discount code
 
 [Sign Up Now]*
 
-##
+:::
 
 ---
 
@@ -260,7 +259,7 @@ Stay connected for daily inspiration
 
 ## Shop by Price
 
-## Budget-Friendly Options {.grid-4}
+::: grid-4 card
 
 ### Under $25
 1,234 items
@@ -278,7 +277,7 @@ Stay connected for daily inspiration
 890 items
 [Shop →]
 
-##
+:::
 
 ---
 
@@ -307,7 +306,7 @@ Stay connected for daily inspiration
 
 ::: footer
 
-## Quick Links {.grid-5}
+::: grid-5 card
 
 ### Shop
 - Women
@@ -344,7 +343,7 @@ Stay connected for daily inspiration
 - Cookie Policy
 - Sitemap
 
-##
+:::
 
 ---
 

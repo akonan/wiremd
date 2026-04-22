@@ -51,7 +51,7 @@ This renders into a styled HTML wireframe with a form, inputs, and buttons.
 Create a `features.md` file:
 
 ```markdown
-## Product Features {.grid-3}
+::: grid-3 card
 
 ### :rocket: Fast
 Lightning quick performance
@@ -61,6 +61,8 @@ Bank-level security
 
 ### :gear: Flexible
 Fully customizable
+
+:::
 ```
 
 Generate a wireframe:
@@ -75,7 +77,7 @@ This creates a responsive 3-column grid layout with icons and descriptions.
 
 - ✅ **Markdown-first** - Valid markdown that degrades gracefully
 - ✅ **Full markdown support** - Headings, text formatting, lists, links, images, blockquotes, code blocks, tables
-- ✅ **Grid layouts** - Responsive multi-column grids (2, 3, 4+ columns) with simple `.grid-N` syntax
+- ✅ **Grid layouts** - Responsive multi-column grids (2, 3, 4, 5 columns) with simple `::: grid-N` syntax
 - ✅ **Visual syntax** - Looks like what it renders
 - ✅ **Fast to write** - Intuitive shortcuts for common patterns
 - ✅ **Extensible** - Add classes and attributes as needed

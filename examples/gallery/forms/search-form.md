@@ -15,7 +15,7 @@ Over 1 million items ready to ship
 
 ---
 
-## Search & Filters {.grid-4}
+::: grid-4
 
 ### Main Search
 
@@ -62,7 +62,7 @@ Rating
 - [x] 4+ Stars
 - [ ] 3+ Stars
 
-##
+:::
 
 ---
 

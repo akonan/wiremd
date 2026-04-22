@@ -310,7 +310,7 @@ Email
 ```markdown
 ::: footer
 
-## Links {.grid-4}
+::: grid-4 card
 
 ### Product
 - Features
@@ -336,7 +336,7 @@ Email
 - Cookie Policy
 - GDPR
 
-##
+:::
 
 ---
 
@@ -351,7 +351,7 @@ Email
 
 ::: footer
 
-## Links {.grid-4}
+::: grid-4 card
 
 ### Product
 - Features
@@ -377,7 +377,7 @@ Email
 - Cookie Policy
 - GDPR
 
-##
+:::
 
 ---
 

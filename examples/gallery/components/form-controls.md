@@ -492,7 +492,7 @@ Message
 ### Two-Column Form Layout
 
 ```markdown
-## Personal Information {.grid-2}
+::: grid-2
 
 ### Left Column
 
@@ -516,12 +516,12 @@ Date of Birth
 Country
 [Select country...v]
 
-##
+:::
 ```
 
 **Rendered:**
 
-## Personal Information {.grid-2}
+::: grid-2
 
 ### Left Column
 
@@ -545,7 +545,7 @@ Date of Birth
 Country
 [Select country...v]
 
-##
+:::
 
 ---
 
@@ -557,7 +557,7 @@ Country
 ::: card
 ### Create Account
 
-## Account Details {.grid-2}
+::: grid-2
 
 ### Login Information
 
@@ -588,7 +588,7 @@ Phone Number
 Date of Birth
 [_____________________________] {type:date}
 
-##
+:::
 
 ---
 
@@ -642,7 +642,7 @@ Newsletter Preferences
 ::: card
 ### Create Account
 
-## Account Details {.grid-2}
+::: grid-2
 
 ### Login Information
 
@@ -673,7 +673,7 @@ Phone Number
 Date of Birth
 [_____________________________] {type:date}
 
-##
+:::
 
 ---
 

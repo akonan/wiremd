@@ -14,7 +14,7 @@ Join thousands of users already enjoying our platform
 
 ---
 
-## Personal Information {.grid-2}
+::: grid-2
 
 ### Account Details
 
@@ -39,11 +39,11 @@ Last Name
 Phone Number
 [_____________________________] {type:tel}
 
-##
+:::
 
 ---
 
-## Choose Your Plan {.grid-3}
+::: grid-3 card
 
 ### Free
 **$0** /month
@@ -75,7 +75,7 @@ Phone Number
 
 - ( ) Select Enterprise
 
-##
+:::
 
 ---
 

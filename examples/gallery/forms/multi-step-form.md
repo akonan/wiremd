@@ -76,7 +76,7 @@ Preferred Contact
 
 ---
 
-## Address Details {.grid-2}
+::: grid-2
 
 ### Home Address
 
@@ -119,7 +119,7 @@ State/Province
 Zip/Postal Code
 [_____]
 
-##
+:::
 
 ---
 

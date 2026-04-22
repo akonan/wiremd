@@ -16,7 +16,7 @@
 
 ---
 
-## Key Metrics {.grid-4}
+::: grid-4 card
 
 ### Total Revenue
 **$124,567**
@@ -34,11 +34,11 @@
 **3.2%**
 :chart: +0.8% vs last period
 
-##
+:::
 
 ---
 
-## Sales Overview {.grid-2}
+::: grid-2 card
 
 ### Revenue Chart (30 Days)
 
@@ -63,7 +63,7 @@
 | Sports | $12,890 | 234 | 10% |
 | Other | $7,976 | 140 | 6% |
 
-##
+:::
 
 ---
 
@@ -89,7 +89,7 @@ Filter: [All Statuses...v] | Search: [Order # or customer...___________]
 
 ---
 
-## Inventory Management {.grid-2}
+::: grid-2 card
 
 ### Low Stock Alerts
 
@@ -119,11 +119,11 @@ Filter: [All Statuses...v] | Search: [Order # or customer...___________]
 
 [View All Products →]
 
-##
+:::
 
 ---
 
-## Customer Insights {.grid-3}
+::: grid-3 card
 
 ### Total Customers
 **8,234**
@@ -154,13 +154,13 @@ Based on 1,234 reviews
 - ⭐⭐ 1%
 - ⭐ 1%
 
-##
+:::
 
 ---
 
 ## Order Status Overview
 
-## Current Orders {.grid-5}
+::: grid-5 card
 
 ### Pending
 **45** orders
@@ -187,7 +187,7 @@ Based on 1,234 reviews
 
 [Review →]
 
-##
+:::
 
 ---
 
@@ -211,7 +211,7 @@ Based on 1,234 reviews
 
 ---
 
-## Marketing Performance {.grid-2}
+::: grid-2 card
 
 ### Active Campaigns
 
@@ -246,7 +246,7 @@ Based on 1,234 reviews
 
 [Create New Code →]
 
-##
+:::
 
 ---
 
@@ -281,7 +281,7 @@ Based on 1,234 reviews
 
 ---
 
-## Shipping & Fulfillment {.grid-2}
+::: grid-2 card
 
 ### Shipping Methods
 
@@ -301,7 +301,7 @@ Based on 1,234 reviews
 
 [Manage Shipping →]
 
-##
+:::
 
 ---
 
@@ -335,7 +335,7 @@ Based on 1,234 reviews
 
 ## Customer Support
 
-## Support Metrics {.grid-4}
+::: grid-4 card
 
 ### Open Tickets
 **23**
@@ -361,7 +361,7 @@ First contact
 
 [Reviews →]
 
-##
+:::
 
 ---
 

@@ -65,7 +65,7 @@ Cards can include images, text, and buttons for rich content presentation.
 ### Three Column Feature Grid
 
 ```markdown
-## Our Features {.grid-3}
+::: grid-3 card
 
 ### :rocket: Fast Performance
 Lightning-quick loading times and optimized rendering for the best user experience.
@@ -82,12 +82,12 @@ Flexible configuration options and extensive API for complete control.
 
 [Learn More →]
 
-##
+:::
 ```
 
 **Rendered:**
 
-## Our Features {.grid-3}
+::: grid-3 card
 
 ### :rocket: Fast Performance
 Lightning-quick loading times and optimized rendering for the best user experience.
@@ -104,7 +104,7 @@ Flexible configuration options and extensive API for complete control.
 
 [Learn More →]
 
-##
+:::
 
 ---
 
@@ -113,7 +113,7 @@ Flexible configuration options and extensive API for complete control.
 ### Pricing Tiers
 
 ```markdown
-## Choose Your Plan {.grid-3}
+::: grid-3 card
 
 ### Starter
 **$9** /month
@@ -155,12 +155,12 @@ For large organizations
 
 [Contact Sales]*
 
-##
+:::
 ```
 
 **Rendered:**
 
-## Choose Your Plan {.grid-3}
+::: grid-3 card
 
 ### Starter
 **$9** /month
@@ -202,7 +202,7 @@ For large organizations
 
 [Contact Sales]*
 
-##
+:::
 
 ---
 
@@ -211,7 +211,7 @@ For large organizations
 ### Product Grid
 
 ```markdown
-## Featured Products {.grid-4}
+::: grid-4 card
 
 ### Wireless Headphones
 ![Product](https://via.placeholder.com/250x250)
@@ -249,12 +249,12 @@ For large organizations
 
 [Add to Cart]*
 
-##
+:::
 ```
 
 **Rendered:**
 
-## Featured Products {.grid-4}
+::: grid-4 card
 
 ### Wireless Headphones
 ![Product](https://via.placeholder.com/250x250)
@@ -292,7 +292,7 @@ For large organizations
 
 [Add to Cart]*
 
-##
+:::
 
 ---
 
@@ -301,7 +301,7 @@ For large organizations
 ### Team Member Grid
 
 ```markdown
-## Meet Our Team {.grid-4}
+::: grid-4 card
 
 ### Sarah Johnson
 ![Profile](https://via.placeholder.com/200x200)
@@ -339,12 +339,12 @@ For large organizations
 
 [LinkedIn] [GitHub] [[email protected]]
 
-##
+:::
 ```
 
 **Rendered:**
 
-## Meet Our Team {.grid-4}
+::: grid-4 card
 
 ### Sarah Johnson
 ![Profile](https://via.placeholder.com/200x200)
@@ -382,7 +382,7 @@ For large organizations
 
 [LinkedIn] [GitHub] [[email protected]]
 
-##
+:::
 
 ---
 
@@ -391,7 +391,7 @@ For large organizations
 ### Blog Post Grid
 
 ```markdown
-## Latest Articles {.grid-3}
+::: grid-3 card
 
 ### Getting Started with Wireframing
 ![Blog Post](https://via.placeholder.com/350x200)
@@ -420,12 +420,12 @@ Make your designs inclusive and accessible to all users with these proven techni
 
 [Read More →]
 
-##
+:::
 ```
 
 **Rendered:**
 
-## Latest Articles {.grid-3}
+::: grid-3 card
 
 ### Getting Started with Wireframing
 ![Blog Post](https://via.placeholder.com/350x200)
@@ -454,7 +454,7 @@ Make your designs inclusive and accessible to all users with these proven techni
 
 [Read More →]
 
-##
+:::
 
 ---
 
@@ -463,7 +463,7 @@ Make your designs inclusive and accessible to all users with these proven techni
 ### Customer Testimonials
 
 ```markdown
-## What Our Customers Say {.grid-3}
+::: grid-3 card
 
 ### :star::star::star::star::star:
 *"This product completely transformed how we work. Best decision we made this year!"*
@@ -483,12 +483,12 @@ CTO, DataCorp
 **Emily Rodriguez**
 Operations Director
 
-##
+:::
 ```
 
 **Rendered:**
 
-## What Our Customers Say {.grid-3}
+::: grid-3 card
 
 ### :star::star::star::star::star:
 *"This product completely transformed how we work. Best decision we made this year!"*
@@ -508,7 +508,7 @@ CTO, DataCorp
 **Emily Rodriguez**
 Operations Director
 
-##
+:::
 
 ---
 
@@ -517,7 +517,7 @@ Operations Director
 ### Key Metrics Dashboard
 
 ```markdown
-## Performance Metrics {.grid-4}
+::: grid-4 card
 
 ### Total Users
 **124,567**
@@ -535,12 +535,12 @@ Operations Director
 **4.8** / 5.0
 :star::star::star::star::star:
 
-##
+:::
 ```
 
 **Rendered:**
 
-## Performance Metrics {.grid-4}
+::: grid-4 card
 
 ### Total Users
 **124,567**
@@ -558,7 +558,7 @@ Operations Director
 **4.8** / 5.0
 :star::star::star::star::star:
 
-##
+:::
 
 ---
 
@@ -567,7 +567,7 @@ Operations Director
 ### Card States
 
 ```markdown
-## Card States {.grid-2}
+::: grid-2 card
 
 ### Normal Card
 ::: card
@@ -585,12 +585,12 @@ This card has special emphasis
 [Primary Action]*
 :::
 
-##
+:::
 ```
 
 **Rendered:**
 
-## Card States {.grid-2}
+::: grid-2 card
 
 ### Normal Card
 ::: card
@@ -608,7 +608,7 @@ This card has special emphasis
 [Primary Action]*
 :::
 
-##
+:::
 
 ---
 
@@ -713,6 +713,112 @@ Expected Delivery: Mar 20, 2025
 
 [Track Order →] [View Invoice]
 :::
+
+---
+
+## 12. Grid Layout vs Card Grid
+
+### Pure Layout Grid (no card chrome)
+
+Use `::: grid-N` alone when items are form fields, text columns, or anything that shouldn't have card borders/backgrounds.
+
+```markdown
+::: grid-2
+
+### Your Details
+Name
+[_____________________________]{required}
+
+Email
+[_____________________________]{type:email required}
+
+### Message
+Subject
+[_____________________________]{required}
+
+[Send Message]*
+
+:::
+```
+
+**Rendered:**
+
+::: grid-2
+
+### Your Details
+Name
+[_____________________________]{required}
+
+Email
+[_____________________________]{type:email required}
+
+### Message
+Subject
+[_____________________________]{required}
+
+[Send Message]*
+
+---
+
+### Card Grid (with card chrome)
+
+Add `card` to apply card borders and backgrounds to each item.
+
+```markdown
+::: grid-3 card
+
+### :rocket: Fast
+Renders in milliseconds.
+
+### :shield: Secure
+Enterprise-grade by default.
+
+### :gear: Flexible
+Works with any stack.
+
+:::
+```
+
+**Rendered:**
+
+::: grid-3 card
+
+### :rocket: Fast
+Renders in milliseconds.
+
+### :shield: Secure
+Enterprise-grade by default.
+
+### :gear: Flexible
+Works with any stack.
+
+---
+
+### Column Spanning
+
+Add `{.col-span-N}` to a child heading to span multiple columns.
+
+```markdown
+::: grid-3 card
+
+### Starter
+$9/month — up to 3 projects.
+
+### Pro {.col-span-2}
+$29/month — unlimited projects, priority support, spans two columns.
+
+:::
+```
+
+**Rendered:**
+
+::: grid-3 card
+
+### Starter
+$9/month — up to 3 projects.
+
+### Pro {.col-span-2}
+$29/month — unlimited projects, priority support, spans two columns.
 
 ---
 

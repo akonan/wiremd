@@ -18,8 +18,13 @@
 | **Checkbox** | `- [ ]` / `- [x]` | `- [x] Agree` |
 | **Radio** | `- ( )` / `- (*)` | `- (*) Option 1` |
 | **Icon** | `:name:` | `:home: :user: :gear:` |
+| **Badge/Pill** | `\|Text\|` or `\|Text\|{.variant}` | `\|Active\|{.success}` |
 | **Nav Bar** | `[[ A \| B \| C ]]` | `[[ Home \| About \| [Login] ]]` |
+| **Nav Link** | `[[ [Text](url) \| ... ]]` | `[[ [About](./about.md) \| ... ]]` |
 | **Breadcrumbs** | `[[ A > B > C ]]` | `[[ Home > Products > Item ]]` |
+| **Button Link** | `[[Text](url)]` | `[[About](./about.md)]` |
+| **Primary Button Link** | `[[Text](url)]*` | `[[Get Started](./start.md)]*` |
+| **File Include** | `![[path/to/file.md]]` | `![[components/nav.md]]` |
 
 ## Containers
 
@@ -35,14 +40,22 @@
 
 ## Layouts
 
-| Layout | Syntax | Example |
-|--------|--------|---------|
-| **2-Column Grid** | `## Title {.grid-2}` | Section with 2 columns |
-| **3-Column Grid** | `## Title {.grid-3}` | Section with 3 columns |
-| **4-Column Grid** | `## Title {.grid-4}` | Section with 4 columns |
-| **Auto Grid** | `## Title {.grid-auto}` | Auto-fit columns |
+| Layout | Syntax | Notes |
+|--------|--------|-------|
+| **Grid (layout only)** | `::: grid-3` … `:::` | Equal columns, no styling on items |
+| **Grid (card chrome)** | `::: grid-3 card` … `:::` | Items rendered as styled cards |
+| **2-Column Grid** | `::: grid-2` | |
+| **3-Column Grid** | `::: grid-3` | |
+| **4-Column Grid** | `::: grid-4` | |
+| **Row** | `::: row` … `:::` | Horizontal flex row, children auto-wrapped |
+| **Row (aligned)** | `::: row {.right}` … `:::` | Right-aligned row |
+| **Tabs** | `::: tabs` with `::: tab Label` children | Tabbed panels |
+| **Col span** | `### Item {.col-span-2}` | Item spans 2 columns |
+| **Item alignment** | `### {.right}` inside `::: row` or `::: grid-N` | Right-aligns that item |
 
-Grid items are defined by `###` headings under the grid heading.
+Grid items are defined by `###` headings inside the `::: grid-N` container.
+
+`::: grid-N` is pure layout — use it for form columns, multi-column text, etc. Add `card` when items should have card chrome (features, pricing, team members).
 
 ## Attributes
 
@@ -128,10 +141,21 @@ Message
 [[ Home > Products > Category > Item ]]
 ```
 
+### Multi-file Navigation
+
+When running `wiremd --serve`, clicking a button link navigates to and renders that `.md` file:
+
+```markdown
+# Shared navbar (paste in each page)
+[[ :logo: MyApp | [Home](./home.md) | [About](./about.md) | [Contact](./contact.md)* ]]
+```
+
+The dev server (`--serve <port>`) redirects `/` to the entry file and renders any `.md` on demand — no build step needed between page navigations.
+
 ## Grid Pattern
 
 ```markdown
-## Features {.grid-3}
+::: grid-3 card
 
 ### Feature 1
 Description here
@@ -141,6 +165,8 @@ Description here
 
 ### Feature 3
 Description here
+
+:::
 ```
 
 ## Common Examples
@@ -180,7 +206,7 @@ Password
 
 ### Stats Grid
 ```markdown
-## Metrics {.grid-4}
+::: grid-4 card
 
 ### Users
 10,000+
@@ -193,6 +219,8 @@ $45,231
 
 ### Growth
 +12.5%
+
+:::
 ```
 
 ## Standard Markdown
@@ -218,6 +246,7 @@ wiremd supports **all standard Markdown** syntax:
 [___]            # Input (has underscores)
 [***]            # Password input (has asterisks)
 [Text___v]       # Dropdown (has 'v' suffix)
+|Text|           # Badge/pill (pipe delimiters)
 ```
 
 ## Tips
@@ -226,7 +255,8 @@ wiremd supports **all standard Markdown** syntax:
 2. **Placeholder text**: Put text before underscores: `[Email___________]`
 3. **Button groups**: Put on same line: `[Save] [Cancel] [Reset]`
 4. **Icons in text**: Use anywhere: `### :rocket: Fast Performance`
-5. **Grid items**: Each `###` heading under `## {.grid-N}` is a grid item
+7. **Badges**: Use `|Label|{.variant}` inline — variants: `success`, `warning`, `error`, `primary`
+5. **Grid items**: Each `###` heading inside `::: grid-N` is a grid item
 6. **Nested containers**: Containers can be nested inside each other
 
 ## Quick Troubleshooting
@@ -235,7 +265,8 @@ wiremd supports **all standard Markdown** syntax:
 |---------|----------|
 | Input has no label | Put label text directly above (no blank line) |
 | Dropdown has no options | Add list items directly after dropdown |
-| Grid not working | Use `###` for grid items under `## {.grid-N}` |
+| Grid not working | Use `###` for grid items inside `::: grid-N` |
+| Include not rendering | Check path is relative to the current file and ends in `.md` |
 | Button looks wrong | Check for `(url)` - that makes it a link |
 | Attributes ignored | Put `{...}` immediately after element (space OK) |
 

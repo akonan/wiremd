@@ -538,15 +538,19 @@ Are you sure you want to delete this item?
 
 ### Grid Syntax
 ```markdown
-## Title {.grid-N}  # Where N is number of columns
+::: grid-N
+
 ### Column 1 content
+
 ### Column 2 content
+
+:::
 ```
 
 ### 2-Column Grid
 
 ```markdown
-## Pricing {.grid-2}
+::: grid-2 card
 
 ### Free Plan
 - 10 GB Storage
@@ -561,11 +565,13 @@ Are you sure you want to delete this item?
 - Unlimited Users
 
 [Choose Pro]*
+
+:::
 ```
 
 **Rendered:**
 
-## Pricing {.grid-2}
+::: grid-2 card
 
 ### Free Plan
 - 10 GB Storage
@@ -579,12 +585,12 @@ Are you sure you want to delete this item?
 - Unlimited Users
 [Choose Pro]*
 
-##
+:::
 
 ### 3-Column Grid
 
 ```markdown
-## Features {.grid-3}
+::: grid-3 card
 
 ### :rocket: Fast
 Lightning quick performance
@@ -594,11 +600,13 @@ Bank-level security
 
 ### :gear: Flexible
 Fully customizable
+
+:::
 ```
 
 **Rendered:**
 
-## Features {.grid-3}
+::: grid-3 card
 
 ### :rocket: Fast
 Lightning quick performance
@@ -609,12 +617,12 @@ Bank-level security
 ### :gear: Flexible
 Fully customizable
 
-##
+:::
 
 ### 4-Column Grid
 
 ```markdown
-## Stats {.grid-4}
+::: grid-4 card
 
 ### Users
 10,000+
@@ -627,11 +635,13 @@ Fully customizable
 
 ### Uptime
 99.9%
+
+:::
 ```
 
 **Rendered:**
 
-## Stats {.grid-4}
+::: grid-4 card
 
 ### Users
 10,000+
@@ -644,6 +654,8 @@ Fully customizable
 
 ### Uptime
 99.9%
+
+:::
 
 ---
 
@@ -843,11 +855,14 @@ Terms
 :::
 
 ### Dashboard Layout
-## Analytics Dashboard {.hero}
+
+::: hero
+## Analytics Dashboard
+:::
 
 [[ :logo: Dashboard | Overview | *Analytics* | Reports | Settings | :user: User ]]
 
-## Quick Stats {.grid-4}
+::: grid-4 card
 
 ### Revenue
 $45,231
@@ -860,6 +875,8 @@ $45,231
 
 ### Growth
 +12.5%
+
+:::
 
 ## Recent Activity
 
@@ -879,13 +896,16 @@ $45,231
 
 [[ Dashboard > Projects > Active ]]
 
-## Active Projects {.hero}
-> Manage your team's projects efficiently
-> Track progress, assign tasks, collaborate
->
-> [New Project]* [Import] [Export]
+::: hero
+## Active Projects
+Manage your team's projects efficiently
+Track progress, assign tasks, collaborate
 
-## Project Stats {.grid-4}
+[New Project]* [Import] [Export]
+:::
+
+::: grid-4 card
+
 ### Total
 42
 
@@ -898,7 +918,11 @@ $45,231
 ### On Hold
 2
 
-## Current Sprint {.card}
+:::
+
+::: card
+
+## Current Sprint
 
 Sprint 23 Progress
 [##########________] 60% Complete
@@ -914,7 +938,9 @@ Sprint 23 Progress
 
 [View All Tasks]
 
-## Quick Actions {.grid-3}
+:::
+
+::: grid-3 card
 
 ### :plus: Create
 New Task
@@ -940,6 +966,8 @@ Filter by
 - Sprint planning tomorrow
 
 [Mark all read]
+
+:::
 
 ## Page Footer
 

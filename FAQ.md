@@ -105,13 +105,13 @@ Three ways:
 
 **Check these:**
 
-1. Grid class is on the parent heading: `## Title {.grid-3}`
-2. Grid items are `###` headings (one level deeper)
+1. Use `::: grid-N` to open the container and `:::` to close it
+2. Grid items are `###` headings inside the container
 3. Each grid item starts with `###`
 
 ```markdown
 ✅ Correct:
-## Features {.grid-3}
+::: grid-3 card
 
 ### Feature 1
 Content
@@ -119,10 +119,13 @@ Content
 ### Feature 2
 Content
 
+:::
+
 ❌ Wrong (missing ### for items):
-## Features {.grid-3}
+::: grid-3 card
 Feature 1
 Feature 2
+:::
 ```
 
 ### Attributes are being ignored
@@ -272,11 +275,10 @@ Use state attributes:
 
 ### What grid sizes are supported?
 
-Built-in grid classes:
-- `{.grid-2}` - 2 columns
-- `{.grid-3}` - 3 columns
-- `{.grid-4}` - 4 columns
-- `{.grid-auto}` - Auto-fit columns
+Supported column counts: `grid-2`, `grid-3`, `grid-4`, `grid-5`. Add `card` for card chrome:
+- `::: grid-2` — 2 columns (plain layout)
+- `::: grid-3 card` — 3 columns with card styling
+- `::: grid-4 card` — 4 columns with card styling
 
 ### Can I nest containers?
 
@@ -389,7 +391,7 @@ When something isn't working, check:
 - [ ] Is there a blank line where there shouldn't be? (especially labels and inputs)
 - [ ] Are the brackets correct? `[[ ]]` for nav, `[ ]` for buttons/inputs
 - [ ] Are attribute curly braces immediately after the element?
-- [ ] For grids, is the class on `##` and items on `###`?
+- [ ] For grids, is the content inside `::: grid-N` with `###` items and `:::` to close?
 - [ ] For containers, is there a space after `:::`?
 - [ ] For dropdowns, is the list directly after the `[...v]`?
 - [ ] Are you using the right syntax? Check [Quick Reference](QUICK-REFERENCE.md)

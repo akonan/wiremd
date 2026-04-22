@@ -78,6 +78,32 @@ Combine both:
 [Submit]{.primary type:submit disabled}
 ```
 
+### Badges / Pills
+
+Pipe delimiters create inline badges for status labels, counts, and tags:
+
+```markdown
+|Active|
+|Active|{.success}
+|3|{.warning}
+|Failed|{.error}
+|New|{.primary}
+```
+
+Variants: `success` (green), `warning` (yellow), `error` (red), `primary` (blue). No variant = neutral gray.
+
+Mix with surrounding text:
+
+```markdown
+Status: |Active|{.success}
+
+| Name  | Status              |
+|-------|---------------------|
+| Alice | \|Active\|{.success} |
+```
+
+> **Note:** Pipes conflict with Markdown table syntax. Inside a table cell, escape the pipe delimiters with backslashes: `\|Active\|`.
+
 ### Inline Containers
 
 Group elements inline with `[[...]]`:
@@ -98,12 +124,80 @@ Try our product today
 :::
 ```
 
-### Grid Layouts
-
-Create grids with heading modifiers:
+Containers can be nested — blank lines between blocks let remark separate them:
 
 ```markdown
-## Features {.grid-3}
+::: modal
+
+::: card
+
+Are you sure you want to delete this item?
+
+[Cancel] [Delete]{.danger}
+
+:::
+
+:::
+```
+
+Place inline content directly on the opener line to inject it as the first child of the container:
+
+```markdown
+::: alert Warning: this action cannot be undone
+
+[Cancel] [Confirm]{.danger}
+
+:::
+```
+
+### Tabs
+
+`::: tabs` creates a tabbed panel. Child `::: tab Label` containers become tab panels. The first tab is active by default.
+
+```markdown
+::: tabs
+
+::: tab Profile
+Name
+[_____________________________]{required}
+:::
+
+::: tab Notifications
+- [ ] Email alerts
+- [ ] SMS alerts
+:::
+
+::: tab Security
+[Change Password]
+:::
+
+:::
+```
+
+### Grid Layouts
+
+`::: grid-N` creates an N-column layout. Child `###` headings become grid items.
+
+**Pure layout grid** — no visual styling on items, useful for form columns or multi-column text:
+
+```markdown
+::: grid-2
+
+### Details
+Name
+[_____________________________]{required}
+
+### Address
+Street
+[_____________________________]{required}
+
+:::
+```
+
+**Card grid** — add `card` to render items with card chrome:
+
+```markdown
+::: grid-3 card
 
 ### Fast
 Lightning quick performance
@@ -113,6 +207,106 @@ Enterprise-grade security
 
 ### Scalable
 Grows with your needs
+
+:::
+```
+
+### File Includes
+
+Inline another `.md` file with `![[path]]`:
+
+```markdown
+![[components/header.md]]
+![[shared/nav.md]]
+```
+
+The path resolves relative to the current file. If the referenced file doesn't exist, a warning blockquote is rendered instead. Works in the CLI and the VS Code preview.
+
+### Button Links
+
+Wrap a Markdown link inside button brackets to make a clickable button that navigates:
+
+```markdown
+[[Go to Docs](./docs.md)]
+[[Get Started](./start.md)]*
+```
+
+The `*` suffix makes it a primary button. Attributes work too:
+
+```markdown
+[[Sign Up](./signup.md)]{.secondary}
+```
+
+When using `wiremd --serve`, clicking a button link renders the target `.md` file in the same browser tab — no build step required. This is the recommended way to wire up multi-page navigation in prototypes.
+
+**Column spanning** — `{.col-span-N}` on a child heading spans multiple columns:
+
+```markdown
+::: grid-3 card
+
+### Starter {.col-span-1}
+$9/mo
+
+### Pro {.col-span-2}
+$29/mo — most popular, spans two columns
+
+:::
+```
+
+### Row Layout
+
+`::: row` creates a horizontal flex row where each child becomes a flex item.
+
+**Implicit items** — content directly inside `::: row` is auto-wrapped (no `###` needed):
+
+```markdown
+::: row
+[All]* [Active] [Archived]
+:::
+```
+
+**Explicit items** — use `###` headings when you need per-item alignment control:
+
+```markdown
+::: row
+
+### {.left}
+[All]* [Active] [Archived]
+
+### {.right}
+[+ New Item]*
+
+:::
+```
+
+**Row-level alignment** — add `{.right}` or `{.center}` to the container to align all content:
+
+```markdown
+::: row {.right}
+[Export] [+ New Item]*
+:::
+
+::: row {.center}
+:check: All systems operational
+:::
+```
+
+- `{.right}` → `justify-content: flex-end`
+- `{.center}` → `justify-content: center`
+- default → `justify-content: flex-start`
+
+**Item-level alignment** — `{.left}` / `{.center}` / `{.right}` on `###` children uses the margin-push pattern. Works in both `::: row` and `::: grid-N`:
+
+```markdown
+::: grid-2
+
+### {.left}
+[All]* [Active]
+
+### {.right}
+[+ New Item]*
+
+:::
 ```
 
 ## Component Examples
@@ -226,13 +420,15 @@ Password
 ### Multi-column Layout
 
 ```markdown
-## Two Columns {.grid-2}
+::: grid-2
 
 ### Left Column
 Content here
 
 ### Right Column
 Content here
+
+:::
 ```
 
 ## Next Steps

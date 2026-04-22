@@ -191,7 +191,7 @@ Content goes here
 ### 4.1 Grid Layouts
 
 ```markdown
-## Features {.grid-3}
+::: grid-3 card
 
 ### Feature One
 Content
@@ -201,31 +201,35 @@ Content
 
 ### Feature Three
 Content
+
+:::
 ```
 
 **Parser Rules:**
-- Heading with `.grid-N` class where N is column count
-- Direct child headings become grid items
-- Supports: `.grid-2`, `.grid-3`, `.grid-4`, `.grid-auto`
+- `::: grid-N` container where N is column count
+- Child `###` headings become grid items
+- Supports: `grid-2`, `grid-3`, `grid-4`, `grid-5`
+- Add `card` modifier for card chrome on items
 
 ### 4.2 Sidebar + Main Layout
 
 ```markdown
 ::: layout {.sidebar-main}
 
-## Sidebar {.sidebar}
+::: sidebar
 Sidebar content
+:::
 
-## Main {.main}
+::: main
 Main content
+:::
 
 :::
 ```
 
 **Parser Rules:**
-- Container with layout type
-- Child sections with `.sidebar` and `.main` classes
-- Sections defined by headings with classes
+- `::: layout {.sidebar-main}` wrapper container
+- Child `::: sidebar` and `::: main` containers define the two panels
 
 ---
 
@@ -400,27 +404,48 @@ Home > Products > Category > Current Page
 ### 7.3 Tabs
 
 ```markdown
-[Overview]* | Details | Reviews | FAQ
+::: tabs
 
-Content for Overview tab...
+::: tab Profile
+Name
+[_____________________________]{required}
+:::
+
+::: tab Notifications
+- [ ] Email alerts
+- [ ] SMS alerts
+:::
+
+::: tab Security
+[Change Password]
+:::
+
+:::
 ```
 
 **Parser Rules:**
-- Pipe-separated button-like elements
-- `*` suffix indicates active tab
-- Following content belongs to active tab
-- Each H2 can start a new tab content section
+- `::: tabs` declares the tab container
+- Child `::: tab Label` containers become tab panels (label = text after `tab`)
+- First tab is active by default
+- Any wiremd content is valid inside a tab panel
 
 ### 7.4 Badges/Pills
 
 ```markdown
-Status `active`
-Notifications `3`
+|Active|
+|Active|{.success}
+|3|{.warning}
+|Failed|{.error}
+|New|{.primary}
+Status: |Active|{.success}
 ```
 
 **Parser Rules:**
-- Inline code backticks for badge/pill indicators
-- Typically numbers or status text
+- Pipe-delimited syntax: `|content|` with optional `{.variant}` attribute
+- Valid variants: `default`, `primary`, `success`, `warning`, `error`
+- Variant class (e.g. `.success`) is promoted to `props.variant`; unrecognised classes remain in `props.classes`
+- Standalone pill returns a `badge` node; pill mixed with text returns a `paragraph` with `badge` children
+- Pipe syntax conflicts with Markdown table delimiters — not supported inside table cells without escaping
 
 ---
 
@@ -489,7 +514,7 @@ We couldn't load this page
 | Class | `{.class}` | `{.primary}` |
 | Attribute | `{key:value}` | `{type:email}` |
 | State | `{:state}` | `{:disabled}` |
-| Grid | `{.grid-N}` | `{.grid-3}` |
+| Grid | `::: grid-N` … `:::` | `::: grid-3 card` |
 
 ---
 
@@ -715,7 +740,7 @@ Email
 
 **Input:**
 ```markdown
-## Features {.grid-3}
+::: grid-3 card
 
 ### :rocket: Fast
 Quick rendering
@@ -725,6 +750,8 @@ Enterprise security
 
 ### :zap: Powerful
 Advanced features
+
+:::
 ```
 
 **Output (JSON):**
@@ -878,6 +905,7 @@ Content
 ✓ Tables (basic)
 ✓ State (loading, empty, error)
 ✓ Attributes (classes, key-value, states)
+✓ File includes (`![[path.md]]`)
 
 ### 16.2 Deferred to v0.2+
 
@@ -885,7 +913,6 @@ Content
 ⏳ Responsive attributes and breakpoints
 ⏳ Animations and transitions
 ⏳ Component library system
-⏳ Template/partial includes
 ⏳ Variables and theming system
 ⏳ Conditional rendering
 ⏳ Data binding expressions

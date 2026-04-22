@@ -7,16 +7,18 @@ This mockup demonstrates all wiremd features that can be imported to Figma.
 
 ---
 
-## Hero Section {.hero}
+::: hero
 
 > # Welcome to wiremd
 > Create beautiful wireframes using Markdown syntax
 >
 > [Get Started]{.primary} [View Examples]
 
+:::
+
 ---
 
-## Features Grid {.grid-3}
+::: grid-3 card
 
 ### ⚡ Fast
 Lightning-quick wireframing with markdown syntax
@@ -27,9 +29,11 @@ Multiple visual themes and export formats
 ### 🔧 Developer-Friendly
 Version control, CLI tools, and programmatic API
 
+:::
+
 ---
 
-## Contact Form {.card}
+::: card
 
 ### Get in Touch
 
@@ -48,6 +52,8 @@ Message
 - [x] I agree to terms and conditions
 
 [Send Message]{.primary} [Clear]
+
+:::
 
 ---
 
@@ -73,9 +79,11 @@ console.log(mockup);
 
 ---
 
-## Alert Example {.alert}
+::: alert warning
 
 ⚠️ **Important Notice:** This is a test mockup for the Figma plugin. All elements should import correctly!
+
+:::
 
 ---
 

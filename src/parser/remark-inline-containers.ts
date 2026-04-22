@@ -13,6 +13,16 @@ import type { Plugin } from 'unified';
 /**
  * Remark plugin to parse wiremd inline container directives
  */
+function serializeChild(c: any): string {
+  if (c.type === 'link') {
+    const text = (c.children || []).map((cc: any) => cc.value || '').join('');
+    return `[${text}](${c.url})`;
+  }
+  if (c.type === 'strong') return `**${(c.children || []).map(serializeChild).join('')}**`;
+  if (c.type === 'emphasis') return `*${(c.children || []).map(serializeChild).join('')}*`;
+  return c.value || '';
+}
+
 export const remarkWiremdInlineContainers: Plugin = () => {
   return (tree: any) => {
     const newChildren: any[] = [];
@@ -24,7 +34,7 @@ export const remarkWiremdInlineContainers: Plugin = () => {
         node.children &&
         node.children.length > 0
       ) {
-        const text = node.children.map((c: any) => c.value || '').join('');
+        const text = node.children.map(serializeChild).join('');
 
         // Check for inline container syntax [[...]]
         const match = text.match(/^\[\[\s*(.+?)\s*\]\](\{[^}]+\})?$/);

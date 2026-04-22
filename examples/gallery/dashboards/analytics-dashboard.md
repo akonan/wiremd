@@ -16,7 +16,7 @@ Date Range: [Last 30 days...v] [Custom Date Range] [Refresh]
 
 ---
 
-## Key Metrics {.grid-4}
+::: grid-4 card
 
 ### Total Visitors
 **458,234**
@@ -34,11 +34,11 @@ Date Range: [Last 30 days...v] [Custom Date Range] [Refresh]
 **3m 24s**
 :chart: +15.7% vs last period
 
-##
+:::
 
 ---
 
-## Traffic Overview {.grid-2}
+::: grid-2 card
 
 ### Visitors Over Time
 
@@ -64,7 +64,7 @@ Date Range: [Last 30 days...v] [Custom Date Range] [Refresh]
 | Referral | 45,678 | 10% |
 | Email | 11,865 | 3% |
 
-##
+:::
 
 ---
 
@@ -96,7 +96,7 @@ Date Range: [Last 30 days...v] [Custom Date Range] [Refresh]
 
 ---
 
-## Geographic Distribution {.grid-2}
+::: grid-2 card
 
 ### Top Countries
 
@@ -120,11 +120,11 @@ Date Range: [Last 30 days...v] [Custom Date Range] [Refresh]
 | Sydney | 19,234 | $38,901 |
 | Berlin | 15,678 | $29,456 |
 
-##
+:::
 
 ---
 
-## Device & Browser Stats {.grid-2}
+::: grid-2 card
 
 ### Device Types
 
@@ -144,7 +144,7 @@ Date Range: [Last 30 days...v] [Custom Date Range] [Refresh]
 | Edge | 23,456 | 5% |
 | Other | 8,865 | 2% |
 
-##
+:::
 
 ---
 
@@ -168,7 +168,7 @@ Date Range: [Last 30 days...v] [Custom Date Range] [Refresh]
 
 ---
 
-## Conversion Funnel {.grid-3}
+::: grid-3 card
 
 ### Step 1: Landing
 **100,000** visitors
@@ -186,7 +186,7 @@ Date Range: [Last 30 days...v] [Custom Date Range] [Refresh]
 **30,000** visitors
 30%
 
-##
+:::
 
 **Conversion Rate:** 30% | **Drop-off:** 70%
 
@@ -196,7 +196,7 @@ Date Range: [Last 30 days...v] [Custom Date Range] [Refresh]
 
 ## Goals & Events
 
-## Tracking Performance {.grid-4}
+::: grid-4 card
 
 ### Newsletter Signups
 **8,234**
@@ -218,7 +218,7 @@ Target: 5,000
 Target: 2,000
 [#####_____] 62%
 
-##
+:::
 
 ---
 

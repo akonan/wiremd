@@ -60,7 +60,7 @@ Message
 ### Dashboard Layout
 
 ```markdown
-## Dashboard {.grid-3}
+::: grid-3 card
 
 ### Active Users
 **1,234**
@@ -73,6 +73,8 @@ Message
 ### Conversion Rate
 **3.2%**
 -2% from last week
+
+:::
 ```
 
 ### Product Card
@@ -201,7 +203,7 @@ The best tool for modern teams to collaborate and build amazing products.
 ### Pricing Table
 
 ```markdown
-## Pricing {.grid-3}
+::: grid-3 card
 
 ### Basic
 **$9/month**
@@ -233,6 +235,8 @@ The best tool for modern teams to collaborate and build amazing products.
 - Custom development
 
 [Contact Sales]
+
+:::
 ```
 
 ## Rendering Examples
