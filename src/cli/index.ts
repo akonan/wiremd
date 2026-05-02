@@ -12,7 +12,8 @@
 import { readFileSync, writeFileSync, existsSync, statSync } from 'fs';
 import { resolve, dirname, join, basename } from 'path';
 import { pathToFileURL } from 'url';
-import { parse, resolveIncludes } from '../parser/index.js';
+import { parse } from '../parser/index.js';
+import { resolveIncludes } from '../parser/includes.js';
 import { renderToHTML, renderToJSON } from '../renderer/index.js';
 import { startServer, notifyReload, notifyError } from './server.js';
 import chokidar from 'chokidar';

@@ -1,14 +1,9 @@
 import { defineConfig } from 'vite';
-import { resolve } from 'path';
+import { resolve, isAbsolute } from 'path';
 import dts from 'vite-plugin-dts';
 
 export default defineConfig({
-  ssr: {
-    // Bundle all dependencies into the CJS build
-    noExternal: true,
-  },
   build: {
-    ssr: true, // This is a Node.js library, not a browser library
     lib: {
       entry: {
         index: resolve(__dirname, 'src/index.ts'),
@@ -24,14 +19,18 @@ export default defineConfig({
     },
     rollupOptions: {
       external: (id) => {
-        // For CommonJS build, only externalize Node.js built-ins
-        // Bundle all npm dependencies to avoid ESM/CJS issues
+        if (/^node:/.test(id)) return true;
         const nodeBuiltins = [
           'fs', 'path', 'http', 'https', 'crypto', 'os', 'stream',
           'util', 'events', 'buffer', 'process', 'url', 'querystring',
           'fs/promises'
         ];
-        return nodeBuiltins.includes(id);
+        if (nodeBuiltins.includes(id)) return true;
+        // Don't externalize entry files / relative imports / @/ aliases.
+        // Use isAbsolute() so Windows paths (D:\...) are recognized too.
+        if (id.startsWith('.') || id.startsWith('@/') || isAbsolute(id)) return false;
+        // Everything else is a bare specifier (npm package) — externalize.
+        return true;
       },
       output: {
         exports: 'named',

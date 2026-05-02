@@ -2,7 +2,7 @@ import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import { writeFileSync, mkdirSync, rmSync } from 'fs';
 import { join } from 'path';
 import { tmpdir } from 'os';
-import { resolveIncludes } from '../src/parser/index.js';
+import { resolveIncludes } from '../src/parser/includes.js';
 
 const tmp = join(tmpdir(), 'wiremd-includes-test');
 
