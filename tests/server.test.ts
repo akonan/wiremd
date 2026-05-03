@@ -19,12 +19,18 @@ async function whenListening(server: any): Promise<void> {
 }
 
 describe('Multi-file routing', () => {
-  const TEST_PORT = 3457;
+  // Each test gets a fresh port. Reusing a single port across tests
+  // hits EADDRINUSE on slower runners because the kernel can hold the
+  // port in TIME_WAIT briefly after server.close() — even with
+  // closeAllConnections destroying the keep-alive sockets first.
+  let portCounter = 3457;
+  let TEST_PORT: number;
   const TEST_OUTPUT = './test-main.html';
   const TEST_OTHER_MD = './test-other.md';
   let server: any;
 
   beforeEach(() => {
+    TEST_PORT = portCounter++;
     writeFileSync(TEST_OUTPUT, '<html><body>Main Page</body></html>', 'utf-8');
     writeFileSync(TEST_OTHER_MD, '# Other Page', 'utf-8');
   });
