@@ -15,6 +15,10 @@ export default defineConfig({
     environment: 'node',
     include: ['tests/**/*.test.ts'],
     exclude: ['node_modules/', 'dist/', 'figma-plugin/tests/', 'obsidian-plugin/tests/'],
+    // Several test files share filesystem fixtures (./test-output.html,
+    // ./test-input.md, etc.) and would clobber each other if run in
+    // parallel workers. Run files sequentially within a single worker.
+    fileParallelism: false,
   },
   resolve: {
     alias: {
