@@ -473,7 +473,7 @@ export function startServer(options: ServerOptions): ReturnType<typeof createSer
         }
       } else if (targetPath.endsWith('.html')) {
         if (existsSync(targetPath)) {
-          try { html = readFileSync(targetPath, 'utf-8'); } catch {}
+          try { html = readFileSync(targetPath, 'utf-8'); } catch { /* fall through to render-from-.md below */ }
         }
         if (!html) {
           const mdPath = targetPath.replace(/\.html$/, '.md');

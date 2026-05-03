@@ -7,6 +7,17 @@ import { createServer } from 'http';
 import { readFileSync, writeFileSync, unlinkSync } from 'fs';
 import { startServer, notifyReload, notifyError } from '../src/cli/server.js';
 
+/**
+ * `startServer` returns the http.Server before listen() actually binds.
+ * On slower CI runners (macOS, Windows) the test's fetch can race ahead
+ * of the bind and get ECONNREFUSED / SocketError. Wait for the listening
+ * event before fetching.
+ */
+async function whenListening(server: any): Promise<void> {
+  if (server.listening) return;
+  await new Promise<void>(resolve => server.once('listening', resolve));
+}
+
 describe('Multi-file routing', () => {
   const TEST_PORT = 3457;
   const TEST_OUTPUT = './test-main.html';
@@ -33,6 +44,7 @@ describe('Multi-file routing', () => {
   it('should redirect / to the entry file when inputFile is provided', async () => {
     const renderFile = vi.fn().mockReturnValue('<html><body>Main Page</body></html>');
     server = startServer({ port: TEST_PORT, outputPath: TEST_OUTPUT, renderFile, rootDir: '.', inputFile: 'test-other.md' });
+    await whenListening(server);
     const res = await fetch(`http://localhost:${TEST_PORT}/`, { redirect: 'manual' });
     expect(res.status).toBe(302);
     expect(res.headers.get('location')).toBe('/test-other.md');
@@ -40,6 +52,7 @@ describe('Multi-file routing', () => {
 
   it('should serve main file at / when no inputFile provided (fallback)', async () => {
     server = startServer({ port: TEST_PORT, outputPath: TEST_OUTPUT });
+    await whenListening(server);
     const res = await fetch(`http://localhost:${TEST_PORT}/`);
     expect(res.status).toBe(200);
     const html = await res.text();
@@ -49,6 +62,7 @@ describe('Multi-file routing', () => {
   it('should call renderFile for .md requests and serve result', async () => {
     const renderFile = vi.fn().mockReturnValue('<html><body>Rendered Other</body></html>');
     server = startServer({ port: TEST_PORT, outputPath: TEST_OUTPUT, renderFile, rootDir: '.' });
+    await whenListening(server);
     const res = await fetch(`http://localhost:${TEST_PORT}/test-other.md`);
     expect(res.status).toBe(200);
     expect(renderFile).toHaveBeenCalledWith(expect.stringContaining('test-other.md'));
@@ -58,6 +72,7 @@ describe('Multi-file routing', () => {
 
   it('should return 404 for unknown paths', async () => {
     server = startServer({ port: TEST_PORT, outputPath: TEST_OUTPUT, rootDir: '.' });
+    await whenListening(server);
     const res = await fetch(`http://localhost:${TEST_PORT}/nonexistent.md`);
     expect(res.status).toBe(404);
   });
