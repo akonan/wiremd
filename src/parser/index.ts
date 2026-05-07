@@ -14,6 +14,7 @@ import type { DocumentNode, ParseOptions, ValidationError } from '../types.js';
 import { transformToWiremdAST } from './transformer.js';
 import { remarkWiremdContainers } from './remark-containers.js';
 import { remarkWiremdInlineContainers } from './remark-inline-containers.js';
+import { validateEnhanced } from './validation-enhanced.js';
 
 /**
  * Parse markdown with wiremd syntax into AST
@@ -58,9 +59,14 @@ export function parse(input: string, options: ParseOptions = {}): DocumentNode {
  * Validate a wiremd AST
  *
  * @param ast - wiremd AST to validate
+ * @param options - Validation options
  * @returns Array of validation errors (empty if valid)
  */
-export function validate(ast: DocumentNode): ValidationError[] {
+export function validate(ast: DocumentNode, options?: { enhanced?: boolean }): ValidationError[] {
+  // Use enhanced validation if requested
+  if (options?.enhanced) {
+    return validateEnhanced(ast);
+  }
   const errors: ValidationError[] = [];
 
   // Validate document structure
