@@ -177,8 +177,11 @@ export const remarkWiremdContainers: Plugin = () => {
               for (const line of lines) {
                 const trimmed = line.trim();
                 if (trimmed === ':::') {
-                  foundClosing = true;
-                  break;
+                  nestingLevel--;
+                  if (nestingLevel === 0) {
+                    foundClosing = true;
+                    break;
+                  }
                 } else if (trimmed.startsWith(':::')) {
                   // Check if this is a new container start (has content after :::)
                   const afterMarker = trimmed.substring(3).trim();
