@@ -36,6 +36,8 @@
   "scripts": {
     "dev": "vite build --watch",
     "build": "tsc && vite build",
+    "build:umd": "vite build --config vite.config.browser.ts",
+    "dev:umd": "vite build --config vite.config.browser.ts --watch",
     "test": "vitest run --config vitest.config.ts",
     "test:watch": "vitest --config vitest.config.ts",
     "test:coverage": "vitest run --config vitest.config.ts --coverage",
