@@ -38,6 +38,12 @@ interface ParseOptions {
 }
 ```
 
+> **Note:** `ParseOptions` fields are defined in the type but are **not yet implemented** in the current version. Passing any of these options has no effect — `parse()` ignores them. In particular:
+> - `{ validate: true }` does **not** cause `parse()` to throw on invalid input.
+> - `{ position: true }` does **not** add position data to AST nodes.
+>
+> To validate an AST, call `validate(ast)` separately after `parse()`. See the [`validate()`](#validate) section below.
+
 ### Return Value
 
 Returns a `DocumentNode` representing the parsed wiremd document:
@@ -77,7 +83,9 @@ console.log(ast.children.length); // Number of top-level nodes
 
 #### With Position Information
 
-Position information is useful for error reporting and source mapping:
+> **Note:** The `position` option is not yet implemented. Passing `{ position: true }` currently has no effect and nodes will not include position data.
+
+Position information would be useful for error reporting and source mapping once implemented:
 
 ```typescript
 import { parse } from 'wiremd';
@@ -85,9 +93,9 @@ import { parse } from 'wiremd';
 const ast = parse(`
 ## Login Form
 [Button]
-`, { position: true });
+`);
 
-// Each node will include position information
+// Position data is not yet populated by the parser
 ast.children.forEach(node => {
   if (node.position) {
     console.log(`${node.type} at line ${node.position.start.line}`);
@@ -97,26 +105,27 @@ ast.children.forEach(node => {
 
 #### With Validation
 
-Enable validation to catch structural errors during parsing:
+To validate an AST for structural errors, call `validate()` separately after `parse()`. The `validate` option on `ParseOptions` is not yet implemented and has no effect.
 
 ```typescript
-import { parse } from 'wiremd';
+import { parse, validate } from 'wiremd';
 
-try {
-  const ast = parse(`
-  ## My Wireframe
-  [Button]
-  `, { validate: true });
+const ast = parse(`
+## My Wireframe
+[Button]
+`);
 
+const errors = validate(ast);
+if (errors.length > 0) {
+  errors.forEach(error => console.error('Validation error:', error.message));
+} else {
   console.log('AST is valid');
-} catch (error) {
-  console.error('Validation error:', error.message);
 }
 ```
 
 #### With Custom Icons
 
-Define custom icon mappings:
+> **Note:** The `icons` option is not yet implemented and has no effect.
 
 ```typescript
 import { parse } from 'wiremd';
@@ -125,26 +134,20 @@ const ast = parse(`
 ## Header
 [home-icon] Home
 [user-icon] Profile
-`, {
-  icons: {
-    'home-icon': 'fa-home',
-    'user-icon': 'fa-user'
-  }
-});
+`);
 ```
 
 #### Strict Mode
 
-Enable strict mode for stricter syntax validation:
+> **Note:** The `strict` option is not yet implemented and has no effect.
 
 ```typescript
 import { parse } from 'wiremd';
 
-// Strict mode enforces additional syntax rules
 const ast = parse(`
 ## Title
 [Button]
-`, { strict: true });
+`);
 ```
 
 ### Advanced Examples
@@ -163,7 +166,7 @@ const asts = files.map(file => {
   const content = readFileSync(join(wireframesDir, file), 'utf-8');
   return {
     filename: file,
-    ast: parse(content, { position: true })
+    ast: parse(content)
   };
 });
 
@@ -222,6 +225,50 @@ function countNodeTypes(nodes: WiremdNode[]): Record<string, number> {
 const counts = countNodeTypes(ast.children);
 console.log('Node type counts:', counts);
 // Output: { heading: 1, input: 1, grid: 1, container: 3, ... }
+```
+
+## resolveIncludes()
+
+Resolve `![[file.md]]` include references in a Markdown string before parsing.
+
+### Signature
+
+```typescript
+function resolveIncludes(markdown: string, basePath: string): string
+```
+
+### Parameters
+
+#### `markdown: string`
+
+The Markdown source string, which may contain `![[relative/path.md]]` include syntax.
+
+#### `basePath: string`
+
+The base path used to resolve relative include paths. Pass the directory of the file being processed (e.g. `path.dirname(filePath)`).
+
+### Return Value
+
+Returns the Markdown string with every `![[relative/path.md]]` reference replaced by the contents of the referenced file. Include patterns inside fenced code blocks or inline code spans are left untouched. If a referenced file cannot be found or read, the include is replaced with a blockquote warning comment.
+
+### When You Need It
+
+If your input Markdown uses `![[file.md]]` include syntax **and** you are calling `parse()` directly (not via the CLI), you must call `resolveIncludes()` first. The CLI runs `resolveIncludes()` automatically; the `parse()` library function does not.
+
+### Example
+
+```typescript
+import { resolveIncludes, parse, renderToHTML } from 'wiremd';
+import { readFileSync } from 'fs';
+import path from 'path';
+
+const filePath = './wireframes/dashboard.md';
+const markdown = readFileSync(filePath, 'utf-8');
+
+// Resolve includes before parsing
+const resolved = resolveIncludes(markdown, path.dirname(filePath));
+const ast = parse(resolved);
+const html = renderToHTML(ast);
 ```
 
 ## validate()
@@ -343,32 +390,26 @@ warnings.forEach(w => console.warn(w));
 
 ## Error Handling
 
-The parser may throw errors for malformed input. Always wrap parse calls in try-catch blocks when dealing with user input:
+`parse()` is resilient and does not throw on most malformed input — it parses what it can and returns an AST. To check whether the result is structurally valid, call `validate(ast)` after parsing. The `validate` option on `ParseOptions` is not yet implemented and has no effect.
 
 ```typescript
-import { parse } from 'wiremd';
+import { parse, validate } from 'wiremd';
 
 function parseUserInput(input: string): DocumentNode | null {
-  try {
-    return parse(input, { validate: true });
-  } catch (error) {
-    console.error('Parse error:', error.message);
+  // parse() itself rarely throws; validate() checks structural correctness
+  const ast = parse(input);
 
-    // Handle specific error types
-    if (error.code === 'INVALID_SYNTAX') {
-      console.error('Invalid wiremd syntax');
-    }
-
-    // Log position if available
-    if (error.position) {
-      console.error(`At line ${error.position.start.line}, column ${error.position.start.column}`);
-    }
-
+  const errors = validate(ast);
+  if (errors.length > 0) {
+    console.error('Validation errors:');
+    errors.forEach(error => console.error(`  - ${error.message}`));
     return null;
   }
+
+  return ast;
 }
 
-const ast = parseUserInput('[Invalid syntax...');
+const ast = parseUserInput('## My Wireframe\n[Button]');
 ```
 
 ## Performance Considerations
@@ -444,4 +485,4 @@ You can fork these examples and experiment with your own wiremd syntax!
 - [Type Definitions](/api/types) - Complete type reference
 - [Renderer APIs](/api/renderer) - Rendering ASTs to various formats
 - [Error Handling](/api/errors) - Error handling guide
-- [Syntax Reference](/guide/syntax) - wiremd syntax documentation
+- [Syntax Reference](/components/) - wiremd syntax documentation

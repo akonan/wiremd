@@ -197,28 +197,28 @@ describe('Tailwind Renderer', () => {
 
   describe('Grid Layout', () => {
     it('should render a 2-column grid', () => {
-      const ast = parse('## Features {.grid-2}\n### Item 1\n### Item 2');
+      const ast = parse('::: grid-2\n\n### Item 1\n### Item 2\n\n:::');
       const html = renderToTailwind(ast);
 
       expect(html).toContain('class="grid gap-6 my-8 grid-cols-1 md:grid-cols-2"');
     });
 
     it('should render a 3-column grid', () => {
-      const ast = parse('## Features {.grid-3}\n### Item 1\n### Item 2\n### Item 3');
+      const ast = parse('::: grid-3\n\n### Item 1\n### Item 2\n### Item 3\n\n:::');
       const html = renderToTailwind(ast);
 
       expect(html).toContain('class="grid gap-6 my-8 grid-cols-1 md:grid-cols-2 lg:grid-cols-3"');
     });
 
     it('should render a 4-column grid', () => {
-      const ast = parse('## Features {.grid-4}\n### A\n### B\n### C\n### D');
+      const ast = parse('::: grid-4\n\n### A\n### B\n### C\n### D\n\n:::');
       const html = renderToTailwind(ast);
 
       expect(html).toContain('class="grid gap-6 my-8 grid-cols-1 md:grid-cols-2 lg:grid-cols-4"');
     });
 
     it('should render grid items', () => {
-      const ast = parse('## Features {.grid-2}\n### Item 1\nDescription');
+      const ast = parse('::: grid-2\n\n### Item 1\nDescription\n\n:::');
       const html = renderToTailwind(ast);
 
       expect(html).toContain('class="bg-white border border-gray-200 rounded-lg p-6 hover:shadow-md transition-shadow"');
@@ -312,7 +312,7 @@ Email
 
   describe('Responsive Design', () => {
     it('should include responsive grid classes', () => {
-      const ast = parse('## Features {.grid-3}\n### A\n### B\n### C');
+      const ast = parse('::: grid-3\n\n### A\n### B\n### C\n\n:::');
       const html = renderToTailwind(ast);
 
       // Should be mobile-first: 1 column on mobile, 2 on md, 3 on lg
@@ -335,6 +335,70 @@ Email
 
       expect(html).toContain('bg-gray-100');
       expect(html).toContain('text-gray-900');
+    });
+  });
+
+  describe('Badges', () => {
+    it('should render a basic badge with neutral Tailwind classes', () => {
+      const ast = parse('|Active|');
+      const html = renderToTailwind(ast);
+      expect(html).toContain('rounded-full');
+      expect(html).toContain('bg-gray-100');
+      expect(html).toContain('text-gray-800');
+      expect(html).toContain('Active');
+    });
+
+    it('should render a success badge', () => {
+      const ast = parse('|Active|{.success}');
+      const html = renderToTailwind(ast);
+      expect(html).toContain('bg-green-100');
+      expect(html).toContain('text-green-800');
+    });
+
+    it('should render a warning badge', () => {
+      const ast = parse('|Pending|{.warning}');
+      const html = renderToTailwind(ast);
+      expect(html).toContain('bg-yellow-100');
+      expect(html).toContain('text-yellow-800');
+    });
+
+    it('should render an error badge', () => {
+      const ast = parse('|Failed|{.error}');
+      const html = renderToTailwind(ast);
+      expect(html).toContain('bg-red-100');
+      expect(html).toContain('text-red-800');
+    });
+
+    it('should render a primary badge', () => {
+      const ast = parse('|New|{.primary}');
+      const html = renderToTailwind(ast);
+      expect(html).toContain('bg-blue-100');
+      expect(html).toContain('text-blue-800');
+    });
+  });
+
+  describe('Row layout', () => {
+    it('should render ::: row as a flex container', () => {
+      const ast = parse('::: row\n[Save]* [Cancel]');
+      const html = renderToTailwind(ast);
+
+      expect(html).toContain('flex');
+      expect(html).toContain('items-center');
+      expect(html).toContain('gap-3');
+    });
+
+    it('should render row with right alignment as justify-end', () => {
+      const ast = parse('::: row {.right}\n[+ New]*');
+      const html = renderToTailwind(ast);
+
+      expect(html).toContain('justify-end');
+    });
+
+    it('should render row with center alignment as justify-center', () => {
+      const ast = parse('::: row {.center}\n:check: All good');
+      const html = renderToTailwind(ast);
+
+      expect(html).toContain('justify-center');
     });
   });
 });

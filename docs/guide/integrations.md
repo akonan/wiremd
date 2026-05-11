@@ -603,6 +603,6 @@ const ast = parse(markdown, {
 
 ## See Also
 
-- [Getting Started](/guide/getting-started) - Basic usage guide
+- [wiremd home](/) - Basic usage guide
 - [API Reference](../api/) - Complete API documentation
 - [Examples](/examples/) - Example wireframes and outputs

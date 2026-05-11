@@ -137,7 +137,7 @@ describe('React Renderer', () => {
 
   describe('Grid Layout', () => {
     it('should render a grid', () => {
-      const ast = parse('## Features {.grid-3}\n### Item 1\n### Item 2\n### Item 3');
+      const ast = parse('::: grid-3\n\n### Item 1\n### Item 2\n### Item 3\n\n:::');
       const jsx = renderToReact(ast);
 
       expect(jsx).toContain('wmd-grid');
@@ -236,6 +236,48 @@ Email
       expect(jsx).toContain('data-icon="user"');
       expect(jsx).toContain('🏠');
       expect(jsx).toContain('👤');
+    });
+  });
+
+  describe('Badges', () => {
+    it('should render a basic badge', () => {
+      const ast = parse('|Active|');
+      const jsx = renderToReact(ast);
+      expect(jsx).toContain('<span className="wmd-badge"');
+      expect(jsx).toContain('Active');
+    });
+
+    it('should render a badge with variant', () => {
+      const ast = parse('|Active|{.success}');
+      const jsx = renderToReact(ast);
+      expect(jsx).toContain('className="wmd-badge wmd-badge-success"');
+      expect(jsx).toContain('Active');
+    });
+
+    it('should render a warning badge', () => {
+      const ast = parse('|3|{.warning}');
+      const jsx = renderToReact(ast);
+      expect(jsx).toContain('wmd-badge-warning');
+      expect(jsx).toContain('>3<');
+    });
+  });
+
+  describe('Row layout', () => {
+    it('should render ::: row as a div with wmd-row className', () => {
+      const ast = parse('::: row\n[Save]* [Cancel]');
+      const jsx = renderToReact(ast);
+
+      expect(jsx).toContain('className="wmd-row"');
+      expect(jsx).toContain('Save');
+      expect(jsx).toContain('Cancel');
+    });
+
+    it('should render row with right alignment', () => {
+      const ast = parse('::: row {.right}\n[+ New]*');
+      const jsx = renderToReact(ast);
+
+      expect(jsx).toContain('wmd-row');
+      expect(jsx).toContain('wmd-right');
     });
   });
 

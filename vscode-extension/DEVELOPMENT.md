@@ -40,33 +40,33 @@ npm install
 
 ### Development Workflow
 
-1. **Compile TypeScript**
+1. **Uninstall any installed Wiremd extension** from the Extensions sidebar (to avoid conflicts with the dev build)
+
+2. **Launch VS Code with the dev extension loaded** (run from repo root):
    ```bash
-   npm run compile
+   code --extensionDevelopmentPath=$(pwd)/vscode-extension .
    ```
+   This loads the dev build into your current window — no second window needed.
 
-2. **Watch Mode**
+3. **Start both watchers** in two terminals:
    ```bash
-   npm run watch
+   # Terminal 1 (repo root) — rebuilds wiremd dist/ on src/ changes
+   npm run dev
+
+   # Terminal 2 (vscode-extension/) — rebundles extension whenever wiremd dist/ changes
+   cd vscode-extension && npm run dev
    ```
+   The extension watcher (`scripts/watch.mjs`) watches `../dist/index.cjs` and triggers `npm run bundle` only after vite finishes — no race condition.
 
-3. **Launch Extension**
-   - Press `F5` in VS Code
-   - This opens a new "Extension Development Host" window
-   - Open a markdown file to test
-
-4. **Debugging**
-   - Set breakpoints in TypeScript files
-   - Use Debug Console in VS Code
-   - Check Extension Host logs
+4. **Reload the window**: `Cmd+Shift+P` → "Developer: Reload Window"
 
 ### Building
 
 ```bash
-# Compile TypeScript
-npm run compile
+# Bundle extension (one-shot, minified)
+npm run bundle
 
-# Package extension
+# Package extension as .vsix
 npm run package
 ```
 

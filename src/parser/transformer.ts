@@ -29,125 +29,11 @@ export function transformToWiremdAST(
     theme: 'sketch',
   };
 
-  const children: WiremdNode[] = [];
-
-  // Visit all nodes in the MDAST with context for dropdown options and grid layouts
-  let i = 0;
-  while (i < mdast.children.length) {
-    const node = mdast.children[i];
-    const nextNode = mdast.children[i + 1];
-
-    // Check if this is a heading with grid class
-    if (node.type === 'heading') {
-      const content = extractTextContent(node);
-      const gridMatch = content.match(/\{[^}]*\.grid-(\d+)[^}]*\}/);
-
-      if (gridMatch) {
-        const columns = parseInt(gridMatch[1], 10);
-        const gridHeadingLevel = node.depth;
-
-        // This is a grid container - collect grid items
-        const gridItems: WiremdNode[] = [];
-        const headingTransformed = transformHeading(node, options);
-
-        i++; // Move to next node
-
-        // Collect child headings as grid items
-        while (i < mdast.children.length) {
-          const childNode = mdast.children[i];
-
-          // Grid items are headings one level deeper
-          if (
-            childNode.type === 'heading' &&
-            childNode.depth === gridHeadingLevel + 1
-          ) {
-            const gridItem: WiremdNode[] = [];
-
-            // Add the heading
-            const childNextNode = mdast.children[i + 1];
-            const headingNode = transformNode(childNode, options, childNextNode);
-            if (headingNode) {
-              gridItem.push(headingNode);
-            }
-
-            i++;
-
-            // Collect content until next heading at same or higher level
-            while (i < mdast.children.length) {
-              const contentNode = mdast.children[i];
-
-              if (
-                contentNode.type === 'heading' &&
-                contentNode.depth <= gridHeadingLevel + 1
-              ) {
-                break; // Stop at next grid item or parent level
-              }
-
-              const contentNextNode = mdast.children[i + 1];
-              const contentTransformed = transformNode(contentNode, options, contentNextNode);
-              if (contentTransformed) {
-                gridItem.push(contentTransformed);
-
-                // Skip consumed nodes
-                if (contentTransformed.type === 'select' && contentNextNode?.type === 'list') {
-                  i++;
-                }
-              }
-
-              i++;
-            }
-
-            // Add as grid item
-            gridItems.push({
-              type: 'grid-item',
-              props: {},
-              children: gridItem,
-            });
-          } else {
-            // Not a grid item heading, stop collecting
-            break;
-          }
-        }
-
-        // Create grid node
-        children.push({
-          type: 'grid',
-          columns,
-          props: (headingTransformed as any).props || {},
-          children: gridItems,
-        });
-
-        continue;
-      }
-    }
-
-    const transformed = transformNode(node, options, nextNode);
-    if (transformed) {
-      children.push(transformed);
-
-      // If this was a select node and we consumed the next list, skip it
-      if (transformed.type === 'select' && nextNode && nextNode.type === 'list') {
-        i++; // Skip the next node (list) as it was consumed
-      }
-      // Also check if it's a container with a select child that has consumed the list
-      if (transformed.type === 'container' && nextNode && nextNode.type === 'list') {
-        const hasSelectWithOptions = (transformed.children || []).some((child: any) =>
-          child.type === 'select' && child.options && child.options.length > 0
-        );
-        if (hasSelectWithOptions) {
-          i++; // Skip the next node (list) as it was consumed by the select
-        }
-      }
-    }
-
-    i++;
-  }
-
   return {
     type: 'document',
     version: SYNTAX_VERSION,
     meta,
-    children,
+    children: processNodeList(mdast.children as any[], options),
   };
 }
 
@@ -238,34 +124,242 @@ function transformNode(
 }
 
 /**
- * Transform container node (:::)
+ * Process a list of MDAST nodes into wiremd nodes.
+ * Shared by both the top-level document pass and container children.
+ * Layout containers (grid, row, tabs) are now handled via ::: syntax in transformContainer.
  */
-function transformContainer(node: any, options: ParseOptions): WiremdNode {
-  const children: WiremdNode[] = [];
-  const nodeChildren = node.children || [];
+function processNodeList(nodeChildren: any[], options: ParseOptions): WiremdNode[] {
+  const result: WiremdNode[] = [];
+  let i = 0;
 
-  for (let i = 0; i < nodeChildren.length; i++) {
-    const child = nodeChildren[i];
-    const nextChild = nodeChildren[i + 1];
-    const transformed = transformNode(child, options, nextChild);
+  while (i < nodeChildren.length) {
+    const node = nodeChildren[i];
+    const nextNode = nodeChildren[i + 1];
 
+    const transformed = transformNode(node, options, nextNode);
     if (transformed) {
-      children.push(transformed);
+      result.push(transformed);
+      if (transformed.type === 'select' && nextNode && nextNode.type === 'list') i++;
+      if (transformed.type === 'container' && nextNode && nextNode.type === 'list') {
+        const hasSelectWithOptions = (transformed.children || []).some((child: any) =>
+          child.type === 'select' && child.options && child.options.length > 0
+        );
+        if (hasSelectWithOptions) i++;
+      }
+    }
+    i++;
+  }
 
-      // Skip next node if it was consumed (dropdown options)
-      if (transformed.type === 'select' && nextChild && nextChild.type === 'list') {
+  return result;
+}
+
+/**
+ * Collect ### headings inside a ::: grid-N container as grid-item nodes.
+ * The first heading depth encountered defines the item boundary level.
+ */
+function collectGridItemsFromContainer(
+  children: any[],
+  options: ParseOptions,
+  isCard: boolean,
+): WiremdNode[] {
+  const gridItems: WiremdNode[] = [];
+  const firstHeading = children.find((n: any) => n.type === 'heading');
+  if (!firstHeading) return gridItems;
+  const itemDepth = firstHeading.depth;
+
+  let i = 0;
+  while (i < children.length) {
+    const child = children[i];
+    if (child.type === 'heading' && child.depth === itemDepth) {
+      const rawItemNodes: any[] = [child];
+      i++;
+      while (i < children.length) {
+        const next = children[i];
+        if (next.type === 'heading' && next.depth <= itemDepth) break;
+        rawItemNodes.push(next);
+        i++;
+      }
+      const headingContent = extractTextContent(child);
+      const colSpanMatch = headingContent.match(/\{[^}]*\.col-span-(\d+)[^}]*\}/);
+      const alignMatch = headingContent.match(/\{[^}]*\.(left|center|right)[^}]*\}/);
+      const itemProps: any = { classes: [] };
+      if (isCard) itemProps.classes.push('card');
+      if (colSpanMatch) itemProps.classes.push(`col-span-${colSpanMatch[1]}`);
+      if (alignMatch) itemProps.classes.push(`align-${alignMatch[1]}`);
+      gridItems.push({
+        type: 'grid-item',
+        props: itemProps,
+        children: processNodeList(rawItemNodes, options) as any,
+      });
+    } else {
+      i++;
+    }
+  }
+  return gridItems;
+}
+
+/**
+ * Wrap each direct child of a ::: row container as an implicit grid-item.
+ * When ### headings are present, uses heading-based grouping (supports alignment classes).
+ * Otherwise, each paragraph/node is its own grid-item.
+ * Dropdown paragraphs are always grouped with their following option list.
+ */
+function collectRowItemsFromContainer(
+  children: any[],
+  options: ParseOptions,
+): WiremdNode[] {
+  const items: WiremdNode[] = [];
+  const hasHeadings = children.some((n: any) => n.type === 'heading');
+
+  if (hasHeadings) {
+    const firstHeading = children.find((n: any) => n.type === 'heading');
+    const itemDepth = firstHeading.depth;
+    let i = 0;
+    while (i < children.length) {
+      const child = children[i];
+      if (child.type === 'heading' && child.depth === itemDepth) {
+        const headingContent = extractTextContent(child);
+        const alignMatch = headingContent.match(/\{[^}]*\.(left|center|right)[^}]*\}/);
+        const itemProps: any = { classes: [] };
+        if (alignMatch) itemProps.classes.push(`align-${alignMatch[1]}`);
+        i++;
+        const rawItemNodes: any[] = [];
+        while (i < children.length) {
+          const next = children[i];
+          if (next.type === 'heading' && next.depth <= itemDepth) break;
+          if (next.type === 'paragraph') {
+            const nodeText = extractTextContent(next);
+            const isDropdown = /\[[^\]]+v\](?:\s*\{[^}]+\})?$/.test(nodeText);
+            rawItemNodes.push(next);
+            i++;
+            if (isDropdown && i < children.length && children[i].type === 'list') {
+              rawItemNodes.push(children[i]);
+              i++;
+            }
+          } else {
+            rawItemNodes.push(next);
+            i++;
+          }
+        }
+        items.push({
+          type: 'grid-item',
+          props: itemProps,
+          children: processNodeList(rawItemNodes, options) as any,
+        });
+      } else {
         i++;
       }
     }
+  } else {
+    let i = 0;
+    while (i < children.length) {
+      const child = children[i];
+      const groupNodes = [child];
+      i++;
+      if (child.type === 'paragraph') {
+        const nodeText = extractTextContent(child);
+        const isDropdown = /\[[^\]]+v\](?:\s*\{[^}]+\})?$/.test(nodeText);
+        if (isDropdown && i < children.length && children[i].type === 'list') {
+          groupNodes.push(children[i]);
+          i++;
+        }
+      }
+      items.push({
+        type: 'grid-item',
+        props: { classes: [] },
+        children: processNodeList(groupNodes, options) as any,
+      });
+    }
   }
 
+  return items;
+}
+
+/**
+ * Transform container node (:::)
+ */
+function transformContainer(node: any, options: ParseOptions): WiremdNode {
   const props = parseAttributes(node.attributes || '');
+  const containerType: string = (node.containerType || '').trim();
+
+  // ::: grid-N  /  ::: grid-N card
+  const gridMatch = containerType.match(/^grid-(\d+)$/);
+  if (gridMatch) {
+    const columns = parseInt(gridMatch[1], 10);
+    const firstChild = node.children[0];
+    const hasCard =
+      (firstChild?.type === 'paragraph' &&
+        firstChild.children?.[0]?.type === 'text' &&
+        firstChild.children[0].value?.trim() === 'card') ||
+      (props.classes || []).includes('card');
+    const contentChildren = hasCard ? node.children.slice(1) : node.children;
+    return {
+      type: 'grid',
+      columns,
+      props: { ...props, card: hasCard, classes: (props.classes || []).filter((c: string) => c !== 'card') },
+      children: collectGridItemsFromContainer(contentChildren, options, hasCard) as any,
+    };
+  }
+
+  // ::: row
+  if (containerType === 'row') {
+    return {
+      type: 'row',
+      props,
+      children: collectRowItemsFromContainer(node.children || [], options) as any,
+    };
+  }
+
+  // ::: tabs  (children are ::: tab containers)
+  if (containerType === 'tabs') {
+    const tabs = (processNodeList(node.children || [], options) as any[]).filter(
+      (n: any) => n.type === 'tab',
+    );
+    if (tabs.length > 0 && !tabs.some((t: any) => t.active)) {
+      tabs[0].active = true;
+    }
+    return { type: 'tabs', props, children: tabs as any };
+  }
+
+  // ::: tab Label  /  ::: tab Label {.active}
+  if (containerType === 'tab') {
+    const firstChild = node.children[0];
+    let label = '';
+    let isActive = false;
+    let contentChildren = node.children || [];
+    if (
+      firstChild?.type === 'paragraph' &&
+      firstChild.children?.[0]?.type === 'text'
+    ) {
+      const raw: string = firstChild.children[0].value;
+      const m = raw.match(/^(.+?)(?:\s*(\{[^}]+\}))?$/);
+      label = m?.[1]?.trim() || raw.trim();
+      isActive = (m?.[2] || '').includes('active');
+      contentChildren = node.children.slice(1);
+    }
+    return {
+      type: 'tab',
+      label,
+      active: isActive,
+      props,
+      children: processNodeList(contentChildren, options) as any,
+    };
+  }
+
+  if (containerType === 'demo') {
+    return {
+      type: 'demo',
+      raw: node.rawContent || '',
+      props,
+      children: processNodeList(node.children || [], options) as any,
+    };
+  }
 
   return {
     type: 'container',
-    containerType: node.containerType as any,
+    containerType: containerType as any,
     props,
-    children,
+    children: processNodeList(node.children || [], options) as any,
   };
 }
 
@@ -277,9 +371,48 @@ function transformInlineContainer(node: any, _options: ParseOptions): WiremdNode
   const items = node.items || [];
   const children: WiremdNode[] = [];
 
+  // Detect breadcrumb: single item containing ">" separator (e.g. [[ Home > Products > Item ]])
+  if (items.length === 1 && items[0].includes('>')) {
+    const crumbs = items[0].split(/\s*>\s*/).map((c: string) => c.trim()).filter(Boolean);
+    return {
+      type: 'breadcrumbs',
+      props,
+      children: crumbs.map((crumb: string, i: number) => ({
+        type: 'breadcrumb-item',
+        content: crumb,
+        current: i === crumbs.length - 1,
+        props: {},
+      })) as any,
+    };
+  }
+
   // Parse each item - could be text, icon, or button
+  let brandEmitted = false;
   for (const item of items) {
     const trimmed = item.trim();
+
+    // Check if it's an active/emphasized item: *Text* or **Text**
+    const activeMatch = trimmed.match(/^\*\*?([^*]+)\*\*?$/);
+    if (activeMatch) {
+      children.push({
+        type: 'nav-item',
+        content: activeMatch[1],
+        props: { classes: ['active'] },
+      });
+      continue;
+    }
+
+    // Check if it's a link nav-item: [Text](url) or [Text](url)*
+    const linkMatch = trimmed.match(/^\[([^\]]+)\]\(([^)]+)\)(\*)?$/);
+    if (linkMatch) {
+      children.push({
+        type: 'nav-item',
+        content: linkMatch[1],
+        href: linkMatch[2],
+        props: { variant: linkMatch[3] ? 'primary' : undefined },
+      });
+      continue;
+    }
 
     // Check if it's a button: [Text] or [Text]*
     const buttonMatch = trimmed.match(/^\[([^\]]+)\](\*)?$/);
@@ -324,12 +457,21 @@ function transformInlineContainer(node: any, _options: ParseOptions): WiremdNode
       continue;
     }
 
-    // Otherwise, it's a nav item (text)
-    children.push({
-      type: 'nav-item',
-      content: trimmed,
-      props: {},
-    });
+    // Otherwise, first plain text item is the brand; rest are nav items
+    if (!brandEmitted) {
+      brandEmitted = true;
+      children.push({
+        type: 'brand',
+        children: [{ type: 'text', content: trimmed, props: {} }] as any,
+        props: {},
+      });
+    } else {
+      children.push({
+        type: 'nav-item',
+        content: trimmed,
+        props: {},
+      });
+    }
   }
 
   return {
@@ -346,8 +488,8 @@ function transformHeading(node: any, _options: ParseOptions): WiremdNode {
   // Extract attributes from heading text
   const content = extractTextContent(node);
 
-  // Check if heading has attributes at the end: "Title {.class}"
-  const attrMatch = content.match(/^(.+?)(\{[^}]+\})$/);
+  // Check if heading has attributes at the end: "Title {.class}" or "{.class}" alone
+  const attrMatch = content.match(/^(.*?)(\{[^}]+\})$/);
   let headingText = content;
   let props: any = { classes: [] };
 
@@ -396,14 +538,93 @@ function transformHeading(node: any, _options: ParseOptions): WiremdNode {
 }
 
 /**
- * Transform paragraph node
- * This is where we'll detect buttons, inputs, etc.
+ * Detect one or more [[Text](url)]* patterns in a paragraph's children.
+ * Remark produces alternating text/link nodes because CommonMark forbids nested links:
+ *   "[", link, "]*[", link, "]"
+ * Returns button nodes, or null if the children don't match this pattern at all.
  */
+function tryParseButtonLinkSequence(children: any[]): WiremdNode[] | null {
+  if (!children || children.length < 3 || children.length % 2 === 0) return null;
+
+  // Must alternate: text, link, text, link, text, ...
+  for (let i = 0; i < children.length; i++) {
+    if (i % 2 === 0 && children[i].type !== 'text') return null;
+    if (i % 2 === 1 && children[i].type !== 'link') return null;
+  }
+
+  // First text must be exactly "[" (optionally with leading whitespace)
+  if (!/^\s*\[$/.test(children[0].value)) return null;
+
+  // Last text must be "]" + optional "*" + optional "{attrs}" + nothing else
+  const lastText: string = children[children.length - 1].value;
+  if (!/^\](\*)?\s*(\{[^}]*\})?\s*$/.test(lastText)) return null;
+
+  // Each middle text (between two links) must be "]...[" — closes previous, opens next
+  for (let i = 2; i <= children.length - 3; i += 2) {
+    if (!/^\](\*)?\s*(\{[^}]*\})?\s*\[$/.test(children[i].value)) return null;
+  }
+
+  return children
+    .filter((_: any, i: number) => i % 2 === 1) // keep only link nodes
+    .map((linkNode: any, idx: number) => {
+      const closingText: string = children[idx * 2 + 2].value;
+      const closeMatch = closingText.match(/^\](\*)?\s*(\{[^}]*\})?/);
+      const isPrimary = !!(closeMatch && closeMatch[1]);
+      const attrStr = (closeMatch && closeMatch[2]) || '';
+      const attrs = attrStr ? parseAttributes(attrStr) : {};
+      return {
+        type: 'button' as const,
+        content: extractTextContent(linkNode),
+        href: linkNode.url || '#',
+        props: { ...attrs, variant: isPrimary ? 'primary' : (attrs as any).variant },
+      };
+    });
+}
+
+function serializeMdastChildren(children: any[]): string {
+  return (children || []).map((child: any) => {
+    if (child.type === 'link') {
+      const text = (child.children || []).map((c: any) => c.value || '').join('');
+      return `[${text}](${child.url})`;
+    }
+    if (child.type === 'strong') return `**${serializeMdastChildren(child.children)}**`;
+    if (child.type === 'emphasis') return `*${serializeMdastChildren(child.children)}*`;
+    return child.value || '';
+  }).join('');
+}
+
 function transformParagraph(node: any, _options: ParseOptions, nextNode?: any): WiremdNode {
+  // Check for [[...]] inline container before any other processing — handles nested containers
+  // where remark-inline-containers only runs on top-level nodes
+  if (node.children?.length) {
+    const serialized = serializeMdastChildren(node.children);
+    const inlineMatch = serialized.match(/^\[\[\s*(.+?)\s*\]\](\{[^}]+\})?$/);
+    if (inlineMatch) {
+      const content = inlineMatch[1];
+      const attrs = inlineMatch[2] || '';
+      const items = content.split('|').map((item: string) => item.trim());
+      return transformInlineContainer({ type: 'wiremdInlineContainer', content, items, attributes: attrs.trim() }, _options);
+    }
+  }
+
   // Check if this paragraph has rich content (strong, emphasis, links, images, etc.)
   const hasRichContent = node.children && node.children.some((child: any) =>
-    child.type === 'strong' || child.type === 'emphasis' || child.type === 'link' || child.type === 'code' || child.type === 'image'
+    child.type === 'strong' || child.type === 'emphasis' || child.type === 'link' || child.type === 'code' || child.type === 'inlineCode' || child.type === 'image'
   );
+
+  // [[Button](url)]* — one or more linked-button patterns on the same line.
+  // CommonMark forbids nested links so remark produces alternating text/link children:
+  //   "[", link, "]*", "[", link, "]"  for two buttons, etc.
+  const buttonLinks = tryParseButtonLinkSequence(node.children);
+  if (buttonLinks !== null) {
+    if (buttonLinks.length === 1) return buttonLinks[0];
+    return {
+      type: 'container',
+      containerType: 'button-group',
+      children: buttonLinks as any,
+      props: {},
+    };
+  }
 
   // If it has rich content and is not a special pattern, return as a rich text paragraph
   if (hasRichContent) {
@@ -444,7 +665,7 @@ function transformParagraph(node: any, _options: ParseOptions, nextNode?: any): 
       if (child.type === 'text') {
         // Check for buttons and icons in text
         // Split on both button patterns and icon patterns
-        const textParts = child.value.split(/(\[[^\]]+\](?:\*)?(?:\s*\{[^}]*\})?|:[a-z-]+:)/);
+        const textParts = child.value.split(/(\[[^\]]+\](?:\*)?(?:\s*\{[^}]*\})?|:[a-z-]+:|\|[^|]+\|(?:\s*\{[^}]*\})?)/);
         for (const part of textParts) {
           // Check for button
           const buttonMatch = part.match(/^\[([^\]]+)\](\*)?(?:\s*(\{[^}]*\}))?$/);
@@ -470,6 +691,21 @@ function transformParagraph(node: any, _options: ParseOptions, nextNode?: any): 
                 props: { name: iconMatch[1] },
               });
             }
+          } else if (part.match(/^\|([^|]+)\|(?:\s*(\{[^}]*\}))?$/)) {
+            // It's a pill/badge
+            flushText();
+            const pillMatch = part.match(/^\|([^|]+)\|(?:\s*(\{[^}]*\}))?$/);
+            if (pillMatch) {
+              const [, text, attrs] = pillMatch;
+              const props = parseAttributes(attrs || '');
+              const validVariants = ['default', 'primary', 'success', 'warning', 'error'];
+              const variantClass = props.classes?.find((c: string) => validVariants.includes(c));
+              if (variantClass) {
+                props.variant = variantClass;
+                props.classes = props.classes.filter((c: string) => c !== variantClass);
+              }
+              processedChildren.push({ type: 'badge', content: text.trim(), props });
+            }
           } else if (part) {
             currentText += part;
           }
@@ -487,7 +723,7 @@ function transformParagraph(node: any, _options: ParseOptions, nextNode?: any): 
         currentText += `<strong>${extractTextContent(child)}</strong>`;
       } else if (child.type === 'emphasis') {
         currentText += `<em>${extractTextContent(child)}</em>`;
-      } else if (child.type === 'code') {
+      } else if (child.type === 'code' || child.type === 'inlineCode') {
         currentText += `<code>${extractTextContent(child)}</code>`;
       } else if (child.type === 'link') {
         currentText += `<a href="${child.url}">${extractTextContent(child)}</a>`;
@@ -667,24 +903,29 @@ function transformParagraph(node: any, _options: ParseOptions, nextNode?: any): 
       }
     }
 
-    // First check if all lines are buttons - if so, parse them all as buttons
-    const allButtons = lines.every(line => /^\[([^\]]+)\](\*)?(?:\s*\{[^}]*\})?$/.test(line.trim()) && !/^\[[_*]+\]/.test(line.trim()));
+    // Check if all lines consist entirely of buttons (one or more per line)
+    const isInputLike = (s: string) => /\[[^\]]*_{3,}[^\]]*\]/.test(s) || /\[[_*]+\]/.test(s);
+    const lineIsAllButtons = (line: string) => {
+      const trimmed = line.trim();
+      if (!trimmed || !/\[/.test(trimmed)) return false;
+      if (isInputLike(trimmed)) return false;
+      const stripped = trimmed.replace(/\[([^\]]+)\](\*)?(?:\s*\{[^}]*\})?/g, '').trim();
+      return stripped === '';
+    };
+    const allButtons = lines.every(lineIsAllButtons);
 
     if (allButtons) {
       const buttons: WiremdNode[] = [];
+      const buttonPattern = /\[([^\]]+)\](\*)?(?:\s*(\{[^}]*\}))?/g;
       for (const line of lines) {
-        const buttonMatch = line.trim().match(/^\[([^\]]+)\](\*)?(?:\s*(\{[^}]*\}))?$/);
-        if (buttonMatch) {
-          const [, text, isPrimary, attrs] = buttonMatch;
+        let match;
+        buttonPattern.lastIndex = 0;
+        while ((match = buttonPattern.exec(line.trim())) !== null) {
+          if (/^\[[_*]+\]/.test(match[0])) continue;
+          const [, text, isPrimary, attrs] = match;
           const props = parseAttributes(attrs || '');
-          if (isPrimary) {
-            props.variant = 'primary';
-          }
-          buttons.push({
-            type: 'button',
-            content: text,
-            props,
-          });
+          if (isPrimary) props.variant = 'primary';
+          buttons.push({ type: 'button', content: text, props });
         }
       }
 
@@ -702,7 +943,40 @@ function transformParagraph(node: any, _options: ParseOptions, nextNode?: any): 
 
     // Otherwise check if the last line is a form element with labels before it
     const lastLine = lines[lines.length - 1].trim();
-    const labelLines = lines.slice(0, -1).join('\n');
+    const labelLineArray = lines.slice(0, -1);
+    const labelLines = labelLineArray.join('\n');
+
+    // If all preceding lines consist entirely of inline elements (buttons and/or inputs),
+    // don't treat them as label text — combine with the last line's element in a button-group.
+    const lineIsAllInlineElements = (line: string) => {
+      const trimmed = line.trim();
+      if (!trimmed || !/\[/.test(trimmed)) return false;
+      const stripped = trimmed.replace(/\[([^\]]+)\](\*)?(?:\s*\{[^}]*\})?/g, '').trim();
+      return stripped === '';
+    };
+    const labelLinesAreButtons = labelLineArray.length > 0 && labelLineArray.every(lineIsAllInlineElements);
+    const isInputText = (t: string) => /^[_*]+$/.test(t) || /_{3,}$/.test(t);
+    const parseLabelAsButtons = (): WiremdNode[] => {
+      const nodes: WiremdNode[] = [];
+      const btnPat = /\[([^\]]+)\](\*)?(?:\s*(\{[^}]*\}))?/g;
+      for (const line of labelLineArray) {
+        let m;
+        btnPat.lastIndex = 0;
+        while ((m = btnPat.exec(line.trim())) !== null) {
+          const [, text, isPrimary, attrs] = m;
+          const p = parseAttributes(attrs || '');
+          if (isInputText(text)) {
+            const placeholderMatch = text.match(/^([^_*]+)_{3,}$/);
+            if (placeholderMatch) p.placeholder = placeholderMatch[1].trim();
+            nodes.push({ type: 'input', props: p });
+          } else {
+            if (isPrimary) p.variant = 'primary';
+            nodes.push({ type: 'button', content: text, props: p });
+          }
+        }
+      }
+      return nodes;
+    };
 
     // Check if last line is a dropdown
     const dropdownMatch = lastLine.match(/^\[([^\]]+)v\](?:\s*(\{[^}]+\}))?$/);
@@ -724,6 +998,19 @@ function transformParagraph(node: any, _options: ParseOptions, nextNode?: any): 
         }
       }
 
+      // If preceding lines are button lines, combine as a button-group instead of form-group
+      if (labelLinesAreButtons) {
+        return {
+          type: 'container',
+          containerType: 'button-group',
+          props: {},
+          children: [...parseLabelAsButtons(), {
+            type: 'select',
+            props: { ...props, placeholder: text.replace(/[_\s]+$/, '').trim() || undefined },
+            options,
+          }] as any[],
+        };
+      }
       // Create a container with label and select
       return {
         type: 'container',
@@ -779,6 +1066,15 @@ function transformParagraph(node: any, _options: ParseOptions, nextNode?: any): 
           }
         }
 
+        // If preceding lines are button lines, combine as a button-group instead of form-group
+        if (labelLinesAreButtons) {
+          return {
+            type: 'container',
+            containerType: 'button-group',
+            props: {},
+            children: [...parseLabelAsButtons(), { type: 'input', props }] as any[],
+          };
+        }
         // Create a container with label and input
         return {
           type: 'container',
@@ -803,6 +1099,18 @@ function transformParagraph(node: any, _options: ParseOptions, nextNode?: any): 
         const [, placeholder, attrs] = textareaMatch;
         const props = parseAttributes(attrs || '');
 
+        // If preceding lines are button lines, combine as a button-group
+        if (labelLinesAreButtons) {
+          return {
+            type: 'container',
+            containerType: 'button-group',
+            props: {},
+            children: [...parseLabelAsButtons(), {
+              type: 'textarea',
+              props: { ...props, placeholder: placeholder.trim() },
+            }] as any[],
+          };
+        }
         // Create a container with label and textarea
         return {
           type: 'container',
@@ -821,36 +1129,30 @@ function transformParagraph(node: any, _options: ParseOptions, nextNode?: any): 
         };
       }
 
-      // Otherwise check for buttons
+      // Otherwise check for buttons (skip input-like patterns)
       const buttonPattern = /\[([^\]]+)\](\*)?(?:\s*(\{[^}]*\}))?/g;
       const buttons: WiremdNode[] = [];
       let match;
+      const isInputTextMulti = (t: string) => /^[_*]+$/.test(t) || /_{3,}$/.test(t);
 
       while ((match = buttonPattern.exec(lastLine)) !== null) {
         const [, text, isPrimary, attrs] = match;
-
-        // Skip if text is only underscores or asterisks (should be input)
-        if (!/^[_*]+$/.test(text)) {
-          const props = parseAttributes(attrs || '');
-
-          // If it has rows attribute, it's a textarea not a button
-          if ('rows' in props) {
-            // Already handled above, skip
-            continue;
-          }
-
-          if (isPrimary) {
-            props.variant = 'primary';
-          }
-          buttons.push({
-            type: 'button',
-            content: text,
-            props,
-          });
-        }
+        const props = parseAttributes(attrs || '');
+        if (isInputTextMulti(text) || 'rows' in props) continue;
+        if (isPrimary) props.variant = 'primary';
+        buttons.push({ type: 'button', content: text, props });
       }
 
       if (buttons.length > 0) {
+        // If preceding lines are inline elements (buttons/inputs), combine all into a button-group
+        if (labelLinesAreButtons) {
+          return {
+            type: 'container',
+            containerType: 'button-group',
+            props: {},
+            children: [...parseLabelAsButtons(), ...buttons] as any[],
+          };
+        }
         // If we have label lines and buttons, create a container
         if (labelLines) {
           return {
@@ -952,81 +1254,114 @@ function transformParagraph(node: any, _options: ParseOptions, nextNode?: any): 
     };
   }
 
-  // Check for multiple buttons on the same line BEFORE icon check: [Submit] [Cancel]
-  if (/\[([^\]]+)\]/.test(content)) {
-    const buttonPattern = /\[([^\]]+)\](\*)?(?:\s*(\{[^}]*\}))?/g;
-    const buttons: WiremdNode[] = [];
-    let match;
+  // Check for pills: |Label| or |Label|{.variant}
+  if (/\|([^|]+)\|/.test(content)) {
+    const textParts = content.split(/(\|[^|]+\|(?:\s*\{[^}]*\})?)/);
+    const children: WiremdNode[] = [];
+    const validVariants = ['default', 'primary', 'success', 'warning', 'error'];
 
-    while ((match = buttonPattern.exec(content)) !== null) {
-      const [, text, isPrimary, attrs] = match;
-
-      // Skip if text is only underscores or asterisks (should be input)
-      if (!/^[_*]+$/.test(text)) {
+    for (const part of textParts) {
+      const pillMatch = part.match(/^\|([^|]+)\|(?:\s*(\{[^}]*\}))?$/);
+      if (pillMatch) {
+        const [, text, attrs] = pillMatch;
         const props = parseAttributes(attrs || '');
-
-        // Skip if it has rows attribute (it's a textarea)
-        if ('rows' in props) {
-          continue;
+        const variantClass = props.classes?.find((c: string) => validVariants.includes(c));
+        if (variantClass) {
+          props.variant = variantClass;
+          props.classes = props.classes.filter((c: string) => c !== variantClass);
         }
-
-        if (isPrimary) {
-          props.variant = 'primary';
-        }
-
-        // Parse icons in button text
-        if (/:([a-z-]+):/.test(text)) {
-          const iconPattern = /:([a-z-]+):/g;
-          const parts = text.split(iconPattern);
-          const children: WiremdNode[] = [];
-
-          for (let i = 0; i < parts.length; i++) {
-            if (i % 2 === 0) {
-              if (parts[i].trim()) {
-                children.push({
-                  type: 'text',
-                  content: parts[i],
-                  props: {},
-                });
-              }
-            } else {
-              children.push({
-                type: 'icon',
-                props: { name: parts[i] },
-              });
-            }
-          }
-
-          buttons.push({
-            type: 'button',
-            content: '',
-            children: children as any,
-            props,
-          });
-        } else {
-          buttons.push({
-            type: 'button',
-            content: text,
-            props,
-          });
-        }
+        children.push({ type: 'badge', content: text.trim(), props });
+      } else if (part.trim()) {
+        children.push({ type: 'text', content: part, props: {} });
       }
     }
 
-    if (buttons.length === 1 && content.trim() === content.match(/\[([^\]]+)\](\*)?(?:\s*\{[^}]*\})?/)![0]) {
-      // Single button that is the entire content
-      return buttons[0];
-    } else if (buttons.length > 0) {
-      // Multiple buttons or button with other text
+    if (children.length === 1 && children[0].type === 'badge') {
+      return children[0];
+    }
+
+    if (children.length > 0) {
+      return {
+        type: 'paragraph',
+        children: children as any,
+        props: {},
+      };
+    }
+  }
+
+  // Check for multiple buttons on the same line BEFORE icon check: [Submit] [Cancel]
+  if (/\[([^\]]+)\]/.test(content)) {
+    const buttonPattern = /\[([^\]]+)\](\*)?(?:\s*(\{[^}]*\}))?/g;
+    const elements: WiremdNode[] = [];
+    let match;
+    const isInputText = (t: string) => /^[_*]+$/.test(t) || /_{3,}$/.test(t);
+    const isSelectText = (t: string) => /_{1,}v$/.test(t);
+
+    while ((match = buttonPattern.exec(content)) !== null) {
+      const [, text, isPrimary, attrs] = match;
+      const props = parseAttributes(attrs || '');
+
+      if (isSelectText(text)) {
+        // Dropdown pattern — [Option___v] or [Select_______v]
+        const placeholder = text.replace(/_{1,}v$/, '').trim() || undefined;
+        if (placeholder) props.placeholder = placeholder;
+        elements.push({ type: 'select', props, options: [] } as any);
+        continue;
+      }
+
+      if (isInputText(text)) {
+        // Input pattern — [Search___] or [_____]
+        const placeholderMatch = text.match(/^([^_*]+)_{3,}$/);
+        if (placeholderMatch) props.placeholder = placeholderMatch[1].trim();
+        elements.push({ type: 'input', props });
+        continue;
+      }
+
+      // Skip if it has rows attribute (it's a textarea)
+      if ('rows' in props) continue;
+
+      if (isPrimary) props.variant = 'primary';
+
+      // Parse icons in button text
+      if (/:([a-z-]+):/.test(text)) {
+        const iconPattern = /:([a-z-]+):/g;
+        const parts = text.split(iconPattern);
+        const children: WiremdNode[] = [];
+
+        for (let i = 0; i < parts.length; i++) {
+          if (i % 2 === 0) {
+            if (parts[i].trim()) {
+              children.push({ type: 'text', content: parts[i], props: {} });
+            }
+          } else {
+            children.push({ type: 'icon', props: { name: parts[i] } });
+          }
+        }
+
+        elements.push({ type: 'button', content: '', children: children as any, props });
+      } else {
+        elements.push({ type: 'button', content: text, props });
+      }
+    }
+
+    const buttons = elements.filter(e => e.type === 'button');
+    const hasMixed = elements.some(e => e.type !== 'button');
+
+    if (elements.length === 1 && content.trim() === content.match(/\[([^\]]+)\](\*)?(?:\s*\{[^}]*\})?/)![0]) {
+      return elements[0];
+    } else if (elements.length > 0) {
       const remainingText = content.replace(/\[([^\]]+)\](\*)?(?:\s*\{[^}]*\})?/g, '').trim();
-      if (!remainingText && buttons.length > 1) {
-        // Multiple buttons only
+      if (!remainingText && elements.length > 1) {
         return {
           type: 'container',
           containerType: 'button-group',
           props: {},
-          children: buttons as any[],
+          children: elements as any[],
         };
+      } else if (!remainingText && buttons.length === 1 && !hasMixed) {
+        return buttons[0];
+      } else if (!remainingText && elements.length === 1) {
+        return elements[0];
       } else if (remainingText) {
         // Button(s) with text - create paragraph with mixed content
         const children: WiremdNode[] = [];
@@ -1342,11 +1677,27 @@ function transformTable(node: any, options: ParseOptions): WiremdNode {
       // Transform cell content
       for (const child of cell.children || []) {
         if (child.type === 'text') {
-          cellChildren.push({
-            type: 'text',
-            content: child.value,
-            props: {},
-          });
+          const iconMatch = /^:([a-z-]+):\s*([\s\S]*)$/.exec(child.value);
+          if (iconMatch) {
+            cellChildren.push({
+              type: 'icon',
+              props: { name: iconMatch[1] },
+            });
+            const remainder = iconMatch[2].trim();
+            if (remainder) {
+              cellChildren.push({
+                type: 'text',
+                content: remainder,
+                props: {},
+              });
+            }
+          } else {
+            cellChildren.push({
+              type: 'text',
+              content: child.value,
+              props: {},
+            });
+          }
         } else if (child.type === 'strong') {
           cellChildren.push({
             type: 'text',

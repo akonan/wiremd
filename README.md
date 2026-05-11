@@ -51,7 +51,7 @@ This renders into a styled HTML wireframe with a form, inputs, and buttons.
 Create a `features.md` file:
 
 ```markdown
-## Product Features {.grid-3}
+::: grid-3 card
 
 ### :rocket: Fast
 Lightning quick performance
@@ -61,6 +61,8 @@ Bank-level security
 
 ### :gear: Flexible
 Fully customizable
+
+:::
 ```
 
 Generate a wireframe:
@@ -75,7 +77,7 @@ This creates a responsive 3-column grid layout with icons and descriptions.
 
 - ✅ **Markdown-first** - Valid markdown that degrades gracefully
 - ✅ **Full markdown support** - Headings, text formatting, lists, links, images, blockquotes, code blocks, tables
-- ✅ **Grid layouts** - Responsive multi-column grids (2, 3, 4+ columns) with simple `.grid-N` syntax
+- ✅ **Grid layouts** - Responsive multi-column grids (2, 3, 4, 5 columns) with simple `::: grid-N` syntax
 - ✅ **Visual syntax** - Looks like what it renders
 - ✅ **Fast to write** - Intuitive shortcuts for common patterns
 - ✅ **Extensible** - Add classes and attributes as needed
@@ -92,10 +94,9 @@ This is an open-source MIT-licensed project containing:
 
 - **`src/`** - Core parser and renderer library
 - **`tests/`** - Comprehensive test suite (48 tests)
-- **`docs/`** - Documentation site ([**Live at akonan.github.io/wiremd**](https://akonan.github.io/wiremd))
-- **`examples/`** - Example wireframes
+- **`docs/`** - Documentation site ([**Live at teezeit.github.io/wiremd**](https://teezeit.github.io/wiremd))
+- **`docs/examples/`** - Example wireframes
 - **`figma-plugin/`** - Figma plugin for importing wiremd designs
-- **`obsidian-plugin/`** - Obsidian plugin for live wireframe previews
 - **`vscode-extension/`** - VS Code extension with live preview and style switching
 
 ## Installation
@@ -117,17 +118,56 @@ pnpm add -g wiremd
 
 ### Homebrew (macOS)
 ```bash
-brew install akonan/wiremd/wiremd
+brew install teezeit/wiremd/wiremd
 ```
 
 ### From Source
 ```bash
-git clone https://github.com/akonan/wiremd.git
+git clone https://github.com/teezeit/wiremd.git
 cd wiremd
 npm install
 npm run build
 npm link
 ```
+
+## Use with Claude
+
+This repo ships a **wireframe skill** that teaches Claude how to write wiremd syntax and render mockups. It's packaged as a Claude plugin marketplace (`.claude-plugin/marketplace.json`), so the same GitHub URL installs on every surface that supports marketplaces. A zip fallback is available for surfaces that only accept skill uploads.
+
+### Claude Code (CLI)
+
+Inside a Claude Code session:
+
+```text
+/plugin marketplace add teezeit/wiremd
+/plugin install wireframe@wiremd
+```
+
+Then `/reload-plugins` (or restart the session).
+
+### Claude Desktop
+
+1. Open **Settings → Plugins → Add Marketplace**
+2. Paste the repo URL: `https://github.com/teezeit/wiremd` (or the shorthand `teezeit/wiremd`)
+3. In the newly added **wiremd** marketplace, install the **wireframe** plugin
+
+### Claude.ai, Claude Cowork (zip upload)
+
+Surfaces that only accept skill uploads (no GitHub import) take a zip:
+
+1. Download the latest skill bundle:
+   **[wireframe-skill.zip](https://github.com/teezeit/wiremd/releases/latest/download/wireframe-skill.zip)**
+   *(attached to each GitHub release; or build locally with `npm run skill:zip`)*
+2. Open Claude → **Settings → Capabilities → Skills → Upload skill**
+3. Select `wireframe-skill.zip`
+
+The skill activates automatically when you ask Claude to wireframe, mock up, or sketch a UI.
+
+> **Note:** There is no `claude://` deep link yet for one-click install from a browser — you'll need to paste the URL into the Add Marketplace dialog manually.
+
+### VS Code
+
+Install the **Wiremd** extension from the VS Code Marketplace for live preview as you type — no Claude required, but composes well with Claude's edits.
 
 ## CLI Usage
 
@@ -218,7 +258,7 @@ wiremd has a native **Obsidian plugin** that brings live wireframe previews dire
 1. **Clone the plugin** into your Obsidian vault's plugins folder:
    ```bash
    cd /path/to/your/vault/.obsidian/plugins/
-   git clone https://github.com/akonan/wiremd-obsidian.git wiremd-preview
+   git clone https://github.com/teezeit/wiremd-obsidian.git wiremd-preview
    cd wiremd-preview
    npm install
    npm run build
@@ -256,7 +296,7 @@ The plugin will automatically render a live preview with your chosen style!
 - **Export all styles** - Export in all 7 styles at once
 - **Copy to clipboard** - Copy rendered HTML to clipboard
 
-See the [wiremd-obsidian repository](https://github.com/akonan/wiremd-obsidian) for complete documentation.
+See the [wiremd-obsidian repository](https://github.com/teezeit/wiremd-obsidian) for complete documentation.
 
 ## Programmatic API
 
@@ -292,38 +332,37 @@ const tailwindHTML = renderToTailwind(ast, { pretty: true });
 
 ## Documentation
 
-**Not sure where to start?** → [Documentation Guide](./DOCUMENTATION-GUIDE.md)
+**Not sure where to start?** → [Getting Started](./docs/guide/getting-started.md)
 
 ### 📖 Learning & Reference
 
 | Document | Description | Best For |
 |----------|-------------|----------|
-| **[Syntax Showcase](./examples/showcase.md)** | Comprehensive interactive guide with live examples | Learning by example, copying patterns |
-| **[Quick Reference](./QUICK-REFERENCE.md)** | One-page syntax cheat sheet | Quick lookups, experienced users |
-| **[Syntax Guide](./docs/guide/syntax.md)** | User-friendly tutorial with best practices | Structured learning |
-| **[FAQ](./FAQ.md)** | Common questions and troubleshooting | Solving problems, known issues |
+| **[Syntax Showcase](./docs/examples/showcase.md)** | Comprehensive interactive guide with live examples | Learning by example, copying patterns |
+| **[Quick Reference](./vscode-extension/QUICK-REFERENCE.md)** | One-page syntax cheat sheet | Quick lookups, experienced users |
+| **[Syntax Guide](./docs/guide/overview.md)** | User-friendly tutorial with best practices | Structured learning |
+| **[FAQ](./docs/reference/faq.md)** | Common questions and troubleshooting | Solving problems, known issues |
 
-📖 **[📚 View Full Documentation →](https://akonan.github.io/wiremd)** - Complete documentation site with interactive examples
+📖 **[📚 View Full Documentation →](https://teezeit.github.io/wiremd)** - Complete documentation site with interactive examples
 
 ### 🚀 Getting Started
 
 | Document | Description |
 |----------|-------------|
-| **[🌐 Live Documentation Site](https://akonan.github.io/wiremd)** | Full docs with interactive examples |
-| **[🚀 Getting Started](https://akonan.github.io/wiremd/guide/getting-started)** | Installation and first steps |
-| **[📝 Syntax Reference](https://akonan.github.io/wiremd/guide/syntax)** | Complete syntax guide |
-| **[🎮 Interactive Playground](https://akonan.github.io/wiremd/playground)** | Try wiremd in your browser |
-| **[⚙️ API Documentation](https://akonan.github.io/wiremd/api/)** | Programmatic API reference |
-| **[🔌 Framework Integrations](https://akonan.github.io/wiremd/guide/integrations)** | Next.js, React, Vite, Express |
-| **[🔧 Troubleshooting](https://akonan.github.io/wiremd/guide/troubleshooting)** | Common issues and solutions |
-| **[🎨 Live Showcases](https://akonan.github.io/wiremd/showcases/)** | Examples in all 7 styles |
+| **[🌐 Live Documentation Site](https://teezeit.github.io/wiremd)** | Full docs with interactive examples |
+| **[🚀 Getting Started](https://teezeit.github.io/wiremd/guide/getting-started)** | Installation and first steps |
+| **[📝 Syntax Reference](https://teezeit.github.io/wiremd/reference/syntax)** | Complete syntax guide |
+| **[🎮 Interactive Editor](https://teezeit.github.io/wiremd/editor)** | Try wiremd in your browser |
+| **[⚙️ API Documentation](https://teezeit.github.io/wiremd/api/)** | Programmatic API reference |
+| **[🔌 Framework Integrations](https://teezeit.github.io/wiremd/guide/integrations)** | Next.js, React, Vite, Express |
+| **[🔧 Troubleshooting](https://teezeit.github.io/wiremd/guide/troubleshooting)** | Common issues and solutions |
+| **[🎨 Live Showcases](https://teezeit.github.io/wiremd/showcases/)** | Examples in all 7 styles |
 | **[📂 Example Files](./examples/)** | Local wiremd files to explore |
 
 ### 🔧 Technical Documentation
 
 | Document | Description |
 |----------|-------------|
-| **[Syntax Specification](./SYNTAX-SPEC-v0.1.md)** | Formal specification with parser rules |
 | **[API Documentation (Local)](./docs/api/index.md)** | Local API reference |
 | **[Project Plan](./.github/dev-docs/markdown-mockup-project-plan.md)** | Development roadmap |
 | **[CLAUDE.md](./.github/dev-docs/CLAUDE.md)** | Project overview for AI assistants |
@@ -333,7 +372,6 @@ const tailwindHTML = renderToTailwind(ast, { pretty: true });
 | Document | Description |
 |----------|-------------|
 | **[CONTRIBUTING.md](./CONTRIBUTING.md)** | Contribution guidelines |
-| **[TESTING.md](./TESTING.md)** | Testing strategy and guidelines |
 | **[CODE_OF_CONDUCT.md](./CODE_OF_CONDUCT.md)** | Community guidelines |
 | **[SECURITY.md](./SECURITY.md)** | Security policy |
 
@@ -348,38 +386,38 @@ const tailwindHTML = renderToTailwind(ast, { pretty: true });
 - [x] AST transformer with 40+ node types
 - [x] HTML renderer with 7 visual styles
 - [x] JSON output
-- [x] 48+ passing tests
+- [x] 641+ passing tests
 - [x] Full-featured CLI tool with watch mode and live-reload
 - [x] Rich example showcase demonstrating all styles
 - [x] React component renderer (JSX/TSX output)
 - [x] Tailwind CSS class renderer
 
 ### 🚧 In Progress (Phase 3)
-- [x] Documentation site ✅ **[Live Now!](https://akonan.github.io/wiremd)**
+- [x] Documentation site ✅ **[Live Now!](https://teezeit.github.io/wiremd)**
 - npm package publishing
 
 ### 📋 Coming Soon (Phase 4+)
 - Framework-specific renderers (Vue, Svelte)
 - Interactive web playground with live editor
 
-See [Project Plan](./markdown-mockup-project-plan.md) for full roadmap.
+See [Project Plan](./.github/dev-docs/markdown-mockup-project-plan.md) for full roadmap.
 
 ## Contributing
 
 Contributions are welcome! Phase 1-2 are complete with a working parser, renderer, and CLI. Feel free to:
 
-- Report bugs or request features via [GitHub Issues](https://github.com/akonan/wiremd/issues)
+- Report bugs or request features via [GitHub Issues](https://github.com/teezeit/wiremd/issues)
 - Submit pull requests for improvements
 - Add new visual styles or examples
 - Improve documentation
 
-Please check the [Project Plan](./markdown-mockup-project-plan.md) for upcoming features.
+Please check the [Project Plan](./.github/dev-docs/markdown-mockup-project-plan.md) for upcoming features.
 
 ### Quick Start for Contributors
 
 ```bash
 # Clone the repository
-git clone https://github.com/akonan/wiremd.git
+git clone https://github.com/teezeit/wiremd.git
 cd wiremd
 
 # Install dependencies
@@ -401,14 +439,14 @@ MIT License - See [LICENSE](./LICENSE) for details.
 
 ## Community & Support
 
-- **Issues & Bugs** - [GitHub Issues](https://github.com/akonan/wiremd/issues)
-- **Discussions** - [GitHub Discussions](https://github.com/akonan/wiremd/discussions)
+- **Issues & Bugs** - [GitHub Issues](https://github.com/teezeit/wiremd/issues)
+- **Discussions** - [GitHub Discussions](https://github.com/teezeit/wiremd/discussions)
 - **Security** - See [SECURITY.md](./SECURITY.md)
 - **Changelog** - [CHANGELOG.md](./CHANGELOG.md)
 
 ## Credits
 
-Created by [akonan](https://github.com/akonan)
+Created by [teezeit](https://github.com/teezeit)
 
 Inspired by:
 - [Balsamiq](https://balsamiq.com) - Pioneering rapid wireframing
@@ -418,6 +456,6 @@ Inspired by:
 
 ---
 
-**Status:** Phase 1-2 Complete (Core + CLI) | **Version:** 0.1.0 | **Node:** ≥18.0.0
+**Status:** Phase 1-2 Complete (Core + CLI) | **Version:** 0.1.5 | **Node:** ≥18.0.0
 
 Made with ❤️ for designers and developers who love plain text

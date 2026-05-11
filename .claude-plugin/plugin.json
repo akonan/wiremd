@@ -1,0 +1,11 @@
+{
+  "name": "wireframe",
+  "version": "0.1.7",
+  "description": "Create and render wireframes using wiremd — converts Markdown into visual HTML mockups.",
+  "author": {
+    "name": "teezeit"
+  },
+  "homepage": "https://github.com/teezeit/wiremd",
+  "license": "MIT",
+  "skills": ["./skills"]
+}

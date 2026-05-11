@@ -698,50 +698,6 @@ processWireframe({
 });
 ```
 
-## Style Options
-
-### Available Styles
-
-wiremd includes several built-in visual styles:
-
-| Style | Description | Use Case |
-|-------|-------------|----------|
-| `sketch` | Hand-drawn, Balsamiq-style | Low-fidelity wireframes, brainstorming |
-| `clean` | Modern, minimal design | High-fidelity mockups, presentations |
-| `wireframe` | Black and white boxes | Traditional wireframes, developer handoff |
-| `material` | Material Design inspired | Android apps, Google-style designs |
-| `brutal` | Brutalist style | Bold, statement designs |
-| `tailwind` | Tailwind CSS styling | Rapid prototyping with Tailwind |
-| `none` | No styling, semantic HTML | Custom styling, CSS frameworks |
-
-### Style Examples
-
-```typescript
-import { parse, renderToHTML } from 'wiremd';
-
-const md = `
-## Login Page
-
-Username
-[_____________________________]
-
-Password
-[_____________________________]{type:password}
-
-[Login]{.primary} [Forgot Password?]
-`;
-
-const ast = parse(md);
-
-// Try different styles
-const styles = ['sketch', 'clean', 'wireframe', 'material', 'brutal', 'none'];
-
-styles.forEach(style => {
-  const html = renderToHTML(ast, { style });
-  writeFileSync(`output-${style}.html`, html);
-});
-```
-
 ## Performance Tips
 
 ### Reuse Parsed ASTs
@@ -782,19 +738,6 @@ for (const chunk of renderChunks(largeMarkdown)) {
   process.stdout.write(chunk);
 }
 ```
-
-## Interactive Examples
-
-Try these examples in your browser:
-
-- [**HTML Renderer Playground**](https://stackblitz.com/edit/wiremd-html-renderer) - Try different HTML styles
-- [**React Component Generator**](https://stackblitz.com/edit/wiremd-react-generator) - Generate React components
-- [**Tailwind CSS Output**](https://stackblitz.com/edit/wiremd-tailwind) - Generate Tailwind markup
-- [**Multi-Format Export**](https://stackblitz.com/edit/wiremd-multi-format) - Export to all formats at once
-
-::: tip
-Fork these examples to experiment with different rendering options and styles!
-:::
 
 ## Decision Guide
 

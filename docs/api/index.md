@@ -6,6 +6,7 @@ wiremd provides a powerful programmatic API for parsing and rendering wireframes
 
 - **[Parser API](./parser.md)** - Parse markdown to AST
 - **[Renderer APIs](./renderer.md)** - Render to HTML, JSON, React, and Tailwind
+- **[JSON Schema](./json-schema.md)** - JSON output schema and AST node structure.
 - **[Type Definitions](./types.md)** - Complete TypeScript type reference
 - **[Plugin API](./plugins.md)** - Create custom renderers
 - **[Error Handling](./errors.md)** - Error handling guide
@@ -14,7 +15,7 @@ wiremd provides a powerful programmatic API for parsing and rendering wireframes
 ## Additional Resources
 
 - 🚀 **[Framework Integrations](../guide/integrations.md)** - Next.js, React, Vite, and more
-- 🔧 **[Troubleshooting Guide](../guide/troubleshooting.md)** - Common issues and solutions
+- 🔧 **[FAQ & Troubleshooting](../reference/faq.md)** - Common issues and solutions
 
 ## Installation
 
@@ -47,6 +48,7 @@ const json = renderToJSON(ast, { pretty: true });
 ### Parser Functions
 
 - **[parse()](./parser.md#parse)** - Parse markdown with wiremd syntax into an AST
+- **[resolveIncludes()](./parser.md#resolveincludes)** - Resolve `![[file.md]]` include references before parsing
 - **[validate()](./parser.md#validate)** - Validate a wiremd AST for correctness
 
 ### Renderer Functions
@@ -64,13 +66,16 @@ const json = renderToJSON(ast, { pretty: true });
 The parser converts markdown with wiremd syntax into an Abstract Syntax Tree (AST).
 
 ```typescript
-import { parse } from 'wiremd';
+import { parse, validate } from 'wiremd';
 
-const ast = parse('## Heading\n[Button]', {
-  position: true,  // Include position info
-  validate: true,  // Validate during parse
-  strict: false    // Strict mode
-});
+// Parse markdown to AST
+const ast = parse('## Heading\n[Button]');
+
+// Validate the AST separately (ParseOptions fields are not yet implemented)
+const errors = validate(ast);
+if (errors.length > 0) {
+  console.error('Validation errors:', errors);
+}
 ```
 
 [Learn more about the Parser API →](./parser.md)
@@ -192,7 +197,7 @@ const html = renderToHTML(ast);
 
 ## Interactive Examples
 
-Try wiremd online with our [live demo site](https://github.com/akonan/wiremd) to see examples of:
+Try wiremd online with our [live demo site](https://github.com/teezeit/wiremd) to see examples of:
 
 - Different visual styles (sketch, clean, wireframe, material, brutal)
 - Form components (buttons, inputs, selects, checkboxes)
@@ -217,18 +222,15 @@ function renderToVue(ast: DocumentNode): string {
 
 ### Error Handling
 
-Handle parsing and validation errors gracefully:
+Handle validation errors by calling `validate()` after `parse()`. The `ParseOptions` fields (including `validate`) are not yet implemented and have no effect on `parse()`.
 
 ```typescript
-import { parse } from 'wiremd';
+import { parse, validate } from 'wiremd';
 
-try {
-  const ast = parse(userInput, { validate: true });
-} catch (error) {
-  console.error('Parse error:', error.message);
-  if (error.position) {
-    console.error(`At line ${error.position.start.line}`);
-  }
+const ast = parse(userInput);
+const errors = validate(ast);
+if (errors.length > 0) {
+  console.error('Validation errors:', errors.map(e => e.message));
 }
 ```
 
@@ -245,8 +247,8 @@ try {
 
 ## More Resources
 
-- [Getting Started Guide](../guide/getting-started.md)
-- [Syntax Reference](../guide/syntax.md)
+- [Getting Started](/)
+- [Syntax Reference](../components/.md)
 - [Examples](../examples/)
-- [GitHub Repository](https://github.com/akonan/wiremd)
-- [Live Demo](https://github.com/akonan/wiremd)
+- [GitHub Repository](https://github.com/teezeit/wiremd)
+- [Live Demo](https://github.com/teezeit/wiremd)

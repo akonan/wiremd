@@ -4,7 +4,9 @@
  */
 
 import * as vscode from 'vscode';
-import { parse, renderToHTML } from 'wiremd';
+import * as fs from 'fs';
+import * as path from 'path';
+import { parse, resolveIncludes, renderToHTML } from 'wiremd';
 
 export class WiremdPreviewProvider implements vscode.WebviewPanelSerializer {
   public static readonly viewType = 'wiremd.preview';
@@ -15,6 +17,10 @@ export class WiremdPreviewProvider implements vscode.WebviewPanelSerializer {
   private currentStyle: string = 'sketch';
   private currentViewport: string = 'full';
   private disposables: vscode.Disposable[] = [];
+
+  private docsPanel: vscode.WebviewPanel | undefined;
+  private currentDocsFile: string = '';
+  private docsHomeFile: string = '';
 
   constructor(private readonly context: vscode.ExtensionContext) {
     // Watch for document changes
@@ -70,6 +76,10 @@ export class WiremdPreviewProvider implements vscode.WebviewPanelSerializer {
       null,
       this.disposables
     );
+
+    this.panel.onDidDispose(() => {
+      this.panel = undefined;
+    }, null, this.disposables);
 
     this.refresh();
   }
@@ -254,6 +264,14 @@ export class WiremdPreviewProvider implements vscode.WebviewPanelSerializer {
         vscode.commands.executeCommand('wiremd.changeViewport');
         break;
 
+      case 'requestInstallSkill':
+        vscode.commands.executeCommand('wiremd.installClaudeSkill');
+        break;
+
+      case 'requestQuickReference':
+        this.openDocs(this.context.extensionPath);
+        break;
+
       case 'error':
         vscode.window.showErrorMessage(`Wiremd: ${message.message}`);
         break;
@@ -261,7 +279,47 @@ export class WiremdPreviewProvider implements vscode.WebviewPanelSerializer {
       case 'info':
         vscode.window.showInformationMessage(`Wiremd: ${message.message}`);
         break;
+
+      case 'navigate':
+        if (this.currentEditor) {
+          this.resolveLink(message.href).then((targetUri) => {
+            if (!targetUri) {
+              vscode.window.showErrorMessage(`Wiremd: Cannot resolve ${message.href}`);
+              return;
+            }
+            vscode.workspace.openTextDocument(targetUri).then(
+              (doc) => { vscode.window.showTextDocument(doc, this.currentEditor!.viewColumn); },
+              (err) => { vscode.window.showErrorMessage(`Wiremd: Cannot open ${message.href}: ${err.message}`); }
+            );
+          });
+        }
+        break;
     }
+  }
+
+  private async resolveLink(href: string): Promise<vscode.Uri | undefined> {
+    if (!this.currentEditor) return undefined;
+
+    if (!href.startsWith('/')) {
+      const currentDir = vscode.Uri.joinPath(this.currentEditor.document.uri, '..');
+      return vscode.Uri.joinPath(currentDir, href);
+    }
+
+    // Absolute path: walk up directory tree until the file is found
+    const relative = href.slice(1);
+    let dir = vscode.Uri.joinPath(this.currentEditor.document.uri, '..');
+    for (let i = 0; i < 10; i++) {
+      const candidate = vscode.Uri.joinPath(dir, relative);
+      try {
+        await vscode.workspace.fs.stat(candidate);
+        return candidate;
+      } catch {
+        const parent = vscode.Uri.joinPath(dir, '..');
+        if (parent.fsPath === dir.fsPath) break;
+        dir = parent;
+      }
+    }
+    return undefined;
   }
 
   /**
@@ -273,56 +331,22 @@ export class WiremdPreviewProvider implements vscode.WebviewPanelSerializer {
     }
 
     const document = this.currentEditor.document;
-    const markdown = document.getText();
+    const raw = document.getText();
+    const markdown = resolveIncludes(raw, document.uri.fsPath);
 
     try {
-      // Render using wiremd
       const ast = parse(markdown);
-      const html = renderToHTML(ast, {
-        style: this.currentStyle as any,
-        pretty: true,
-        inlineStyles: true
-      });
-
-      return this.wrapHTML(html);
+      const html = renderToHTML(ast, { style: this.currentStyle as any, pretty: true });
+      return this.injectToolbar(html);
     } catch (error: any) {
       return this.getErrorHTML(error.message);
     }
   }
 
   /**
-   * Extract styles and body content from wiremd HTML
+   * Inject toolbar and VS Code bridge into the full wiremd HTML output
    */
-  private extractHTMLParts(html: string): { styles: string; content: string; fontLinks: string } {
-    // Extract <style> content
-    const styleMatch = html.match(/<style>([\s\S]*?)<\/style>/);
-    let styles = styleMatch ? styleMatch[1] : '';
-
-    // Extract @import statements and convert to link tags
-    const importMatches = styles.match(/@import\s+url\(['"]([^'"]+)['"]\);?/g) || [];
-    const fontLinks = importMatches
-      .map(imp => {
-        const urlMatch = imp.match(/url\(['"]([^'"]+)['"]\)/);
-        return urlMatch ? `<link rel="stylesheet" href="${urlMatch[1]}">` : '';
-      })
-      .join('\n  ');
-
-    // Remove @import statements from styles
-    styles = styles.replace(/@import\s+url\(['"]([^'"]+)['"]\);?\s*/g, '');
-
-    // Extract <body> content
-    const bodyMatch = html.match(/<body[^>]*>([\s\S]*?)<\/body>/);
-    const content = bodyMatch ? bodyMatch[1] : html;
-
-    return { styles, content, fontLinks };
-  }
-
-  /**
-   * Wrap rendered HTML with preview chrome
-   */
-  private wrapHTML(content: string): string {
-    const { styles, content: bodyContent, fontLinks } = this.extractHTMLParts(content);
-
+  private injectToolbar(html: string): string {
     const viewportWidths: Record<string, string> = {
       desktop: '1440px',
       laptop: '1024px',
@@ -330,248 +354,117 @@ export class WiremdPreviewProvider implements vscode.WebviewPanelSerializer {
       mobile: '375px',
       full: '100%'
     };
-
     const viewportWidth = viewportWidths[this.currentViewport] || '100%';
 
-    return `<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; connect-src https://fonts.googleapis.com https://fonts.gstatic.com; style-src 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com data:; img-src https: data:; script-src 'unsafe-inline';">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <title>Wiremd Preview</title>
-  ${fontLinks}
-  <style>
-    /* Wiremd styles */
-    ${styles}
-
-    /* Preview wrapper styles - scoped to not interfere with wiremd content */
-    html, body {
-      margin: 0;
-      padding: 0;
-      background: #f5f5f5;
-      overflow-x: hidden;
-    }
-
-    /* Fix for div.wmd-root instead of body.wmd-root */
-    .wmd-root {
-      font-family: 'Kalam', 'Comic Sans MS', 'Marker Felt', 'Chalkboard', cursive, sans-serif !important;
-      background: #f5f5dc;
-      color: #333 !important;
-      padding: 20px;
-    }
-
-    .wmd-root * {
-      color: inherit;
-    }
-
-    #toolbar {
-      position: sticky;
-      top: 0;
-      background: #ffffff;
-      border-bottom: 1px solid #e0e0e0;
-      padding: 8px 16px;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      z-index: 1000;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-    }
-
-    #toolbar button {
-      padding: 6px 12px;
-      border: 1px solid #d0d0d0;
-      border-radius: 4px;
-      background: white;
-      font-size: 13px;
-      cursor: pointer;
-      transition: all 0.2s;
-      font-family: inherit;
-    }
-
-    #toolbar button:hover {
-      background: #f5f5f5;
-      border-color: #999;
-    }
-
-    #toolbar button:focus {
-      outline: 2px solid #007acc;
-      outline-offset: 2px;
-    }
-
-    #toolbar .dropdown-btn {
-      min-width: 120px;
-      text-align: left;
-      display: inline-flex;
-      align-items: center;
-      justify-content: space-between;
-      padding-right: 8px;
-    }
-
-    #toolbar .dropdown-btn:hover {
-      background: #e8e8e8;
-      border-color: #007acc;
-    }
-
-    #toolbar span {
-      font-size: 13px;
-      color: #333;
-    }
-
-    .toolbar-separator {
-      width: 1px;
-      height: 20px;
-      background: #e0e0e0;
-      margin: 0 4px;
-    }
-
-    #viewport-indicator {
-      font-size: 12px;
-      color: #666;
-      margin-left: auto;
-    }
-
-    #preview-container {
-      display: flex;
-      justify-content: center;
-      padding: 20px;
-      min-height: calc(100vh - 60px);
-    }
-
-    #preview-frame {
-      width: ${viewportWidth};
-      max-width: 100%;
-      background: white;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-      border-radius: 8px;
-      overflow: hidden;
-      transition: width 0.3s ease;
-    }
-
-    #error-overlay {
-      display: none;
-      position: fixed;
-      top: 60px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: #ff4444;
-      color: white;
-      padding: 12px 20px;
-      border-radius: 6px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-      z-index: 2000;
-      max-width: 600px;
-      animation: slideDown 0.3s ease;
-    }
-
-    @keyframes slideDown {
-      from {
-        opacity: 0;
-        transform: translateX(-50%) translateY(-20px);
+    const toolbarCSS = `
+    <style id="wmd-toolbar-styles">
+      #wmd-toolbar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        background: #ffffff;
+        border-bottom: 1px solid #e0e0e0;
+        padding: 8px 16px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        z-index: 9999;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
       }
-      to {
-        opacity: 1;
-        transform: translateX(-50%) translateY(0);
+      #wmd-toolbar button {
+        padding: 6px 12px;
+        border: 1px solid #d0d0d0;
+        border-radius: 4px;
+        background: white;
+        font-size: 13px;
+        cursor: pointer;
+        font-family: inherit;
       }
-    }
+      #wmd-toolbar button:hover { background: #f0f0f0; border-color: #999; }
+      #wmd-toolbar .wmd-sep { width: 1px; height: 20px; background: #e0e0e0; margin: 0 4px; }
+      #wmd-toolbar span { font-size: 13px; color: #333; }
+      #wmd-toolbar-spacer { margin-left: auto; font-size: 12px; color: #666; }
+      #wmd-help, #wmd-skill { width: 28px; height: 28px; padding: 0; font-weight: bold; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; }
+      #wmd-error-overlay {
+        display: none;
+        position: fixed;
+        top: 52px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: #ff4444;
+        color: white;
+        padding: 10px 18px;
+        border-radius: 6px;
+        z-index: 10000;
+        max-width: 600px;
+        font-family: -apple-system, sans-serif;
+        font-size: 13px;
+      }
+      #wmd-error-overlay.show { display: block; }
+      #wmd-preview-wrapper { margin-top: 44px; }
+    </style>`;
 
-    #error-overlay.show {
-      display: block;
-    }
-
-    .loading {
-      text-align: center;
-      padding: 60px 20px;
-      color: #666;
-    }
-
-    .loading::after {
-      content: '...';
-      animation: dots 1.5s steps(4, end) infinite;
-    }
-
-    @keyframes dots {
-      0%, 20% { content: '.'; }
-      40% { content: '..'; }
-      60%, 100% { content: '...'; }
-    }
-  </style>
-</head>
-<body>
-  <div id="toolbar">
-    <button id="refresh-btn" title="Refresh Preview">🔄 Refresh</button>
-    <div class="toolbar-separator"></div>
-
+    const toolbarHTML = `
+  <div id="wmd-toolbar">
+    <button id="wmd-refresh">&#x1F504; Refresh</button>
+    <div class="wmd-sep"></div>
     <span>Style:</span>
-    <button id="style-btn" class="dropdown-btn" title="Change Style">
-      ${this.currentStyle.charAt(0).toUpperCase() + this.currentStyle.slice(1)} ▾
-    </button>
-
-    <div class="toolbar-separator"></div>
-
+    <button id="wmd-style">${this.currentStyle.charAt(0).toUpperCase() + this.currentStyle.slice(1)} &#x25BE;</button>
+    <div class="wmd-sep"></div>
     <span>Viewport:</span>
-    <button id="viewport-btn" class="dropdown-btn" title="Change Viewport">
-      ${this.getViewportLabel(this.currentViewport)} ▾
-    </button>
-
-    <span id="viewport-indicator">${viewportWidth}</span>
+    <button id="wmd-viewport">${this.getViewportLabel(this.currentViewport)} &#x25BE;</button>
+    <span id="wmd-toolbar-spacer">${viewportWidth}</span>
+    <button id="wmd-skill" title="Install Claude Skill">&#x2728;</button>
+    <button id="wmd-help" title="Quick Reference">?</button>
   </div>
-
-  <div id="error-overlay"></div>
-
-  <div id="preview-container">
-    <div id="preview-frame" class="wmd-root wmd-${this.currentStyle}">
-      ${bodyContent}
-    </div>
-  </div>
-
+  <div id="wmd-error-overlay"></div>
   <script>
     const vscode = acquireVsCodeApi();
+    // Wrap existing body content in preview wrapper so margin-top on the wrapper
+    // pushes content below the fixed toolbar without touching body padding
+    const body = document.body;
+    const wrapper = document.createElement('div');
+    wrapper.id = 'wmd-preview-wrapper';
+    while (body.firstChild && body.firstChild.id !== 'wmd-toolbar' && body.firstChild.id !== 'wmd-error-overlay') {
+      wrapper.appendChild(body.firstChild);
+    }
+    body.appendChild(wrapper);
 
-    // Restore state
-    const state = vscode.getState() || {};
-
-    // Handle refresh button
-    document.getElementById('refresh-btn').addEventListener('click', () => {
-      vscode.postMessage({ type: 'ready' });
-    });
-
-    // Handle style button - trigger VS Code command
-    document.getElementById('style-btn').addEventListener('click', () => {
-      vscode.postMessage({ type: 'requestStyleChange' });
-    });
-
-    // Handle viewport button - trigger VS Code command
-    document.getElementById('viewport-btn').addEventListener('click', () => {
-      vscode.postMessage({ type: 'requestViewportChange' });
-    });
-
-    // Handle messages from extension
+    document.getElementById('wmd-refresh').addEventListener('click', () => vscode.postMessage({ type: 'ready' }));
+    document.getElementById('wmd-style').addEventListener('click', () => vscode.postMessage({ type: 'requestStyleChange' }));
+    document.getElementById('wmd-viewport').addEventListener('click', () => vscode.postMessage({ type: 'requestViewportChange' }));
+    document.getElementById('wmd-skill').addEventListener('click', () => vscode.postMessage({ type: 'requestInstallSkill' }));
+    document.getElementById('wmd-help').addEventListener('click', () => vscode.postMessage({ type: 'requestQuickReference' }));
     window.addEventListener('message', (event) => {
-      const message = event.data;
-      switch (message.type) {
-        case 'error':
-          showError(message.message);
-          break;
+      if (event.data.type === 'error') {
+        const el = document.getElementById('wmd-error-overlay');
+        el.textContent = '⚠️ ' + event.data.message;
+        el.classList.add('show');
+        setTimeout(() => el.classList.remove('show'), 5000);
       }
     });
-
-    function showError(message) {
-      const overlay = document.getElementById('error-overlay');
-      overlay.textContent = '⚠️ ' + message;
-      overlay.classList.add('show');
-      setTimeout(() => {
-        overlay.classList.remove('show');
-      }, 5000);
-    }
-
-    // Notify ready
+    document.addEventListener('click', (e) => {
+      const a = e.target.closest('a');
+      if (!a) return;
+      const href = a.getAttribute('href');
+      if (href && href.endsWith('.md')) {
+        e.preventDefault();
+        vscode.postMessage({ type: 'navigate', href });
+      }
+    });
     vscode.postMessage({ type: 'ready' });
-  </script>
-</body>
-</html>`;
+  <\/script>`;
+
+    // Inject CSP into <head>, toolbar styles just before </head> (after wiremd styles so they win),
+    // and toolbar HTML at start of <body>
+    const withCSP = html.replace(
+      '<head>',
+      `<head>\n  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com data:; img-src https: data:; script-src 'unsafe-inline';">`
+    );
+    const withStyles = withCSP.replace('</head>', `${toolbarCSS}\n</head>`);
+    return withStyles.replace(/(<body[^>]*>)/, `$1\n${toolbarHTML}`);
   }
 
   /**
@@ -694,6 +587,159 @@ export class WiremdPreviewProvider implements vscode.WebviewPanelSerializer {
   }
 
   /**
+   * Open the component docs in a dedicated webview panel.
+   * Looks for docs/components/index.md bundled with the extension,
+   * falling back to the sibling repo path for local development.
+   */
+  public openDocs(extensionPath: string): void {
+    let docsFile = path.join(extensionPath, 'docs', 'components', 'index.md');
+    if (!fs.existsSync(docsFile)) {
+      docsFile = path.join(extensionPath, '..', 'docs', 'components', 'index.md');
+    }
+    if (!fs.existsSync(docsFile)) {
+      vscode.window.showErrorMessage('wiremd: could not find component docs');
+      return;
+    }
+
+    this.currentDocsFile = docsFile;
+    this.docsHomeFile = docsFile;
+
+    if (this.docsPanel) {
+      this.docsPanel.reveal(vscode.ViewColumn.One);
+    } else {
+      this.docsPanel = vscode.window.createWebviewPanel(
+        'wiremd.docs',
+        'wiremd Docs',
+        vscode.ViewColumn.One,
+        { enableScripts: true }
+      );
+      this.docsPanel.webview.onDidReceiveMessage(
+        (msg) => this.handleDocsMessage(msg),
+        null,
+        this.disposables
+      );
+      this.docsPanel.onDidDispose(() => {
+        this.docsPanel = undefined;
+      }, null, this.disposables);
+    }
+
+    this.refreshDocs();
+  }
+
+  private async refreshDocs(): Promise<void> {
+    if (!this.docsPanel || !this.currentDocsFile) { return; }
+    try {
+      const raw = fs.readFileSync(this.currentDocsFile, 'utf-8');
+      const resolved = resolveIncludes(raw, this.currentDocsFile);
+      const ast = parse(resolved);
+      const html = renderToHTML(ast, { style: this.currentStyle as any, pretty: true });
+      const isExample = !this.currentDocsFile.includes(`${path.sep}components${path.sep}`);
+      this.docsPanel.webview.html = this.injectDocsChrome(html, isExample ? raw : undefined);
+    } catch (err: any) {
+      this.docsPanel.webview.html = this.getErrorHTML(err.message);
+    }
+  }
+
+  private handleDocsMessage(message: any): void {
+    if (message.type === 'navigate-home') {
+      this.currentDocsFile = this.docsHomeFile;
+      if (this.docsPanel) { this.docsPanel.title = 'wiremd Docs'; }
+      this.refreshDocs();
+      return;
+    }
+    if (message.type !== 'navigate') { return; }
+    const dir = path.dirname(this.currentDocsFile);
+    const target = path.resolve(dir, message.href);
+    if (!target.endsWith('.md') || !fs.existsSync(target)) { return; }
+    this.currentDocsFile = target;
+    if (this.docsPanel) {
+      const name = path.basename(target, '.md').replace(/-/g, ' ');
+      this.docsPanel.title = `wiremd — ${name}`;
+    }
+    this.refreshDocs();
+  }
+
+  private injectDocsChrome(html: string, rawSource?: string): string {
+    const hasSource = rawSource !== undefined;
+    const escapedSource = hasSource
+      ? rawSource!.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+      : '';
+
+    const css = `
+    <style id="wmd-docs-styles">
+      #wmd-docs-bar {
+        position: fixed; top: 0; left: 0; right: 0;
+        background: #fff; border-bottom: 1px solid #e0e0e0;
+        padding: 8px 16px; display: flex; align-items: center; gap: 10px;
+        z-index: 9999; box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 13px;
+      }
+      #wmd-docs-bar strong { font-weight: 600; letter-spacing: -0.01em; }
+      #wmd-docs-bar .wmd-docs-sep { color: #ccc; }
+      #wmd-docs-bar button {
+        padding: 4px 10px; border: 1px solid #d0d0d0; border-radius: 4px;
+        background: white; cursor: pointer; font-size: 13px; font-family: inherit;
+      }
+      #wmd-docs-bar button:hover { background: #f0f0f0; border-color: #999; }
+      body { padding-top: 44px !important; }
+      #wmd-source-panel {
+        display: none; position: fixed; top: 44px; right: 0; bottom: 0;
+        width: 42%; background: #1e1e1e; color: #d4d4d4; overflow: auto;
+        font-family: monospace; font-size: 12px; line-height: 1.6;
+        padding: 16px; box-sizing: border-box; white-space: pre-wrap;
+        border-left: 1px solid #333; z-index: 9998;
+      }
+      #wmd-source-panel.visible { display: block; }
+      body.source-visible { margin-right: 42%; }
+    </style>`;
+
+    const sourceButton = hasSource
+      ? `<button id="wmd-docs-source">Source</button>` : '';
+    const sourcePanel = hasSource
+      ? `<div id="wmd-source-panel"><pre>${escapedSource}</pre></div>` : '';
+    const sourceScript = hasSource ? `
+    document.getElementById('wmd-docs-source').addEventListener('click', () => {
+      const panel = document.getElementById('wmd-source-panel');
+      const isVisible = panel.classList.toggle('visible');
+      document.body.classList.toggle('source-visible', isVisible);
+      document.getElementById('wmd-docs-source').textContent = isVisible ? 'Preview' : 'Source';
+    });` : '';
+
+    const bar = `
+  <div id="wmd-docs-bar">
+    <strong>wiremd</strong>
+    <span class="wmd-docs-sep">/</span>
+    <span>docs</span>
+    <button id="wmd-docs-home">Home</button>
+    ${sourceButton}
+  </div>
+  ${sourcePanel}
+  <script>
+    const vscode = acquireVsCodeApi();
+    document.getElementById('wmd-docs-home').addEventListener('click', () => {
+      vscode.postMessage({ type: 'navigate-home' });
+    });
+    document.addEventListener('click', (e) => {
+      const a = e.target.closest('a');
+      if (!a) return;
+      const href = a.getAttribute('href');
+      if (href && href.endsWith('.md')) {
+        e.preventDefault();
+        vscode.postMessage({ type: 'navigate', href });
+      }
+    });
+    ${sourceScript}
+  <\/script>`;
+
+    const withCSP = html.replace(
+      '<head>',
+      `<head>\n  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com data:; img-src data:; script-src 'unsafe-inline';">`
+    );
+    const withCss = withCSP.replace('</head>', `${css}\n</head>`);
+    return withCss.replace(/(<body[^>]*>)/, `$1\n${bar}`);
+  }
+
+  /**
    * Dispose resources
    */
   public dispose(): void {
@@ -706,6 +752,10 @@ export class WiremdPreviewProvider implements vscode.WebviewPanelSerializer {
 
     if (this.panel) {
       this.panel.dispose();
+    }
+
+    if (this.docsPanel) {
+      this.docsPanel.dispose();
     }
   }
 }

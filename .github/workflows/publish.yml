@@ -8,7 +8,7 @@ jobs:
   publish:
     runs-on: ubuntu-latest
     permissions:
-      contents: read
+      contents: write
       id-token: write
     steps:
       - name: Checkout code
@@ -33,3 +33,11 @@ jobs:
         run: npm publish --provenance --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Package wireframe skill for Claude Desktop / Cowork upload
+        run: npm run skill:zip
+
+      - name: Attach skill zip to GitHub release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: wireframe-skill.zip

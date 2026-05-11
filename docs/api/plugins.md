@@ -653,4 +653,4 @@ const vue = renderToVue(ast);
 - [Parser API](/api/parser) - Understanding the AST
 - [Type Definitions](/api/types) - Complete type reference
 - [Renderer APIs](/api/renderer) - Built-in renderers
-- [Examples](https://github.com/akonan/wiremd/tree/main/examples) - Example renderers
+- [Examples](https://github.com/teezeit/wiremd/tree/main/examples) - Example renderers

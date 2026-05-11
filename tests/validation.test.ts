@@ -382,7 +382,7 @@ This is a paragraph.
     describe('Grid', () => {
       it('should validate grid with columns', () => {
         const input = `
-## Features {.grid-3}
+::: grid-3
 
 ### Feature 1
 Content
@@ -392,6 +392,8 @@ Content
 
 ### Feature 3
 Content
+
+:::
         `.trim();
         const ast = parse(input);
         const errors = validate(ast);
@@ -619,7 +621,7 @@ Content
     });
 
     it('should reject grid with non-grid-item children', () => {
-      const ast = parse('## Grid {.grid-2}');
+      const ast = parse('::: grid-2\n\n### Item\n\n:::');
       const grid = ast.children[0] as any;
       grid.children = [
         { type: 'paragraph', content: 'Invalid', props: {} },
@@ -820,7 +822,7 @@ Message
 
     it('should validate grid layout', () => {
       const input = `
-## Features {.grid-3}
+::: grid-3
 
 ### :rocket: Fast
 Lightning quick
@@ -830,6 +832,8 @@ Enterprise grade
 
 ### :zap: Powerful
 Advanced features
+
+:::
       `.trim();
       const ast = parse(input);
       const errors = validate(ast);

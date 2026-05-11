@@ -7,6 +7,88 @@ import { createServer } from 'http';
 import { readFileSync, writeFileSync, unlinkSync } from 'fs';
 import { startServer, notifyReload, notifyError } from '../src/cli/server.js';
 
+/**
+ * `startServer` returns the http.Server before listen() actually binds.
+ * On slower CI runners (macOS, Windows) the test's fetch can race ahead
+ * of the bind and get ECONNREFUSED / SocketError. Wait for the listening
+ * event before fetching.
+ */
+async function whenListening(server: any): Promise<void> {
+  if (server.listening) return;
+  await new Promise<void>(resolve => server.once('listening', resolve));
+}
+
+describe('Multi-file routing', () => {
+  // Each test gets a fresh port. Reusing a single port across tests
+  // hits EADDRINUSE on slower runners because the kernel can hold the
+  // port in TIME_WAIT briefly after server.close() — even with
+  // closeAllConnections destroying the keep-alive sockets first.
+  let portCounter = 3457;
+  let TEST_PORT: number;
+  const TEST_OUTPUT = './test-main.html';
+  const TEST_OTHER_MD = './test-other.md';
+  let server: any;
+
+  beforeEach(() => {
+    TEST_PORT = portCounter++;
+    writeFileSync(TEST_OUTPUT, '<html><body>Main Page</body></html>', 'utf-8');
+    writeFileSync(TEST_OTHER_MD, '# Other Page', 'utf-8');
+  });
+
+  afterEach(async () => {
+    if (server) {
+      // Force-destroy keep-alive sockets so server.close() doesn't hang on
+      // pooled connections from undici's fetch (Node 18+).
+      server.closeAllConnections?.();
+      if (server.close) await new Promise<void>(r => server.close(() => r()));
+    }
+    try { unlinkSync(TEST_OUTPUT); } catch {}
+    try { unlinkSync(TEST_OTHER_MD); } catch {}
+  });
+
+  it('should return the server instance from startServer', () => {
+    server = startServer({ port: TEST_PORT, outputPath: TEST_OUTPUT });
+    expect(server).toBeDefined();
+    expect(typeof server.close).toBe('function');
+  });
+
+  it('should redirect / to the entry file when inputFile is provided', async () => {
+    const renderFile = vi.fn().mockReturnValue('<html><body>Main Page</body></html>');
+    server = startServer({ port: TEST_PORT, outputPath: TEST_OUTPUT, renderFile, rootDir: '.', inputFile: 'test-other.md' });
+    await whenListening(server);
+    const res = await fetch(`http://localhost:${TEST_PORT}/`, { redirect: 'manual' });
+    expect(res.status).toBe(302);
+    expect(res.headers.get('location')).toBe('/test-other.md');
+  });
+
+  it('should serve main file at / when no inputFile provided (fallback)', async () => {
+    server = startServer({ port: TEST_PORT, outputPath: TEST_OUTPUT });
+    await whenListening(server);
+    const res = await fetch(`http://localhost:${TEST_PORT}/`);
+    expect(res.status).toBe(200);
+    const html = await res.text();
+    expect(html).toContain('Main Page');
+  });
+
+  it('should call renderFile for .md requests and serve result', async () => {
+    const renderFile = vi.fn().mockReturnValue('<html><body>Rendered Other</body></html>');
+    server = startServer({ port: TEST_PORT, outputPath: TEST_OUTPUT, renderFile, rootDir: '.' });
+    await whenListening(server);
+    const res = await fetch(`http://localhost:${TEST_PORT}/test-other.md`);
+    expect(res.status).toBe(200);
+    expect(renderFile).toHaveBeenCalledWith(expect.stringContaining('test-other.md'));
+    const html = await res.text();
+    expect(html).toContain('Rendered Other');
+  });
+
+  it('should return 404 for unknown paths', async () => {
+    server = startServer({ port: TEST_PORT, outputPath: TEST_OUTPUT, rootDir: '.' });
+    await whenListening(server);
+    const res = await fetch(`http://localhost:${TEST_PORT}/nonexistent.md`);
+    expect(res.status).toBe(404);
+  });
+});
+
 describe('Dev Server', () => {
   const TEST_PORT = 3456;
   const TEST_OUTPUT = './test-output.html';
@@ -231,7 +313,7 @@ describe('Dev Server', () => {
 
     it('should add top margin for toolbar', () => {
       const serverModule = readFileSync('./src/cli/server.ts', 'utf-8');
-      expect(serverModule).toContain('margin-top: 48px');
+      expect(serverModule).toContain('wiremd-preview-wrapper');
     });
 
     it('should handle viewport class changes', () => {

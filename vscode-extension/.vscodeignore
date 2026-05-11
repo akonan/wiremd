@@ -6,7 +6,9 @@ src/**
 tsconfig.json
 *.md
 !README.md
+!QUICK-REFERENCE.md
 node_modules/**
+../node_modules/**
 *.sh
 test-*
 DEBUGGING-*

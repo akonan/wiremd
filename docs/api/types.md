@@ -951,4 +951,4 @@ function processNode(node: WiremdNode): void {
 - [Parser API](/api/parser) - Using types with the parser
 - [Renderer APIs](/api/renderer) - Using types with renderers
 - [Plugin API](/api/plugins) - Creating type-safe plugins
-- [Source Code](https://github.com/akonan/wiremd/blob/main/src/types.ts) - Full type definitions
+- [Source Code](https://github.com/teezeit/wiremd/blob/main/src/types.ts) - Full type definitions

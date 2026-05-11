@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>wiremd Editor</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div id="app">
+    <!-- Header -->
+    <header class="ed-header">
+      <div class="ed-header__brand">
+        <div class="ed-header__logo">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+          </svg>
+        </div>
+        <div>
+          <div class="ed-header__title">wiremd Editor</div>
+          <div class="ed-header__subtitle">Interactive wireframe editor</div>
+        </div>
+      </div>
+      <div class="ed-header__actions" id="header-actions"></div>
+    </header>
+
+    <!-- Main split layout -->
+    <main class="ed-main">
+      <!-- Editor panel -->
+      <section class="ed-editor" id="editor-panel">
+        <div class="ed-editor__toolbar">
+          <span class="ed-editor__toolbar-label">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/>
+            </svg>
+            Markdown
+          </span>
+          <div id="examples-dropdown" class="ed-dropdown"></div>
+        </div>
+        <div class="ed-editor__body" id="monaco-container"></div>
+      </section>
+
+      <!-- Resizable divider -->
+      <div class="ed-divider" id="divider"></div>
+
+      <!-- Preview panel -->
+      <section class="ed-preview" id="preview-panel">
+        <div class="ed-preview__toolbar">
+          <div class="ed-preview__toolbar-left">
+            <div class="ed-tabs" id="preview-tabs">
+              <button class="ed-tab ed-tab--active" data-tab="preview">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/>
+                </svg>
+                Preview
+              </button>
+              <button class="ed-tab" data-tab="html">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/>
+                </svg>
+                HTML
+              </button>
+            </div>
+          </div>
+          <div class="ed-preview__toolbar-right">
+            <div class="ed-style-selector">
+              <span class="ed-style-selector__label">Style</span>
+              <select class="ed-select" id="style-select">
+                <option value="sketch">Sketch</option>
+                <option value="clean">Clean</option>
+                <option value="wireframe">Wireframe</option>
+                <option value="material">Material</option>
+                <option value="tailwind">Tailwind</option>
+                <option value="brutal">Brutal</option>
+                <option value="none">None</option>
+              </select>
+            </div>
+            <button class="ed-btn" id="copy-link-btn" title="Copy a shareable link to this wireframe">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
+                <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
+              </svg>
+              Copy link
+            </button>
+            <button class="ed-btn ed-btn--accent" id="copy-html-btn">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/>
+              </svg>
+              Copy HTML
+            </button>
+          </div>
+        </div>
+        <div class="ed-preview__content" id="preview-content">
+          <iframe class="ed-preview__iframe" id="preview-iframe" sandbox></iframe>
+          <div class="ed-preview__html" id="html-output" style="display:none;"></div>
+        </div>
+        <div class="ed-error" id="error-bar">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/>
+          </svg>
+          <span id="error-message"></span>
+        </div>
+      </section>
+    </main>
+
+    <!-- Toast notification -->
+    <div class="ed-toast" id="toast">Copied to clipboard!</div>
+  </div>
+
+  <script type="module" src="/src/main.ts"></script>
+</body>
+</html>

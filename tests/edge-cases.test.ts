@@ -455,4 +455,62 @@ describe('Edge Cases', () => {
       expect(ast.children.length).toBeGreaterThan(0);
     });
   });
+
+  describe('Badge/Pill edge cases', () => {
+    it('should not parse || (empty pipe pair) as a badge', () => {
+      const ast = parse('||');
+      expect(ast.children[0].type).not.toBe('badge');
+    });
+
+    it('should parse a pill with spaces in the label', () => {
+      const ast = parse('|In Progress|{.warning}');
+      expect(ast.children[0]).toMatchObject({
+        type: 'badge',
+        content: 'In Progress',
+        props: { variant: 'warning' },
+      });
+    });
+
+    it('should treat an unknown variant class as a CSS class, not a variant', () => {
+      const ast = parse('|Beta|{.custom}');
+      expect(ast.children[0]).toMatchObject({ type: 'badge', content: 'Beta' });
+      const badge = ast.children[0] as any;
+      expect(badge.props.variant).toBeUndefined();
+      expect(badge.props.classes).toContain('custom');
+    });
+
+    it('should parse multiple pills with different variants', () => {
+      const ast = parse('|Done|{.success} |Pending|{.warning} |Failed|{.error}');
+      expect(ast.children[0].type).toBe('paragraph');
+      const badges = (ast.children[0] as any).children.filter((c: any) => c.type === 'badge');
+      expect(badges).toHaveLength(3);
+      expect(badges[0].props.variant).toBe('success');
+      expect(badges[1].props.variant).toBe('warning');
+      expect(badges[2].props.variant).toBe('error');
+    });
+
+    it('should parse a pill with a long label', () => {
+      const ast = parse('|Awaiting Approval|{.warning}');
+      expect(ast.children[0]).toMatchObject({
+        type: 'badge',
+        content: 'Awaiting Approval',
+        props: { variant: 'warning' },
+      });
+    });
+
+    it('should render badge without crashing in all styles', () => {
+      const ast = parse('|Active|{.success}');
+      const styles = ['sketch', 'clean', 'wireframe', 'material', 'brutal', 'tailwind', 'none'] as const;
+      for (const style of styles) {
+        expect(() => renderToHTML(ast, { style })).not.toThrow();
+      }
+    });
+
+    it('should escape HTML in badge content', () => {
+      const ast = parse('|<script>|');
+      const html = renderToHTML(ast, { style: 'clean' });
+      expect(html).not.toContain('<script>');
+      expect(html).toContain('&lt;script&gt;');
+    });
+  });
 });

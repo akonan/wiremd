@@ -30,21 +30,21 @@ interface ParseError extends Error {
 
 ### ValidationError
 
-Errors from AST validation.
+Errors from AST validation. `ValidationError` is a plain object (not an `Error` subclass) returned by `validate()`.
 
 ```typescript
-interface ValidationError extends Error {
+interface ValidationError {
   // Human-readable error message
   message: string;
-
-  // The invalid node
-  node?: WiremdNode;
 
   // Path to the error in the AST
   path?: string[];
 
   // Machine-readable error code
   code?: string;
+
+  // The invalid node (when applicable)
+  node?: WiremdNode;
 }
 ```
 
@@ -357,12 +357,13 @@ console.log(renderToJSON(ast, { pretty: true }));
 
 ### Validate During Development
 
+Use `validate()` to check the AST after parsing. The `validate` option on `ParseOptions` is not yet implemented — passing `{ validate: true }` to `parse()` has no effect and does not throw.
+
 ```typescript
 import { parse, validate } from 'wiremd';
 
-const ast = parse(markdown, { validate: true }); // Throws on invalid AST
+const ast = parse(markdown);
 
-// Or manual validation
 const errors = validate(ast);
 if (errors.length > 0) {
   console.error('AST has issues:', errors);
@@ -610,4 +611,4 @@ describe('Error Handling', () => {
 
 - [Parser API](/api/parser) - Parsing and validation
 - [Type Definitions](/api/types) - Error type definitions
-- [Syntax Reference](/guide/syntax) - Valid wiremd syntax
+- [Syntax Reference](/components/) - Valid wiremd syntax

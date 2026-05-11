@@ -2,8 +2,8 @@
   "name": "wiremd-preview",
   "displayName": "Wiremd Live Preview",
   "description": "Live preview for Wiremd markdown mockups",
-  "version": "0.1.0",
-  "publisher": "wiremd",
+  "version": "0.1.6",
+  "publisher": "eclectic-ai",
   "icon": "icon.png",
   "engines": {
     "vscode": "^1.75.0"
@@ -54,6 +54,18 @@
         "title": "Change Preview Viewport",
         "category": "Wiremd",
         "icon": "$(device-mobile)"
+      },
+      {
+        "command": "wiremd.installClaudeSkill",
+        "title": "Install Wiremd Claude Skill",
+        "category": "Wiremd",
+        "icon": "$(sparkle)"
+      },
+      {
+        "command": "wiremd.openQuickReference",
+        "title": "Open Quick Reference",
+        "category": "Wiremd",
+        "icon": "$(question)"
       }
     ],
     "menus": {
@@ -125,10 +137,13 @@
     }
   },
   "scripts": {
-    "vscode:prepublish": "npm run compile",
+    "vscode:prepublish": "npm run bundle",
+    "bundle": "rm -rf ./skills && cp -r ../skills ./skills && rm -rf ./docs && mkdir -p ./docs && cp -r ../docs/components ./docs/components && cp -r ../docs/examples ./docs/examples && cp -r ../docs/reference ./docs/reference && esbuild src/extension.ts --bundle --outfile=dist/extension.js --external:vscode --platform=node --format=cjs --minify && esbuild src/preview-provider.ts --bundle --outfile=dist/preview-provider.js --external:vscode --platform=node --format=cjs --minify",
+    "dev": "node scripts/watch.mjs",
     "compile": "tsc -p ./",
     "watch": "tsc -watch -p ./",
     "package": "vsce package",
+    "publish": "vsce publish",
     "lint": "eslint src --ext ts"
   },
   "dependencies": {
@@ -139,9 +154,10 @@
     "@types/vscode": "^1.75.0",
     "@typescript-eslint/eslint-plugin": "^6.0.0",
     "@typescript-eslint/parser": "^6.0.0",
+    "@vscode/vsce": "^3.9.1",
+    "esbuild": "^0.20.0",
     "eslint": "^8.0.0",
-    "typescript": "^5.0.0",
-    "@vscode/vsce": "^2.22.0"
+    "typescript": "^5.0.0"
   },
   "repository": {
     "type": "git",

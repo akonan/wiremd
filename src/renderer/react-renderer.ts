@@ -31,6 +31,7 @@ function repeatString(str: string, count: number): string {
  * Render a wiremd AST node to React/JSX
  */
 export function renderNode(node: WiremdNode, context: ReactRenderContext, indent = 0): string {
+  if (node == null) return '';
   const indentStr = repeatString('  ', indent);
 
   switch (node.type) {
@@ -58,6 +59,9 @@ export function renderNode(node: WiremdNode, context: ReactRenderContext, indent
     case 'icon':
       return renderIcon(node, context, indent);
 
+    case 'badge':
+      return renderBadge(node, context, indent);
+
     case 'container':
       return renderContainer(node, context, indent);
 
@@ -72,6 +76,9 @@ export function renderNode(node: WiremdNode, context: ReactRenderContext, indent
 
     case 'grid':
       return renderGrid(node, context, indent);
+
+    case 'row':
+      return renderRow(node, context, indent);
 
     case 'grid-item':
       return renderGridItem(node, context, indent);
@@ -135,6 +142,14 @@ function renderButton(node: any, context: ReactRenderContext, indent: number): s
     : escapeJSX(node.content);
 
   return `${indentStr}<button ${classAttr}="${classes}"${disabled ? ' disabled' : ''}>\n${indentStr}  ${contentJSX}\n${indentStr}</button>`;
+}
+
+function renderBadge(node: any, context: ReactRenderContext, indent: number): string {
+  const indentStr = repeatString('  ', indent);
+  const { classPrefix: prefix } = context;
+  const classes = buildClasses(prefix, 'badge', node.props);
+  const classAttr = context.useClassName ? 'className' : 'class';
+  return `${indentStr}<span ${classAttr}="${classes}">${escapeJSX(node.content)}</span>`;
 }
 
 function renderInput(node: any, context: ReactRenderContext, indent: number): string {
@@ -326,6 +341,18 @@ function renderBrand(node: any, context: ReactRenderContext, indent: number): st
   const childrenJSX = (node.children || []).map((child: any) => renderNode(child, context, 0)).join('');
 
   return `${indentStr}<div ${classAttr}="${classes}">${childrenJSX}</div>`;
+}
+
+function renderRow(node: any, context: ReactRenderContext, indent: number): string {
+  const indentStr = repeatString('  ', indent);
+  const { classPrefix: prefix } = context;
+  const classes = buildClasses(prefix, 'row', node.props);
+  const classAttr = context.useClassName ? 'className' : 'class';
+  const childrenJSX = (node.children || []).map((child: any) => renderNode(child, context, indent + 1)).join('\n');
+
+  return `${indentStr}<div ${classAttr}="${classes}">
+${childrenJSX}
+${indentStr}</div>`;
 }
 
 function renderGrid(node: any, context: ReactRenderContext, indent: number): string {

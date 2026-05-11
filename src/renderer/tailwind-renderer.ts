@@ -17,6 +17,7 @@ export interface TailwindRenderContext {
  * Render a wiremd AST node to HTML with Tailwind classes
  */
 export function renderNode(node: WiremdNode, context: TailwindRenderContext): string {
+  if (node == null) return '';
   switch (node.type) {
     case 'button':
       return renderButton(node, context);
@@ -42,6 +43,9 @@ export function renderNode(node: WiremdNode, context: TailwindRenderContext): st
     case 'icon':
       return renderIcon(node, context);
 
+    case 'badge':
+      return renderBadge(node);
+
     case 'container':
       return renderContainer(node, context);
 
@@ -56,6 +60,9 @@ export function renderNode(node: WiremdNode, context: TailwindRenderContext): st
 
     case 'grid':
       return renderGrid(node, context);
+
+    case 'row':
+      return renderRow(node, context);
 
     case 'grid-item':
       return renderGridItem(node, context);
@@ -105,6 +112,26 @@ export function renderNode(node: WiremdNode, context: TailwindRenderContext): st
     default:
       return `<!-- Unknown node type: ${(node as any).type} -->`;
   }
+}
+
+function renderBadge(node: any): string {
+  const variant = node.props.variant;
+  const nodeClasses = node.props.classes || [];
+  let classes = 'inline-block px-2.5 py-0.5 rounded-full text-xs font-medium';
+
+  if (variant === 'primary' || nodeClasses.includes('primary')) {
+    classes += ' bg-blue-100 text-blue-800';
+  } else if (variant === 'success' || nodeClasses.includes('success')) {
+    classes += ' bg-green-100 text-green-800';
+  } else if (variant === 'warning' || nodeClasses.includes('warning')) {
+    classes += ' bg-yellow-100 text-yellow-800';
+  } else if (variant === 'error' || nodeClasses.includes('error')) {
+    classes += ' bg-red-100 text-red-800';
+  } else {
+    classes += ' bg-gray-100 text-gray-800';
+  }
+
+  return `<span class="${classes}">${escapeHtml(node.content)}</span>`;
 }
 
 function renderButton(node: any, context: TailwindRenderContext): string {
@@ -326,6 +353,19 @@ function renderBrand(node: any, context: TailwindRenderContext): string {
   const childrenHTML = (node.children || []).map((child: any) => renderNode(child, context)).join('');
 
   return `<div class="${classes}">${childrenHTML}</div>`;
+}
+
+function renderRow(node: any, context: TailwindRenderContext): string {
+  const classes = node.props?.classes?.includes('right')
+    ? 'flex items-center gap-3 flex-wrap justify-end'
+    : node.props?.classes?.includes('center')
+      ? 'flex items-center gap-3 flex-wrap justify-center'
+      : 'flex items-center gap-3 flex-wrap';
+  const childrenHTML = (node.children || []).map((child: any) => renderNode(child, context)).join('\n  ');
+
+  return `<div class="${classes}">
+  ${childrenHTML}
+</div>`;
 }
 
 function renderGrid(node: any, context: TailwindRenderContext): string {
